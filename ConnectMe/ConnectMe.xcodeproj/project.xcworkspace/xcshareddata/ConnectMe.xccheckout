@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7A3D97D5-C96B-4096-B1FB-9920B1D4EEE1</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ConnectMe</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>DB7C2567-7E44-47BA-95CF-D6678068C45C</key>
+		<string>https://github.com/AustinVaday/ConnectMe.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ConnectMe/ConnectMe.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>DB7C2567-7E44-47BA-95CF-D6678068C45C</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/AustinVaday/ConnectMe.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>DB7C2567-7E44-47BA-95CF-D6678068C45C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DB7C2567-7E44-47BA-95CF-D6678068C45C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ConnectMe</string>
+		</dict>
+	</array>
+</dict>
+</plist>
