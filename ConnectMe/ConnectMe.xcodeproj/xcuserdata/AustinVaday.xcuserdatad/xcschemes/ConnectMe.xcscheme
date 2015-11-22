@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0510"
+   LastUpgradeVersion = "0710"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FFD8E5E81BFAE61A00CEAE0D"
+               BlueprintIdentifier = "FF897C301C01AC63001B2634"
                BuildableName = "ConnectMe.app"
                BlueprintName = "ConnectMe"
                ReferencedContainer = "container:ConnectMe.xcodeproj">
@@ -23,18 +23,28 @@
       </BuildActionEntries>
    </BuildAction>
    <TestAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      buildConfiguration = "Debug">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FFD8E60F1BFAE61A00CEAE0D"
+               BlueprintIdentifier = "FF897C441C01AC63001B2634"
                BuildableName = "ConnectMeTests.xctest"
                BlueprintName = "ConnectMeTests"
+               ReferencedContainer = "container:ConnectMe.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "FF897C4F1C01AC63001B2634"
+               BuildableName = "ConnectMeUITests.xctest"
+               BlueprintName = "ConnectMeUITests"
                ReferencedContainer = "container:ConnectMe.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -42,26 +52,30 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FFD8E5E81BFAE61A00CEAE0D"
+            BlueprintIdentifier = "FF897C301C01AC63001B2634"
             BuildableName = "ConnectMe.app"
             BlueprintName = "ConnectMe"
             ReferencedContainer = "container:ConnectMe.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <AdditionalOptions>
+      </AdditionalOptions>
    </TestAction>
    <LaunchAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FFD8E5E81BFAE61A00CEAE0D"
+            BlueprintIdentifier = "FF897C301C01AC63001B2634"
             BuildableName = "ConnectMe.app"
             BlueprintName = "ConnectMe"
             ReferencedContainer = "container:ConnectMe.xcodeproj">
@@ -71,15 +85,16 @@
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
+      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FFD8E5E81BFAE61A00CEAE0D"
+            BlueprintIdentifier = "FF897C301C01AC63001B2634"
             BuildableName = "ConnectMe.app"
             BlueprintName = "ConnectMe"
             ReferencedContainer = "container:ConnectMe.xcodeproj">
