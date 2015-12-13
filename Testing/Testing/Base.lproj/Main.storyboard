@@ -18,6 +18,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gq9-M8-1YS">
+                                <rect key="frame" x="40" y="114" width="100" height="100"/>
+                                <animations/>
+                                <state key="normal" image="Slow"/>
+                                <connections>
+                                    <action selector="playSlowRecord:" destination="ru0-G6-5L5" eventType="touchUpInside" id="MdH-gP-bee"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f4w-wJ-FdJ">
                                 <rect key="frame" x="460" y="114" width="100" height="100"/>
                                 <animations/>
@@ -34,12 +42,20 @@
                                     <action selector="stopAudioRecord:" destination="ru0-G6-5L5" eventType="touchUpInside" id="hK7-54-TuG"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gq9-M8-1YS">
-                                <rect key="frame" x="40" y="114" width="100" height="100"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eFn-SE-D6q">
+                                <rect key="frame" x="40" y="264" width="100" height="100"/>
                                 <animations/>
-                                <state key="normal" image="Slow"/>
+                                <state key="normal" image="Chipmunk"/>
                                 <connections>
-                                    <action selector="playSlowRecord:" destination="ru0-G6-5L5" eventType="touchUpInside" id="MdH-gP-bee"/>
+                                    <action selector="playChipmunkRecord:" destination="ru0-G6-5L5" eventType="touchUpInside" id="SbJ-ZB-Bg3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GKS-S4-XrP">
+                                <rect key="frame" x="460" y="264" width="100" height="100"/>
+                                <animations/>
+                                <state key="normal" image="Vader"/>
+                                <connections>
+                                    <action selector="playVaderRecord:" destination="ru0-G6-5L5" eventType="touchUpInside" id="2gh-YU-Rpu"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -50,8 +66,12 @@
                             <constraint firstAttribute="trailingMargin" secondItem="f4w-wJ-FdJ" secondAttribute="trailing" constant="20" id="D9E-wL-CRU"/>
                             <constraint firstItem="XhX-wK-8cj" firstAttribute="top" secondItem="ywe-4o-LgQ" secondAttribute="bottom" constant="25" id="Kom-Lc-aVu"/>
                             <constraint firstItem="ywe-4o-LgQ" firstAttribute="centerX" secondItem="ND0-DS-Dg7" secondAttribute="centerX" id="MDj-PZ-v1d"/>
+                            <constraint firstItem="GKS-S4-XrP" firstAttribute="top" secondItem="f4w-wJ-FdJ" secondAttribute="bottom" constant="50" id="Sj5-Gt-OQG"/>
                             <constraint firstItem="gq9-M8-1YS" firstAttribute="top" secondItem="qPn-If-0eK" secondAttribute="bottom" constant="50" id="TZg-pG-x65"/>
+                            <constraint firstItem="eFn-SE-D6q" firstAttribute="leading" secondItem="ND0-DS-Dg7" secondAttribute="leadingMargin" constant="20" id="Zp0-JI-Lrq"/>
                             <constraint firstItem="f4w-wJ-FdJ" firstAttribute="top" secondItem="qPn-If-0eK" secondAttribute="bottom" constant="50" id="pE9-xh-idu"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="GKS-S4-XrP" secondAttribute="trailing" constant="20" id="tGI-Gx-Jsb"/>
+                            <constraint firstItem="eFn-SE-D6q" firstAttribute="top" secondItem="gq9-M8-1YS" secondAttribute="bottom" constant="50" id="zIF-ci-Gda"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -92,7 +112,6 @@
                                 <state key="normal" image="Stop"/>
                                 <connections>
                                     <action selector="stopButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="isH-9T-Heg"/>
-                                    <segue destination="ru0-G6-5L5" kind="show" id="LOn-8f-Ka1"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -112,6 +131,7 @@
                         <outlet property="microphoneButton" destination="25M-VA-LF9" id="tKG-rU-VeR"/>
                         <outlet property="recordingLabel" destination="zVf-HA-46y" id="99W-gR-RkA"/>
                         <outlet property="stopButton" destination="4sr-m8-D70" id="p46-bK-CEh"/>
+                        <segue destination="ru0-G6-5L5" kind="show" identifier="stopRecording" id="eQM-sx-Pr5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -139,9 +159,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Chipmunk" width="100" height="100"/>
         <image name="Fast" width="100" height="100"/>
         <image name="Microphone" width="100" height="100"/>
         <image name="Slow" width="100" height="100"/>
         <image name="Stop" width="50" height="50"/>
+        <image name="Vader" width="100" height="100"/>
     </resources>
 </document>

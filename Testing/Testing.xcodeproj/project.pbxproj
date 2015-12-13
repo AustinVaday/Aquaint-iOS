@@ -16,6 +16,7 @@
 		FF3113BA1C1B61A1004772EB /* TestingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3113B91C1B61A1004772EB /* TestingUITests.swift */; };
 		FF65D3161C1BA9A70015C99F /* PlaySoundsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF65D3151C1BA9A70015C99F /* PlaySoundsViewController.swift */; };
 		FF65D3181C1BB9D40015C99F /* movie_quote.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FF65D3171C1BB9D40015C99F /* movie_quote.mp3 */; };
+		FF65D31A1C1D0CD50015C99F /* RecordedAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF65D3191C1D0CD50015C99F /* RecordedAudio.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		FF3113BB1C1B61A1004772EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FF65D3151C1BA9A70015C99F /* PlaySoundsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaySoundsViewController.swift; sourceTree = "<group>"; };
 		FF65D3171C1BB9D40015C99F /* movie_quote.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movie_quote.mp3; sourceTree = "<group>"; };
+		FF65D3191C1D0CD50015C99F /* RecordedAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordedAudio.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				FF65D3171C1BB9D40015C99F /* movie_quote.mp3 */,
 				FF3113991C1B61A1004772EB /* AppDelegate.swift */,
 				FF31139B1C1B61A1004772EB /* RecordSoundsViewController.swift */,
+				FF65D3191C1D0CD50015C99F /* RecordedAudio.swift */,
 				FF65D3151C1BA9A70015C99F /* PlaySoundsViewController.swift */,
 				FF31139D1C1B61A1004772EB /* Main.storyboard */,
 				FF3113A01C1B61A1004772EB /* Assets.xcassets */,
@@ -263,6 +266,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF65D31A1C1D0CD50015C99F /* RecordedAudio.swift in Sources */,
 				FF31139C1C1B61A1004772EB /* RecordSoundsViewController.swift in Sources */,
 				FF65D3161C1BA9A70015C99F /* PlaySoundsViewController.swift in Sources */,
 				FF31139A1C1B61A1004772EB /* AppDelegate.swift in Sources */,

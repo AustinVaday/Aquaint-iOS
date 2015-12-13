@@ -10,26 +10,36 @@ import UIKit
 import AVFoundation
 
 class PlaySoundsViewController: UIViewController {
-    var audio : AVAudioPlayer!
+    
+    var audioPlayer : AVAudioPlayer!
+    var audioEngine : AVAudioEngine = AVAudioEngine()
+    var audioFile : AVAudioFile!
+    
+    var receivedAudio: RecordedAudio!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let filePath = NSBundle.mainBundle().pathForResource("movie_quote", ofType: "mp3")
-
-        if (filePath == nil)
-        {
-            print("Bad file path, please re-check it!")
-        }
-        else
-        {
-            let filePathNSURL = NSURL.fileURLWithPath(filePath!)
-            audio = try! AVAudioPlayer(contentsOfURL: filePathNSURL)
-            
-            // Enable rate-changing features
-            audio.enableRate = true
-        }
+//        let filePath = NSBundle.mainBundle().pathForResource("movie_quote", ofType: "mp3")
+//
+//        if (filePath == nil)
+//        {
+//            print("Bad file path, please re-check it!")
+//        }
+//        else
+//        {
+//            let filePathNSURL = NSURL.fileURLWithPath(filePath!)
+//            audioPlayer = try! AVAudioPlayer(contentsOfURL: filePathNSURL)
+//            
+//            // Enable rate-changing features
+//            audioPlayer.enableRate = true
+//        }
+        audioPlayer = try! AVAudioPlayer(contentsOfURL: receivedAudio.filePath)
         
+        audioFile = try! AVAudioFile(forReading: receivedAudio.filePath)
+        
+        // Enable rate-changing features
+        audioPlayer.enableRate = true
         
     }
 
@@ -39,10 +49,36 @@ class PlaySoundsViewController: UIViewController {
     }
     
     func playAudio(rate: Float) {
-        audio.stop()
-        audio.rate = rate
-        audio.currentTime = 0.0
-        audio.play()
+        audioPlayer.stop()
+        audioPlayer.rate = rate
+        audioPlayer.currentTime = 0.0
+        audioPlayer.play()
+    }
+    
+    func playAudioWithVariablePitch(pitch: Float)
+    {
+        // Perform cleanups
+        audioPlayer.stop()
+        audioEngine.stop()
+        audioEngine.reset()
+        
+        // Prepare audio engine
+        let audioPlayerNode: AVAudioPlayerNode = AVAudioPlayerNode()
+        let audioPitch: AVAudioUnitTimePitch = AVAudioUnitTimePitch()
+        audioPitch.pitch = pitch
+        
+        // Perform operations on node, prepare nodes for pitch alteration
+        audioEngine.attachNode(audioPlayerNode)
+        audioEngine.attachNode(audioPitch)
+        audioEngine.connect(audioPlayerNode, to: audioPitch, format: nil)
+        audioEngine.connect(audioPitch, to: audioEngine.outputNode, format: nil)
+        
+        // Play the node using audioFile, at a specific pitch
+        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
+    
+        try! audioEngine.start()
+        audioPlayerNode.play()
+        
     }
     
     @IBAction func playSlowRecord(sender: UIButton) {
@@ -55,10 +91,16 @@ class PlaySoundsViewController: UIViewController {
     
     
     @IBAction func stopAudioRecord(sender: UIButton) {
-        audio.stop()
+        audioPlayer.stop()
     }
     
+    @IBAction func playChipmunkRecord(sender: UIButton) {
+        playAudioWithVariablePitch(1000)
+    }
     
+    @IBAction func playVaderRecord(sender: UIButton) {
+        playAudioWithVariablePitch(-1000)
+    }
     
     /*
     // MARK: - Navigation
