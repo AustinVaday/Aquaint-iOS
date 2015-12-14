@@ -1,0 +1,5 @@
+1) Hard time with constraints? Aligning log in/sign up buttons: http://stackoverflow.com/questions/28148843/ios-autolayout-two-buttons-of-equal-width-side-by-side
+
+2) Getting yellow dashed-boxes? Objects not the same size as you desire? This is because of constraint issues. You must either "update" your constraints, or perform some action to prevent xCode's ambiguous interpretations of your object. If it's a size issue with respect to height, try ctrl+clicking on the object's top and dragging it down to the object's bottom, then select "height". 
+
+3) 
