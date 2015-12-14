@@ -96,7 +96,7 @@
         <!--Sign Up-->
         <scene sceneID="rHR-jk-33l">
             <objects>
-                <viewController title="Sign Up" modalTransitionStyle="crossDissolve" id="54r-9I-5XD" sceneMemberID="viewController">
+                <viewController title="Sign Up" modalTransitionStyle="crossDissolve" id="54r-9I-5XD" customClass="SignUpController" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LF5-Ix-NVz"/>
                         <viewControllerLayoutGuide type="bottom" id="lsu-Lz-zFb"/>
@@ -139,6 +139,9 @@
                                 <state key="normal" title="SIGN UP">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="signUpButtonClicked:" destination="54r-9I-5XD" eventType="touchUpInside" id="SnZ-qY-hiR"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Person Icon" translatesAutoresizingMaskIntoConstraints="NO" id="25Y-Qu-kQi">
                                 <rect key="frame" x="45" y="249" width="25" height="25"/>
@@ -226,12 +229,15 @@
                                 </constraints>
                                 <color key="textColor" red="0.0" green="0.8901960784313725" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
                                         <color key="value" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="nameEditingDidEnd:" destination="54r-9I-5XD" eventType="editingDidEnd" id="Uz3-84-TYs"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="chM-A8-v39">
                                 <rect key="frame" x="95" y="329" width="485" height="30"/>
@@ -241,12 +247,15 @@
                                 </constraints>
                                 <color key="textColor" red="0.0" green="0.89019607840000003" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
                                         <color key="value" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="emailEditingDidEnd:" destination="54r-9I-5XD" eventType="editingDidEnd" id="8ae-9i-d5i"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jiS-sR-5ZC">
                                 <rect key="frame" x="95" y="409" width="485" height="30"/>
@@ -256,12 +265,15 @@
                                 </constraints>
                                 <color key="textColor" red="0.0" green="0.89019607840000003" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
                                         <color key="value" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="passwordEditingDidEnd:" destination="54r-9I-5XD" eventType="editingDidEnd" id="skY-lb-lm0"/>
+                                </connections>
                             </textField>
                         </subviews>
                         <animations/>
@@ -312,6 +324,11 @@
                             <constraint firstItem="lsu-Lz-zFb" firstAttribute="top" secondItem="oqZ-gc-LwT" secondAttribute="bottom" id="ypv-WV-qBr"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="userEmail" destination="chM-A8-v39" id="KGS-9e-rVO"/>
+                        <outlet property="userName" destination="DcH-hn-sV3" id="Gme-Ac-qQ1"/>
+                        <outlet property="userPassword" destination="jiS-sR-5ZC" id="Tg1-u3-vbv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vCu-vo-SeO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
