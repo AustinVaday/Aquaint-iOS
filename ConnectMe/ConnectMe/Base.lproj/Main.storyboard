@@ -275,6 +275,14 @@
                                     <action selector="passwordEditingDidEnd:" destination="54r-9I-5XD" eventType="editingDidEnd" id="skY-lb-lm0"/>
                                 </connections>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="utB-hU-YRW">
+                                <rect key="frame" x="240" y="74" width="120" height="120"/>
+                                <animations/>
+                                <state key="normal" image="Add Photo"/>
+                                <connections>
+                                    <action selector="addPhotoButtonClicked:" destination="54r-9I-5XD" eventType="touchUpInside" id="jU3-6P-U1Y"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -291,6 +299,7 @@
                             <constraint firstItem="0fe-vn-BTg" firstAttribute="width" secondItem="2Qj-0g-N5p" secondAttribute="width" constant="-40" id="CPS-2a-wyU"/>
                             <constraint firstItem="Z46-Pa-85h" firstAttribute="top" secondItem="25Y-Qu-kQi" secondAttribute="bottom" constant="55" id="DMU-JP-n4K"/>
                             <constraint firstItem="aEk-In-Byy" firstAttribute="top" secondItem="LF5-Ix-NVz" secondAttribute="bottom" constant="7" id="Eqv-fM-Frz"/>
+                            <constraint firstItem="dLR-eB-wW5" firstAttribute="top" secondItem="utB-hU-YRW" secondAttribute="bottom" constant="32" id="F1D-1a-dkd"/>
                             <constraint firstItem="jiS-sR-5ZC" firstAttribute="width" secondItem="2Qj-0g-N5p" secondAttribute="width" constant="-115" id="F1p-Cx-6Bh"/>
                             <constraint firstItem="chM-A8-v39" firstAttribute="top" secondItem="W2b-gR-guV" secondAttribute="bottom" constant="-1" id="FNe-QY-4HH"/>
                             <constraint firstItem="Fxo-RB-iMG" firstAttribute="leading" secondItem="2Qj-0g-N5p" secondAttribute="leadingMargin" constant="-20" id="FnN-eQ-kgk"/>
@@ -317,10 +326,12 @@
                             <constraint firstAttribute="leadingMargin" secondItem="zCu-2J-TnB" secondAttribute="leading" id="nve-Xu-oHC"/>
                             <constraint firstItem="chM-A8-v39" firstAttribute="leading" secondItem="Z46-Pa-85h" secondAttribute="trailing" constant="25" id="oQd-38-q9w"/>
                             <constraint firstItem="Fxo-RB-iMG" firstAttribute="top" secondItem="LF5-Ix-NVz" secondAttribute="bottom" constant="-20" id="qAs-8v-RHN"/>
+                            <constraint firstItem="utB-hU-YRW" firstAttribute="centerX" secondItem="Fxo-RB-iMG" secondAttribute="centerX" id="qJT-Vd-LrY"/>
                             <constraint firstItem="tBe-gm-Axm" firstAttribute="centerX" secondItem="2Qj-0g-N5p" secondAttribute="centerX" id="siE-Ad-SJi"/>
                             <constraint firstItem="W2b-gR-guV" firstAttribute="leading" secondItem="Z46-Pa-85h" secondAttribute="trailing" constant="25" id="uOO-2b-f9F"/>
                             <constraint firstItem="DcH-hn-sV3" firstAttribute="width" secondItem="2Qj-0g-N5p" secondAttribute="width" constant="-115" id="w2E-Hg-5rY"/>
                             <constraint firstItem="dLR-eB-wW5" firstAttribute="leading" secondItem="25Y-Qu-kQi" secondAttribute="trailing" constant="25" id="wcs-hZ-Vtj"/>
+                            <constraint firstItem="utB-hU-YRW" firstAttribute="top" secondItem="aEk-In-Byy" secondAttribute="bottom" constant="19" id="yWA-JF-79a"/>
                             <constraint firstItem="lsu-Lz-zFb" firstAttribute="top" secondItem="oqZ-gc-LwT" secondAttribute="bottom" id="ypv-WV-qBr"/>
                         </constraints>
                     </view>
@@ -328,6 +339,7 @@
                         <outlet property="userEmail" destination="chM-A8-v39" id="KGS-9e-rVO"/>
                         <outlet property="userName" destination="DcH-hn-sV3" id="Gme-Ac-qQ1"/>
                         <outlet property="userPassword" destination="jiS-sR-5ZC" id="Tg1-u3-vbv"/>
+                        <outlet property="userPhoto" destination="utB-hU-YRW" id="qG4-Lz-t1u"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vCu-vo-SeO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -406,6 +418,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Add Photo" width="120" height="120"/>
         <image name="Back Arrow" width="50" height="50"/>
         <image name="Email Icon" width="50" height="50"/>
         <image name="Line Separator" width="753" height="4"/>
