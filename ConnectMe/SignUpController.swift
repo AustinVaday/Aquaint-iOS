@@ -17,11 +17,17 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     @IBOutlet weak var userPhoto: UIButton!
     
     // Used for selecting image from user's device
-    var imagePicker:UIImagePickerController = UIImagePickerController()
+    var imagePicker:UIImagePickerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        // Do any additional setup after loading the view, typically from a
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        //TODO: INVESTIGATE UIImagePickerController class
+        // The following initialization, for some reason, takes longer than usual. Doing this AFTER the view appears so that there's no obvious delay in any transitions.
+        imagePicker = UIImagePickerController()
     }
     
     override func didReceiveMemoryWarning() {
@@ -32,22 +38,36 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     // Functionality for adding in a user specific photograph
     @IBAction func addPhotoButtonClicked(sender: UIButton) {
         
-        imagePicker.delegate = self
-        imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum
-        imagePicker.allowsEditing = false
-        self.presentViewController(imagePicker, animated: true, completion: nil)
+        
+        // Present the Saved Photo Album to user only if it is available
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum)
+        {
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum
+            imagePicker.allowsEditing = false
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+        }
         
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [NSObject : AnyObject]?) {
         
         // Close the image picker view when user is finished with it
         self.dismissViewControllerAnimated(true, completion: nil)
-
+    
         // TODO: Fix the below.
-//        userPhoto.setImage(image, forState: UIControlState.Application)
+        userPhoto.setImage(image, forState: UIControlState.Normal)
         
     }
+    
+//    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!){
+//        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+//            
+//        })
+//        
+//        userPhoto.setImage(image, forState: )
+//        
+//    }
     
     
     // EditingDidEnd functionality will be used for error checking user input

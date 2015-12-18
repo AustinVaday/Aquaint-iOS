@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -19,18 +20,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login Background" translatesAutoresizingMaskIntoConstraints="NO" id="7RR-CR-L8X">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="-20" y="0.0" width="640" height="600"/>
                                 <animations/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aquaint" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MKq-dK-dEu">
-                                <rect key="frame" x="195" y="259" width="210" height="82"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MKq-dK-dEu">
+                                <rect key="frame" x="241" y="259" width="119" height="82"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="60"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connect Smarter, Faster." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vEG-SP-qar">
-                                <rect key="frame" x="181" y="359" width="239" height="31"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blah Blah, Blah, Blah." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vEG-SP-qar">
+                                <rect key="frame" x="197" y="359" width="206" height="31"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="22"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -63,7 +64,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="54r-9I-5XD" kind="show" id="t32-bz-ogP"/>
+                                    <segue destination="54r-9I-5XD" kind="show" id="yLV-T1-51k"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -79,13 +80,18 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Tqt-f2-XcW" secondAttribute="bottom" id="Ubo-vF-BcW"/>
                             <constraint firstItem="vEG-SP-qar" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Uiw-Dz-ypx"/>
                             <constraint firstItem="7RR-CR-L8X" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="cSn-y3-O43"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="7RR-CR-L8X" secondAttribute="trailing" constant="-20" id="d0J-at-U3m"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="7RR-CR-L8X" secondAttribute="trailing" constant="-40" id="d0J-at-U3m"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Tqt-f2-XcW" secondAttribute="trailing" constant="-20" id="g2J-cA-R0h"/>
-                            <constraint firstItem="7RR-CR-L8X" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="jb4-Kv-c7E"/>
+                            <constraint firstItem="7RR-CR-L8X" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-40" id="jb4-Kv-c7E"/>
                             <constraint firstItem="vEG-SP-qar" firstAttribute="top" secondItem="MKq-dK-dEu" secondAttribute="bottom" constant="18" id="oCb-aw-cBF"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="7RR-CR-L8X" secondAttribute="bottom" id="tan-CL-Fmo"/>
                             <constraint firstItem="o8E-at-p4o" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="xx2-bd-kfO"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="7RR-CR-L8X"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="AkT-Cf-9AM"/>
                 </viewController>
@@ -278,6 +284,10 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="utB-hU-YRW">
                                 <rect key="frame" x="240" y="74" width="120" height="120"/>
                                 <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="3ZC-CI-PlP"/>
+                                    <constraint firstAttribute="height" constant="120" id="lL2-Vn-KVm"/>
+                                </constraints>
                                 <state key="normal" image="Add Photo"/>
                                 <connections>
                                     <action selector="addPhotoButtonClicked:" destination="54r-9I-5XD" eventType="touchUpInside" id="jU3-6P-U1Y"/>
@@ -303,6 +313,7 @@
                             <constraint firstItem="jiS-sR-5ZC" firstAttribute="width" secondItem="2Qj-0g-N5p" secondAttribute="width" constant="-115" id="F1p-Cx-6Bh"/>
                             <constraint firstItem="chM-A8-v39" firstAttribute="top" secondItem="W2b-gR-guV" secondAttribute="bottom" constant="-1" id="FNe-QY-4HH"/>
                             <constraint firstItem="Fxo-RB-iMG" firstAttribute="leading" secondItem="2Qj-0g-N5p" secondAttribute="leadingMargin" constant="-20" id="FnN-eQ-kgk"/>
+                            <constraint firstItem="utB-hU-YRW" firstAttribute="centerX" secondItem="aEk-In-Byy" secondAttribute="centerX" id="HKl-Lw-IWN"/>
                             <constraint firstItem="aOT-q2-98n" firstAttribute="top" secondItem="0fe-vn-BTg" secondAttribute="bottom" constant="4" id="IKu-vF-BPd"/>
                             <constraint firstItem="N9M-Nt-gzx" firstAttribute="width" secondItem="2Qj-0g-N5p" secondAttribute="width" constant="-40" id="LDZ-2z-jJz"/>
                             <constraint firstItem="aEk-In-Byy" firstAttribute="centerX" secondItem="Fxo-RB-iMG" secondAttribute="centerX" id="NCf-Jt-1Xa"/>
@@ -334,6 +345,11 @@
                             <constraint firstItem="utB-hU-YRW" firstAttribute="top" secondItem="aEk-In-Byy" secondAttribute="bottom" constant="19" id="yWA-JF-79a"/>
                             <constraint firstItem="lsu-Lz-zFb" firstAttribute="top" secondItem="oqZ-gc-LwT" secondAttribute="bottom" id="ypv-WV-qBr"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Fxo-RB-iMG"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="userEmail" destination="chM-A8-v39" id="KGS-9e-rVO"/>
@@ -410,6 +426,11 @@
                             <constraint firstItem="eeQ-fg-OQb" firstAttribute="top" secondItem="46H-D8-wcf" secondAttribute="bottom" id="yyS-SD-Aug"/>
                             <constraint firstItem="w7x-gS-Ta3" firstAttribute="leading" secondItem="J1V-Zz-NB4" secondAttribute="leadingMargin" constant="-20" id="zwZ-T0-1qQ"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="w7x-gS-Ta3"/>
+                            </mask>
+                        </variation>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kwb-XD-Fnx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -422,7 +443,7 @@
         <image name="Back Arrow" width="50" height="50"/>
         <image name="Email Icon" width="50" height="50"/>
         <image name="Line Separator" width="753" height="4"/>
-        <image name="Login Background" width="750" height="1334"/>
+        <image name="Login Background" width="802" height="1340"/>
         <image name="Password Icon" width="50" height="50"/>
         <image name="Person Icon" width="50" height="50"/>
     </resources>
