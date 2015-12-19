@@ -100,6 +100,44 @@
             <point key="canvasLocation" x="370" y="296"/>
         </scene>
         <!--View Controller-->
+        <scene sceneID="Vyi-w1-nst">
+            <objects>
+                <viewController id="wcp-L0-wz9" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="afK-Av-iEC"/>
+                        <viewControllerLayoutGuide type="bottom" id="VQu-Pm-LlT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0kj-vP-GCN">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eWA-a6-h8Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="330" y="2662"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="7d9-DH-Soi">
+            <objects>
+                <viewController id="thT-it-jqL" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="iBk-5a-fwA"/>
+                        <viewControllerLayoutGuide type="bottom" id="LRT-bE-Y90"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rqZ-Kg-e1p">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hic-Ge-GKX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-750" y="2654"/>
+        </scene>
+        <!--View Controller-->
         <scene sceneID="OnF-bp-ptK">
             <objects>
                 <viewController id="8Yo-pa-87T" sceneMemberID="viewController">
@@ -115,20 +153,81 @@
                                 <rect key="frame" x="150" y="150" width="300" height="300"/>
                                 <animations/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xPW-Hw-kgz">
+                                <rect key="frame" x="20" y="28" width="26" height="26"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="26" id="nR9-dr-g4Y"/>
+                                    <constraint firstAttribute="width" constant="26" id="vis-7A-bCG"/>
+                                </constraints>
+                                <state key="normal" image="Menu Icon"/>
+                                <connections>
+                                    <segue destination="thT-it-jqL" kind="show" id="Phs-oT-ZRX"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lac-sa-SWi">
+                                <rect key="frame" x="285" y="26" width="30" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="20x-ua-Uej"/>
+                                    <constraint firstAttribute="width" constant="30" id="hj6-57-vjr"/>
+                                </constraints>
+                                <state key="normal" image="Camera Icon"/>
+                                <connections>
+                                    <segue destination="wcp-L0-wz9" kind="show" id="3Nc-66-mdC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gCx-w9-Vgf">
+                                <rect key="frame" x="548" y="25" width="32" height="32"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="TIC-FO-Wam"/>
+                                    <constraint firstAttribute="height" constant="32" id="z9Z-Km-BlQ"/>
+                                </constraints>
+                                <state key="normal" image="Group Dots Icon"/>
+                                <connections>
+                                    <segue destination="JVC-Ri-2wB" kind="show" id="TvJ-hs-Iym"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="dbB-Yu-OXh" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="130" id="0Pg-8J-hGK"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="xPW-Hw-kgz" secondAttribute="leading" id="2Jj-aY-0Xh"/>
+                            <constraint firstItem="lac-sa-SWi" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="6" id="68L-Bg-mS8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="dbB-Yu-OXh" secondAttribute="trailing" constant="130" id="L7i-yz-Prm"/>
                             <constraint firstItem="bhw-dZ-esF" firstAttribute="top" secondItem="dbB-Yu-OXh" secondAttribute="bottom" constant="150" id="RCa-RL-rSI"/>
                             <constraint firstItem="dbB-Yu-OXh" firstAttribute="leading" secondItem="ckE-RN-rVs" secondAttribute="leadingMargin" constant="130" id="WHh-9y-dEE"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="gCx-w9-Vgf" secondAttribute="trailing" id="Ygk-5I-lII"/>
+                            <constraint firstItem="lac-sa-SWi" firstAttribute="centerX" secondItem="ckE-RN-rVs" secondAttribute="centerX" id="caP-UF-CbE"/>
+                            <constraint firstItem="xPW-Hw-kgz" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="8" id="hLR-oy-g7v"/>
+                            <constraint firstItem="gCx-w9-Vgf" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="5" id="ySG-M2-B0F"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bTl-iT-RUd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="370" y="1858"/>
+            <point key="canvasLocation" x="330" y="1870"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Jxe-mP-QLE">
+            <objects>
+                <viewController id="JVC-Ri-2wB" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tdL-VL-qiB"/>
+                        <viewControllerLayoutGuide type="bottom" id="fLh-56-2g1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PbJ-wo-Hqe">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wQe-Ly-mEL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1434" y="2662"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="rHR-jk-33l">
@@ -512,10 +611,13 @@
     <resources>
         <image name="Add Photo" width="120" height="120"/>
         <image name="Back Arrow" width="50" height="50"/>
+        <image name="Camera Icon" width="70" height="70"/>
         <image name="Email Icon" width="50" height="50"/>
         <image name="Email Icon Error" width="50" height="50"/>
+        <image name="Group Dots Icon" width="50" height="50"/>
         <image name="Line Separator" width="753" height="4"/>
         <image name="Login Background" width="100" height="100"/>
+        <image name="Menu Icon" width="42" height="36"/>
         <image name="Password Icon" width="50" height="50"/>
         <image name="Password Icon Error" width="50" height="50"/>
         <image name="Person Icon" width="50" height="50"/>
