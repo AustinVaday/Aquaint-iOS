@@ -16,12 +16,20 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     @IBOutlet weak var userPassword: UITextField!
     @IBOutlet weak var userPhoto: UIButton!
     
+    var userObject : User!
+    
+    
     // Used for selecting image from user's device
     var imagePicker:UIImagePickerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a
+        // Do any additional setup after loading the view, typically from 
+        
+        // Make the button round!
+        userPhoto.clipsToBounds = true
+        userPhoto.layer.cornerRadius = userPhoto.bounds.size.width / 2
+    
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -60,16 +68,6 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
     }
     
-//    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!){
-//        self.dismissViewControllerAnimated(true, completion: { () -> Void in
-//            
-//        })
-//        
-//        userPhoto.setImage(image, forState: )
-//        
-//    }
-    
-    
     // EditingDidEnd functionality will be used for error checking user input
     @IBAction func nameEditingDidEnd(sender: UITextField) {
         print(userName.text)
@@ -87,6 +85,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     // Actions to perform when "Sign Up" is clicked
     @IBAction func signUpButtonClicked(sender: AnyObject) {
         print("Do something here")
+        
+        //TODO: PROCESS THE TEXT
     }
     
 }
