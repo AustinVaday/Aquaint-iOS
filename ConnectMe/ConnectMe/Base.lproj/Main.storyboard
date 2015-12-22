@@ -110,9 +110,27 @@
                     <view key="view" contentMode="scaleToFill" id="0kj-vP-GCN">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Es-Va-Y7e">
+                                <rect key="frame" x="279" y="550" width="30" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="Nvy-ne-GxP"/>
+                                    <constraint firstAttribute="height" constant="30" id="of3-Du-4SA"/>
+                                </constraints>
+                                <state key="normal" image="Down Caret"/>
+                                <connections>
+                                    <segue destination="8Yo-pa-87T" kind="show" id="WT4-Um-PRj"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="3Es-Va-Y7e" firstAttribute="centerX" secondItem="0kj-vP-GCN" secondAttribute="centerX" constant="-6" id="5ef-sd-Bn6"/>
+                            <constraint firstItem="VQu-Pm-LlT" firstAttribute="top" secondItem="3Es-Va-Y7e" secondAttribute="bottom" constant="20" id="Gaz-tE-1F5"/>
+                        </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="IxV-Bb-kQe" appends="YES" id="F4r-vy-nHG"/>
                         </connections>
@@ -121,7 +139,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eWA-a6-h8Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="IxV-Bb-kQe"/>
             </objects>
-            <point key="canvasLocation" x="330" y="2662"/>
+            <point key="canvasLocation" x="450" y="2678"/>
         </scene>
         <!--Menu Controller-->
         <scene sceneID="7d9-DH-Soi">
@@ -134,9 +152,36 @@
                     <view key="view" contentMode="scaleToFill" id="rqZ-Kg-e1p">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcU-Dz-Dj3">
+                                <rect key="frame" x="277" y="28" width="52" height="28"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ykO-rd-LqG">
+                                <rect key="frame" x="20" y="28" width="26" height="26"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="26" id="JIn-OR-mXW"/>
+                                    <constraint firstAttribute="width" constant="26" id="xbI-O7-MJ2"/>
+                                </constraints>
+                                <state key="normal" image="Back Arrow"/>
+                                <connections>
+                                    <segue destination="8Yo-pa-87T" kind="show" id="qwh-rK-Hbh"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="bcU-Dz-Dj3" firstAttribute="top" secondItem="iBk-5a-fwA" secondAttribute="bottom" constant="8" id="Guh-aX-1Et"/>
+                            <constraint firstItem="bcU-Dz-Dj3" firstAttribute="centerX" secondItem="rqZ-Kg-e1p" secondAttribute="centerX" constant="3" id="hna-Ha-FHG"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="ykO-rd-LqG" secondAttribute="leading" id="k2g-yW-iPL"/>
+                            <constraint firstItem="ykO-rd-LqG" firstAttribute="top" secondItem="iBk-5a-fwA" secondAttribute="bottom" constant="8" id="ldD-bY-LMa"/>
+                        </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Dlo-yr-wOR" appends="YES" id="5k7-AX-Uwn"/>
                         </connections>
@@ -145,12 +190,12 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hic-Ge-GKX" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="Dlo-yr-wOR"/>
             </objects>
-            <point key="canvasLocation" x="-331" y="1854"/>
+            <point key="canvasLocation" x="-379" y="2662"/>
         </scene>
-        <!--View Controller-->
+        <!--Home Controller-->
         <scene sceneID="OnF-bp-ptK">
             <objects>
-                <viewController id="8Yo-pa-87T" sceneMemberID="viewController">
+                <viewController id="8Yo-pa-87T" customClass="HomeController" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="eKa-ke-8ez"/>
                         <viewControllerLayoutGuide type="bottom" id="bhw-dZ-esF"/>
@@ -159,9 +204,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Scan Code" translatesAutoresizingMaskIntoConstraints="NO" id="dbB-Yu-OXh">
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Scan Code" translatesAutoresizingMaskIntoConstraints="NO" id="dbB-Yu-OXh">
                                 <rect key="frame" x="150" y="150" width="300" height="300"/>
                                 <animations/>
+                                <gestureRecognizers/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xPW-Hw-kgz">
                                 <rect key="frame" x="20" y="28" width="26" height="26"/>
@@ -222,7 +268,10 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bTl-iT-RUd" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="EOO-Sr-s17">
-                    <rectEdge key="edges" left="YES" right="YES"/>
+                    <rectEdge key="edges" left="YES" top="YES" right="YES" bottom="YES"/>
+                    <connections>
+                        <action selector="handlePan:" destination="8Yo-pa-87T" id="gjF-eQ-Egb"/>
+                    </connections>
                 </screenEdgePanGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="330" y="1870"/>
@@ -238,9 +287,36 @@
                     <view key="view" contentMode="scaleToFill" id="PbJ-wo-Hqe">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DtY-V0-sz0">
+                                <rect key="frame" x="20" y="28" width="26" height="26"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="26" id="3On-Rc-aLf"/>
+                                    <constraint firstAttribute="width" constant="26" id="yXp-u0-Cfg"/>
+                                </constraints>
+                                <state key="normal" image="Back Arrow"/>
+                                <connections>
+                                    <segue destination="8Yo-pa-87T" kind="show" id="P5G-O0-nYI"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Something" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHt-r2-AXK">
+                                <rect key="frame" x="251" y="28" width="98" height="28"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="GHt-r2-AXK" firstAttribute="centerX" secondItem="PbJ-wo-Hqe" secondAttribute="centerX" id="1ah-HH-EMd"/>
+                            <constraint firstItem="DtY-V0-sz0" firstAttribute="top" secondItem="tdL-VL-qiB" secondAttribute="bottom" constant="8" id="3F9-XL-AO1"/>
+                            <constraint firstItem="GHt-r2-AXK" firstAttribute="top" secondItem="tdL-VL-qiB" secondAttribute="bottom" constant="8" id="gXN-XZ-V40"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="DtY-V0-sz0" secondAttribute="leading" id="gk6-T1-mC5"/>
+                        </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="a4p-th-tTG" appends="YES" id="m0J-S6-npb"/>
                         </connections>
@@ -254,7 +330,6 @@
         <!--Sign Up-->
         <scene sceneID="rHR-jk-33l">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vCu-vo-SeO" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController title="Sign Up" modalTransitionStyle="crossDissolve" id="54r-9I-5XD" customClass="SignUpController" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LF5-Ix-NVz"/>
@@ -554,6 +629,7 @@
                         <outlet property="userPhoto" destination="utB-hU-YRW" id="qG4-Lz-t1u"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vCu-vo-SeO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1046" y="1084"/>
         </scene>
@@ -637,6 +713,7 @@
         <image name="Add Photo" width="120" height="120"/>
         <image name="Back Arrow" width="50" height="50"/>
         <image name="Camera Icon" width="70" height="70"/>
+        <image name="Down Caret" width="50" height="50"/>
         <image name="Email Icon" width="50" height="50"/>
         <image name="Email Icon Error" width="50" height="50"/>
         <image name="Group Dots Icon" width="50" height="50"/>
@@ -650,6 +727,7 @@
         <image name="Scan Code" width="412" height="412"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="zog-ev-2Fq"/>
+        <segue reference="qwh-rK-Hbh"/>
+        <segue reference="TLK-r8-F9d"/>
     </inferredMetricsTieBreakers>
 </document>
