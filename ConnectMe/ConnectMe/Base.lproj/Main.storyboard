@@ -111,29 +111,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Es-Va-Y7e">
-                                <rect key="frame" x="279" y="550" width="30" height="30"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="Nvy-ne-GxP"/>
-                                    <constraint firstAttribute="height" constant="30" id="of3-Du-4SA"/>
-                                </constraints>
-                                <state key="normal" image="Down Caret"/>
-                                <connections>
-                                    <segue destination="8Yo-pa-87T" kind="show" id="WT4-Um-PRj"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zeu-ZH-NgS">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <animations/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Es-Va-Y7e">
+                                <rect key="frame" x="275" y="550" width="50" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="Nvy-ne-GxP"/>
+                                    <constraint firstAttribute="height" constant="30" id="of3-Du-4SA"/>
+                                </constraints>
+                                <state key="normal" image="Up Caret"/>
+                                <connections>
+                                    <segue destination="8Yo-pa-87T" kind="show" id="WT4-Um-PRj"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="zeu-ZH-NgS" firstAttribute="top" secondItem="afK-Av-iEC" secondAttribute="bottom" constant="-20" id="3g6-Gf-bQu"/>
-                            <constraint firstItem="3Es-Va-Y7e" firstAttribute="centerX" secondItem="0kj-vP-GCN" secondAttribute="centerX" constant="-6" id="5ef-sd-Bn6"/>
+                            <constraint firstItem="3Es-Va-Y7e" firstAttribute="centerX" secondItem="0kj-vP-GCN" secondAttribute="centerX" id="5ef-sd-Bn6"/>
                             <constraint firstAttribute="trailingMargin" secondItem="zeu-ZH-NgS" secondAttribute="trailing" constant="-20" id="Bme-3Y-EGW"/>
                             <constraint firstItem="VQu-Pm-LlT" firstAttribute="top" secondItem="3Es-Va-Y7e" secondAttribute="bottom" constant="20" id="Gaz-tE-1F5"/>
                             <constraint firstItem="VQu-Pm-LlT" firstAttribute="top" secondItem="zeu-ZH-NgS" secondAttribute="bottom" id="Xqn-ya-uE6"/>
@@ -721,7 +721,6 @@
         <image name="Add Photo" width="120" height="120"/>
         <image name="Back Arrow" width="50" height="50"/>
         <image name="Camera Icon" width="70" height="70"/>
-        <image name="Down Caret" width="50" height="50"/>
         <image name="Email Icon" width="50" height="50"/>
         <image name="Email Icon Error" width="50" height="50"/>
         <image name="Group Dots Icon" width="50" height="50"/>
@@ -733,6 +732,7 @@
         <image name="Person Icon" width="50" height="50"/>
         <image name="Person Icon Error" width="50" height="50"/>
         <image name="Scan Code" width="412" height="412"/>
+        <image name="Up Caret" width="44" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="WT4-Um-PRj"/>

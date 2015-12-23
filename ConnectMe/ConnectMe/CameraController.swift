@@ -20,10 +20,10 @@ class CameraController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         // Create capture device object with the appropriate AVCaptureDevice we need for video processing
         let captureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
         
-        let input: AVCaptureInput = try! AVCaptureDeviceInput.init(device: captureDevice)
+//        let input: AVCaptureInput = try! AVCaptureDeviceInput.init(device: captureDevice)
         
         captureSession = AVCaptureSession()
-        captureSession.addInput(input)
+//        captureSession.addInput(input)
         
     }
     
