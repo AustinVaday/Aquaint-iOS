@@ -7,7 +7,25 @@
 //
 
 import UIKit
+import AVFoundation
 
-class CameraController: UIViewController {
+class CameraController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+
+    var captureSession:AVCaptureSession!
+    var videoPreviewLayer:AVCaptureVideoPreviewLayer!
+    var scanCodeFrameView:UIView!
+    
+    override func viewDidLoad() {
+        
+        // Create capture device object with the appropriate AVCaptureDevice we need for video processing
+        let captureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+        
+        let input: AVCaptureInput = try! AVCaptureDeviceInput.init(device: captureDevice)
+        
+        captureSession = AVCaptureSession()
+        captureSession.addInput(input)
+        
+    }
+    
 
 }
