@@ -24,7 +24,7 @@ class HomeController: UIViewController {
     
         // Make sure to set recognizer's translation back to 0 to prevent compounding issues
         recognizer.setTranslation(CGPointZero, inView: self.view)
-        
+    
         
     }
 
