@@ -19,17 +19,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login Background" translatesAutoresizingMaskIntoConstraints="NO" id="7RR-CR-L8X">
-                                <rect key="frame" x="-20" y="0.0" width="640" height="600"/>
-                                <animations/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MKq-dK-dEu">
-                                <rect key="frame" x="241" y="259" width="119" height="82"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="60"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blah Blah, Blah, Blah." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vEG-SP-qar">
                                 <rect key="frame" x="197" y="359" width="206" height="31"/>
                                 <animations/>
@@ -40,7 +29,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o8E-at-p4o">
                                 <rect key="frame" x="0.0" y="540" width="300" height="60"/>
                                 <animations/>
-                                <color key="backgroundColor" red="0.22027017128231616" green="0.6917074702745879" blue="0.78221122382198949" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.38431372549019605" green="0.73725490196078436" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="DXP-sk-fb8"/>
                                 </constraints>
@@ -55,7 +44,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tqt-f2-XcW">
                                 <rect key="frame" x="300" y="540" width="300" height="60"/>
                                 <animations/>
-                                <color key="backgroundColor" red="0.0" green="0.89154532068062831" blue="0.80035129029089702" alpha="0.83771054964539005" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.27450980392156865" green="0.52941176470588236" blue="0.70980392156862748" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="rWc-Rd-zss"/>
                                 </constraints>
@@ -67,9 +56,20 @@
                                     <segue destination="54r-9I-5XD" kind="show" id="yLV-T1-51k"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login Background" translatesAutoresizingMaskIntoConstraints="NO" id="7RR-CR-L8X">
+                                <rect key="frame" x="-20" y="0.0" width="640" height="600"/>
+                                <animations/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MKq-dK-dEu">
+                                <rect key="frame" x="241" y="259" width="119" height="82"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="60"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.56470588235294117" green="0.0" blue="0.74509803921568629" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Tqt-f2-XcW" firstAttribute="leading" secondItem="o8E-at-p4o" secondAttribute="trailing" id="9DQ-lf-wgv"/>
                             <constraint firstItem="vEG-SP-qar" firstAttribute="centerX" secondItem="7RR-CR-L8X" secondAttribute="centerX" id="BfQ-qs-Qhd"/>
@@ -735,7 +735,7 @@
         <image name="Up Caret" width="44" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="WT4-Um-PRj"/>
-        <segue reference="TLK-r8-F9d"/>
+        <segue reference="vs6-CL-QzQ"/>
+        <segue reference="zog-ev-2Fq"/>
     </inferredMetricsTieBreakers>
 </document>
