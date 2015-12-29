@@ -748,6 +748,24 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OqE-ye-V8b">
+                                <rect key="frame" x="95" y="249" width="485" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="yWX-AY-7Ii"/>
+                                </constraints>
+                                <color key="textColor" red="0.0" green="0.89019607840000003" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
+                                        <color key="value" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="emailEditingDidEnd:" destination="TYE-ny-57l" eventType="editingDidEnd" id="24q-rL-b5z"/>
+                                </connections>
+                            </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-nq-NCs">
                                 <rect key="frame" x="95" y="329" width="485" height="30"/>
                                 <animations/>
@@ -774,9 +792,13 @@
                                     <constraint firstAttribute="width" constant="25" id="OKJ-W7-wXw"/>
                                 </constraints>
                             </imageView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Check Mark" translatesAutoresizingMaskIntoConstraints="NO" id="iew-dr-ATX">
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Check Mark" translatesAutoresizingMaskIntoConstraints="NO" id="iew-dr-ATX">
                                 <rect key="frame" x="221" y="79" width="158" height="126"/>
                                 <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="126" id="99U-km-NjM"/>
+                                    <constraint firstAttribute="width" constant="158" id="qLS-5x-d4V"/>
+                                </constraints>
                             </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Password Icon Error" translatesAutoresizingMaskIntoConstraints="NO" id="gRJ-Dz-f70">
                                 <rect key="frame" x="45" y="329" width="25" height="25"/>
@@ -786,24 +808,10 @@
                                     <constraint firstAttribute="width" constant="25" id="hjD-Jz-yCd"/>
                                 </constraints>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OqE-ye-V8b">
-                                <rect key="frame" x="95" y="249" width="485" height="30"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Sy9-9r-Ocz">
+                                <rect key="frame" x="282" y="123" width="37" height="37"/>
                                 <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="yWX-AY-7Ii"/>
-                                </constraints>
-                                <color key="textColor" red="0.0" green="0.89019607840000003" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
-                                        <color key="value" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="emailEditingDidEnd:" destination="TYE-ny-57l" eventType="editingDidEnd" id="24q-rL-b5z"/>
-                                </connections>
-                            </textField>
+                            </activityIndicatorView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -815,6 +823,7 @@
                             <constraint firstItem="rpg-pa-VYF" firstAttribute="top" secondItem="OqE-ye-V8b" secondAttribute="bottom" constant="21" id="6EE-HD-yck"/>
                             <constraint firstItem="ULS-L1-qp4" firstAttribute="top" secondItem="VEf-nq-NCs" secondAttribute="bottom" constant="21" id="7O9-nW-Cuf"/>
                             <constraint firstItem="8Eo-Xc-MWR" firstAttribute="centerX" secondItem="PQZ-z7-fWn" secondAttribute="centerX" id="8Kn-QB-q0b"/>
+                            <constraint firstItem="Sy9-9r-Ocz" firstAttribute="top" secondItem="8Eo-Xc-MWR" secondAttribute="bottom" constant="68" id="8w1-QH-KFi"/>
                             <constraint firstItem="vWh-M1-hME" firstAttribute="top" secondItem="KMS-fn-upw" secondAttribute="bottom" constant="-20" id="9DM-vQ-d99"/>
                             <constraint firstItem="8Eo-Xc-MWR" firstAttribute="top" secondItem="KMS-fn-upw" secondAttribute="bottom" constant="7" id="9th-JR-704"/>
                             <constraint firstItem="8Eo-Xc-MWR" firstAttribute="centerX" secondItem="vWh-M1-hME" secondAttribute="centerX" id="AMa-wX-Bqe"/>
@@ -827,12 +836,15 @@
                             <constraint firstItem="VEf-nq-NCs" firstAttribute="top" secondItem="czu-hg-3HQ" secondAttribute="bottom" id="KKq-pL-tbR"/>
                             <constraint firstItem="kud-g0-eeG" firstAttribute="leading" secondItem="PQZ-z7-fWn" secondAttribute="leadingMargin" constant="25" id="KeR-rQ-fiH"/>
                             <constraint firstItem="FXS-Mj-Lt8" firstAttribute="leading" secondItem="kud-g0-eeG" secondAttribute="trailing" constant="25" id="OEC-2R-Aav"/>
+                            <constraint firstItem="iew-dr-ATX" firstAttribute="top" secondItem="8Eo-Xc-MWR" secondAttribute="bottom" constant="24" id="OIU-ja-obs"/>
                             <constraint firstItem="rpg-pa-VYF" firstAttribute="width" secondItem="PQZ-z7-fWn" secondAttribute="width" constant="-40" id="OJp-f4-MVZ"/>
                             <constraint firstItem="czu-hg-3HQ" firstAttribute="top" secondItem="rpg-pa-VYF" secondAttribute="bottom" constant="3" id="PUA-ZO-d6G"/>
                             <constraint firstItem="H5k-sn-9QO" firstAttribute="top" secondItem="kud-g0-eeG" secondAttribute="top" id="Py0-Cr-h9E"/>
+                            <constraint firstItem="Sy9-9r-Ocz" firstAttribute="centerX" secondItem="PQZ-z7-fWn" secondAttribute="centerX" id="S4V-z1-Q39"/>
                             <constraint firstItem="gRJ-Dz-f70" firstAttribute="leading" secondItem="7B4-g5-AC9" secondAttribute="leading" id="SAR-PV-iwC"/>
                             <constraint firstItem="7B4-g5-AC9" firstAttribute="leading" secondItem="PQZ-z7-fWn" secondAttribute="leadingMargin" constant="25" id="TMd-44-ijP"/>
                             <constraint firstItem="kud-g0-eeG" firstAttribute="top" secondItem="FXS-Mj-Lt8" secondAttribute="bottom" constant="-1" id="Upp-ah-co6"/>
+                            <constraint firstItem="iew-dr-ATX" firstAttribute="centerX" secondItem="PQZ-z7-fWn" secondAttribute="centerX" id="VIW-aJ-moz"/>
                             <constraint firstItem="OqE-ye-V8b" firstAttribute="width" secondItem="PQZ-z7-fWn" secondAttribute="width" constant="-115" id="XpD-bL-U2s"/>
                             <constraint firstItem="ek6-l2-H4f" firstAttribute="top" secondItem="sYl-q6-Xao" secondAttribute="bottom" id="bsk-eC-LN4"/>
                             <constraint firstItem="OqE-ye-V8b" firstAttribute="leading" secondItem="kud-g0-eeG" secondAttribute="trailing" constant="25" id="fge-Vn-lem"/>
@@ -854,6 +866,7 @@
                     </view>
                     <connections>
                         <outlet property="checkMark" destination="iew-dr-ATX" id="MX5-me-Nsh"/>
+                        <outlet property="spinner" destination="Sy9-9r-Ocz" id="gX2-TB-A3C"/>
                         <outlet property="userEmail" destination="OqE-ye-V8b" id="bgb-fX-05s"/>
                         <outlet property="userPassword" destination="VEf-nq-NCs" id="7lu-t4-pIw"/>
                         <segue destination="8Yo-pa-87T" kind="show" identifier="HomeViewController" id="OXq-gn-jpj"/>

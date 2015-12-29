@@ -14,7 +14,11 @@ class LogInController: UIViewController {
     @IBOutlet weak var userEmail: UITextField!
     @IBOutlet weak var userPassword: UITextField!
     @IBOutlet weak var checkMark: UIImageView!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
+    override func viewDidLoad() {
+        // Show activity indicator (spinner)
+    }
     
     @IBAction func emailEditingDidEnd(sender: UITextField) {
     }
@@ -24,45 +28,57 @@ class LogInController: UIViewController {
 
     @IBAction func loginButtonClicked(sender: UIButton) {
         
+        // Show activity indicator (spinner)
+        spinner.startAnimating()
+        
         let userEmailString:String = userEmail.text!
         let userPasswordString:String =  userPassword.text!
-        
-//        print(userEmailString)
-//        print(userPasswordString)
 
-        PFUser.logInWithUsernameInBackground(userEmailString, password: userPasswordString)
         
+                
 //        PFUser.logInWithUsernameInBackground("Austin", password: "123")
         
-        var currentUser = PFUser.currentUser()
-
-        if(currentUser != nil)
+        do
         {
             
-            currentUser = currentUser!
 
+//            
+//            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                self.spinner.startAnimating()
+//            })
+            
+            try PFUser.logInWithUsername(userEmailString, password: userPasswordString)
+            
+            // Stop showing activity indicator (spinner)
+            spinner.stopAnimating()
+            
             print("User logged in!")
             performSegueWithIdentifier("HomeViewController", sender: nil)
             
+            
         }
-        else
+        // Catch exception and display error if user does not exist
+        catch
         {
             // Create alert to send to user
             let alert = UIAlertController(title: "Please try again...", message: "The email and password do not match.", preferredStyle: UIAlertControllerStyle.Alert)
-
+            
             // Create the action to add to alert
             let alertAction = UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: nil)
-           
+            
             // Add the action to the alert
             alert.addAction(alertAction)
             
+            // Stop showing activity indicator (spinner)
+            spinner.stopAnimating()
+            
             // Show the alert
             showViewController(alert, sender: nil)
-        
+            
             
             print("LogIn Error")
+            
         }
-
         
     }
     
