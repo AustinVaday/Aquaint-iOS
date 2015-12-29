@@ -13,14 +13,15 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        let testObject = PFObject(className: "TestObject")
-//        testObject["foo"] = "bar"
+//
+//        let testObject = PFObject(className: "Friend")
+//        testObject["swagggggg"] = "SWAGGG"
+//        
 //        testObject.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
 //            print("Object has been saved.")
 //            
 //        }
-        
+    
         // Do any additional setup after loading the view, typically from a nib.
     }
 

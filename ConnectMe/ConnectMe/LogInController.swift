@@ -27,27 +27,38 @@ class LogInController: UIViewController {
         let userEmailString:String = userEmail.text!
         let userPasswordString:String =  userPassword.text!
         
-        print(userEmailString)
-        print(userPasswordString)
-        PFUser.logOut()
+//        print(userEmailString)
+//        print(userPasswordString)
+
         PFUser.logInWithUsernameInBackground(userEmailString, password: userPasswordString)
         
-        let currentUser = PFUser.currentUser()
+//        PFUser.logInWithUsernameInBackground("Austin", password: "123")
+        
+        var currentUser = PFUser.currentUser()
 
         if(currentUser != nil)
         {
             
-            print(currentUser?.email)
-            print(currentUser?.username)
+            currentUser = currentUser!
+
             print("User logged in!")
             performSegueWithIdentifier("HomeViewController", sender: nil)
             
         }
         else
         {
-//            let alert = UIAlertController(title: "Error", message: "Email or Password does not exist", preferredStyle: UIAlertControllerStyle.Alert)
-//            
-//            alert.showViewController(alert, sender: nil)
+            // Create alert to send to user
+            let alert = UIAlertController(title: "Please try again...", message: "The email and password do not match.", preferredStyle: UIAlertControllerStyle.Alert)
+
+            // Create the action to add to alert
+            let alertAction = UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: nil)
+           
+            // Add the action to the alert
+            alert.addAction(alertAction)
+            
+            // Show the alert
+            showViewController(alert, sender: nil)
+        
             
             print("LogIn Error")
         }
