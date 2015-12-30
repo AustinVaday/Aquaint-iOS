@@ -100,17 +100,16 @@ class LogInController: UIViewController {
                         self.spinner.stopAnimating()
                     
                     
-//                    print(self.alert.view.hidden)
-                    
-                    // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the log-in button before it is disabled. This if statement prevents the display of multiple alerts).
-//                    if (self.alert.isViewLoaded && self.alert.view.window && self.alert.parentViewController != nil)
-//                    {
-                        self.showViewController(self.alert, sender: nil)
+                        // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the log-in button before it is disabled. This if statement prevents the display of multiple alerts).
+                        
+                        if (self.presentedViewController == nil)
+                        {
+                            self.showViewController(self.alert, sender: nil)
 
-//                    }
+                        }
                     
                 
-                print("LogIn Error")
+                        print("LogIn Error")
                 
                 })
             
