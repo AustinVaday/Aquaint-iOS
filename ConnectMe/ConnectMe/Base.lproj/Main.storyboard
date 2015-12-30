@@ -866,6 +866,7 @@
                     </view>
                     <connections>
                         <outlet property="checkMark" destination="iew-dr-ATX" id="MX5-me-Nsh"/>
+                        <outlet property="logInButton" destination="sYl-q6-Xao" id="gLZ-rp-MFk"/>
                         <outlet property="spinner" destination="Sy9-9r-Ocz" id="gX2-TB-A3C"/>
                         <outlet property="userEmail" destination="OqE-ye-V8b" id="bgb-fX-05s"/>
                         <outlet property="userPassword" destination="VEf-nq-NCs" id="7lu-t4-pIw"/>
