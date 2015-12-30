@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import Parse
 
 class HomeController: UIViewController {
+    
     
     // Functionality to handle user pan gestures (dragging left, right, up, down, etc)
     @IBAction func handlePan (recognizer: UIPanGestureRecognizer)
@@ -28,4 +30,25 @@ class HomeController: UIViewController {
         
     }
 
+    @IBAction func logOutButtonClicked(sender: UIButton) {
+        
+        // Ask user if they really want to log out...
+        let alert = UIAlertController(title: nil, message: "Are you really sure you want to log out?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let logOutAction = UIAlertAction(title: "Log out", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
+            
+            // present the log in home page
+            print("LOG OUT!")
+            PFUser.logOut()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil)
+        
+        alert.addAction(logOutAction)
+        alert.addAction(cancelAction)
+        
+        self.showViewController(alert, sender: nil)
+        
+        
+    }
 }

@@ -69,7 +69,7 @@
                             </button>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" red="0.32240752639088899" green="0.36258535337374914" blue="0.42816506410256405" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.32156862745098036" green="0.36078431372549019" blue="0.42745098039215684" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Tqt-f2-XcW" firstAttribute="leading" secondItem="o8E-at-p4o" secondAttribute="trailing" id="9DQ-lf-wgv"/>
                             <constraint firstItem="vEG-SP-qar" firstAttribute="centerX" secondItem="7RR-CR-L8X" secondAttribute="centerX" id="BfQ-qs-Qhd"/>
@@ -253,26 +253,41 @@
                                     <segue destination="JVC-Ri-2wB" kind="show" id="TvJ-hs-Iym"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3TD-OX-QTc">
+                                <rect key="frame" x="16" y="562" width="55" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Log Out">
+                                    <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="logOutButtonClicked:" destination="8Yo-pa-87T" eventType="touchUpInside" id="Jj7-mA-GfT"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.32156862745098036" green="0.36078431372549019" blue="0.42745098039215684" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="dbB-Yu-OXh" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="130" id="0Pg-8J-hGK"/>
                             <constraint firstAttribute="leadingMargin" secondItem="xPW-Hw-kgz" secondAttribute="leading" id="2Jj-aY-0Xh"/>
                             <constraint firstItem="lac-sa-SWi" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="6" id="68L-Bg-mS8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="dbB-Yu-OXh" secondAttribute="trailing" constant="130" id="L7i-yz-Prm"/>
+                            <constraint firstItem="bhw-dZ-esF" firstAttribute="top" secondItem="3TD-OX-QTc" secondAttribute="bottom" constant="8" id="Pe8-2E-oov"/>
                             <constraint firstItem="bhw-dZ-esF" firstAttribute="top" secondItem="dbB-Yu-OXh" secondAttribute="bottom" constant="150" id="RCa-RL-rSI"/>
                             <constraint firstItem="dbB-Yu-OXh" firstAttribute="leading" secondItem="ckE-RN-rVs" secondAttribute="leadingMargin" constant="130" id="WHh-9y-dEE"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gCx-w9-Vgf" secondAttribute="trailing" id="Ygk-5I-lII"/>
                             <constraint firstItem="lac-sa-SWi" firstAttribute="centerX" secondItem="ckE-RN-rVs" secondAttribute="centerX" id="caP-UF-CbE"/>
                             <constraint firstItem="xPW-Hw-kgz" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="8" id="hLR-oy-g7v"/>
+                            <constraint firstItem="3TD-OX-QTc" firstAttribute="leading" secondItem="ckE-RN-rVs" secondAttribute="leadingMargin" constant="-4" id="tOl-gK-qoR"/>
                             <constraint firstItem="gCx-w9-Vgf" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="5" id="ySG-M2-B0F"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="EOO-Sr-s17" appends="YES" id="TyS-WJ-Trf"/>
                         </connections>
                     </view>
+                    <connections>
+                        <segue destination="TYE-ny-57l" kind="show" identifier="LogOut" id="X55-wM-0kK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bTl-iT-RUd" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="EOO-Sr-s17">
@@ -561,7 +576,7 @@
                             </button>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.32156862745098036" green="0.36078431372549019" blue="0.42745098039215684" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="DcH-hn-sV3" firstAttribute="top" secondItem="dLR-eB-wW5" secondAttribute="bottom" constant="-1" id="0c3-he-U24"/>
                             <constraint firstItem="NGZ-yY-e4c" firstAttribute="leading" secondItem="25Y-Qu-kQi" secondAttribute="leading" id="1il-MF-iRq"/>
@@ -814,7 +829,7 @@
                             </activityIndicatorView>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.32156862745098036" green="0.36078431372549019" blue="0.42745098039215684" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="H5k-sn-9QO" firstAttribute="leading" secondItem="kud-g0-eeG" secondAttribute="leading" id="0zu-8u-zCc"/>
                             <constraint firstItem="sYl-q6-Xao" firstAttribute="width" secondItem="PQZ-z7-fWn" secondAttribute="width" id="33O-pO-u5M"/>
@@ -897,6 +912,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="OXq-gn-jpj"/>
+        <segue reference="X55-wM-0kK"/>
         <segue reference="EEr-Yg-gr1"/>
     </inferredMetricsTieBreakers>
 </document>

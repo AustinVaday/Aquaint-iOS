@@ -20,11 +20,8 @@ class LogInController: UIViewController {
     
     // Counts how many times the user has incorrectly logged in.
     var wrongLogInCount: Int = 0
-    var alert: UIAlertController!
     
-    override func viewDidLoad() {
-        // Show activity indicator (spinner)
-        PFUser.logOut()
+    override func viewDidLoad() {      
     }
     
     @IBAction func emailEditingDidEnd(sender: UITextField) {
@@ -47,7 +44,6 @@ class LogInController: UIViewController {
         // Perform long-running operation on background thread
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
             
-//        PFUser.logInWithUsernameInBackground("Austin", password: "123")
             do
             {
                 
@@ -87,14 +83,14 @@ class LogInController: UIViewController {
                     */
 
                         // Create alert to send to user
-                        self.alert = UIAlertController(title: "Please try again...", message: "The email and password do not match.", preferredStyle: UIAlertControllerStyle.Alert)
+                        let alert = UIAlertController(title: "Please try again...", message: "The email and password do not match.", preferredStyle: UIAlertControllerStyle.Alert)
                     
                     
                         // Create the action to add to alert
                         let alertAction = UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: nil)
                         
                         // Add the action to the alert
-                        self.alert.addAction(alertAction)
+                        alert.addAction(alertAction)
                         
                         // Stop showing activity indicator (spinner)
                         self.spinner.stopAnimating()
@@ -104,7 +100,7 @@ class LogInController: UIViewController {
                         
                         if (self.presentedViewController == nil)
                         {
-                            self.showViewController(self.alert, sender: nil)
+                            self.showViewController(alert, sender: nil)
 
                         }
                     
