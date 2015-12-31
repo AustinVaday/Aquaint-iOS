@@ -13,7 +13,11 @@ class RecentConnections: UIViewController {
 
     @IBOutlet weak var recentConnTableView: UITableView!
     
-    override func viewDidLoad() {
+    override func viewDidAppear(animated: Bool)
+    {
         
     }
+    
+    
+    
 }

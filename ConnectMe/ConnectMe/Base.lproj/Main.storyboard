@@ -335,11 +335,54 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="esI-RI-nN1">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="esI-RI-nN1">
                                 <rect key="frame" x="0.0" y="72" width="600" height="528"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="recentConnCell" rowHeight="60" id="0rg-Hl-KiW" customClass="TableViewCell" customModule="ConnectMe" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="60"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0rg-Hl-KiW" id="aIG-U0-0gH">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="x4Y-1i-s4G">
+                                                    <rect key="frame" x="29" y="11" width="42" height="40"/>
+                                                    <animations/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You connected with ..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z1I-mm-oob">
+                                                    <rect key="frame" x="89" y="19" width="442" height="24"/>
+                                                    <animations/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="442" id="KGx-Rx-Vmb"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pM7-9R-hRK">
+                                                    <rect key="frame" x="539" y="18" width="45" height="24"/>
+                                                    <animations/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <animations/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="x4Y-1i-s4G" firstAttribute="top" secondItem="aIG-U0-0gH" secondAttribute="topMargin" constant="3" id="1zj-12-a2M"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="x4Y-1i-s4G" secondAttribute="trailing" constant="521" id="5t6-Mz-jus"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="x4Y-1i-s4G" secondAttribute="bottom" id="MRW-Ex-VYb"/>
+                                                <constraint firstItem="z1I-mm-oob" firstAttribute="leading" secondItem="x4Y-1i-s4G" secondAttribute="trailing" constant="18" id="OrX-db-QJA"/>
+                                                <constraint firstItem="x4Y-1i-s4G" firstAttribute="leading" secondItem="aIG-U0-0gH" secondAttribute="leadingMargin" constant="21" id="bs1-aS-wsa"/>
+                                                <constraint firstItem="pM7-9R-hRK" firstAttribute="leading" secondItem="z1I-mm-oob" secondAttribute="trailing" constant="8" symbolic="YES" id="geP-zm-UfR"/>
+                                                <constraint firstItem="z1I-mm-oob" firstAttribute="centerY" secondItem="x4Y-1i-s4G" secondAttribute="centerY" id="ytt-NU-YuF"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <animations/>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                         </subviews>
                         <animations/>
@@ -359,6 +402,9 @@
                             <outletCollection property="gestureRecognizers" destination="a4p-th-tTG" appends="YES" id="m0J-S6-npb"/>
                         </connections>
                     </view>
+                    <connections>
+                        <outlet property="recentConnTableView" destination="esI-RI-nN1" id="tcV-Lb-cPA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wQe-Ly-mEL" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="a4p-th-tTG"/>
