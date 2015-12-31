@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        print("LAUNCH EMBLEM PAGE HERE")
+        
         // Power app with Local Datastore. For more info, go to
         Parse.enableLocalDatastore()
         
@@ -28,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Track statistics around application opens.
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
         
-        PFUser.logOut()
+        PFUser.logOutInBackground()
         
         return true
     }

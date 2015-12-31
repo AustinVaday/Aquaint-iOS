@@ -38,8 +38,12 @@ class HomeController: UIViewController {
         let logOutAction = UIAlertAction(title: "Log out", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
             
             // present the log in home page
-            print("LOG OUT!")
-            PFUser.logOut()
+            
+            //TODO: Add spinner functionality
+            self.performSegueWithIdentifier("LogOut", sender: nil)
+            
+            // Log out of Parse, too
+            PFUser.logOutInBackground()
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil)
@@ -48,7 +52,6 @@ class HomeController: UIViewController {
         alert.addAction(cancelAction)
         
         self.showViewController(alert, sender: nil)
-        
         
     }
 }

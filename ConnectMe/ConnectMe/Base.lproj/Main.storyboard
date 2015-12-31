@@ -281,12 +281,17 @@
                             <constraint firstItem="3TD-OX-QTc" firstAttribute="leading" secondItem="ckE-RN-rVs" secondAttribute="leadingMargin" constant="-4" id="tOl-gK-qoR"/>
                             <constraint firstItem="gCx-w9-Vgf" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="5" id="ySG-M2-B0F"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="dbB-Yu-OXh"/>
+                            </mask>
+                        </variation>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="EOO-Sr-s17" appends="YES" id="TyS-WJ-Trf"/>
                         </connections>
                     </view>
                     <connections>
-                        <segue destination="TYE-ny-57l" kind="show" identifier="LogOut" id="X55-wM-0kK"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="LogOut" id="X0O-bq-tyh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bTl-iT-RUd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -297,12 +302,12 @@
                     </connections>
                 </screenEdgePanGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="360" y="1853"/>
+            <point key="canvasLocation" x="370" y="1854"/>
         </scene>
-        <!--View Controller-->
+        <!--Recent Connections-->
         <scene sceneID="Jxe-mP-QLE">
             <objects>
-                <viewController id="JVC-Ri-2wB" sceneMemberID="viewController">
+                <viewController title="Recent Connections" id="JVC-Ri-2wB" customClass="RecentConnections" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tdL-VL-qiB"/>
                         <viewControllerLayoutGuide type="bottom" id="fLh-56-2g1"/>
@@ -323,20 +328,30 @@
                                     <segue destination="8Yo-pa-87T" kind="show" id="P5G-O0-nYI"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Something" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHt-r2-AXK">
-                                <rect key="frame" x="251" y="28" width="98" height="28"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Connections" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHt-r2-AXK">
+                                <rect key="frame" x="211" y="28" width="179" height="28"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="esI-RI-nN1">
+                                <rect key="frame" x="0.0" y="72" width="600" height="528"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </tableView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="esI-RI-nN1" firstAttribute="bottom" secondItem="fLh-56-2g1" secondAttribute="top" id="0kp-bv-WhF"/>
                             <constraint firstItem="GHt-r2-AXK" firstAttribute="centerX" secondItem="PbJ-wo-Hqe" secondAttribute="centerX" id="1ah-HH-EMd"/>
                             <constraint firstItem="DtY-V0-sz0" firstAttribute="top" secondItem="tdL-VL-qiB" secondAttribute="bottom" constant="8" id="3F9-XL-AO1"/>
+                            <constraint firstItem="esI-RI-nN1" firstAttribute="leading" secondItem="PbJ-wo-Hqe" secondAttribute="leading" id="5d3-Di-Ibi"/>
+                            <constraint firstItem="esI-RI-nN1" firstAttribute="centerX" secondItem="GHt-r2-AXK" secondAttribute="centerX" id="OPh-jO-rxc"/>
+                            <constraint firstItem="esI-RI-nN1" firstAttribute="top" secondItem="GHt-r2-AXK" secondAttribute="bottom" constant="16" id="bYv-wg-SFN"/>
                             <constraint firstItem="GHt-r2-AXK" firstAttribute="top" secondItem="tdL-VL-qiB" secondAttribute="bottom" constant="8" id="gXN-XZ-V40"/>
                             <constraint firstAttribute="leadingMargin" secondItem="DtY-V0-sz0" secondAttribute="leading" id="gk6-T1-mC5"/>
                         </constraints>
@@ -911,8 +926,7 @@
         <image name="Up Caret" width="44" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="OXq-gn-jpj"/>
-        <segue reference="X55-wM-0kK"/>
-        <segue reference="EEr-Yg-gr1"/>
+        <segue reference="P5G-O0-nYI"/>
+        <segue reference="X0O-bq-tyh"/>
     </inferredMetricsTieBreakers>
 </document>

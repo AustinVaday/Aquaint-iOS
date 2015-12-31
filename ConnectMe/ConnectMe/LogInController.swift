@@ -19,7 +19,7 @@ class LogInController: UIViewController {
     
     
     // Counts how many times the user has incorrectly logged in.
-    var wrongLogInCount: Int = 0
+    /* var wrongLogInCount: Int = 0 */
     
     override func viewDidLoad() {      
     }
@@ -46,7 +46,6 @@ class LogInController: UIViewController {
             
             do
             {
-                
                 self.spinner.startAnimating()
             
                 try PFUser.logInWithUsername(userEmailString, password: userPasswordString)
@@ -57,8 +56,12 @@ class LogInController: UIViewController {
                     // Stop showing activity indicator (spinner)
                     self.spinner.stopAnimating()
                     
+                    self.checkMark.hidden = false
+                    
                     print("User logged in!")
                     self.performSegueWithIdentifier("HomeViewController", sender: nil)
+                    
+                    self.checkMark.hidden = true
                     
                 })
           
