@@ -19,6 +19,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login Background" translatesAutoresizingMaskIntoConstraints="NO" id="7RR-CR-L8X">
+                                <rect key="frame" x="-20" y="0.0" width="640" height="600"/>
+                                <animations/>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MKq-dK-dEu">
                                 <rect key="frame" x="241" y="259" width="119" height="82"/>
                                 <animations/>
@@ -33,25 +37,6 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tqt-f2-XcW">
-                                <rect key="frame" x="300" y="540" width="300" height="60"/>
-                                <animations/>
-                                <color key="backgroundColor" red="0.058823529411764705" green="0.47843137254901957" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="rWc-Rd-zss"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
-                                <state key="normal" title="SIGN UP">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="54r-9I-5XD" kind="show" id="yLV-T1-51k"/>
-                                </connections>
-                            </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login Background" translatesAutoresizingMaskIntoConstraints="NO" id="7RR-CR-L8X">
-                                <rect key="frame" x="-20" y="0.0" width="640" height="600"/>
-                                <animations/>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o8E-at-p4o">
                                 <rect key="frame" x="0.0" y="540" width="300" height="60"/>
                                 <animations/>
@@ -65,6 +50,21 @@
                                 </state>
                                 <connections>
                                     <segue destination="TYE-ny-57l" kind="show" id="KW1-b1-TzO"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tqt-f2-XcW">
+                                <rect key="frame" x="300" y="540" width="300" height="60"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.058823529411764705" green="0.47843137254901957" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="rWc-Rd-zss"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
+                                <state key="normal" title="SIGN UP">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="54r-9I-5XD" kind="show" id="yLV-T1-51k"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -87,11 +87,6 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="7RR-CR-L8X" secondAttribute="bottom" id="tan-CL-Fmo"/>
                             <constraint firstItem="o8E-at-p4o" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="xx2-bd-kfO"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="7RR-CR-L8X"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="AkT-Cf-9AM"/>
                 </viewController>
@@ -348,10 +343,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Person Icon" translatesAutoresizingMaskIntoConstraints="NO" id="x4Y-1i-s4G">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Person Icon Black" translatesAutoresizingMaskIntoConstraints="NO" id="x4Y-1i-s4G">
                                                     <rect key="frame" x="8" y="10" width="42" height="40"/>
                                                     <animations/>
-                                                    <color key="backgroundColor" red="0.39400465933017498" green="0.36078431372549019" blue="0.42745098039215684" alpha="0.61853448275862066" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" red="0.39400465933017498" green="0.36078431372549019" blue="0.42745098039215684" alpha="0.0" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="42" id="8px-2B-IW0"/>
                                                         <constraint firstAttribute="height" constant="40" id="b71-3W-8Vp"/>
@@ -383,6 +378,11 @@
                                                 <constraint firstItem="x4Y-1i-s4G" firstAttribute="top" secondItem="aIG-U0-0gH" secondAttribute="topMargin" constant="2" id="kZK-xi-vsF"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="pM7-9R-hRK" secondAttribute="trailing" constant="8" id="uSY-16-u3b"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="subviews">
+                                                    <exclude reference="pM7-9R-hRK"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                         <animations/>
                                     </tableViewCell>
@@ -422,7 +422,6 @@
         <!--Sign Up-->
         <scene sceneID="rHR-jk-33l">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vCu-vo-SeO" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController title="Sign Up" modalTransitionStyle="crossDissolve" id="54r-9I-5XD" customClass="SignUpController" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LF5-Ix-NVz"/>
@@ -722,13 +721,13 @@
                         <outlet property="userPhoto" destination="utB-hU-YRW" id="qG4-Lz-t1u"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vCu-vo-SeO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="890" y="1084"/>
         </scene>
         <!--Log In-->
         <scene sceneID="l6P-hM-j8t">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Fgb-ah-5w3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController title="Log In" modalTransitionStyle="crossDissolve" id="TYE-ny-57l" customClass="LogInController" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KMS-fn-upw"/>
@@ -957,6 +956,7 @@
                         <segue destination="8Yo-pa-87T" kind="show" identifier="HomeViewController" id="OXq-gn-jpj"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fgb-ah-5w3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-166" y="1076"/>
         </scene>
@@ -970,17 +970,18 @@
         <image name="Email Icon Error" width="50" height="50"/>
         <image name="Group Dots Icon" width="50" height="50"/>
         <image name="Line Separator" width="753" height="4"/>
-        <image name="Login Background" width="100" height="100"/>
+        <image name="Login Background" width="160" height="320"/>
         <image name="Menu Icon" width="42" height="36"/>
         <image name="Password Icon" width="50" height="50"/>
         <image name="Password Icon Error" width="50" height="50"/>
         <image name="Person Icon" width="50" height="50"/>
+        <image name="Person Icon Black" width="50" height="50"/>
         <image name="Person Icon Error" width="50" height="50"/>
         <image name="Scan Code" width="412" height="412"/>
         <image name="Up Caret" width="44" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="EEr-Yg-gr1"/>
         <segue reference="P5G-O0-nYI"/>
-        <segue reference="X0O-bq-tyh"/>
     </inferredMetricsTieBreakers>
 </document>
