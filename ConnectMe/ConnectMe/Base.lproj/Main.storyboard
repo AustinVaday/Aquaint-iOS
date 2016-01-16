@@ -23,15 +23,8 @@
                                 <rect key="frame" x="-20" y="0.0" width="640" height="600"/>
                                 <animations/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MKq-dK-dEu">
-                                <rect key="frame" x="241" y="259" width="119" height="82"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="60"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blah Blah, Blah, Blah." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vEG-SP-qar">
-                                <rect key="frame" x="197" y="359" width="206" height="31"/>
+                                <rect key="frame" x="197" y="459" width="206" height="31"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="22"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -67,6 +60,13 @@
                                     <segue destination="54r-9I-5XD" kind="show" id="yLV-T1-51k"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aquaint" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MKq-dK-dEu">
+                                <rect key="frame" x="193" y="364" width="214" height="78"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="60"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.32156862745098036" green="0.36078431372549019" blue="0.42745098039215684" alpha="1" colorSpace="calibratedRGB"/>
@@ -76,14 +76,14 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="o8E-at-p4o" secondAttribute="bottom" id="CaW-Oh-C5a"/>
                             <constraint firstItem="MKq-dK-dEu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Daj-bX-P4v"/>
                             <constraint firstItem="o8E-at-p4o" firstAttribute="width" secondItem="Tqt-f2-XcW" secondAttribute="width" id="IVN-w7-ydg"/>
-                            <constraint firstItem="MKq-dK-dEu" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="NIy-iH-f8i"/>
+                            <constraint firstItem="MKq-dK-dEu" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="103" id="NIy-iH-f8i"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Tqt-f2-XcW" secondAttribute="bottom" id="Ubo-vF-BcW"/>
                             <constraint firstItem="vEG-SP-qar" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Uiw-Dz-ypx"/>
                             <constraint firstItem="7RR-CR-L8X" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="cSn-y3-O43"/>
                             <constraint firstAttribute="trailingMargin" secondItem="7RR-CR-L8X" secondAttribute="trailing" constant="-40" id="d0J-at-U3m"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Tqt-f2-XcW" secondAttribute="trailing" constant="-20" id="g2J-cA-R0h"/>
                             <constraint firstItem="7RR-CR-L8X" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-40" id="jb4-Kv-c7E"/>
-                            <constraint firstItem="vEG-SP-qar" firstAttribute="top" secondItem="MKq-dK-dEu" secondAttribute="bottom" constant="18" id="oCb-aw-cBF"/>
+                            <constraint firstItem="vEG-SP-qar" firstAttribute="top" secondItem="MKq-dK-dEu" secondAttribute="bottom" constant="17" id="oCb-aw-cBF"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="7RR-CR-L8X" secondAttribute="bottom" id="tan-CL-Fmo"/>
                             <constraint firstItem="o8E-at-p4o" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="xx2-bd-kfO"/>
                         </constraints>
@@ -276,11 +276,6 @@
                             <constraint firstItem="3TD-OX-QTc" firstAttribute="leading" secondItem="ckE-RN-rVs" secondAttribute="leadingMargin" constant="-4" id="tOl-gK-qoR"/>
                             <constraint firstItem="gCx-w9-Vgf" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="5" id="ySG-M2-B0F"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="dbB-Yu-OXh"/>
-                            </mask>
-                        </variation>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="EOO-Sr-s17" appends="YES" id="TyS-WJ-Trf"/>
                         </connections>
@@ -417,7 +412,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wQe-Ly-mEL" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="a4p-th-tTG"/>
             </objects>
-            <point key="canvasLocation" x="1434" y="2662"/>
+            <point key="canvasLocation" x="1450" y="2678"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="rHR-jk-33l">
@@ -970,7 +965,7 @@
         <image name="Email Icon Error" width="50" height="50"/>
         <image name="Group Dots Icon" width="50" height="50"/>
         <image name="Line Separator" width="753" height="4"/>
-        <image name="Login Background" width="160" height="320"/>
+        <image name="Login Background" width="457" height="811"/>
         <image name="Menu Icon" width="42" height="36"/>
         <image name="Password Icon" width="50" height="50"/>
         <image name="Password Icon Error" width="50" height="50"/>
@@ -981,7 +976,7 @@
         <image name="Up Caret" width="44" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="EEr-Yg-gr1"/>
         <segue reference="P5G-O0-nYI"/>
+        <segue reference="zog-ev-2Fq"/>
     </inferredMetricsTieBreakers>
 </document>
