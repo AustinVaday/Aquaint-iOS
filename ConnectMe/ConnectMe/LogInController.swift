@@ -30,6 +30,16 @@ class LogInController: UIViewController {
     @IBAction func passwordEditingDidEnd(sender: UITextField) {
     }
 
+    // When user clicks "Next" on keyboard
+    @IBAction func emailEditingDidEndOnExit(sender: UITextField) {
+        userPassword.becomeFirstResponder()
+    }
+    
+    // When user clicks "Go" on keyboard
+    @IBAction func passwordEditingDidEndOnExit(sender: UITextField) {
+        // Mimic clicking the log in button
+        loginButtonClicked(logInButton.self)
+    }
     @IBAction func loginButtonClicked(sender: UIButton) {
         
         // Disable log in button so that user can only send one request at a time

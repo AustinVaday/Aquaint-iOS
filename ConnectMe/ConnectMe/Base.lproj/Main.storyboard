@@ -630,6 +630,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="nameEditingDidEnd:" destination="54r-9I-5XD" eventType="editingDidEnd" id="Uz3-84-TYs"/>
+                                    <action selector="nameEditingDidEndOnExit:" destination="54r-9I-5XD" eventType="editingDidEndOnExit" id="m2F-Rt-Zht"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="chM-A8-v39">
@@ -648,24 +649,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="emailEditingDidEnd:" destination="54r-9I-5XD" eventType="editingDidEnd" id="8ae-9i-d5i"/>
-                                </connections>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jiS-sR-5ZC">
-                                <rect key="frame" x="95" y="409" width="485" height="30"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="MFD-MC-dVb"/>
-                                </constraints>
-                                <color key="textColor" red="0.058823529411764705" green="0.47843137254901957" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
-                                        <color key="value" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="passwordEditingDidEnd:" destination="54r-9I-5XD" eventType="editingDidEnd" id="skY-lb-lm0"/>
+                                    <action selector="emailEditingDidEndOnExit:" destination="54r-9I-5XD" eventType="editingDidEndOnExit" id="6Y4-3u-qy5"/>
                                 </connections>
                             </textField>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Person Icon Error" translatesAutoresizingMaskIntoConstraints="NO" id="NGZ-yY-e4c">
@@ -704,6 +688,25 @@
                                     <action selector="addPhotoButtonClicked:" destination="54r-9I-5XD" eventType="touchUpInside" id="jU3-6P-U1Y"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jiS-sR-5ZC">
+                                <rect key="frame" x="95" y="409" width="485" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="MFD-MC-dVb"/>
+                                </constraints>
+                                <color key="textColor" red="0.058823529411764705" green="0.47843137254901957" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
+                                        <color key="value" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="passwordEditingDidEnd:" destination="54r-9I-5XD" eventType="editingDidEnd" id="skY-lb-lm0"/>
+                                    <action selector="passwordEditingDidEndOnExit:" destination="54r-9I-5XD" eventType="editingDidEndOnExit" id="Csl-UF-GMU"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -776,6 +779,7 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="signUpButton" destination="oqZ-gc-LwT" id="0Z2-An-inP"/>
                         <outlet property="userEmail" destination="chM-A8-v39" id="KGS-9e-rVO"/>
                         <outlet property="userEmailImage" destination="Z46-Pa-85h" id="Pny-vp-ayV"/>
                         <outlet property="userEmailImageError" destination="wRF-6i-yeq" id="lft-z4-1ih"/>
@@ -922,6 +926,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="emailEditingDidEnd:" destination="TYE-ny-57l" eventType="editingDidEnd" id="24q-rL-b5z"/>
+                                    <action selector="emailEditingDidEndOnExit:" destination="TYE-ny-57l" eventType="editingDidEndOnExit" id="TtW-ka-fHv"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-nq-NCs">
@@ -940,6 +945,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="passwordEditingDidEnd:" destination="TYE-ny-57l" eventType="editingDidEnd" id="r4k-C3-PcQ"/>
+                                    <action selector="passwordEditingDidEndOnExit:" destination="TYE-ny-57l" eventType="editingDidEndOnExit" id="Trm-sm-0r5"/>
                                 </connections>
                             </textField>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Email Icon Error" translatesAutoresizingMaskIntoConstraints="NO" id="H5k-sn-9QO">
@@ -1067,7 +1073,7 @@
         <image name="Up Caret" width="44" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="P5G-O0-nYI"/>
-        <segue reference="X0O-bq-tyh"/>
+        <segue reference="vs6-CL-QzQ"/>
+        <segue reference="zog-ev-2Fq"/>
     </inferredMetricsTieBreakers>
 </document>

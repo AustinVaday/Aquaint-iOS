@@ -28,6 +28,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     @IBOutlet weak var userEmailImageError: UIImageView!
     @IBOutlet weak var userPasswordImageError: UIImageView!
     
+    @IBOutlet weak var signUpButton: UIButton!
+    
     var userObject : User!
     
     
@@ -155,6 +157,24 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         print("Do something here")
         
         //TODO: PROCESS THE TEXT
+    }
+    
+    // When user clicks "Next" on keyboard
+    @IBAction func nameEditingDidEndOnExit(sender: UITextField) {
+        // Give control to next field
+        userEmail.becomeFirstResponder()
+    }
+    
+    // When user clicks "Next" on keyboard
+    @IBAction func emailEditingDidEndOnExit(sender: UITextField) {
+        // Give control to next field
+        userPassword.becomeFirstResponder()
+    }
+    
+    // When user clicks "Go" on keyboard
+    @IBAction func passwordEditingDidEndOnExit(sender: UITextField) {
+        // Mimic the "Sign Up" button being pressed
+        self.signUpButtonClicked(signUpButton.self)
     }
     
 }
