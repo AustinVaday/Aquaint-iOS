@@ -30,6 +30,13 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connect Smarter, Faster." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vEG-SP-qar">
+                                <rect key="frame" x="181" y="460" width="239" height="31"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="22"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o8E-at-p4o">
                                 <rect key="frame" x="0.0" y="540" width="300" height="60"/>
                                 <animations/>
@@ -60,13 +67,6 @@
                                     <segue destination="54r-9I-5XD" kind="show" id="yLV-T1-51k"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connect Smarter, Faster." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vEG-SP-qar">
-                                <rect key="frame" x="181" y="460" width="239" height="31"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="22"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.32156862745098036" green="0.36078431372549019" blue="0.42745098039215684" alpha="1" colorSpace="calibratedRGB"/>
@@ -426,6 +426,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t0Z-f0-PPS">
+                                <rect key="frame" x="0.0" y="0.0" width="601" height="20"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.055401942349999997" green="0.3908864695" blue="0.53284902899999997" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dYB-ev-ggR">
+                                <rect key="frame" x="0.0" y="19" width="600" height="43"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login Background" translatesAutoresizingMaskIntoConstraints="NO" id="Fxo-RB-iMG">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <animations/>
@@ -456,7 +466,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqZ-gc-LwT">
                                 <rect key="frame" x="0.0" y="540" width="600" height="60"/>
                                 <animations/>
-                                <color key="backgroundColor" red="0.058823529411764705" green="0.47843137254901957" blue="0.61568627450980395" alpha="0.83771054960000002" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.10980392156862745" green="0.83137254901960778" blue="0.88235294117647056" alpha="0.83771054960000002" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="J0i-nf-fKv"/>
                                 </constraints>
@@ -469,7 +479,7 @@
                                     <segue destination="8Yo-pa-87T" kind="show" id="vs6-CL-QzQ"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Person Icon" translatesAutoresizingMaskIntoConstraints="NO" id="25Y-Qu-kQi">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Person Icon Black" translatesAutoresizingMaskIntoConstraints="NO" id="25Y-Qu-kQi">
                                 <rect key="frame" x="45" y="249" width="25" height="25"/>
                                 <animations/>
                                 <constraints>
@@ -477,7 +487,7 @@
                                     <constraint firstAttribute="width" constant="25" id="tCv-gG-0zG"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Email Icon" translatesAutoresizingMaskIntoConstraints="NO" id="Z46-Pa-85h">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Email Icon Black" translatesAutoresizingMaskIntoConstraints="NO" id="Z46-Pa-85h">
                                 <rect key="frame" x="45" y="329" width="25" height="25"/>
                                 <animations/>
                                 <constraints>
@@ -485,7 +495,7 @@
                                     <constraint firstAttribute="height" constant="25" id="tFG-gY-4t9"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Password Icon" translatesAutoresizingMaskIntoConstraints="NO" id="I1g-0U-pFz">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Password Icon Black" translatesAutoresizingMaskIntoConstraints="NO" id="I1g-0U-pFz">
                                 <rect key="frame" x="45" y="409" width="25" height="25"/>
                                 <animations/>
                                 <constraints>
@@ -493,21 +503,21 @@
                                     <constraint firstAttribute="height" constant="25" id="zCd-8l-jba"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line Separator" translatesAutoresizingMaskIntoConstraints="NO" id="N9M-Nt-gzx">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line Separator Black" translatesAutoresizingMaskIntoConstraints="NO" id="N9M-Nt-gzx">
                                 <rect key="frame" x="20" y="300" width="560" height="2"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="2" id="S6U-Rq-Zfq"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line Separator" translatesAutoresizingMaskIntoConstraints="NO" id="0fe-vn-BTg">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line Separator Black" translatesAutoresizingMaskIntoConstraints="NO" id="0fe-vn-BTg">
                                 <rect key="frame" x="20" y="380" width="560" height="2"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="2" id="iiE-GX-XNW"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line Separator" translatesAutoresizingMaskIntoConstraints="NO" id="tBe-gm-Axm">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line Separator Black" translatesAutoresizingMaskIntoConstraints="NO" id="tBe-gm-Axm">
                                 <rect key="frame" x="20" y="460" width="560" height="2"/>
                                 <animations/>
                                 <constraints>
@@ -522,7 +532,7 @@
                                     <constraint firstAttribute="width" constant="46" id="VnZ-Ku-VHZ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EMAIL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W2b-gR-guV">
@@ -533,7 +543,7 @@
                                     <constraint firstAttribute="width" constant="46" id="aUb-ES-s3E"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PASSWORD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOT-q2-98n">
@@ -544,34 +554,16 @@
                                     <constraint firstAttribute="height" constant="24" id="fZp-Dy-V6z"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DcH-hn-sV3">
-                                <rect key="frame" x="95" y="249" width="485" height="30"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="MLJ-J4-jKB"/>
-                                </constraints>
-                                <color key="textColor" red="0.0" green="0.8901960784313725" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
-                                        <color key="value" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="nameEditingDidEnd:" destination="54r-9I-5XD" eventType="editingDidEnd" id="Uz3-84-TYs"/>
-                                </connections>
-                            </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="chM-A8-v39">
                                 <rect key="frame" x="95" y="329" width="485" height="30"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="zpZ-F2-nSg"/>
                                 </constraints>
-                                <color key="textColor" red="0.0" green="0.89019607840000003" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529411764705" green="0.47843137254901957" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 <userDefinedRuntimeAttributes>
@@ -589,7 +581,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="MFD-MC-dVb"/>
                                 </constraints>
-                                <color key="textColor" red="0.0" green="0.89019607840000003" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.058823529411764705" green="0.47843137254901957" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES"/>
                                 <userDefinedRuntimeAttributes>
@@ -632,14 +624,32 @@
                                     <constraint firstAttribute="height" constant="120" id="EnC-ZT-Cfb"/>
                                     <constraint firstAttribute="width" constant="120" id="bMk-KP-TUE"/>
                                 </constraints>
-                                <state key="normal" image="Add Photo"/>
+                                <state key="normal" image="Add Photo Color"/>
                                 <connections>
                                     <action selector="addPhotoButtonClicked:" destination="54r-9I-5XD" eventType="touchUpInside" id="jU3-6P-U1Y"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DcH-hn-sV3">
+                                <rect key="frame" x="95" y="249" width="485" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="MLJ-J4-jKB"/>
+                                </constraints>
+                                <color key="textColor" red="0.058823529411764705" green="0.47843137254901957" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
+                                        <color key="value" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="nameEditingDidEnd:" destination="54r-9I-5XD" eventType="editingDidEnd" id="Uz3-84-TYs"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" red="0.32156862745098036" green="0.36078431372549019" blue="0.42745098039215684" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="DcH-hn-sV3" firstAttribute="top" secondItem="dLR-eB-wW5" secondAttribute="bottom" constant="-1" id="0c3-he-U24"/>
                             <constraint firstItem="NGZ-yY-e4c" firstAttribute="leading" secondItem="25Y-Qu-kQi" secondAttribute="leading" id="1il-MF-iRq"/>
@@ -732,10 +742,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login Background" translatesAutoresizingMaskIntoConstraints="NO" id="vWh-M1-hME">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LBq-8j-Cob">
+                                <rect key="frame" x="0.0" y="0.0" width="601" height="20"/>
                                 <animations/>
-                            </imageView>
+                                <color key="backgroundColor" red="0.05540194235339662" green="0.39088646949282219" blue="0.53284902903469078" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sRP-Ia-c3L">
+                                <rect key="frame" x="0.0" y="20" width="600" height="43"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.058823529411764705" green="0.47843137254901957" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7nH-cl-xZJ">
                                 <rect key="frame" x="20" y="28" width="26" height="26"/>
                                 <animations/>
@@ -774,7 +790,7 @@
                                     <action selector="loginButtonClicked:" destination="TYE-ny-57l" eventType="touchUpInside" id="PfD-AY-61z"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Email Icon" translatesAutoresizingMaskIntoConstraints="NO" id="kud-g0-eeG">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Email Icon Black" translatesAutoresizingMaskIntoConstraints="NO" id="kud-g0-eeG">
                                 <rect key="frame" x="45" y="249" width="25" height="25"/>
                                 <animations/>
                                 <constraints>
@@ -782,7 +798,7 @@
                                     <constraint firstAttribute="height" constant="25" id="YrO-E2-oKY"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Password Icon" translatesAutoresizingMaskIntoConstraints="NO" id="7B4-g5-AC9">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Password Icon Black" translatesAutoresizingMaskIntoConstraints="NO" id="7B4-g5-AC9">
                                 <rect key="frame" x="45" y="329" width="25" height="25"/>
                                 <animations/>
                                 <constraints>
@@ -790,14 +806,14 @@
                                     <constraint firstAttribute="height" constant="25" id="tmy-jf-SVI"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line Separator" translatesAutoresizingMaskIntoConstraints="NO" id="rpg-pa-VYF">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line Separator Black" translatesAutoresizingMaskIntoConstraints="NO" id="rpg-pa-VYF">
                                 <rect key="frame" x="20" y="300" width="560" height="2"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="2" id="0z0-sg-nNT"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line Separator" translatesAutoresizingMaskIntoConstraints="NO" id="ULS-L1-qp4">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line Separator Black" translatesAutoresizingMaskIntoConstraints="NO" id="ULS-L1-qp4">
                                 <rect key="frame" x="20" y="380" width="560" height="2"/>
                                 <animations/>
                                 <constraints>
@@ -812,7 +828,7 @@
                                     <constraint firstAttribute="height" constant="24" id="mBj-YQ-FMS"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="czu-hg-3HQ">
@@ -823,7 +839,7 @@
                                     <constraint firstAttribute="width" constant="55" id="Vck-au-uY0"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OqE-ye-V8b">
@@ -887,12 +903,16 @@
                                 </constraints>
                             </imageView>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Sy9-9r-Ocz">
-                                <rect key="frame" x="282" y="123" width="37" height="37"/>
+                                <rect key="frame" x="282" y="133" width="37" height="37"/>
                                 <animations/>
                             </activityIndicatorView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login Background" translatesAutoresizingMaskIntoConstraints="NO" id="vWh-M1-hME">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <animations/>
+                            </imageView>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" red="0.32156862745098036" green="0.36078431372549019" blue="0.42745098039215684" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="H5k-sn-9QO" firstAttribute="leading" secondItem="kud-g0-eeG" secondAttribute="leading" id="0zu-8u-zCc"/>
                             <constraint firstItem="sYl-q6-Xao" firstAttribute="width" secondItem="PQZ-z7-fWn" secondAttribute="width" id="33O-pO-u5M"/>
@@ -901,7 +921,7 @@
                             <constraint firstItem="rpg-pa-VYF" firstAttribute="top" secondItem="OqE-ye-V8b" secondAttribute="bottom" constant="21" id="6EE-HD-yck"/>
                             <constraint firstItem="ULS-L1-qp4" firstAttribute="top" secondItem="VEf-nq-NCs" secondAttribute="bottom" constant="21" id="7O9-nW-Cuf"/>
                             <constraint firstItem="8Eo-Xc-MWR" firstAttribute="centerX" secondItem="PQZ-z7-fWn" secondAttribute="centerX" id="8Kn-QB-q0b"/>
-                            <constraint firstItem="Sy9-9r-Ocz" firstAttribute="top" secondItem="8Eo-Xc-MWR" secondAttribute="bottom" constant="68" id="8w1-QH-KFi"/>
+                            <constraint firstItem="Sy9-9r-Ocz" firstAttribute="top" secondItem="8Eo-Xc-MWR" secondAttribute="bottom" constant="78" id="8w1-QH-KFi"/>
                             <constraint firstItem="vWh-M1-hME" firstAttribute="top" secondItem="KMS-fn-upw" secondAttribute="bottom" constant="-20" id="9DM-vQ-d99"/>
                             <constraint firstItem="8Eo-Xc-MWR" firstAttribute="top" secondItem="KMS-fn-upw" secondAttribute="bottom" constant="7" id="9th-JR-704"/>
                             <constraint firstItem="8Eo-Xc-MWR" firstAttribute="centerX" secondItem="vWh-M1-hME" secondAttribute="centerX" id="AMa-wX-Bqe"/>
@@ -957,26 +977,25 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add Photo" width="120" height="120"/>
+        <image name="Add Photo Color" width="120" height="120"/>
         <image name="Back Arrow" width="50" height="50"/>
         <image name="Camera Icon" width="70" height="70"/>
         <image name="Check Mark" width="350" height="271"/>
-        <image name="Email Icon" width="50" height="50"/>
+        <image name="Email Icon Black" width="50" height="50"/>
         <image name="Email Icon Error" width="50" height="50"/>
         <image name="Group Dots Icon" width="50" height="50"/>
-        <image name="Line Separator" width="753" height="4"/>
+        <image name="Line Separator Black" width="753" height="4"/>
         <image name="Login Background" width="457" height="811"/>
         <image name="Menu Icon" width="42" height="36"/>
-        <image name="Password Icon" width="50" height="50"/>
+        <image name="Password Icon Black" width="50" height="50"/>
         <image name="Password Icon Error" width="50" height="50"/>
-        <image name="Person Icon" width="50" height="50"/>
         <image name="Person Icon Black" width="50" height="50"/>
         <image name="Person Icon Error" width="50" height="50"/>
         <image name="Scan Code" width="412" height="412"/>
         <image name="Up Caret" width="44" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="P5G-O0-nYI"/>
-        <segue reference="zog-ev-2Fq"/>
+        <segue reference="OXq-gn-jpj"/>
+        <segue reference="EEr-Yg-gr1"/>
     </inferredMetricsTieBreakers>
 </document>
