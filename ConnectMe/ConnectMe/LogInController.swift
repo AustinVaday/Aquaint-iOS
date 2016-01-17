@@ -26,7 +26,7 @@ class LogInController: UIViewController {
     
     override func viewDidLoad() {
         self.checkMark.hidden = true
-//      self.checkMarkFlipped.hidden = true
+        self.checkMarkFlipped.hidden = true
         
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
         
@@ -73,10 +73,11 @@ class LogInController: UIViewController {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
                     // Stop showing activity indicator (spinner)
+                    self.checkMarkFlipped.hidden = false
                     self.spinner.stopAnimating()
 
                     
-                    UIView.transitionWithView(self.checkMarkView, duration: 1.5, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
+                    UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
      
                         print("HI")
                         self.checkMarkFlipped.hidden = false
@@ -88,7 +89,7 @@ class LogInController: UIViewController {
                
                     print("User logged in!")
                     
-                    delay(2)
+                    delay(1.5)
                     {
                     
                         self.performSegueWithIdentifier("HomeViewController", sender: nil)
