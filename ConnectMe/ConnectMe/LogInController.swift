@@ -18,6 +18,7 @@ class LogInController: UIViewController {
     @IBOutlet weak var checkMarkFlipped: UIImageView!
     var checkMarkFlippedCopy: UIImageView!
     
+    @IBOutlet weak var emblem: UIImageView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var logInButton: UIButton!
     
@@ -27,6 +28,7 @@ class LogInController: UIViewController {
     override func viewDidLoad() {
         self.checkMark.hidden = true
         self.checkMarkFlipped.hidden = true
+        self.emblem.hidden = false
         
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
         
@@ -74,6 +76,8 @@ class LogInController: UIViewController {
                     
                     // Stop showing activity indicator (spinner)
                     self.checkMarkFlipped.hidden = false
+                    
+                    self.emblem.hidden = true
                     self.spinner.stopAnimating()
 
                     

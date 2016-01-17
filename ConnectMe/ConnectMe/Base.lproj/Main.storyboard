@@ -959,6 +959,10 @@
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="128"/>
                                         <animations/>
                                     </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Emblem" translatesAutoresizingMaskIntoConstraints="NO" id="clq-ko-de2">
+                                        <rect key="frame" x="24" y="14" width="112" height="100"/>
+                                        <animations/>
+                                    </imageView>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1029,6 +1033,7 @@
                         <outlet property="checkMark" destination="BiD-YO-Lvg" id="glF-f4-M1O"/>
                         <outlet property="checkMarkFlipped" destination="uEL-Rw-Bq7" id="89g-xb-Xvr"/>
                         <outlet property="checkMarkView" destination="HpC-C4-3u9" id="WYT-M1-VSw"/>
+                        <outlet property="emblem" destination="clq-ko-de2" id="nRg-Ka-dyN"/>
                         <outlet property="logInButton" destination="sYl-q6-Xao" id="gLZ-rp-MFk"/>
                         <outlet property="spinner" destination="Sy9-9r-Ocz" id="gX2-TB-A3C"/>
                         <outlet property="userEmail" destination="OqE-ye-V8b" id="bgb-fX-05s"/>
@@ -1049,6 +1054,7 @@
         <image name="Check Mark Flipped" width="349" height="270"/>
         <image name="Email Icon Black" width="50" height="50"/>
         <image name="Email Icon Error" width="50" height="50"/>
+        <image name="Emblem" width="106" height="105"/>
         <image name="Group Dots Icon" width="50" height="50"/>
         <image name="Line Separator Black" width="753" height="4"/>
         <image name="Login Background" width="457" height="811"/>
