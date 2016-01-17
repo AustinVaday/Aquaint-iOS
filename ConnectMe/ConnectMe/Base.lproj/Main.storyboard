@@ -951,11 +951,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HpC-C4-3u9">
                                 <rect key="frame" x="220" y="78" width="160" height="128"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Check Mark" translatesAutoresizingMaskIntoConstraints="NO" id="BiD-YO-Lvg">
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Check Mark" translatesAutoresizingMaskIntoConstraints="NO" id="BiD-YO-Lvg">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="128"/>
                                         <animations/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Check Mark Flipped" translatesAutoresizingMaskIntoConstraints="NO" id="uEL-Rw-Bq7">
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Check Mark Flipped" translatesAutoresizingMaskIntoConstraints="NO" id="uEL-Rw-Bq7">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="128"/>
                                         <animations/>
                                     </imageView>
@@ -1067,7 +1067,7 @@
         <image name="Up Caret" width="44" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="OXq-gn-jpj"/>
-        <segue reference="EEr-Yg-gr1"/>
+        <segue reference="vs6-CL-QzQ"/>
+        <segue reference="zog-ev-2Fq"/>
     </inferredMetricsTieBreakers>
 </document>
