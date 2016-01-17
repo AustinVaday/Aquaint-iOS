@@ -33,6 +33,7 @@
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
 		FF897C4A1C01AC63001B2634 /* ConnectMeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C491C01AC63001B2634 /* ConnectMeTests.swift */; };
 		FF897C551C01AC63001B2634 /* ConnectMeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C541C01AC63001B2634 /* ConnectMeUITests.swift */; };
+		FFF442361C4B2244007651DE /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF442351C4B2244007651DE /* Functions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		FF897C501C01AC63001B2634 /* ConnectMeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ConnectMeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C541C01AC63001B2634 /* ConnectMeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectMeUITests.swift; sourceTree = "<group>"; };
 		FF897C561C01AC63001B2634 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFF442351C4B2244007651DE /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +166,7 @@
 				FF897C361C01AC63001B2634 /* ViewController.swift */,
 				FF897C3B1C01AC63001B2634 /* Assets.xcassets */,
 				FF65D31C1C1E0BFC0015C99F /* Main.storyboard */,
+				FFF442351C4B2244007651DE /* Functions.swift */,
 				FF7878601C3010E600354936 /* LogInController.swift */,
 				FF7878411C26A0CC00354936 /* CameraController.swift */,
 				FF7878451C281A2500354936 /* HomeController.swift */,
@@ -328,6 +331,7 @@
 				FF7878401C26A0A900354936 /* MenuController.swift in Sources */,
 				FF7878461C281A2500354936 /* HomeController.swift in Sources */,
 				FF7878771C34EC4A00354936 /* RecentConnections.swift in Sources */,
+				FFF442361C4B2244007651DE /* Functions.swift in Sources */,
 				FF897C371C01AC63001B2634 /* ViewController.swift in Sources */,
 				FF7878791C352D0400354936 /* TableViewCell.swift in Sources */,
 				FF78783E1C24A9F000354936 /* User.swift in Sources */,

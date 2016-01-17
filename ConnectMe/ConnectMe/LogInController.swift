@@ -14,14 +14,23 @@ class LogInController: UIViewController {
     @IBOutlet weak var userEmail: UITextField!
     @IBOutlet weak var userPassword: UITextField!
     @IBOutlet weak var checkMark: UIImageView!
+    @IBOutlet weak var checkMarkView: UIView!
+    @IBOutlet weak var checkMarkFlipped: UIImageView!
+    var checkMarkFlippedCopy: UIImageView!
+    
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var logInButton: UIButton!
-    
     
     // Counts how many times the user has incorrectly logged in.
     /* var wrongLogInCount: Int = 0 */
     
-    override func viewDidLoad() {      
+    override func viewDidLoad() {
+        self.checkMark.hidden = true
+//      self.checkMarkFlipped.hidden = true
+        
+        checkMarkFlippedCopy = UIImageView(image: checkMark.image)
+        
+        flipImageHorizontally(checkMarkFlippedCopy)
     }
     
     @IBAction func emailEditingDidEnd(sender: UITextField) {
@@ -50,7 +59,7 @@ class LogInController: UIViewController {
         
         let userEmailString:String = userEmail.text!
         let userPasswordString:String =  userPassword.text!
-
+        
         // Perform long-running operation on background thread
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
             
@@ -65,14 +74,37 @@ class LogInController: UIViewController {
                     
                     // Stop showing activity indicator (spinner)
                     self.spinner.stopAnimating()
+
                     
-                    self.checkMark.hidden = false
-                    
+                    UIView.transitionWithView(self.checkMarkView, duration: 1.5, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
+     
+                        print("HI")
+                        self.checkMarkFlipped.hidden = false
+
+                        self.checkMarkFlipped.image = self.checkMark.image
+                        
+                        }, completion: nil)
+
+               
                     print("User logged in!")
-                    self.performSegueWithIdentifier("HomeViewController", sender: nil)
                     
-                    self.checkMark.hidden = true
+                    delay(2)
+                    {
                     
+                        self.performSegueWithIdentifier("HomeViewController", sender: nil)
+                        
+                    }
+                    
+                    self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
+                    // Reset checkMarkFlipped back to flipped image
+//                     self.checkMarkFlipped.image = tempImageFlipped
+//                    flipImageHorizontally(self.checkMarkFlipped)
+                    
+//                    self.checkMark.hidden = true
+//                    self.checkMarkFlipped.hidden = true
+                    
+                    
+
                 })
           
 
