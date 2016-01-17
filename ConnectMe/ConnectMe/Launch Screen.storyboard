@@ -18,19 +18,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="Emblem" translatesAutoresizingMaskIntoConstraints="NO" id="QGd-qK-Cya">
-                                <rect key="frame" x="250" y="138" width="100" height="100"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Emblem" translatesAutoresizingMaskIntoConstraints="NO" id="QGd-qK-Cya">
+                                <rect key="frame" x="250" y="180" width="100" height="100"/>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="TtW-s2-Rwl"/>
-                                    <constraint firstAttribute="width" secondItem="QGd-qK-Cya" secondAttribute="height" multiplier="1:1" id="luc-Ih-G3C"/>
+                                    <constraint firstAttribute="height" constant="100" id="2d9-TV-YqU"/>
+                                    <constraint firstAttribute="width" constant="100" id="RL4-pd-O3u"/>
+                                    <constraint firstAttribute="width" secondItem="QGd-qK-Cya" secondAttribute="height" multiplier="1:1" id="bOs-fo-Ws4"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" red="0.085476714735284176" green="0.69462399722683033" blue="0.74339060143288083" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.61960784313725492" green="0.96862745098039216" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="QGd-qK-Cya" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="118" id="cYe-MG-2rA"/>
+                            <constraint firstItem="QGd-qK-Cya" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="160" id="7uT-Gi-Rny"/>
+                            <constraint firstItem="QGd-qK-Cya" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="XJK-K6-U81"/>
                         </constraints>
                     </view>
                 </viewController>
