@@ -1,14 +1,14 @@
 //
-//  ConnectMeUITests.swift
-//  ConnectMeUITests
+//  AquaintUITestCase.swift
+//  Aquaint
 //
-//  Created by Austin Vaday on 11/21/15.
-//  Copyright © 2015 ConnectMe. All rights reserved.
+//  Created by Austin Vaday on 1/17/16.
+//  Copyright © 2016 ConnectMe. All rights reserved.
 //
 
 import XCTest
 
-class ConnectMeUITests: XCTestCase {
+class AquaintUITestCase: XCTestCase {
         
     override func setUp() {
         super.setUp()

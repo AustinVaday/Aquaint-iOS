@@ -31,8 +31,8 @@
 		FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C341C01AC63001B2634 /* AppDelegate.swift */; };
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
-		FF897C4A1C01AC63001B2634 /* ConnectMeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C491C01AC63001B2634 /* ConnectMeTests.swift */; };
-		FF897C551C01AC63001B2634 /* ConnectMeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C541C01AC63001B2634 /* ConnectMeUITests.swift */; };
+		FFB860281C4C38A800CFB621 /* AquaintTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */; };
+		FFB8602A1C4C38D300CFB621 /* AquaintUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB860291C4C38D300CFB621 /* AquaintUITestCase.swift */; };
 		FFF442361C4B2244007651DE /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF442351C4B2244007651DE /* Functions.swift */; };
 		FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFF442391C4C2B21007651DE /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
@@ -76,17 +76,15 @@
 		FF7878741C3026C200354936 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = "../../../Downloads/parse-library-1.11.0/Parse.framework"; sourceTree = "<group>"; };
 		FF7878761C34EC4A00354936 /* RecentConnections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentConnections.swift; sourceTree = "<group>"; };
 		FF7878781C352D0400354936 /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
-		FF897C311C01AC63001B2634 /* ConnectMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ConnectMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF897C311C01AC63001B2634 /* Aquaint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aquaint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C341C01AC63001B2634 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FF897C361C01AC63001B2634 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FF897C3B1C01AC63001B2634 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FF897C401C01AC63001B2634 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FF897C451C01AC63001B2634 /* ConnectMeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ConnectMeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FF897C491C01AC63001B2634 /* ConnectMeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectMeTests.swift; sourceTree = "<group>"; };
-		FF897C4B1C01AC63001B2634 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FF897C501C01AC63001B2634 /* ConnectMeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ConnectMeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FF897C541C01AC63001B2634 /* ConnectMeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectMeUITests.swift; sourceTree = "<group>"; };
-		FF897C561C01AC63001B2634 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FF897C451C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF897C501C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintTestCase.swift; sourceTree = "<group>"; };
+		FFB860291C4C38D300CFB621 /* AquaintUITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintUITestCase.swift; sourceTree = "<group>"; };
 		FFF442351C4B2244007651DE /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		FFF442391C4C2B21007651DE /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,6 +129,8 @@
 		FF897C281C01AC63001B2634 = {
 			isa = PBXGroup;
 			children = (
+				FFB8602D1C4C390400CFB621 /* AquaintTestCases */,
+				FFB8602C1C4C38F800CFB621 /* AquaintUITestCases */,
 				FF7878741C3026C200354936 /* Parse.framework */,
 				FF7878721C3026BB00354936 /* Bolts.framework */,
 				FF7878701C30268C00354936 /* SystemConfiguration.framework */,
@@ -143,9 +143,7 @@
 				FF7878621C30265800354936 /* AudioToolbox.framework */,
 				FF78785D1C30009900354936 /* libsqlite3.tbd */,
 				FF78785B1C30008C00354936 /* libz.tbd */,
-				FF897C331C01AC63001B2634 /* ConnectMe */,
-				FF897C481C01AC63001B2634 /* ConnectMeTests */,
-				FF897C531C01AC63001B2634 /* ConnectMeUITests */,
+				FF897C331C01AC63001B2634 /* Aquaint */,
 				FF897C321C01AC63001B2634 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -153,14 +151,14 @@
 		FF897C321C01AC63001B2634 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FF897C311C01AC63001B2634 /* ConnectMe.app */,
-				FF897C451C01AC63001B2634 /* ConnectMeTests.xctest */,
-				FF897C501C01AC63001B2634 /* ConnectMeUITests.xctest */,
+				FF897C311C01AC63001B2634 /* Aquaint.app */,
+				FF897C451C01AC63001B2634 /* Aquaint.xctest */,
+				FF897C501C01AC63001B2634 /* Aquaint.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FF897C331C01AC63001B2634 /* ConnectMe */ = {
+		FF897C331C01AC63001B2634 /* Aquaint */ = {
 			isa = PBXGroup;
 			children = (
 				FF65D3211C1EA3D60015C99F /* SignUpController.swift */,
@@ -179,33 +177,32 @@
 				FF7878761C34EC4A00354936 /* RecentConnections.swift */,
 				FF7878781C352D0400354936 /* TableViewCell.swift */,
 			);
+			name = Aquaint;
 			path = ConnectMe;
 			sourceTree = "<group>";
 		};
-		FF897C481C01AC63001B2634 /* ConnectMeTests */ = {
+		FFB8602C1C4C38F800CFB621 /* AquaintUITestCases */ = {
 			isa = PBXGroup;
 			children = (
-				FF897C491C01AC63001B2634 /* ConnectMeTests.swift */,
-				FF897C4B1C01AC63001B2634 /* Info.plist */,
+				FFB860291C4C38D300CFB621 /* AquaintUITestCase.swift */,
 			);
-			path = ConnectMeTests;
+			name = AquaintUITestCases;
 			sourceTree = "<group>";
 		};
-		FF897C531C01AC63001B2634 /* ConnectMeUITests */ = {
+		FFB8602D1C4C390400CFB621 /* AquaintTestCases */ = {
 			isa = PBXGroup;
 			children = (
-				FF897C541C01AC63001B2634 /* ConnectMeUITests.swift */,
-				FF897C561C01AC63001B2634 /* Info.plist */,
+				FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */,
 			);
-			path = ConnectMeUITests;
+			name = AquaintTestCases;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FF897C301C01AC63001B2634 /* ConnectMe */ = {
+		FF897C301C01AC63001B2634 /* Aquaint */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FF897C591C01AC63001B2634 /* Build configuration list for PBXNativeTarget "ConnectMe" */;
+			buildConfigurationList = FF897C591C01AC63001B2634 /* Build configuration list for PBXNativeTarget "Aquaint" */;
 			buildPhases = (
 				FF897C2D1C01AC63001B2634 /* Sources */,
 				FF897C2E1C01AC63001B2634 /* Frameworks */,
@@ -215,14 +212,14 @@
 			);
 			dependencies = (
 			);
-			name = ConnectMe;
+			name = Aquaint;
 			productName = ConnectMe;
-			productReference = FF897C311C01AC63001B2634 /* ConnectMe.app */;
+			productReference = FF897C311C01AC63001B2634 /* Aquaint.app */;
 			productType = "com.apple.product-type.application";
 		};
-		FF897C441C01AC63001B2634 /* ConnectMeTests */ = {
+		FF897C441C01AC63001B2634 /* AquaintTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FF897C5C1C01AC63001B2634 /* Build configuration list for PBXNativeTarget "ConnectMeTests" */;
+			buildConfigurationList = FF897C5C1C01AC63001B2634 /* Build configuration list for PBXNativeTarget "AquaintTests" */;
 			buildPhases = (
 				FF897C411C01AC63001B2634 /* Sources */,
 				FF897C421C01AC63001B2634 /* Frameworks */,
@@ -233,14 +230,14 @@
 			dependencies = (
 				FF897C471C01AC63001B2634 /* PBXTargetDependency */,
 			);
-			name = ConnectMeTests;
+			name = AquaintTests;
 			productName = ConnectMeTests;
-			productReference = FF897C451C01AC63001B2634 /* ConnectMeTests.xctest */;
+			productReference = FF897C451C01AC63001B2634 /* Aquaint.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		FF897C4F1C01AC63001B2634 /* ConnectMeUITests */ = {
+		FF897C4F1C01AC63001B2634 /* AquaintUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FF897C5F1C01AC63001B2634 /* Build configuration list for PBXNativeTarget "ConnectMeUITests" */;
+			buildConfigurationList = FF897C5F1C01AC63001B2634 /* Build configuration list for PBXNativeTarget "AquaintUITests" */;
 			buildPhases = (
 				FF897C4C1C01AC63001B2634 /* Sources */,
 				FF897C4D1C01AC63001B2634 /* Frameworks */,
@@ -251,9 +248,9 @@
 			dependencies = (
 				FF897C521C01AC63001B2634 /* PBXTargetDependency */,
 			);
-			name = ConnectMeUITests;
+			name = AquaintUITests;
 			productName = ConnectMeUITests;
-			productReference = FF897C501C01AC63001B2634 /* ConnectMeUITests.xctest */;
+			productReference = FF897C501C01AC63001B2634 /* Aquaint.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -279,7 +276,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FF897C2C1C01AC63001B2634 /* Build configuration list for PBXProject "ConnectMe" */;
+			buildConfigurationList = FF897C2C1C01AC63001B2634 /* Build configuration list for PBXProject "Aquaint" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -292,9 +289,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FF897C301C01AC63001B2634 /* ConnectMe */,
-				FF897C441C01AC63001B2634 /* ConnectMeTests */,
-				FF897C4F1C01AC63001B2634 /* ConnectMeUITests */,
+				FF897C301C01AC63001B2634 /* Aquaint */,
+				FF897C441C01AC63001B2634 /* AquaintTests */,
+				FF897C4F1C01AC63001B2634 /* AquaintUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -349,7 +346,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF897C4A1C01AC63001B2634 /* ConnectMeTests.swift in Sources */,
+				FFB860281C4C38A800CFB621 /* AquaintTestCase.swift in Sources */,
+				FFB8602A1C4C38D300CFB621 /* AquaintUITestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,7 +355,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF897C551C01AC63001B2634 /* ConnectMeUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,12 +363,12 @@
 /* Begin PBXTargetDependency section */
 		FF897C471C01AC63001B2634 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = FF897C301C01AC63001B2634 /* ConnectMe */;
+			target = FF897C301C01AC63001B2634 /* Aquaint */;
 			targetProxy = FF897C461C01AC63001B2634 /* PBXContainerItemProxy */;
 		};
 		FF897C521C01AC63001B2634 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = FF897C301C01AC63001B2634 /* ConnectMe */;
+			target = FF897C301C01AC63001B2634 /* Aquaint */;
 			targetProxy = FF897C511C01AC63001B2634 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -482,7 +479,7 @@
 				INFOPLIST_FILE = ConnectMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ConnectMe;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Aquaint;
 			};
 			name = Debug;
 		};
@@ -497,7 +494,7 @@
 				INFOPLIST_FILE = ConnectMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ConnectMe;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Aquaint;
 			};
 			name = Release;
 		};
@@ -505,11 +502,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = ConnectMeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ConnectMeTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ConnectMe.app/ConnectMe";
+				PRODUCT_NAME = Aquaint;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aquaint.app/Aquaint";
 			};
 			name = Debug;
 		};
@@ -517,11 +516,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = ConnectMeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ConnectMeTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ConnectMe.app/ConnectMe";
+				PRODUCT_NAME = Aquaint;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aquaint.app/Aquaint";
 			};
 			name = Release;
 		};
@@ -531,7 +531,7 @@
 				INFOPLIST_FILE = ConnectMeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ConnectMeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Aquaint;
 				TEST_TARGET_NAME = ConnectMe;
 				USES_XCTRUNNER = YES;
 			};
@@ -543,7 +543,7 @@
 				INFOPLIST_FILE = ConnectMeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ConnectMeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Aquaint;
 				TEST_TARGET_NAME = ConnectMe;
 				USES_XCTRUNNER = YES;
 			};
@@ -552,7 +552,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FF897C2C1C01AC63001B2634 /* Build configuration list for PBXProject "ConnectMe" */ = {
+		FF897C2C1C01AC63001B2634 /* Build configuration list for PBXProject "Aquaint" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FF897C571C01AC63001B2634 /* Debug */,
@@ -561,7 +561,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FF897C591C01AC63001B2634 /* Build configuration list for PBXNativeTarget "ConnectMe" */ = {
+		FF897C591C01AC63001B2634 /* Build configuration list for PBXNativeTarget "Aquaint" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FF897C5A1C01AC63001B2634 /* Debug */,
@@ -570,7 +570,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FF897C5C1C01AC63001B2634 /* Build configuration list for PBXNativeTarget "ConnectMeTests" */ = {
+		FF897C5C1C01AC63001B2634 /* Build configuration list for PBXNativeTarget "AquaintTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FF897C5D1C01AC63001B2634 /* Debug */,
@@ -579,7 +579,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FF897C5F1C01AC63001B2634 /* Build configuration list for PBXNativeTarget "ConnectMeUITests" */ = {
+		FF897C5F1C01AC63001B2634 /* Build configuration list for PBXNativeTarget "AquaintUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FF897C601C01AC63001B2634 /* Debug */,

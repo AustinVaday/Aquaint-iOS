@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FF897C301C01AC63001B2634"
-               BuildableName = "ConnectMe.app"
-               BlueprintName = "ConnectMe"
-               ReferencedContainer = "container:ConnectMe.xcodeproj">
+               BuildableName = "Aquaint.app"
+               BlueprintName = "Aquaint"
+               ReferencedContainer = "container:Aquaint.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FF897C441C01AC63001B2634"
-               BuildableName = "ConnectMeTests.xctest"
-               BlueprintName = "ConnectMeTests"
-               ReferencedContainer = "container:ConnectMe.xcodeproj">
+               BuildableName = "Aquaint.xctest"
+               BlueprintName = "AquaintTests"
+               ReferencedContainer = "container:Aquaint.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FF897C4F1C01AC63001B2634"
-               BuildableName = "ConnectMeUITests.xctest"
-               BlueprintName = "ConnectMeUITests"
-               ReferencedContainer = "container:ConnectMe.xcodeproj">
+               BuildableName = "Aquaint.xctest"
+               BlueprintName = "AquaintUITests"
+               ReferencedContainer = "container:Aquaint.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -53,9 +53,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FF897C301C01AC63001B2634"
-            BuildableName = "ConnectMe.app"
-            BlueprintName = "ConnectMe"
-            ReferencedContainer = "container:ConnectMe.xcodeproj">
+            BuildableName = "Aquaint.app"
+            BlueprintName = "Aquaint"
+            ReferencedContainer = "container:Aquaint.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -76,9 +76,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FF897C301C01AC63001B2634"
-            BuildableName = "ConnectMe.app"
-            BlueprintName = "ConnectMe"
-            ReferencedContainer = "container:ConnectMe.xcodeproj">
+            BuildableName = "Aquaint.app"
+            BlueprintName = "Aquaint"
+            ReferencedContainer = "container:Aquaint.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -95,9 +95,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FF897C301C01AC63001B2634"
-            BuildableName = "ConnectMe.app"
-            BlueprintName = "ConnectMe"
-            ReferencedContainer = "container:ConnectMe.xcodeproj">
+            BuildableName = "Aquaint.app"
+            BlueprintName = "Aquaint"
+            ReferencedContainer = "container:Aquaint.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

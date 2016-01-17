@@ -10,7 +10,7 @@
         <!--Start-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="Start" modalTransitionStyle="crossDissolve" id="BYZ-38-t0r" customClass="ViewController" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Start" modalTransitionStyle="crossDissolve" id="BYZ-38-t0r" customClass="ViewController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -97,7 +97,7 @@
         <!--Camera Controller-->
         <scene sceneID="Vyi-w1-nst">
             <objects>
-                <viewController id="wcp-L0-wz9" customClass="CameraController" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wcp-L0-wz9" customClass="CameraController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="afK-Av-iEC"/>
                         <viewControllerLayoutGuide type="bottom" id="VQu-Pm-LlT"/>
@@ -147,7 +147,7 @@
         <!--Menu Controller-->
         <scene sceneID="7d9-DH-Soi">
             <objects>
-                <viewController id="thT-it-jqL" customClass="MenuController" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="thT-it-jqL" customClass="MenuController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iBk-5a-fwA"/>
                         <viewControllerLayoutGuide type="bottom" id="LRT-bE-Y90"/>
@@ -216,7 +216,7 @@
         <!--Home Controller-->
         <scene sceneID="OnF-bp-ptK">
             <objects>
-                <viewController storyboardIdentifier="HomeViewController" id="8Yo-pa-87T" customClass="HomeController" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" id="8Yo-pa-87T" customClass="HomeController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="eKa-ke-8ez"/>
                         <viewControllerLayoutGuide type="bottom" id="bhw-dZ-esF"/>
@@ -333,7 +333,7 @@
         <!--Recent Connections-->
         <scene sceneID="Jxe-mP-QLE">
             <objects>
-                <viewController title="Recent Connections" id="JVC-Ri-2wB" customClass="RecentConnections" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Recent Connections" id="JVC-Ri-2wB" customClass="RecentConnections" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tdL-VL-qiB"/>
                         <viewControllerLayoutGuide type="bottom" id="fLh-56-2g1"/>
@@ -377,7 +377,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="recentConnCell" rowHeight="60" id="0rg-Hl-KiW" customClass="TableViewCell" customModule="ConnectMe" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="recentConnCell" rowHeight="60" id="0rg-Hl-KiW" customClass="TableViewCell" customModule="Aquaint" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="600" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0rg-Hl-KiW" id="aIG-U0-0gH">
@@ -473,8 +473,7 @@
         <!--Sign Up-->
         <scene sceneID="rHR-jk-33l">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vCu-vo-SeO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController title="Sign Up" modalTransitionStyle="crossDissolve" id="54r-9I-5XD" customClass="SignUpController" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Sign Up" modalTransitionStyle="crossDissolve" id="54r-9I-5XD" customClass="SignUpController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LF5-Ix-NVz"/>
                         <viewControllerLayoutGuide type="bottom" id="lsu-Lz-zFb"/>
@@ -795,13 +794,14 @@
                         <outlet property="userPhoto" destination="utB-hU-YRW" id="qG4-Lz-t1u"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vCu-vo-SeO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="888" y="1115"/>
         </scene>
         <!--Log In-->
         <scene sceneID="l6P-hM-j8t">
             <objects>
-                <viewController title="Log In" modalTransitionStyle="crossDissolve" id="TYE-ny-57l" customClass="LogInController" customModule="ConnectMe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Log In" modalTransitionStyle="crossDissolve" id="TYE-ny-57l" customClass="LogInController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KMS-fn-upw"/>
                         <viewControllerLayoutGuide type="bottom" id="ek6-l2-H4f"/>
@@ -887,14 +887,14 @@
                                     <constraint firstAttribute="width" constant="46" id="vnp-qU-eCv"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="czu-hg-3HQ">
                                 <rect key="frame" x="95" y="305" width="55" height="24"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OqE-ye-V8b">
