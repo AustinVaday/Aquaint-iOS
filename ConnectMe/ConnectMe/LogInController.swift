@@ -36,9 +36,42 @@ class LogInController: UIViewController {
     }
     
     @IBAction func emailEditingDidEnd(sender: UITextField) {
+        let userEmailString:String = userEmail.text!
+        
+        if (userEmailString.isEmpty)
+        {
+            print("Empty email string")
+        }
+        else if(verifyEmailFormat(userEmailString))
+        {
+            print("PROPER EMAIL")
+        }
+        else
+        {
+            //TODO: make email field red.
+            print("IMPROPER EMAIL")
+        }
+        
+        
     }
     
     @IBAction func passwordEditingDidEnd(sender: UITextField) {
+        
+        let userPasswordString:String = userPassword.text!
+        
+        if (userPasswordString.isEmpty)
+        {
+            print("Empty password string")
+        }
+        else if (verifyPasswordFormat(userPasswordString))
+        {
+            print("PROPER PASSWORD")
+        }
+        else
+        {
+            //TODO: make password field red
+            print("Please have at least 4 characters")
+        }
     }
 
     // When user clicks "Next" on keyboard

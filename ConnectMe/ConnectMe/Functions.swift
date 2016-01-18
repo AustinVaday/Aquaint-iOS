@@ -32,3 +32,37 @@ func flipImageVertically(imageView:UIImageView)
     imageView.transform = CGAffineTransformMakeScale(1.0, -1.0)
 }
 
+
+// Check if email format is proper
+func verifyEmailFormat(emailString:String) -> Bool
+{
+    
+    if (!emailString.isEmpty)
+    {
+        // Create a regular expression with acceptable email combos
+        let emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+        
+        // Create NSPredicate object to define logical constraints for our search in
+        let test = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        
+        // Evaluate the regex. Returns true if acceptable, else false
+        return test.evaluateWithObject(emailString)
+    
+    }
+    
+    return false
+    
+}
+
+// Check if password format is proper
+func verifyPasswordFormat(passwordString:String) -> Bool
+{
+    // Ensure that length of password is at least 4 characters
+    if (passwordString.characters.count > 3)
+    {
+        return true
+    }
+    
+    return false
+    
+}

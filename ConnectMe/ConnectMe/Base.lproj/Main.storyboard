@@ -142,7 +142,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eWA-a6-h8Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="IxV-Bb-kQe"/>
             </objects>
-            <point key="canvasLocation" x="450" y="2678"/>
+            <point key="canvasLocation" x="370" y="2662"/>
         </scene>
         <!--Menu Controller-->
         <scene sceneID="7d9-DH-Soi">
@@ -211,7 +211,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hic-Ge-GKX" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="Dlo-yr-wOR"/>
             </objects>
-            <point key="canvasLocation" x="-379" y="2662"/>
+            <point key="canvasLocation" x="-455" y="2662"/>
         </scene>
         <!--Home Controller-->
         <scene sceneID="OnF-bp-ptK">
@@ -468,7 +468,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wQe-Ly-mEL" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="a4p-th-tTG"/>
             </objects>
-            <point key="canvasLocation" x="1431" y="2649"/>
+            <point key="canvasLocation" x="1207" y="2662"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="rHR-jk-33l">
@@ -796,7 +796,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vCu-vo-SeO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="888" y="1115"/>
+            <point key="canvasLocation" x="888" y="1091"/>
         </scene>
         <!--Log In-->
         <scene sceneID="l6P-hM-j8t">
@@ -1067,7 +1067,7 @@
         <image name="Up Caret" width="44" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="vs6-CL-QzQ"/>
+        <segue reference="qwh-rK-Hbh"/>
         <segue reference="zog-ev-2Fq"/>
     </inferredMetricsTieBreakers>
 </document>
