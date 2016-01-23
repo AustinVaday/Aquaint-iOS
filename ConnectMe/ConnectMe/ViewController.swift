@@ -9,6 +9,9 @@
 import UIKit
 import Parse
 
+import FBSDKCoreKit
+import FBSDKLoginKit
+
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -23,7 +26,30 @@ class ViewController: UIViewController {
 //        }
     
         // Do any additional setup after loading the view, typically from a nib.
+        
+        var loginButton: FBSDKLoginButton = FBSDKLoginButton()
+        
+        loginButton.center = self.view.center
+        self.view.addSubview(loginButton)
+        loginButton.readPermissions = ["public_profile", "email", "user_friends"]
+        
+    
+        
     }
+    
+    // FACEBOOK SDK
+    func applicationDidBecomeActive(application: UIApplication!) {
+        FBSDKAppEvents.activateApp()
+    }
+    
+//    func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
+//        return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+//    }
+    
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String, annotation: AnyObject?) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -33,6 +33,26 @@
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
 		FFB860281C4C38A800CFB621 /* AquaintTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */; };
 		FFB8602A1C4C38D300CFB621 /* AquaintUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB860291C4C38D300CFB621 /* AquaintUITestCase.swift */; };
+		FFBB872C1C5307F500500FAD /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87291C5307F500500FAD /* FBSDKCoreKit.framework */; };
+		FFBB872D1C5307F500500FAD /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB872A1C5307F500500FAD /* FBSDKLoginKit.framework */; };
+		FFBB872E1C5307F500500FAD /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB872B1C5307F500500FAD /* FBSDKShareKit.framework */; };
+		FFBB87411C530FC900500FAD /* AWSAPIGateway.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87301C530FC900500FAD /* AWSAPIGateway.framework */; };
+		FFBB87421C530FC900500FAD /* AWSAutoScaling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87311C530FC900500FAD /* AWSAutoScaling.framework */; };
+		FFBB87431C530FC900500FAD /* AWSCloudWatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87321C530FC900500FAD /* AWSCloudWatch.framework */; };
+		FFBB87441C530FCA00500FAD /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87331C530FC900500FAD /* AWSCore.framework */; };
+		FFBB87451C530FCA00500FAD /* AWSDynamoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87341C530FC900500FAD /* AWSDynamoDB.framework */; };
+		FFBB87461C530FCA00500FAD /* AWSEC2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87351C530FC900500FAD /* AWSEC2.framework */; };
+		FFBB87471C530FCA00500FAD /* AWSElasticLoadBalancing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87361C530FC900500FAD /* AWSElasticLoadBalancing.framework */; };
+		FFBB87481C530FCA00500FAD /* AWSIoT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87371C530FC900500FAD /* AWSIoT.framework */; };
+		FFBB87491C530FCA00500FAD /* AWSKinesis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87381C530FC900500FAD /* AWSKinesis.framework */; };
+		FFBB874A1C530FCA00500FAD /* AWSLambda.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87391C530FC900500FAD /* AWSLambda.framework */; };
+		FFBB874B1C530FCA00500FAD /* AWSMachineLearning.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB873A1C530FC900500FAD /* AWSMachineLearning.framework */; };
+		FFBB874C1C530FCA00500FAD /* AWSMobileAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB873B1C530FC900500FAD /* AWSMobileAnalytics.framework */; };
+		FFBB874D1C530FCA00500FAD /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB873C1C530FC900500FAD /* AWSS3.framework */; };
+		FFBB874E1C530FCA00500FAD /* AWSSES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB873D1C530FC900500FAD /* AWSSES.framework */; };
+		FFBB874F1C530FCA00500FAD /* AWSSimpleDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB873E1C530FC900500FAD /* AWSSimpleDB.framework */; };
+		FFBB87501C530FCA00500FAD /* AWSSNS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB873F1C530FC900500FAD /* AWSSNS.framework */; };
+		FFBB87511C530FCA00500FAD /* AWSSQS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87401C530FC900500FAD /* AWSSQS.framework */; };
 		FFF442361C4B2244007651DE /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF442351C4B2244007651DE /* Functions.swift */; };
 		FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFF442391C4C2B21007651DE /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
@@ -85,6 +105,26 @@
 		FF897C501C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintTestCase.swift; sourceTree = "<group>"; };
 		FFB860291C4C38D300CFB621 /* AquaintUITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintUITestCase.swift; sourceTree = "<group>"; };
+		FFBB87291C5307F500500FAD /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		FFBB872A1C5307F500500FAD /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		FFBB872B1C5307F500500FAD /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		FFBB87301C530FC900500FAD /* AWSAPIGateway.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSAPIGateway.framework; sourceTree = "<group>"; };
+		FFBB87311C530FC900500FAD /* AWSAutoScaling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSAutoScaling.framework; sourceTree = "<group>"; };
+		FFBB87321C530FC900500FAD /* AWSCloudWatch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCloudWatch.framework; sourceTree = "<group>"; };
+		FFBB87331C530FC900500FAD /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCore.framework; sourceTree = "<group>"; };
+		FFBB87341C530FC900500FAD /* AWSDynamoDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSDynamoDB.framework; sourceTree = "<group>"; };
+		FFBB87351C530FC900500FAD /* AWSEC2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSEC2.framework; sourceTree = "<group>"; };
+		FFBB87361C530FC900500FAD /* AWSElasticLoadBalancing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSElasticLoadBalancing.framework; sourceTree = "<group>"; };
+		FFBB87371C530FC900500FAD /* AWSIoT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSIoT.framework; sourceTree = "<group>"; };
+		FFBB87381C530FC900500FAD /* AWSKinesis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSKinesis.framework; sourceTree = "<group>"; };
+		FFBB87391C530FC900500FAD /* AWSLambda.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSLambda.framework; sourceTree = "<group>"; };
+		FFBB873A1C530FC900500FAD /* AWSMachineLearning.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSMachineLearning.framework; sourceTree = "<group>"; };
+		FFBB873B1C530FC900500FAD /* AWSMobileAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSMobileAnalytics.framework; sourceTree = "<group>"; };
+		FFBB873C1C530FC900500FAD /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSS3.framework; sourceTree = "<group>"; };
+		FFBB873D1C530FC900500FAD /* AWSSES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSSES.framework; sourceTree = "<group>"; };
+		FFBB873E1C530FC900500FAD /* AWSSimpleDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSSimpleDB.framework; sourceTree = "<group>"; };
+		FFBB873F1C530FC900500FAD /* AWSSNS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSSNS.framework; sourceTree = "<group>"; };
+		FFBB87401C530FC900500FAD /* AWSSQS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSSQS.framework; sourceTree = "<group>"; };
 		FFF442351C4B2244007651DE /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		FFF442391C4C2B21007651DE /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,15 +134,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFBB87431C530FC900500FAD /* AWSCloudWatch.framework in Frameworks */,
 				FF7878711C30268C00354936 /* SystemConfiguration.framework in Frameworks */,
+				FFBB87481C530FCA00500FAD /* AWSIoT.framework in Frameworks */,
+				FFBB87461C530FCA00500FAD /* AWSEC2.framework in Frameworks */,
+				FFBB874F1C530FCA00500FAD /* AWSSimpleDB.framework in Frameworks */,
 				FF78786F1C30268500354936 /* StoreKit.framework in Frameworks */,
+				FFBB87501C530FCA00500FAD /* AWSSNS.framework in Frameworks */,
+				FFBB872E1C5307F500500FAD /* FBSDKShareKit.framework in Frameworks */,
 				FF78786D1C30267C00354936 /* Security.framework in Frameworks */,
 				FF78786B1C30267500354936 /* QuartzCore.framework in Frameworks */,
+				FFBB872D1C5307F500500FAD /* FBSDKLoginKit.framework in Frameworks */,
 				FF7878691C30266C00354936 /* CoreLocation.framework in Frameworks */,
+				FFBB874A1C530FCA00500FAD /* AWSLambda.framework in Frameworks */,
+				FFBB87421C530FC900500FAD /* AWSAutoScaling.framework in Frameworks */,
+				FFBB87511C530FCA00500FAD /* AWSSQS.framework in Frameworks */,
 				FF7878671C30266600354936 /* CoreGraphics.framework in Frameworks */,
+				FFBB87441C530FCA00500FAD /* AWSCore.framework in Frameworks */,
 				FF7878651C30266000354936 /* CFNetwork.framework in Frameworks */,
 				FF7878631C30265800354936 /* AudioToolbox.framework in Frameworks */,
+				FFBB87411C530FC900500FAD /* AWSAPIGateway.framework in Frameworks */,
+				FFBB87451C530FCA00500FAD /* AWSDynamoDB.framework in Frameworks */,
+				FFBB87491C530FCA00500FAD /* AWSKinesis.framework in Frameworks */,
+				FFBB874E1C530FCA00500FAD /* AWSSES.framework in Frameworks */,
+				FFBB874C1C530FCA00500FAD /* AWSMobileAnalytics.framework in Frameworks */,
+				FFBB872C1C5307F500500FAD /* FBSDKCoreKit.framework in Frameworks */,
+				FFBB874B1C530FCA00500FAD /* AWSMachineLearning.framework in Frameworks */,
 				FF7878731C3026BB00354936 /* Bolts.framework in Frameworks */,
+				FFBB87471C530FCA00500FAD /* AWSElasticLoadBalancing.framework in Frameworks */,
+				FFBB874D1C530FCA00500FAD /* AWSS3.framework in Frameworks */,
 				FF78785E1C30009900354936 /* libsqlite3.tbd in Frameworks */,
 				FF7878751C3026C200354936 /* Parse.framework in Frameworks */,
 				FF78785C1C30008C00354936 /* libz.tbd in Frameworks */,
@@ -131,16 +191,7 @@
 			children = (
 				FFB8602D1C4C390400CFB621 /* AquaintTestCases */,
 				FFB8602C1C4C38F800CFB621 /* AquaintUITestCases */,
-				FF7878741C3026C200354936 /* Parse.framework */,
-				FF7878721C3026BB00354936 /* Bolts.framework */,
-				FF7878701C30268C00354936 /* SystemConfiguration.framework */,
-				FF78786E1C30268500354936 /* StoreKit.framework */,
-				FF78786C1C30267C00354936 /* Security.framework */,
-				FF78786A1C30267500354936 /* QuartzCore.framework */,
-				FF7878681C30266C00354936 /* CoreLocation.framework */,
-				FF7878661C30266600354936 /* CoreGraphics.framework */,
-				FF7878641C30266000354936 /* CFNetwork.framework */,
-				FF7878621C30265800354936 /* AudioToolbox.framework */,
+				FFBB87251C5307B700500FAD /* Frameworks */,
 				FF78785D1C30009900354936 /* libsqlite3.tbd */,
 				FF78785B1C30008C00354936 /* libz.tbd */,
 				FF897C331C01AC63001B2634 /* Aquaint */,
@@ -195,6 +246,75 @@
 				FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */,
 			);
 			name = AquaintTestCases;
+			sourceTree = "<group>";
+		};
+		FFBB87241C5307AC00500FAD /* Parse Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FF7878741C3026C200354936 /* Parse.framework */,
+				FF7878721C3026BB00354936 /* Bolts.framework */,
+			);
+			name = "Parse Frameworks";
+			sourceTree = "<group>";
+		};
+		FFBB87251C5307B700500FAD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FFBB872F1C530FB800500FAD /* AWS Frameworks */,
+				FFBB87281C5307DA00500FAD /* Facebook Frameworks */,
+				FFBB87241C5307AC00500FAD /* Parse Frameworks */,
+				FFBB87261C5307C800500FAD /* iOS Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FFBB87261C5307C800500FAD /* iOS Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FF7878701C30268C00354936 /* SystemConfiguration.framework */,
+				FF78786E1C30268500354936 /* StoreKit.framework */,
+				FF78786C1C30267C00354936 /* Security.framework */,
+				FF78786A1C30267500354936 /* QuartzCore.framework */,
+				FF7878681C30266C00354936 /* CoreLocation.framework */,
+				FF7878661C30266600354936 /* CoreGraphics.framework */,
+				FF7878641C30266000354936 /* CFNetwork.framework */,
+				FF7878621C30265800354936 /* AudioToolbox.framework */,
+			);
+			name = "iOS Frameworks";
+			sourceTree = "<group>";
+		};
+		FFBB87281C5307DA00500FAD /* Facebook Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FFBB87291C5307F500500FAD /* FBSDKCoreKit.framework */,
+				FFBB872A1C5307F500500FAD /* FBSDKLoginKit.framework */,
+				FFBB872B1C5307F500500FAD /* FBSDKShareKit.framework */,
+			);
+			name = "Facebook Frameworks";
+			sourceTree = "<group>";
+		};
+		FFBB872F1C530FB800500FAD /* AWS Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FFBB87301C530FC900500FAD /* AWSAPIGateway.framework */,
+				FFBB87311C530FC900500FAD /* AWSAutoScaling.framework */,
+				FFBB87321C530FC900500FAD /* AWSCloudWatch.framework */,
+				FFBB87331C530FC900500FAD /* AWSCore.framework */,
+				FFBB87341C530FC900500FAD /* AWSDynamoDB.framework */,
+				FFBB87351C530FC900500FAD /* AWSEC2.framework */,
+				FFBB87361C530FC900500FAD /* AWSElasticLoadBalancing.framework */,
+				FFBB87371C530FC900500FAD /* AWSIoT.framework */,
+				FFBB87381C530FC900500FAD /* AWSKinesis.framework */,
+				FFBB87391C530FC900500FAD /* AWSLambda.framework */,
+				FFBB873A1C530FC900500FAD /* AWSMachineLearning.framework */,
+				FFBB873B1C530FC900500FAD /* AWSMobileAnalytics.framework */,
+				FFBB873C1C530FC900500FAD /* AWSS3.framework */,
+				FFBB873D1C530FC900500FAD /* AWSSES.framework */,
+				FFBB873E1C530FC900500FAD /* AWSSimpleDB.framework */,
+				FFBB873F1C530FC900500FAD /* AWSSNS.framework */,
+				FFBB87401C530FC900500FAD /* AWSSQS.framework */,
+			);
+			name = "AWS Frameworks";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -478,7 +598,7 @@
 				);
 				INFOPLIST_FILE = ConnectMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ConnectMe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Aquaint;
 				PRODUCT_NAME = Aquaint;
 			};
 			name = Debug;
@@ -493,7 +613,7 @@
 				);
 				INFOPLIST_FILE = ConnectMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ConnectMe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Aquaint;
 				PRODUCT_NAME = Aquaint;
 			};
 			name = Release;
