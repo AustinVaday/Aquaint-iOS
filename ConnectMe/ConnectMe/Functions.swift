@@ -5,6 +5,9 @@
 //  Created by Austin Vaday on 1/16/16.
 //  Copyright © 2016 ConnectMe. All rights reserved.
 //
+//
+//  Code is owned by: Austin Vaday and Navid Sarvian
+
 
 import Foundation
 import UIKit

@@ -1,10 +1,12 @@
 //
 //  ViewController.swift
-//  ConnectMe
+//  Aquaint
 //
 //  Created by Austin Vaday on 11/21/15.
-//  Copyright © 2015 ConnectMe. All rights reserved.
+//  Copyright © 2015 Aquaint. All rights reserved.
 //
+//  Code is owned by: Austin Vaday and Navid Sarvian
+
 
 import UIKit
 import Parse
