@@ -11,5 +11,11 @@ import UIKit
 import Parse
 
 class TableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var cellImage: UIImageView!
+    @IBOutlet weak var cellName: UILabel!
+    
+    var testing:String!
+    
 
 }

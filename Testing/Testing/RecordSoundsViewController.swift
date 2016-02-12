@@ -85,9 +85,6 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
             // Send data to the view controller
             playSoundsVC.receivedAudio = data
             
-            
-            
-            
         }
     }
 
