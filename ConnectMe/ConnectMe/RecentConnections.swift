@@ -12,10 +12,14 @@ import Parse
 
 class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    let NO_ROW = -1
     @IBOutlet weak var recentConnTableView: UITableView!
     var selectedRowIndex:Int = -1
+    var expandedRow:Int = -1
+    var isARowExpanded:Bool = false
     let defaultRowHeight:CGFloat = 60
     let expandedRowHeight:CGFloat = 120
+    
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -43,20 +47,35 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print("CELL WAS SELECTED!: ", indexPath.item, "Dropdown menu display here")
         
+        // Set the new selectedRowIndex
         selectedRowIndex = indexPath.row
         
+        // Update UI with animation
         tableView.beginUpdates()
         tableView.endUpdates()
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
+        let currentRow = indexPath.row
+        
         // If a row is selected, we want to expand the cells
-        if (indexPath.row == selectedRowIndex)
+        if (currentRow == selectedRowIndex)
         {
-            return expandedRowHeight
+            // Collapse if it is already expanded
+            if (isARowExpanded && expandedRow == currentRow)
+            {
+                isARowExpanded = false
+                expandedRow = NO_ROW
+                return defaultRowHeight
+            }
+            else
+            {
+                isARowExpanded = true
+                expandedRow = currentRow
+                return expandedRowHeight
+            }
         }
         else
         {
