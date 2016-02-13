@@ -11,5 +11,12 @@ import UIKit
 class SocialMediaCollectionViewCell: UICollectionViewCell {
     
     
+    @IBOutlet weak var emblemButton: UIButton!
 
+    @IBAction func emblemButtonClicked(sender: AnyObject) {
+        
+        print("The button was clicked!")
+
+        
+    }
 }

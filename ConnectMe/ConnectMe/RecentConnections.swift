@@ -19,7 +19,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var isARowExpanded:Bool = false
     let defaultRowHeight:CGFloat = 60
     let expandedRowHeight:CGFloat = 100
-    
+    let emblemImageRange = Array<UIImage>(arrayLiteral: UIImage(named: "facebook")!, UIImage(named:"youtube")!, UIImage(named:"twitter")!, UIImage(named:"skype")!, UIImage(named:"linkedin")!)
     
     
     // TABLE VIEW
@@ -29,12 +29,13 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Display up to 30 users immediately
         // Display 20 more if user keeps sliding down
         
-                print("TABLEVIEW")
+        print("TABLEVIEW 1")
         return 50
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
+        print("TABLEVIEW 2")
+
         let cell = tableView.dequeueReusableCellWithIdentifier("recentConnCell", forIndexPath: indexPath) as! TableViewCell
         
         // Ensure that internal cellImage is circular
@@ -43,6 +44,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Set the user name
         cell.cellName.text = "User " + String(indexPath.row)
         
+        
         return cell
         
     }
@@ -50,12 +52,15 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
+        print("TABLEVIEW 3")
+
         // Set the new selectedRowIndex
         selectedRowIndex = indexPath.row
         
         // Update UI with animation
         tableView.beginUpdates()
         tableView.endUpdates()
+        
 
 //        let cell = tableView.dequeueReusableCellWithIdentifier("recentConnCell", forIndexPath: indexPath) as! TableViewCell
 //
@@ -64,7 +69,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
+        print("TABLEVIEW 4")
+
         let currentRow = indexPath.row
         
         // If a row is selected, we want to expand the cells
@@ -91,23 +97,27 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
     }
     
-    
     // COLLECTION VIEW
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("COLLECTIONVIEW")
-        return 20
+        print("COLLECTIONVIEW 1")
+        
+
+        return 5
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        print("COLLECTIONVIEW 2")
+        
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
-        
-        cell.backgroundColor = UIColor.blueColor()
+
+        // Set social media emblem
+        cell.emblemButton.imageView?.image = emblemImageRange[indexPath.item]
+
         
         // Make cell circular
         cell.layer.cornerRadius = cell.frame.width / 2
-        
-        
+
         
         return cell
     }
