@@ -10,7 +10,7 @@
 import UIKit
 import Parse
 
-class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
     let NO_ROW = -1
     @IBOutlet weak var recentConnTableView: UITableView!
@@ -21,6 +21,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     let expandedRowHeight:CGFloat = 120
     
     
+    
+    // TABLE VIEW
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         // TODO: If more than one user,
@@ -54,6 +56,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Update UI with animation
         tableView.beginUpdates()
         tableView.endUpdates()
+        
+        
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -83,6 +87,22 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         }
         
     }
+    
+    
+    // COLLECTION VIEW
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 20
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath)
+        
+        cell.backgroundColor = UIColor.redColor()
+        
+        return cell
+    }
+
     
 
 
