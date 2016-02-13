@@ -381,7 +381,7 @@
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jNw-BS-hQf">
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jNw-BS-hQf">
                                                     <rect key="frame" x="64" y="49" width="536" height="32"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Ssu-et-cxQ">
@@ -429,6 +429,7 @@
                                         <connections>
                                             <outlet property="cellImage" destination="x4Y-1i-s4G" id="Luj-ug-y1p"/>
                                             <outlet property="cellName" destination="z1I-mm-oob" id="zNt-n8-WW1"/>
+                                            <outlet property="collectionView" destination="jNw-BS-hQf" id="UEV-02-cQA"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

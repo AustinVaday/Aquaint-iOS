@@ -18,7 +18,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var expandedRow:Int = -1
     var isARowExpanded:Bool = false
     let defaultRowHeight:CGFloat = 60
-    let expandedRowHeight:CGFloat = 120
+    let expandedRowHeight:CGFloat = 100
     
     
     
@@ -29,6 +29,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Display up to 30 users immediately
         // Display 20 more if user keeps sliding down
         
+                print("TABLEVIEW")
         return 50
     }
     
@@ -41,7 +42,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 
         // Set the user name
         cell.cellName.text = "User " + String(indexPath.row)
-        
         
         return cell
         
@@ -56,8 +56,11 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Update UI with animation
         tableView.beginUpdates()
         tableView.endUpdates()
-        
-        
+
+//        let cell = tableView.dequeueReusableCellWithIdentifier("recentConnCell", forIndexPath: indexPath) as! TableViewCell
+//
+//        cell.collectionView.reloadData()
+    
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -91,17 +94,24 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     // COLLECTION VIEW
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("COLLECTIONVIEW")
         return 20
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
         
-        cell.backgroundColor = UIColor.redColor()
+        cell.backgroundColor = UIColor.blueColor()
+        
+        // Make cell circular
+        cell.layer.cornerRadius = cell.frame.width / 2
+        
+        
         
         return cell
     }
+
 
     
 
