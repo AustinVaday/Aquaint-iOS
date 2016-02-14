@@ -30,6 +30,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Display 20 more if user keeps sliding down
         
         print("TABLEVIEW 1")
+        
         return 50
     }
     

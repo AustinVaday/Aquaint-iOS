@@ -12,6 +12,8 @@ import Parse
 import Bolts
 import FBSDKCoreKit
 import FBSDKLoginKit
+import AWSCore
+//import AWSCognito
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -33,6 +35,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
         
         PFUser.logOutInBackground()
+        
+/*
+        // Create AWS credentials provider
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:178e3120-b277-4864-9654-094f674e582b")
+        
+        // Set configurations
+        let configurations = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialsProvider)
+        
+        // Can only set the configurations once
+        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configurations
+        
+        // Get Amizon Cognito ID
+        credentialsProvider.getIdentityId().continueWithBlock { (task: AWSTask!) -> AnyObject? in
+            
+            
+            if (task.error != nil)
+            {
+                print("Error: ", task.error?.localizedDescription)
+            }
+            else
+            {
+                // Task will contain identity id
+                let cognitoID = task.result
+            }
+            return nil
+        }
+  */      
         
         return true
     }
