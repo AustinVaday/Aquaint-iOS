@@ -17,8 +17,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var selectedRowIndex:Int = -1
     var expandedRow:Int = -1
     var isARowExpanded:Bool = false
-    let defaultRowHeight:CGFloat = 60
-    let expandedRowHeight:CGFloat = 100
+    let defaultRowHeight:CGFloat = 100
+    let expandedRowHeight:CGFloat = 60
     let emblemImageRange = Array<UIImage>(arrayLiteral: UIImage(named: "facebook")!, UIImage(named:"youtube")!, UIImage(named:"twitter")!, UIImage(named:"skype")!, UIImage(named:"linkedin")!)
     
     
@@ -102,25 +102,34 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         print("COLLECTIONVIEW 1")
         
 
-        return 5
+        return 20
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         print("COLLECTIONVIEW 2")
         
-        
+
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
 
-        // Set social media emblem
-        cell.emblemButton.imageView?.image = emblemImageRange[indexPath.item]
+        // We will delay the image assignment to prevent buggy race conditions
+        // (Check to see what happens when the delay is not set... then you'll understand)
+        // Probable cause: tableView.beginUpdates() and tableView.endUpdates() in tableView(didSelectIndexPath) method
+        delay(0) { () -> () in
+            
+            // Set social media emblem
+            cell.emblemButton.imageView?.image = self.emblemImageRange[indexPath.item % 4]
 
-        
+        }
+
         // Make cell circular
         cell.layer.cornerRadius = cell.frame.width / 2
-
+        
+        // Make cell movements cleaner (increased FPM)
+        cell.layer.shouldRasterize = true
         
         return cell
     }
+
 
 
     
