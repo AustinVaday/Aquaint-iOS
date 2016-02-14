@@ -17,6 +17,5 @@ class SocialMediaCollectionViewCell: UICollectionViewCell {
         
         print("The button was clicked!")
 
-        
     }
 }
