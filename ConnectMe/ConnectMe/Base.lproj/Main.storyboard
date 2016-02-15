@@ -113,6 +113,7 @@
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zeu-ZH-NgS">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -449,6 +450,7 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="cellImage" destination="x4Y-1i-s4G" id="Luj-ug-y1p"/>
                                             <outlet property="cellName" destination="z1I-mm-oob" id="zNt-n8-WW1"/>
@@ -1049,7 +1051,7 @@
         <image name="facebook" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="P5G-O0-nYI"/>
         <segue reference="X0O-bq-tyh"/>
+        <segue reference="qwh-rK-Hbh"/>
     </inferredMetricsTieBreakers>
 </document>

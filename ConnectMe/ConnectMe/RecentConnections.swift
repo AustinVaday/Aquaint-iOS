@@ -19,7 +19,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var isARowExpanded:Bool = false
     let defaultRowHeight:CGFloat = 60
     let expandedRowHeight:CGFloat = 100
-    let emblemImageRange = Array<UIImage>(arrayLiteral: UIImage(named: "facebook")!, UIImage(named:"youtube")!, UIImage(named:"twitter")!, UIImage(named:"skype")!, UIImage(named:"linkedin")!)
+    let emblemImageRange = Array<UIImage>(arrayLiteral: UIImage(named: "phone")!, UIImage(named: "facebook")!, UIImage(named:"youtube")!, UIImage(named:"twitter")!, UIImage(named:"skype")!, UIImage(named:"linkedin")!)
     
     
     // TABLE VIEW
@@ -103,7 +103,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         print("COLLECTIONVIEW 1")
         
 
-        return 20
+        return emblemImageRange.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -118,7 +118,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         delay(0) { () -> () in
             
             // Set social media emblem
-            cell.emblemButton.setImage(self.emblemImageRange[indexPath.item % 4], forState: UIControlState.Normal)
+            cell.emblemButton.setImage(self.emblemImageRange[indexPath.item % self.emblemImageRange.count], forState: UIControlState.Normal)
             
             /* Don't use the below, will cause images to reset when button is clicked. */
             //cell.emblemButton.imageView?.image = self.emblemImageRange[indexPath.item % 4]
