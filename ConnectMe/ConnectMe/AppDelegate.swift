@@ -12,8 +12,12 @@ import Parse
 import Bolts
 import FBSDKCoreKit
 import FBSDKLoginKit
-import AWSCore
+//import AWSCore
 //import AWSCognito
+
+// Begin using Firebase framework
+import Firebase
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
         
         print("LAUNCH EMBLEM PAGE HERE")
         
