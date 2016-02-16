@@ -27,19 +27,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         
-        print("LAUNCH EMBLEM PAGE HERE")
         
-        // Power app with Local Datastore. For more info, go to
-        Parse.enableLocalDatastore()
-        
-        // Initialize Parse.
-        Parse.setApplicationId("nGRlNCMIIO6mhGcWD5inHrGwzyZT4T4LYH3otLLz",
-            clientKey: "ypytbHHS1NBGgrQgZLOcAXwpHbYx62YXxUhUHKs3")
-        
-        // Track statistics around application opens.
-        PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
-        
-        PFUser.logOutInBackground()
+//        print("LAUNCH EMBLEM PAGE HERE")
+//        
+//        // Power app with Local Datastore. For more info, go to
+//        Parse.enableLocalDatastore()
+//        
+//        // Initialize Parse.
+//        Parse.setApplicationId("nGRlNCMIIO6mhGcWD5inHrGwzyZT4T4LYH3otLLz",
+//            clientKey: "ypytbHHS1NBGgrQgZLOcAXwpHbYx62YXxUhUHKs3")
+//        
+//        // Track statistics around application opens.
+//        PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+//        
+//        PFUser.logOutInBackground()
         
 /*
         // Create AWS credentials provider
