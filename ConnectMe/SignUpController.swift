@@ -24,12 +24,10 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     @IBOutlet weak var userNameImage: UIImageView!
     @IBOutlet weak var userEmailImage: UIImageView!
     @IBOutlet weak var userPasswordImage: UIImageView!
-
-    @IBOutlet weak var userNameImageError: UIImageView!
-    @IBOutlet weak var userEmailImageError: UIImageView!
-    @IBOutlet weak var userPasswordImageError: UIImageView!
     
     @IBOutlet weak var signUpButton: UIButton!
+    
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     var userObject : User!
     
@@ -39,7 +37,6 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from 
         
         // Make the button round!
         userPhoto.clipsToBounds = true
@@ -100,12 +97,10 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         {
             userNameLabel.textColor = UIColor.redColor()
             userNameImage.hidden = true
-            userNameImageError.hidden = false
         }
         else
         {
             userNameLabel.textColor = UIColor.whiteColor()
-            userNameImageError.hidden = true
             userNameImage.hidden = false
         }
         //TODO: Escape every single character of the string

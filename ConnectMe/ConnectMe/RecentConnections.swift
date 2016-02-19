@@ -104,6 +104,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
 
         return emblemImageRange.count
+        
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
