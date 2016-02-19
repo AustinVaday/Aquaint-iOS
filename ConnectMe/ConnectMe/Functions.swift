@@ -43,7 +43,7 @@ func verifyEmailFormat(emailString:String) -> Bool
     if (!emailString.isEmpty)
     {
         // Create a regular expression with acceptable email combos
-        let emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
         
         // Create NSPredicate object to define logical constraints for our search in
         let test = NSPredicate(format: "SELF MATCHES %@", emailRegex)

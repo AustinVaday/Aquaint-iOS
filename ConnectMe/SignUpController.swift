@@ -30,8 +30,6 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
 
     let segueDestination = "ToHomeViewController"
     
-
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
