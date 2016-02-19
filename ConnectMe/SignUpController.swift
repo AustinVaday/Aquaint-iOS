@@ -8,6 +8,7 @@
 //  Code is owned by: Austin Vaday and Navid Sarvian
 
 import UIKit
+import Firebase
 
 class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -16,38 +17,50 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     @IBOutlet weak var userEmail: UITextField!
     @IBOutlet weak var userPassword: UITextField!
     @IBOutlet weak var userPhoto: UIButton!
-    
-    @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var userEmailLabel: UILabel!
-    @IBOutlet weak var userPasswordLabel: UILabel!
-    
-    @IBOutlet weak var userNameImage: UIImageView!
-    @IBOutlet weak var userEmailImage: UIImageView!
-    @IBOutlet weak var userPasswordImage: UIImageView!
-    
+    @IBOutlet weak var checkMark: UIImageView!
+    @IBOutlet weak var checkMarkFlipped: UIImageView!
+    @IBOutlet weak var checkMarkView: UIView!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var signUpButton: UIButton!
     
-    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    var checkMarkFlippedCopy: UIImageView!
+    var firebaseRootRef: Firebase!
+    var prevEmailString: String!                // Used to prevent user from spamming requests
+    var imagePicker:UIImagePickerController!    // Used for selecting image from user's device
+
+    let segueDestination = "ToHomeViewController"
     
-    var userObject : User!
-    
-    
-    // Used for selecting image from user's device
-    var imagePicker:UIImagePickerController!
+
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Create a reference to firebase location
+        firebaseRootRef = Firebase(url: "https://torrid-fire-8382.firebaseio.com")
+        
+        
+        self.checkMark.hidden = true
+        self.checkMarkFlipped.hidden = true
+        self.userPhoto.hidden = false
+        
+        checkMarkFlippedCopy = UIImageView(image: checkMark.image)
+        
+        flipImageHorizontally(checkMarkFlippedCopy)
+        
         // Make the button round!
         userPhoto.clipsToBounds = true
         userPhoto.layer.cornerRadius = userPhoto.bounds.size.width / 2
+        
+        // Empty previous email string
+        prevEmailString = ""
     }
     
     override func viewDidAppear(animated: Bool) {
         //TODO: INVESTIGATE UIImagePickerController class
         // The following initialization, for some reason, takes longer than usual. Doing this AFTER the view appears so that there's no obvious delay in any transitions.
         imagePicker = UIImagePickerController()
-        userObject  = User()
+//        userObject  = User()
     }
     
     override func didReceiveMemoryWarning() {
@@ -80,7 +93,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         userPhoto.setImage(image, forState: UIControlState.Normal)
         
         // Store the image into the userObject
-        userObject.image = image
+//        userObject.image = image
         
     }
     
@@ -95,64 +108,61 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         // Check if text field is empty
         if userNameString.isEmpty
         {
-            userNameLabel.textColor = UIColor.redColor()
-            userNameImage.hidden = true
+//            userNameLabel.textColor = UIColor.redColor()
+            print("Empy username string")
         }
         else
         {
-            userNameLabel.textColor = UIColor.whiteColor()
-            userNameImage.hidden = false
+            print("PROPER username string")
+
+//            userNameLabel.textColor = UIColor.whiteColor()
         }
+        
         //TODO: Escape every single character of the string
         
         // We do not have to ensure each user name is unique, because many people might have the same name.
         
-        userObject.name = userNameString
+//        userObject.name = userNameString
 
     }
     
     @IBAction func emailEditingDidEnd(sender: AnyObject) {
         
-        // Store the text inside the field. Make sure it's unwrapped by using a '!'.
-        let userEmailString:String =  userEmail.text!
+        let userEmailString:String = userEmail.text!
         
-        // Check if text field is empty
-        if userEmailString.isEmpty
+        if (userEmailString.isEmpty)
         {
-            print("EMPTY FIELD")
+            print("Empty email string")
         }
-        
-        //TODO: Escape every single character of the string
-        
-        //TODO: Ensure email is not already taken (in database)
-        
-        userObject.email = userEmailString
+        else if(verifyEmailFormat(userEmailString))
+        {
+            print("PROPER EMAIL")
+        }
+        else
+        {
+            //TODO: make email field red.
+            print("IMPROPER EMAIL")
+        }
         
     }
     
     @IBAction func passwordEditingDidEnd(sender: AnyObject) {
         
-        // Store the text inside the field. Make sure it's unwrapped by using a '!'.
-        let userPasswordString:String =  userPassword.text!
+        let userPasswordString:String = userPassword.text!
         
-        // Check if text field is empty
-        if userPasswordString.isEmpty
+        if (userPasswordString.isEmpty)
         {
-            print("EMPTY FIELD")
+            print("Empty password string")
         }
-        
-        //TODO: Ensure password is at least 4 characters!
-        
-        //TODO: Escape every single character of the string
-        
-        userObject.password = userPasswordString
-    }
-    
-    // Actions to perform when "Sign Up" is clicked
-    @IBAction func signUpButtonClicked(sender: AnyObject) {
-        print("Do something here")
-        
-        //TODO: PROCESS THE TEXT
+        else if (verifyPasswordFormat(userPasswordString))
+        {
+            print("PROPER PASSWORD")
+        }
+        else
+        {
+            //TODO: make password field red
+            print("Please have at least 4 characters")
+        }
     }
     
     // When user clicks "Next" on keyboard
@@ -171,6 +181,164 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     @IBAction func passwordEditingDidEndOnExit(sender: UITextField) {
         // Mimic the "Sign Up" button being pressed
         self.signUpButtonClicked(signUpButton.self)
+    }
+    
+    // Actions to perform when "Sign Up" is clicked
+    @IBAction func signUpButtonClicked(sender: AnyObject) {
+        
+        let userNameString:String = userName.text!
+        let userEmailString:String = userEmail.text!
+        let userPasswordString:String =  userPassword.text!
+        
+        /*********************************************************************
+        * ALERTS - send alert and leave if user enters in improper input
+        **********************************************************************/
+        if (userNameString.isEmpty)
+        {
+            showAlert("Error signing up", message: "Please enter in a name!", buttonTitle: "Try again", sender: self)
+            return
+        }
+        
+        if (userEmailString.isEmpty)
+        {
+            showAlert("Error signing up", message: "Please enter in an email address!", buttonTitle: "Try again", sender: self)
+            return
+        }
+        
+        if (!verifyEmailFormat(userEmailString))
+        {
+            showAlert("Improper email address", message: "Please enter in a proper email address!", buttonTitle: "Try again", sender: self)
+            return
+        }
+        
+        if (userPasswordString.isEmpty)
+        {
+            showAlert("Error signing up", message: "Please enter in a password!", buttonTitle: "Try again", sender: self)
+            return
+        }
+        
+        // Do not send request to server if user didn't change email input
+        if (userEmailString == self.prevEmailString)
+        {
+            print("I will not let you take advantage of me.")
+            showAlert("Error signing up", message: "The email you entered already exists! Please enter in a different email address.", buttonTitle: "Try again", sender: self)
+
+            return
+        }
+        
+        /*********************************************************************
+        * END ALERTS
+        **********************************************************************/
+        
+        // Disable sign up button so that user can only send one request at a time
+        signUpButton.enabled = false
+        
+        // Show activity indicator (spinner)
+        spinner.startAnimating()
+        
+        // Perform long-running operation on background thread
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            
+            self.spinner.startAnimating()
+            
+            self.firebaseRootRef.createUser(userEmailString, password: userPasswordString, withValueCompletionBlock: { error1, authData in
+                // If success sign up
+                if (error1 == nil)
+                {
+                    // Log user in
+                    self.firebaseRootRef.authUser(userEmailString, password: userPasswordString, withCompletionBlock:
+                        { error, authData in
+                            
+                            // If success log in
+                            if (error == nil)
+                            {
+                                let userId = authData.uid
+                                let user   = ["name": userNameString]
+                                
+                                print("User signed up and logged in: ", userId)
+                                
+                                // Store necessary information in JSON tree
+                                self.firebaseRootRef.childByAppendingPath("Users/" + userId).setValue(user)
+                                
+                                // Perform update on UI on main thread
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    
+                                    // Stop showing activity indicator (spinner)
+                                    self.checkMarkFlipped.hidden = false
+                                    
+                                    self.userPhoto.hidden = true
+                                    self.spinner.stopAnimating()
+                                    
+                                    UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                                        
+                                        self.checkMarkFlipped.hidden = false
+                                        self.checkMarkFlipped.image = self.checkMark.image
+                                        
+                                        }, completion: nil)
+                                    
+                                    
+                                    delay(1.5)
+                                        {
+                                            
+                                            self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                                            
+                                    }
+                                    
+                                    self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
+                                    
+                                })
+                                
+                            }
+                            else // If not success log in
+                            {
+                                // Perform update on UI on main thread
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    
+                                    // Stop showing activity indicator (spinner)
+                                    self.spinner.stopAnimating()
+                                    
+                                    
+                                    // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
+                                    if (self.presentedViewController == nil)
+                                    {
+                                        
+                                        showAlert("Error logging in.", message: "Sorry, we've signed you up already but was unable to log you in! Please try again.", buttonTitle: "Try again", sender: self)
+                                    }
+                                    
+                                    print("Signup-login Error")
+                                    
+                                    self.prevEmailString = userEmailString
+                                    
+                                })
+                                
+                            }
+                            
+                    })
+
+                }
+                else // If user couldn't sign up
+                {
+                    // Perform update on UI on main thread
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.spinner.stopAnimating()
+                        self.prevEmailString = userEmailString
+
+                        print("COULDN'T SIGN UP")
+                        
+                        showAlert("Sorry", message: "The email you entered already exists! Please try a different email address.", buttonTitle: "Try again", sender: self)
+                    })
+                }
+                
+            })
+            
+            
+            
+        })
+        
+        
+        // Enable the log-in button again
+        signUpButton.enabled = true
+
     }
     
 }

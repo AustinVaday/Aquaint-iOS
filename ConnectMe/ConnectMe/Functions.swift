@@ -84,5 +84,5 @@ func showAlert(title: String, message: String, buttonTitle: String, sender: AnyO
     // Add the action to the alert
     alert.addAction(alertAction)
     
-    sender.showViewController(alert, sender: sender)
+    sender.showViewController(alert, sender: nil)
 }

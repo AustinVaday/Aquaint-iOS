@@ -553,7 +553,6 @@
                                 </state>
                                 <connections>
                                     <action selector="signUpButtonClicked:" destination="54r-9I-5XD" eventType="touchUpInside" id="SnZ-qY-hiR"/>
-                                    <segue destination="8Yo-pa-87T" kind="show" id="vs6-CL-QzQ"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Person Icon Black" translatesAutoresizingMaskIntoConstraints="NO" id="25Y-Qu-kQi">
@@ -661,27 +660,6 @@
                                     <action selector="emailEditingDidEndOnExit:" destination="54r-9I-5XD" eventType="editingDidEndOnExit" id="6Y4-3u-qy5"/>
                                 </connections>
                             </textField>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Person Icon Error" translatesAutoresizingMaskIntoConstraints="NO" id="NGZ-yY-e4c">
-                                <rect key="frame" x="45" y="249" width="25" height="25"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="25" id="NVd-8p-kL3"/>
-                                    <constraint firstAttribute="height" constant="25" id="cvb-KZ-TD7"/>
-                                </constraints>
-                            </imageView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Password Icon Error" translatesAutoresizingMaskIntoConstraints="NO" id="DlB-e2-Nkv">
-                                <rect key="frame" x="45" y="409" width="25" height="25"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="25" id="Jie-ca-dj1"/>
-                                    <constraint firstAttribute="height" constant="25" id="iFr-p1-zSF"/>
-                                </constraints>
-                            </imageView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Email Icon Error" translatesAutoresizingMaskIntoConstraints="NO" id="wRF-6i-yeq">
-                                <rect key="frame" x="45" y="329" width="25" height="25"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="25" id="bh0-tt-7nA"/>
-                                    <constraint firstAttribute="height" constant="25" id="yrP-2L-5nJ"/>
-                                </constraints>
-                            </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Your Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jiS-sR-5ZC">
                                 <rect key="frame" x="95" y="409" width="485" height="30"/>
                                 <constraints>
@@ -748,13 +726,11 @@
                         <constraints>
                             <constraint firstItem="wzg-x8-N4s" firstAttribute="top" secondItem="2Qj-0g-N5p" secondAttribute="top" id="0U2-wE-7Em"/>
                             <constraint firstItem="DcH-hn-sV3" firstAttribute="top" secondItem="dLR-eB-wW5" secondAttribute="bottom" constant="-1" id="0c3-he-U24"/>
-                            <constraint firstItem="NGZ-yY-e4c" firstAttribute="leading" secondItem="25Y-Qu-kQi" secondAttribute="leading" id="1il-MF-iRq"/>
                             <constraint firstItem="chM-A8-v39" firstAttribute="width" secondItem="2Qj-0g-N5p" secondAttribute="width" constant="-115" id="1lF-gH-Zsg"/>
                             <constraint firstItem="I1g-0U-pFz" firstAttribute="top" secondItem="Z46-Pa-85h" secondAttribute="bottom" constant="55" id="1y2-fJ-zw0"/>
                             <constraint firstItem="aOT-q2-98n" firstAttribute="leading" secondItem="I1g-0U-pFz" secondAttribute="trailing" constant="25" id="23M-YJ-SrQ"/>
                             <constraint firstItem="N1b-aU-Rms" firstAttribute="top" secondItem="5JB-Ng-RuR" secondAttribute="bottom" constant="16" id="4ab-Hi-agT"/>
                             <constraint firstItem="N9M-Nt-gzx" firstAttribute="top" secondItem="DcH-hn-sV3" secondAttribute="bottom" constant="21" id="5vI-c4-ggh"/>
-                            <constraint firstItem="DlB-e2-Nkv" firstAttribute="top" secondItem="I1g-0U-pFz" secondAttribute="top" id="6Tq-UL-Ebe"/>
                             <constraint firstItem="Fxo-RB-iMG" firstAttribute="top" secondItem="LF5-Ix-NVz" secondAttribute="bottom" constant="-20" id="7e4-NX-zm2"/>
                             <constraint firstItem="jiS-sR-5ZC" firstAttribute="leading" secondItem="I1g-0U-pFz" secondAttribute="trailing" constant="25" id="9od-T2-kfB"/>
                             <constraint firstItem="tBe-gm-Axm" firstAttribute="top" secondItem="jiS-sR-5ZC" secondAttribute="bottom" constant="21" id="AVF-4J-Eqv"/>
@@ -763,7 +739,6 @@
                             <constraint firstItem="0fe-vn-BTg" firstAttribute="width" secondItem="2Qj-0g-N5p" secondAttribute="width" constant="-40" id="CPS-2a-wyU"/>
                             <constraint firstItem="N1b-aU-Rms" firstAttribute="top" secondItem="wzg-x8-N4s" secondAttribute="bottom" constant="61" id="CdO-xq-Q8f"/>
                             <constraint firstItem="Z46-Pa-85h" firstAttribute="top" secondItem="25Y-Qu-kQi" secondAttribute="bottom" constant="55" id="DMU-JP-n4K"/>
-                            <constraint firstItem="NGZ-yY-e4c" firstAttribute="top" secondItem="25Y-Qu-kQi" secondAttribute="top" id="DeE-AQ-Tgg"/>
                             <constraint firstItem="jiS-sR-5ZC" firstAttribute="width" secondItem="2Qj-0g-N5p" secondAttribute="width" constant="-115" id="F1p-Cx-6Bh"/>
                             <constraint firstItem="chM-A8-v39" firstAttribute="top" secondItem="W2b-gR-guV" secondAttribute="bottom" constant="-1" id="FNe-QY-4HH"/>
                             <constraint firstItem="Fxo-RB-iMG" firstAttribute="leading" secondItem="2Qj-0g-N5p" secondAttribute="leadingMargin" constant="-20" id="FnN-eQ-kgk"/>
@@ -775,7 +750,6 @@
                             <constraint firstItem="jiS-sR-5ZC" firstAttribute="top" secondItem="aOT-q2-98n" secondAttribute="bottom" constant="-1" id="Ok7-k0-pyA"/>
                             <constraint firstItem="N1b-aU-Rms" firstAttribute="top" secondItem="LF5-Ix-NVz" secondAttribute="bottom" constant="61" id="Px0-61-EDl"/>
                             <constraint firstItem="oqZ-gc-LwT" firstAttribute="top" secondItem="Fxo-RB-iMG" secondAttribute="bottom" constant="-60" id="UeT-Yv-jnu"/>
-                            <constraint firstItem="DlB-e2-Nkv" firstAttribute="leading" secondItem="I1g-0U-pFz" secondAttribute="leading" id="VHL-c8-fiV"/>
                             <constraint firstItem="wzg-x8-N4s" firstAttribute="leading" secondItem="5JB-Ng-RuR" secondAttribute="leading" constant="-1" id="VhJ-Vv-RfC"/>
                             <constraint firstItem="lsu-Lz-zFb" firstAttribute="top" secondItem="Fxo-RB-iMG" secondAttribute="bottom" id="XNO-qP-0Ed"/>
                             <constraint firstItem="zCu-2J-TnB" firstAttribute="top" secondItem="wzg-x8-N4s" secondAttribute="bottom" constant="8" symbolic="YES" id="Y0k-Xd-sis"/>
@@ -798,45 +772,35 @@
                             <constraint firstItem="lsu-Lz-zFb" firstAttribute="top" secondItem="oqZ-gc-LwT" secondAttribute="bottom" id="lSn-RT-Ple"/>
                             <constraint firstAttribute="leadingMargin" secondItem="zCu-2J-TnB" secondAttribute="leading" id="nve-Xu-oHC"/>
                             <constraint firstItem="chM-A8-v39" firstAttribute="leading" secondItem="Z46-Pa-85h" secondAttribute="trailing" constant="25" id="oQd-38-q9w"/>
-                            <constraint firstItem="wRF-6i-yeq" firstAttribute="leading" secondItem="Z46-Pa-85h" secondAttribute="leading" id="pX8-Rt-mIH"/>
                             <constraint firstItem="tBe-gm-Axm" firstAttribute="centerX" secondItem="2Qj-0g-N5p" secondAttribute="centerX" id="siE-Ad-SJi"/>
                             <constraint firstItem="W2b-gR-guV" firstAttribute="leading" secondItem="Z46-Pa-85h" secondAttribute="trailing" constant="25" id="uOO-2b-f9F"/>
                             <constraint firstItem="5JB-Ng-RuR" firstAttribute="top" secondItem="wzg-x8-N4s" secondAttribute="bottom" id="uoG-yF-zVz"/>
                             <constraint firstItem="DcH-hn-sV3" firstAttribute="width" secondItem="2Qj-0g-N5p" secondAttribute="width" constant="-115" id="w2E-Hg-5rY"/>
                             <constraint firstItem="dLR-eB-wW5" firstAttribute="leading" secondItem="25Y-Qu-kQi" secondAttribute="trailing" constant="25" id="wcs-hZ-Vtj"/>
-                            <constraint firstItem="wRF-6i-yeq" firstAttribute="top" secondItem="Z46-Pa-85h" secondAttribute="top" id="xR3-qq-RVD"/>
                             <constraint firstItem="N1b-aU-Rms" firstAttribute="centerX" secondItem="2Qj-0g-N5p" secondAttribute="centerX" id="xau-IF-5Sz"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="Fxo-RB-iMG"/>
-                                <exclude reference="NGZ-yY-e4c"/>
-                                <exclude reference="DlB-e2-Nkv"/>
-                                <exclude reference="wRF-6i-yeq"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="checkMark" destination="Xkm-rY-8qQ" id="uEZ-N2-vEN"/>
+                        <outlet property="checkMarkFlipped" destination="HMM-gV-lMF" id="2Mg-iO-0rw"/>
+                        <outlet property="checkMarkView" destination="N1b-aU-Rms" id="Eo6-oL-5ja"/>
                         <outlet property="signUpButton" destination="oqZ-gc-LwT" id="0Z2-An-inP"/>
                         <outlet property="spinner" destination="cEm-h1-E92" id="XQU-HY-ARN"/>
                         <outlet property="userEmail" destination="chM-A8-v39" id="KGS-9e-rVO"/>
-                        <outlet property="userEmailImage" destination="Z46-Pa-85h" id="Pny-vp-ayV"/>
-                        <outlet property="userEmailImageError" destination="wRF-6i-yeq" id="lft-z4-1ih"/>
-                        <outlet property="userEmailLabel" destination="W2b-gR-guV" id="E6g-oB-fKd"/>
                         <outlet property="userName" destination="DcH-hn-sV3" id="Gme-Ac-qQ1"/>
-                        <outlet property="userNameImage" destination="25Y-Qu-kQi" id="bDh-eU-uQh"/>
-                        <outlet property="userNameImageError" destination="NGZ-yY-e4c" id="wbS-ub-dOp"/>
-                        <outlet property="userNameLabel" destination="dLR-eB-wW5" id="tk9-Jv-PJW"/>
                         <outlet property="userPassword" destination="jiS-sR-5ZC" id="Tg1-u3-vbv"/>
-                        <outlet property="userPasswordImage" destination="I1g-0U-pFz" id="PGl-Mf-qsg"/>
-                        <outlet property="userPasswordImageError" destination="DlB-e2-Nkv" id="Rq3-mq-J04"/>
-                        <outlet property="userPasswordLabel" destination="aOT-q2-98n" id="J6Q-mb-lS1"/>
                         <outlet property="userPhoto" destination="utB-hU-YRW" id="qG4-Lz-t1u"/>
+                        <segue destination="8Yo-pa-87T" kind="show" identifier="ToHomeViewController" id="noA-WB-QfR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vCu-vo-SeO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="888" y="1091"/>
+            <point key="canvasLocation" x="974" y="1076"/>
         </scene>
         <!--Log In-->
         <scene sceneID="l6P-hM-j8t">
@@ -1057,7 +1021,7 @@
                         <outlet property="spinner" destination="Sy9-9r-Ocz" id="gX2-TB-A3C"/>
                         <outlet property="userEmail" destination="OqE-ye-V8b" id="bgb-fX-05s"/>
                         <outlet property="userPassword" destination="VEf-nq-NCs" id="7lu-t4-pIw"/>
-                        <segue destination="8Yo-pa-87T" kind="show" identifier="HomeViewController" id="OXq-gn-jpj"/>
+                        <segue destination="8Yo-pa-87T" kind="show" identifier="ToHomeViewController" id="OXq-gn-jpj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fgb-ah-5w3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1081,13 +1045,12 @@
         <image name="Password Icon Black" width="50" height="50"/>
         <image name="Password Icon Error" width="50" height="50"/>
         <image name="Person Icon Black" width="50" height="50"/>
-        <image name="Person Icon Error" width="50" height="50"/>
         <image name="Scan Code" width="412" height="412"/>
         <image name="Up Caret" width="44" height="24"/>
         <image name="facebook" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="vs6-CL-QzQ"/>
+        <segue reference="noA-WB-QfR"/>
         <segue reference="zog-ev-2Fq"/>
     </inferredMetricsTieBreakers>
 </document>

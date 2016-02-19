@@ -19,13 +19,16 @@ class LogInController: UIViewController {
     @IBOutlet weak var checkMark: UIImageView!
     @IBOutlet weak var checkMarkView: UIView!
     @IBOutlet weak var checkMarkFlipped: UIImageView!
-    var checkMarkFlippedCopy: UIImageView!
-    
-    var firebaseRootRef: Firebase!
     
     @IBOutlet weak var emblem: UIImageView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var logInButton: UIButton!
+    
+    var checkMarkFlippedCopy: UIImageView!
+    var firebaseRootRef: Firebase!
+    
+    let segueDestination = "ToHomeViewController"
+
     
     // Counts how many times the user has incorrectly logged in.
     /* var wrongLogInCount: Int = 0 */
@@ -33,7 +36,7 @@ class LogInController: UIViewController {
     override func viewDidLoad() {
         
         // Create a reference to firebase location
-        firebaseRootRef = Firebase(url: "https://torrid-fire-8382.firebaseio.com/?page=Auth")
+        firebaseRootRef = Firebase(url: "https://torrid-fire-8382.firebaseio.com/")
         
         
         self.checkMark.hidden = true
@@ -139,7 +142,7 @@ class LogInController: UIViewController {
                                 delay(1.5)
                                 {
                                         
-                                        self.performSegueWithIdentifier("HomeViewController", sender: nil)
+                                        self.performSegueWithIdentifier(self.segueDestination, sender: nil)
                                         
                                 }
                                 
