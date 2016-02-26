@@ -27,7 +27,7 @@ class LogInController: UIViewController {
     var checkMarkFlippedCopy: UIImageView!
     var firebaseRootRef: Firebase!
     
-    let segueDestination = "ToHomeViewController"
+    let segueDestination = "toMainPageViewController"
 
     
     // Counts how many times the user has incorrectly logged in.

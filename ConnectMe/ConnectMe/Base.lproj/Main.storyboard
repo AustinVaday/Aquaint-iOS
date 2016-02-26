@@ -134,12 +134,12 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eWA-a6-h8Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="IxV-Bb-kQe"/>
             </objects>
-            <point key="canvasLocation" x="370" y="2662"/>
+            <point key="canvasLocation" x="413" y="3670"/>
         </scene>
         <!--Menu Controller-->
         <scene sceneID="7d9-DH-Soi">
             <objects>
-                <viewController id="thT-it-jqL" customClass="MenuController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MenuViewController" id="thT-it-jqL" customClass="MenuController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iBk-5a-fwA"/>
                         <viewControllerLayoutGuide type="bottom" id="LRT-bE-Y90"/>
@@ -198,7 +198,15 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hic-Ge-GKX" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="Dlo-yr-wOR"/>
             </objects>
-            <point key="canvasLocation" x="-455" y="2662"/>
+            <point key="canvasLocation" x="-575" y="2662"/>
+        </scene>
+        <!--Main Page View Controller-->
+        <scene sceneID="ELz-98-6qZ">
+            <objects>
+                <pageViewController storyboardIdentifier="MainPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="GqN-bc-CtE" customClass="MainPageViewController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="emb-Vg-Lp1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="413" y="1847"/>
         </scene>
         <!--Home Controller-->
         <scene sceneID="OnF-bp-ptK">
@@ -297,12 +305,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bTl-iT-RUd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="370" y="1855"/>
+            <point key="canvasLocation" x="421" y="2671"/>
         </scene>
         <!--Recent Connections-->
         <scene sceneID="Jxe-mP-QLE">
             <objects>
-                <viewController title="Recent Connections" id="JVC-Ri-2wB" customClass="RecentConnections" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RecentConnectionsViewController" title="Recent Connections" id="JVC-Ri-2wB" customClass="RecentConnections" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tdL-VL-qiB"/>
                         <viewControllerLayoutGuide type="bottom" id="fLh-56-2g1"/>
@@ -486,7 +494,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wQe-Ly-mEL" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="a4p-th-tTG"/>
             </objects>
-            <point key="canvasLocation" x="1207" y="2662"/>
+            <point key="canvasLocation" x="1311" y="2671"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="rHR-jk-33l">
@@ -786,7 +794,7 @@
                         <outlet property="userName" destination="DcH-hn-sV3" id="Gme-Ac-qQ1"/>
                         <outlet property="userPassword" destination="jiS-sR-5ZC" id="Tg1-u3-vbv"/>
                         <outlet property="userPhoto" destination="utB-hU-YRW" id="qG4-Lz-t1u"/>
-                        <segue destination="8Yo-pa-87T" kind="show" identifier="ToHomeViewController" id="noA-WB-QfR"/>
+                        <segue destination="GqN-bc-CtE" kind="show" identifier="toMainPageViewController" id="EoT-IO-KNF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vCu-vo-SeO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1012,7 +1020,7 @@
                         <outlet property="spinner" destination="Sy9-9r-Ocz" id="gX2-TB-A3C"/>
                         <outlet property="userEmail" destination="OqE-ye-V8b" id="bgb-fX-05s"/>
                         <outlet property="userPassword" destination="VEf-nq-NCs" id="7lu-t4-pIw"/>
-                        <segue destination="8Yo-pa-87T" kind="show" identifier="ToHomeViewController" id="OXq-gn-jpj"/>
+                        <segue destination="GqN-bc-CtE" kind="show" identifier="toMainPageViewController" id="5bL-Aw-50Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fgb-ah-5w3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1041,7 +1049,8 @@
         <image name="facebook" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="WT4-Um-PRj"/>
         <segue reference="X0O-bq-tyh"/>
-        <segue reference="noA-WB-QfR"/>
+        <segue reference="5bL-Aw-50Y"/>
     </inferredMetricsTieBreakers>
 </document>

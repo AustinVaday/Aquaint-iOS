@@ -28,7 +28,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     var prevEmailString: String!                // Used to prevent user from spamming requests
     var imagePicker:UIImagePickerController!    // Used for selecting image from user's device
 
-    let segueDestination = "ToHomeViewController"
+    let segueDestination = "toMainPageViewController"
     
     
     override func viewDidLoad() {
