@@ -13,22 +13,31 @@ import Parse
 
 class HomeController: UIViewController {
     
+    override func viewDidLoad() {
+        
+        // Add gesture recognizer programatacially (buggy if doing so through XIB)
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePan:")
+        self.view.userInteractionEnabled = true
+        self.view.addGestureRecognizer(panGestureRecognizer)
+        
+    }
     
     // Functionality to handle user pan gestures (dragging left, right, up, down, etc)
-    @IBAction func handlePan (recognizer: UIPanGestureRecognizer)
+    func handlePan (recognizer: UIPanGestureRecognizer)
     {
         print("IN HANDLEPAN")
         // Get the translation (how much the user moved their finger)
         let translation = recognizer.translationInView(self.view)
-        
+        let velocity = recognizer.velocityInView(self.view)
         let view = recognizer.view!
         
         // Set the new view's center based on x/y translations that the user initiated
-        view.center = CGPoint(x: view.center.x + translation.x, y: view.center.y + translation.y)
+        // No y translation for now
+        view.center = CGPoint(x: view.center.x + translation.x, y: view.center.y /*+ translation.y*/)
     
         // Make sure to set recognizer's translation back to 0 to prevent compounding issues
         recognizer.setTranslation(CGPointZero, inView: self.view)
-    
+//
         
     }
 

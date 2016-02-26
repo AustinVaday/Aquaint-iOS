@@ -290,21 +290,12 @@
                             <constraint firstItem="8d1-WR-tdL" firstAttribute="centerX" secondItem="lac-sa-SWi" secondAttribute="centerX" id="w5h-3G-G6A"/>
                             <constraint firstItem="gCx-w9-Vgf" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="5" id="ySG-M2-B0F"/>
                         </constraints>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="EOO-Sr-s17" appends="YES" id="TyS-WJ-Trf"/>
-                        </connections>
                     </view>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="LogOut" id="X0O-bq-tyh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bTl-iT-RUd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="EOO-Sr-s17">
-                    <rectEdge key="edges" left="YES" top="YES" right="YES" bottom="YES"/>
-                    <connections>
-                        <action selector="handlePan:" destination="8Yo-pa-87T" id="gjF-eQ-Egb"/>
-                    </connections>
-                </screenEdgePanGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="370" y="1855"/>
         </scene>
@@ -1050,7 +1041,7 @@
         <image name="facebook" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="X0O-bq-tyh"/>
         <segue reference="noA-WB-QfR"/>
-        <segue reference="zog-ev-2Fq"/>
     </inferredMetricsTieBreakers>
 </document>
