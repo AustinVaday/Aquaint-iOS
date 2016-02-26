@@ -108,7 +108,7 @@
                                 </constraints>
                                 <state key="normal" image="Up Caret"/>
                                 <connections>
-                                    <segue destination="8Yo-pa-87T" kind="show" id="WT4-Um-PRj"/>
+                                    <segue destination="GqN-bc-CtE" kind="show" id="zEN-Jn-s14"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zeu-ZH-NgS">
@@ -134,7 +134,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eWA-a6-h8Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="IxV-Bb-kQe"/>
             </objects>
-            <point key="canvasLocation" x="413" y="3670"/>
+            <point key="canvasLocation" x="421" y="3584"/>
         </scene>
         <!--Menu Controller-->
         <scene sceneID="7d9-DH-Soi">
@@ -170,7 +170,7 @@
                                 </constraints>
                                 <state key="normal" image="Back Arrow"/>
                                 <connections>
-                                    <segue destination="8Yo-pa-87T" kind="show" id="qwh-rK-Hbh"/>
+                                    <segue destination="GqN-bc-CtE" kind="presentation" modalTransitionStyle="crossDissolve" id="gG5-AL-hIQ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -198,7 +198,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hic-Ge-GKX" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="Dlo-yr-wOR"/>
             </objects>
-            <point key="canvasLocation" x="-575" y="2662"/>
+            <point key="canvasLocation" x="-281" y="2671"/>
         </scene>
         <!--Main Page View Controller-->
         <scene sceneID="ELz-98-6qZ">
@@ -236,7 +236,7 @@
                                 </constraints>
                                 <state key="normal" image="Menu Icon"/>
                                 <connections>
-                                    <segue destination="thT-it-jqL" kind="show" id="Phs-oT-ZRX"/>
+                                    <segue destination="thT-it-jqL" kind="presentation" modalTransitionStyle="crossDissolve" id="Phs-oT-ZRX"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lac-sa-SWi">
@@ -258,7 +258,7 @@
                                 </constraints>
                                 <state key="normal" image="Group Dots Icon"/>
                                 <connections>
-                                    <segue destination="JVC-Ri-2wB" kind="show" id="TvJ-hs-Iym"/>
+                                    <segue destination="JVC-Ri-2wB" kind="presentation" modalTransitionStyle="crossDissolve" id="TvJ-hs-Iym"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3TD-OX-QTc">
@@ -335,7 +335,7 @@
                                 </constraints>
                                 <state key="normal" image="Back Arrow"/>
                                 <connections>
-                                    <segue destination="8Yo-pa-87T" kind="show" id="P5G-O0-nYI"/>
+                                    <segue destination="GqN-bc-CtE" kind="presentation" modalTransitionStyle="crossDissolve" id="RqE-Y8-kVP"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Connections" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHt-r2-AXK">
@@ -954,6 +954,13 @@
                                     <constraint firstAttribute="width" constant="160" id="aR0-5v-CPz"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P82-Uo-nC6">
+                                <rect key="frame" x="6" y="507" width="128" height="30"/>
+                                <state key="normal" title="Temporary Bypass"/>
+                                <connections>
+                                    <segue destination="GqN-bc-CtE" kind="show" id="Sj9-tG-nzW"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -964,6 +971,7 @@
                             <constraint firstItem="Sy9-9r-Ocz" firstAttribute="top" secondItem="PQZ-z7-fWn" secondAttribute="top" constant="123" id="7dy-g5-jwa"/>
                             <constraint firstItem="OqE-ye-V8b" firstAttribute="top" secondItem="H5k-sn-9QO" secondAttribute="top" id="9lH-ev-ljs"/>
                             <constraint firstItem="kud-g0-eeG" firstAttribute="leading" secondItem="H5k-sn-9QO" secondAttribute="leading" id="B1P-as-hJe"/>
+                            <constraint firstItem="P82-Uo-nC6" firstAttribute="leading" secondItem="PQZ-z7-fWn" secondAttribute="leadingMargin" constant="-14" id="C0v-Mh-cc4"/>
                             <constraint firstItem="7nH-cl-xZJ" firstAttribute="top" secondItem="LBq-8j-Cob" secondAttribute="bottom" constant="8" symbolic="YES" id="ELR-Fu-z43"/>
                             <constraint firstItem="sRP-Ia-c3L" firstAttribute="top" secondItem="KMS-fn-upw" secondAttribute="bottom" id="EpS-FX-77I"/>
                             <constraint firstItem="OqE-ye-V8b" firstAttribute="leading" secondItem="czu-hg-3HQ" secondAttribute="leading" id="Est-5N-eTb"/>
@@ -995,6 +1003,7 @@
                             <constraint firstItem="OqE-ye-V8b" firstAttribute="trailing" secondItem="rpg-pa-VYF" secondAttribute="trailing" id="bHP-qb-lCd"/>
                             <constraint firstItem="czu-hg-3HQ" firstAttribute="top" secondItem="rpg-pa-VYF" secondAttribute="bottom" constant="3" id="cGT-WB-Wbj"/>
                             <constraint firstItem="ULS-L1-qp4" firstAttribute="top" secondItem="7B4-g5-AC9" secondAttribute="bottom" constant="26" id="dIS-Ok-eJi"/>
+                            <constraint firstItem="sYl-q6-Xao" firstAttribute="top" secondItem="P82-Uo-nC6" secondAttribute="bottom" constant="3" id="dNt-IU-8gq"/>
                             <constraint firstItem="rpg-pa-VYF" firstAttribute="trailing" secondItem="VEf-nq-NCs" secondAttribute="trailing" id="eA5-v7-93h"/>
                             <constraint firstItem="rpg-pa-VYF" firstAttribute="top" secondItem="H5k-sn-9QO" secondAttribute="bottom" constant="26" id="eKC-3o-Tbu"/>
                             <constraint firstItem="ULS-L1-qp4" firstAttribute="top" secondItem="VEf-nq-NCs" secondAttribute="bottom" constant="21" id="f56-WP-zo7"/>
@@ -1049,8 +1058,7 @@
         <image name="facebook" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="WT4-Um-PRj"/>
         <segue reference="X0O-bq-tyh"/>
-        <segue reference="5bL-Aw-50Y"/>
+        <segue reference="gG5-AL-hIQ"/>
     </inferredMetricsTieBreakers>
 </document>
