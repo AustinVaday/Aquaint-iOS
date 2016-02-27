@@ -677,7 +677,7 @@
                                     <action selector="passwordEditingDidEndOnExit:" destination="54r-9I-5XD" eventType="editingDidEndOnExit" id="Csl-UF-GMU"/>
                                 </connections>
                             </textField>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N1b-aU-Rms">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N1b-aU-Rms">
                                 <rect key="frame" x="220" y="81" width="160" height="128"/>
                                 <subviews>
                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Check Mark" translatesAutoresizingMaskIntoConstraints="NO" id="Xkm-rY-8qQ">
@@ -694,28 +694,26 @@
                                             <constraint firstAttribute="height" constant="128" id="Jcx-c3-CVt"/>
                                         </constraints>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="utB-hU-YRW">
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="cEm-h1-E92">
+                                        <rect key="frame" x="62" y="45" width="37" height="37"/>
+                                        <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </activityIndicatorView>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="utB-hU-YRW">
                                         <rect key="frame" x="20" y="4" width="120" height="120"/>
                                         <state key="normal" image="Add Photo Color"/>
                                         <connections>
                                             <action selector="addPhotoButtonClicked:" destination="54r-9I-5XD" eventType="touchUpInside" id="jU3-6P-U1Y"/>
                                         </connections>
                                     </button>
-                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="cEm-h1-E92">
-                                        <rect key="frame" x="62" y="45" width="37" height="37"/>
-                                        <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </activityIndicatorView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="HMM-gV-lMF" firstAttribute="centerY" secondItem="N1b-aU-Rms" secondAttribute="centerY" id="2mL-65-Wnj"/>
                                     <constraint firstItem="Xkm-rY-8qQ" firstAttribute="centerX" secondItem="N1b-aU-Rms" secondAttribute="centerX" id="GnX-Vq-5am"/>
-                                    <constraint firstItem="utB-hU-YRW" firstAttribute="centerX" secondItem="N1b-aU-Rms" secondAttribute="centerX" id="Knx-1c-OKQ"/>
                                     <constraint firstAttribute="height" constant="128" id="Nq2-QK-WHe"/>
                                     <constraint firstItem="Xkm-rY-8qQ" firstAttribute="centerY" secondItem="N1b-aU-Rms" secondAttribute="centerY" id="QR3-dK-AnN"/>
                                     <constraint firstItem="cEm-h1-E92" firstAttribute="centerX" secondItem="N1b-aU-Rms" secondAttribute="centerX" id="YG6-L7-0jb"/>
                                     <constraint firstItem="cEm-h1-E92" firstAttribute="centerY" secondItem="N1b-aU-Rms" secondAttribute="centerY" id="bmv-6V-ovC"/>
-                                    <constraint firstItem="utB-hU-YRW" firstAttribute="centerY" secondItem="N1b-aU-Rms" secondAttribute="centerY" id="ja6-67-lh7"/>
                                     <constraint firstItem="HMM-gV-lMF" firstAttribute="centerX" secondItem="N1b-aU-Rms" secondAttribute="centerX" id="sJS-YW-Smk"/>
                                     <constraint firstAttribute="width" constant="160" id="xx5-pL-nUC"/>
                                 </constraints>
@@ -1058,7 +1056,7 @@
         <image name="facebook" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="X0O-bq-tyh"/>
-        <segue reference="gG5-AL-hIQ"/>
+        <segue reference="zog-ev-2Fq"/>
+        <segue reference="EoT-IO-KNF"/>
     </inferredMetricsTieBreakers>
 </document>

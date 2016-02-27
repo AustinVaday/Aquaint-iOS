@@ -34,6 +34,13 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Make the button round!
+        userPhoto.clipsToBounds = true
+        userPhoto.layer.cornerRadius = userPhoto.frame.size.width / 2
+        userPhoto.contentVerticalAlignment = UIControlContentVerticalAlignment.Fill
+        userPhoto.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Fill
+        
+        
         // Create a reference to firebase location
         firebaseRootRef = Firebase(url: "https://torrid-fire-8382.firebaseio.com")
         
@@ -46,9 +53,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
         flipImageHorizontally(checkMarkFlippedCopy)
         
-        // Make the button round!
-        userPhoto.clipsToBounds = true
-        userPhoto.layer.cornerRadius = userPhoto.bounds.size.width / 2
+
         
         // Empty previous email string
         prevEmailString = ""
