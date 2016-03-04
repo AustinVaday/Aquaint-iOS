@@ -12,6 +12,7 @@ import Parse
 
 class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
+    
     let NO_ROW = -1
     @IBOutlet weak var recentConnTableView: UITableView!
     var selectedRowIndex:Int = -1
@@ -19,13 +20,13 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var isARowExpanded:Bool = false
     let defaultRowHeight:CGFloat = 60
     let expandedRowHeight:CGFloat = 100
-    let socialMediaNameList = Array<String>(arrayLiteral: "phone", "facebook", "youtube", "twitter", "skype", "linkedin")
-    var socialMediaImageList : Array<UIImage>! // An array of social media emblem images
-//    let socialMediaImageList = Array<UIImage>(arrayLiteral: UIImage(named: "phone")!, UIImage(named: "facebook")!, UIImage(named:"youtube")!, UIImage(named:"twitter")!, UIImage(named:"skype")!, UIImage(named:"linkedin")!)
+    let socialMediaNameList = Array<String>(arrayLiteral: "facebook", "instagram", "twitter", "linkedin", "youtube", "phone")
     
+    var socialMediaImageList : Array<UIImage>! // An array of social media emblem images
     
     override func viewDidLoad() {
     
+        // Load up all images we have
         var imageName:String!
         var newUIImage:UIImage!
         let size = socialMediaNameList.count
@@ -41,10 +42,20 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             imageName = socialMediaNameList[i]
             
             // Generate image
-            newUIImage = UIImage(named: imageName)!
+            newUIImage = UIImage(named: imageName)
             
-            // Store image
-            socialMediaImageList.append(newUIImage)
+            if (newUIImage != nil)
+            {
+                // Store image
+                socialMediaImageList.append(newUIImage!)
+            }
+            else
+            {
+                print ("ERROR: RecentConnections.swift : social media emblem image not found.")
+                // TODO: Show error image
+                // socialMediaImageList.append(UIImage(named: ")
+            }
+            
         }
         
     }
@@ -146,16 +157,10 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Probable cause: tableView.beginUpdates() and tableView.endUpdates() in tableView(didSelectIndexPath) method
         delay(0) { () -> () in
             
-            // Set social media emblem
-
-            
             // Generate a UI image for the respective social media type
             cell.emblemImage.image = self.socialMediaImageList[indexPath.item % self.socialMediaImageList.count]
             cell.socialMediaName = socialMediaName
-            
-            
-            /* Don't use the below, will cause images to reset when button is clicked. */
-            //cell.emblemButton.imageView?.image = self.emblemImageRange[indexPath.item % 4]
+
         }
 
         // Make cell image circular
@@ -177,14 +182,55 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         print("SELECTED ITEM AT ", indexPath.item)
         
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
-
         let socialMediaName = cell.socialMediaName
         
+        var urlString:String!
+        var altString:String!
+        var socialMediaURL:NSURL!
         
+        let userName = "AustinVaday"
         
-        print(socialMediaName)
-        print ("CELL SIZE IS: ", cell.frame.size.width)
-        print ("IMAGE SIZE IS: ",cell.emblemImage.frame.size.width)
+        switch (socialMediaName)
+        {
+        case "facebook":
+                urlString = "fb://requests/" + userName
+                altString = "http://www.facebook.com/" + userName
+            break;
+        case "instagram":
+                urlString = "instagram://user?username=" + userName
+                altString = "http://www.instagram.com/" + userName
+            break;
+        case "twitter":
+                urlString = "twitter:///user?screen_name=" + userName
+                altString = "http://www.twitter.com/" + userName
+            break;
+        case "linkedin":
+                urlString = "linkedin://profile/" + userName
+                altString = "http://www.linkedin.com/in/" + userName
+                
+            break;
+        case "youtube":
+                urlString = "youtube:www.youtube.com/user/" + userName
+                altString = "http://www.youtube.com/" + userName
+            break;
+        case "phone":
+                print ("COMING SOON")
+            break;
+        default:
+            break;
+        }
+        
+        socialMediaURL = NSURL(string: urlString)
+        
+        // If user doesn't have social media app installed, open using default browser instead (use altString)
+        if (!UIApplication.sharedApplication().canOpenURL(socialMediaURL))
+        {
+            socialMediaURL = NSURL(string: altString)
+        }
+        
+        // Perform the request!
+        UIApplication.sharedApplication().openURL(socialMediaURL)
+        
     }
 
     
