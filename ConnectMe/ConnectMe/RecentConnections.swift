@@ -9,6 +9,7 @@
 
 import UIKit
 import Parse
+import Contacts
 
 class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -32,22 +33,21 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         let size = socialMediaNameList.count
         
         socialMediaImageList = Array<UIImage>()
-        
+        print("Size is: ", size)
         // Generate all necessary images for the emblems
         for (var i = 0; i < size; i++)
         {
-            print("OK!")
-
             // Fetch emblem name
             imageName = socialMediaNameList[i]
-            
+         
+            print("Generating image for: ", imageName)
             // Generate image
             newUIImage = UIImage(named: imageName)
             
             if (newUIImage != nil)
             {
                 // Store image
-                socialMediaImageList.append(newUIImage!)
+                socialMediaImageList.append(newUIImage)
             }
             else
             {
@@ -152,6 +152,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 
         let socialMediaName = socialMediaNameList[indexPath.item % self.socialMediaNameList.count]
         
+        print(socialMediaName)
+        
         // We will delay the image assignment to prevent buggy race conditions
         // (Check to see what happens when the delay is not set... then you'll understand)
         // Probable cause: tableView.beginUpdates() and tableView.endUpdates() in tableView(didSelectIndexPath) method
@@ -159,6 +161,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             
             // Generate a UI image for the respective social media type
             cell.emblemImage.image = self.socialMediaImageList[indexPath.item % self.socialMediaImageList.count]
+            
             cell.socialMediaName = socialMediaName
 
         }
@@ -168,7 +171,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         // Make cell movements cleaner (increased FPM)
         cell.layer.shouldRasterize = true
-        
+
         return cell
     }
 
@@ -187,8 +190,12 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         var urlString:String!
         var altString:String!
         var socialMediaURL:NSURL!
+        var contact:CNMutableContact = CNMutableContact()
         
         let userName = "AustinVaday"
+        
+        urlString = ""
+        altString = ""
         
         switch (socialMediaName)
         {
@@ -219,6 +226,22 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             break;
         case "phone":
                 print ("COMING SOON")
+                
+//                contact.familyName = "Vaday"
+//                contact.givenName  = "Austin"
+//                
+//                let phoneNum  = CNPhoneNumber(stringValue: "9493758223")
+//                let cellPhone = CNLabeledValue(label: CNLabelPhoneNumberiPhone, value: phoneNum)
+//                
+//                contact.phoneNumbers.append(cellPhone)
+//                
+//                //TODO: Check if contact already exists in phone
+//                let saveRequest = CNSaveRequest()
+//                saveRequest.addContact(contact, toContainerWithIdentifier: nil)
+//                
+                
+//                return
+            
             break;
         default:
             break;
@@ -235,7 +258,14 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             }
             else
             {
-                showAlert("Sorry", message: "You do not have Snapchat currently installed on your phone, please download Snapchat and try again!", buttonTitle: "Ok", sender: self)
+                if (socialMediaName == "snapchat")
+                {
+                showAlert("Sorry", message: "You need to have the Snapchat app! Please download it and try again!", buttonTitle: "Ok", sender: self)
+                }
+                else
+                {
+                    showAlert("Hold on!", message: "Feature coming soon...", buttonTitle: "Ok", sender: self)
+                }
                 return
             }
         }
