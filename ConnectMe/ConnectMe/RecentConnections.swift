@@ -20,7 +20,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var isARowExpanded:Bool = false
     let defaultRowHeight:CGFloat = 60
     let expandedRowHeight:CGFloat = 100
-    let socialMediaNameList = Array<String>(arrayLiteral: "facebook", "instagram", "twitter", "linkedin", "youtube", "phone")
+    let socialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "phone")
     
     var socialMediaImageList : Array<UIImage>! // An array of social media emblem images
     
@@ -196,6 +196,10 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 urlString = "fb://requests/" + userName
                 altString = "http://www.facebook.com/" + userName
             break;
+        case "snapchat":
+                urlString = "snapchat://add/" + userName
+                altString = ""
+            break;
         case "instagram":
                 urlString = "instagram://user?username=" + userName
                 altString = "http://www.instagram.com/" + userName
@@ -225,10 +229,18 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // If user doesn't have social media app installed, open using default browser instead (use altString)
         if (!UIApplication.sharedApplication().canOpenURL(socialMediaURL))
         {
-            socialMediaURL = NSURL(string: altString)
+            if (altString != "")
+            {
+                socialMediaURL = NSURL(string: altString)
+            }
+            else
+            {
+                showAlert("Sorry", message: "You do not have Snapchat currently installed on your phone, please download Snapchat and try again!", buttonTitle: "Ok", sender: self)
+                return
+            }
         }
         
-        // Perform the request!
+        // Perform the request, go to external application and let the user do whatever they want!
         UIApplication.sharedApplication().openURL(socialMediaURL)
         
     }
