@@ -19,9 +19,35 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var isARowExpanded:Bool = false
     let defaultRowHeight:CGFloat = 60
     let expandedRowHeight:CGFloat = 100
-    let emblemImageRange = Array<UIImage>(arrayLiteral: UIImage(named: "phone")!, UIImage(named: "facebook")!, UIImage(named:"youtube")!, UIImage(named:"twitter")!, UIImage(named:"skype")!, UIImage(named:"linkedin")!)
+    let socialMediaNameList = Array<String>(arrayLiteral: "phone", "facebook", "youtube", "twitter", "skype", "linkedin")
+    var socialMediaImageList : Array<UIImage>! // An array of social media emblem images
+//    let socialMediaImageList = Array<UIImage>(arrayLiteral: UIImage(named: "phone")!, UIImage(named: "facebook")!, UIImage(named:"youtube")!, UIImage(named:"twitter")!, UIImage(named:"skype")!, UIImage(named:"linkedin")!)
     
     
+    override func viewDidLoad() {
+    
+        var imageName:String!
+        var newUIImage:UIImage!
+        let size = socialMediaNameList.count
+        
+        socialMediaImageList = Array<UIImage>()
+        
+        // Generate all necessary images for the emblems
+        for (var i = 0; i < size; i++)
+        {
+            print("OK!")
+
+            // Fetch emblem name
+            imageName = socialMediaNameList[i]
+            
+            // Generate image
+            newUIImage = UIImage(named: imageName)!
+            
+            // Store image
+            socialMediaImageList.append(newUIImage)
+        }
+        
+    }
     // TABLE VIEW
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -103,7 +129,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         print("COLLECTIONVIEW 1")
         
 
-        return emblemImageRange.count
+        return socialMediaNameList.count
         
     }
     
@@ -113,19 +139,26 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
 
+        let socialMediaName = socialMediaNameList[indexPath.item % self.socialMediaNameList.count]
+        
         // We will delay the image assignment to prevent buggy race conditions
         // (Check to see what happens when the delay is not set... then you'll understand)
         // Probable cause: tableView.beginUpdates() and tableView.endUpdates() in tableView(didSelectIndexPath) method
         delay(0) { () -> () in
             
             // Set social media emblem
-            cell.emblemButton.setImage(self.emblemImageRange[indexPath.item % self.emblemImageRange.count], forState: UIControlState.Normal)
+
+            
+            // Generate a UI image for the respective social media type
+            cell.emblemImage.image = self.socialMediaImageList[indexPath.item % self.socialMediaImageList.count]
+            cell.socialMediaName = socialMediaName
+            
             
             /* Don't use the below, will cause images to reset when button is clicked. */
             //cell.emblemButton.imageView?.image = self.emblemImageRange[indexPath.item % 4]
         }
 
-        // Make cell circular
+        // Make cell image circular
         cell.layer.cornerRadius = cell.frame.width / 2
         
         // Make cell movements cleaner (increased FPM)
@@ -135,6 +168,24 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     }
 
 
+//    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+//        print("SELECTED ITEM AT ", indexPath.item)
+//
+//    }
+    
+    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
+        print("SELECTED ITEM AT ", indexPath.item)
+        
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
+
+        let socialMediaName = cell.socialMediaName
+        
+        
+        
+        print(socialMediaName)
+        print ("CELL SIZE IS: ", cell.frame.size.width)
+        print ("IMAGE SIZE IS: ",cell.emblemImage.frame.size.width)
+    }
 
     
 

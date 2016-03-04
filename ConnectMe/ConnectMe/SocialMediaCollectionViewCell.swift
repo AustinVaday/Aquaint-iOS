@@ -11,26 +11,29 @@ import UIKit
 class SocialMediaCollectionViewCell: UICollectionViewCell {
     
     
-    @IBOutlet weak var emblemButton: UIButton!
+    @IBOutlet weak var emblemImage: UIImageView!
+    var socialMediaName: String!
+    
+//    @IBOutlet weak var emblemImage: UIButton!
 
-    @IBAction func emblemButtonClicked(sender: AnyObject) {
-        
-        print("The button was clicked!")
-        
-        var socialMediaURL = NSURL(string: "twitter:///user?screen_name=AustinVaday")
-//        var socialMediaURL = NSURL(string: "snapchat://?u=AustinVaday")
-//        var socialMediaURL = NSURL(string: "instagram://user?username=avtheman")
-
-        
-        // If user doesn't have social media app installed, open using default browser instead.
-        if(!UIApplication.sharedApplication().canOpenURL(socialMediaURL!))
-        {
-            socialMediaURL = NSURL(string: "http://www.twitter.com/AustinVaday")
-            
-        }
- 
-        UIApplication.sharedApplication().openURL(socialMediaURL!)
-
-
-    }
+//    @IBAction func emblemButtonClicked(sender: AnyObject) {
+//        
+//        print("The button was clicked!")
+//        
+//        var socialMediaURL = NSURL(string: "twitter:///user?screen_name=AustinVaday")
+////        var socialMediaURL = NSURL(string: "snapchat://?u=AustinVaday")
+////        var socialMediaURL = NSURL(string: "instagram://user?username=avtheman")
+//
+//        
+//        // If user doesn't have social media app installed, open using default browser instead.
+//        if(!UIApplication.sharedApplication().canOpenURL(socialMediaURL!))
+//        {
+//            socialMediaURL = NSURL(string: "http://www.twitter.com/AustinVaday")
+//            
+//        }
+// 
+//        UIApplication.sharedApplication().openURL(socialMediaURL!)
+//
+//
+//    }
 }
