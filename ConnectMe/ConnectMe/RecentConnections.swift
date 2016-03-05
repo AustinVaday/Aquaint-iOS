@@ -8,7 +8,7 @@
 //  Code is owned by: Austin Vaday and Navid Sarvian
 
 import UIKit
-import Parse
+import Firebase
 import Contacts
 
 class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
@@ -25,8 +25,15 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     var socialMediaImageList : Array<UIImage>! // An array of social media emblem images
     
+    var firebaseRootRef : Firebase!
+    
     override func viewDidLoad() {
     
+        // Firebase root, our data is stored here
+        firebaseRootRef = Firebase(url: "https://torrid-fire-8382.firebaseio.com")
+        
+//        firebaseRootRef.childByAppendingPath(
+        
         // Load up all images we have
         var imageName:String!
         var newUIImage:UIImage!

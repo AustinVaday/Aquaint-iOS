@@ -256,12 +256,15 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                             if (error == nil)
                             {
                                 let userId = authData.uid
-                                let userInfo   = ["name": userNameString, "profileImage": "none", "connections" : "none"]
+                                let userInfo   = ["name" : userNameString, "image" : "none", "connections" : ""]
+                                let mockConnectionUserID = "7adfaa38-aa95-4ce3-8a80-286a47c7b090" // "Aquaint", your first connection!
+                                let collectionListInfo = ["dateConnected" : "GMT_TIME_HERE"]
                                 
                                 print("User signed up and logged in: ", userId)
                                 
                                 // Store necessary information in JSON tree
                                 self.firebaseRootRef.childByAppendingPath("Users/" + userId).setValue(userInfo)
+                                self.firebaseRootRef.childByAppendingPath("Users/" + userId + "/connections/" + mockConnectionUserID).setValue(collectionListInfo)
                                 
                                 // Perform update on UI on main thread
                                 dispatch_async(dispatch_get_main_queue(), { () -> Void in

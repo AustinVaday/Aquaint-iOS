@@ -12,6 +12,7 @@
 import Foundation
 import UIKit
 
+
 // Implements a delay. 
 // Usage: delay([num_sec]){ [Code after delay] }
 func delay(delay:Double, closure:()->()) {
