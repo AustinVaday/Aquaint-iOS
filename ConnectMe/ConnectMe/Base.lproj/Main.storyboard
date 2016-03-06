@@ -111,25 +111,28 @@
                                     <segue destination="GqN-bc-CtE" kind="show" id="zEN-Jn-s14"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zeu-ZH-NgS">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fxo-id-tns">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </imageView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="zeu-ZH-NgS" firstAttribute="top" secondItem="afK-Av-iEC" secondAttribute="bottom" constant="-20" id="3g6-Gf-bQu"/>
                             <constraint firstItem="3Es-Va-Y7e" firstAttribute="centerX" secondItem="0kj-vP-GCN" secondAttribute="centerX" id="5ef-sd-Bn6"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="zeu-ZH-NgS" secondAttribute="trailing" constant="-20" id="Bme-3Y-EGW"/>
+                            <constraint firstItem="VQu-Pm-LlT" firstAttribute="top" secondItem="fxo-id-tns" secondAttribute="bottom" id="CdT-4q-pbE"/>
                             <constraint firstItem="VQu-Pm-LlT" firstAttribute="top" secondItem="3Es-Va-Y7e" secondAttribute="bottom" constant="20" id="Gaz-tE-1F5"/>
-                            <constraint firstItem="VQu-Pm-LlT" firstAttribute="top" secondItem="zeu-ZH-NgS" secondAttribute="bottom" id="Xqn-ya-uE6"/>
-                            <constraint firstItem="zeu-ZH-NgS" firstAttribute="leading" secondItem="0kj-vP-GCN" secondAttribute="leadingMargin" constant="-20" id="d33-OU-P52"/>
+                            <constraint firstItem="fxo-id-tns" firstAttribute="top" secondItem="afK-Av-iEC" secondAttribute="bottom" constant="-20" id="Y8i-fW-YEg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="fxo-id-tns" secondAttribute="trailing" constant="-20" id="jG5-kb-avY"/>
+                            <constraint firstItem="fxo-id-tns" firstAttribute="leading" secondItem="0kj-vP-GCN" secondAttribute="leadingMargin" constant="-20" id="r7O-4H-205"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="IxV-Bb-kQe" appends="YES" id="F4r-vy-nHG"/>
                         </connections>
                     </view>
+                    <connections>
+                        <outlet property="previewView" destination="fxo-id-tns" id="PLp-Zj-wfx"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eWA-a6-h8Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="IxV-Bb-kQe"/>
@@ -405,7 +408,7 @@
                                                                             <constraint firstAttribute="height" constant="32" id="DPh-tj-1Q7"/>
                                                                             <constraint firstAttribute="width" constant="32" id="GBX-Ja-AXt"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="BA16EB39-71E1-42D8-A81C-EDA8253DC8E7"/>
+                                                                        <state key="normal" image="71320956-6CFA-42C3-A1A0-E151BC60E9CC"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="JcZ-aN-92g">
                                                                         <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
@@ -1047,8 +1050,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add Photo Color" width="120" height="120"/>
-        <image name="BA16EB39-71E1-42D8-A81C-EDA8253DC8E7" width="32" height="32">
+        <image name="71320956-6CFA-42C3-A1A0-E151BC60E9CC" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -1167,6 +1169,7 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
+        <image name="Add Photo Color" width="120" height="120"/>
         <image name="Back Arrow" width="50" height="50"/>
         <image name="Camera Icon" width="70" height="70"/>
         <image name="Check Mark" width="350" height="271"/>
@@ -1186,7 +1189,7 @@ Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
         <image name="facebook" width="113" height="113"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RqE-Y8-kVP"/>
+        <segue reference="zEN-Jn-s14"/>
         <segue reference="zog-ev-2Fq"/>
     </inferredMetricsTieBreakers>
 </document>
