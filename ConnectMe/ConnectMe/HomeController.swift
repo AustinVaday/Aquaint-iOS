@@ -41,6 +41,21 @@ class HomeController: UIViewController {
 //        
 //    }
 
+    @IBAction func menuButtonClicked(sender: AnyObject) {
+        // Transition to page on left (menu)
+        
+        let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("MainPageViewController") as! UIPageViewController
+        
+        
+        let menuViewController = (storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))! as UIViewController
+        
+        pageViewController.setViewControllers([menuViewController], direction: .Forward, animated: true, completion: nil)
+        
+        
+        
+        
+        
+    }
     @IBAction func logOutButtonClicked(sender: UIButton) {
         
         // Ask user if they really want to log out...
