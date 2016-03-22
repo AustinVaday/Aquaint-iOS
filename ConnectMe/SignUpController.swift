@@ -185,7 +185,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         // Mimic the "Sign Up" button being pressed
         self.signUpButtonClicked(signUpButton.self)
     }
-    
+   
     // Actions to perform when "Sign Up" is clicked
     @IBAction func signUpButtonClicked(sender: AnyObject) {
         
