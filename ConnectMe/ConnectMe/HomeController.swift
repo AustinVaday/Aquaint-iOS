@@ -44,15 +44,20 @@ class HomeController: UIViewController {
     @IBAction func menuButtonClicked(sender: AnyObject) {
         // Transition to page on left (menu)
         
-        let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("MainPageViewController") as! UIPageViewController
-        
-        
-        let menuViewController = (storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))! as UIViewController
-        
-        pageViewController.setViewControllers([menuViewController], direction: .Forward, animated: true, completion: nil)
-        
-        
-        
+//        let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("MainPageViewController") as! MainPageViewController
+//        
+//        
+//        let menuViewController = storyboard?.instantiateViewControllerWithIdentifier("MenuViewController") as! MenuController
+//        
+//        pageViewController.setViewControllers([menuViewController], direction: UIPageViewControllerNavigationDirection.Reverse, animated: true) { (Bool) -> Void in
+//            print("setviewControllers finished")
+//        }
+//        
+//        print("TESTING OK")
+//        menuViewController.testLabel.text = "TESTING TESTING"
+//        
+//        
+//        
         
         
     }

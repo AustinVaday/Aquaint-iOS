@@ -19,7 +19,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     var currentVCIndex = 1
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         dataSource = self
 
         arrayOfViewControllers = Array<UIViewController>()

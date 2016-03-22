@@ -11,5 +11,6 @@
 import UIKit
 
 class MenuController: UIViewController {
+    @IBOutlet weak var testLabel: UILabel!
 
 }

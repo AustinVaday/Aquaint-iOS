@@ -19,9 +19,9 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var selectedRowIndex:Int = -1
     var expandedRow:Int = -1
     var isARowExpanded:Bool = false
-    let defaultRowHeight:CGFloat = 60
+    let defaultRowHeight:CGFloat = 55
     let expandedRowHeight:CGFloat = 100
-    let socialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "phone")
+    let socialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
     
     var socialMediaImageList : Array<UIImage>! // An array of social media emblem images
     
@@ -177,8 +177,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         cell.layer.cornerRadius = cell.frame.width / 2
         
         // Make cell movements cleaner (increased FPM)
-        cell.layer.shouldRasterize = true
-
+//        cell.layer.shouldRasterize = true
+        
         return cell
     }
 
