@@ -266,7 +266,6 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                 print("USERNAME IS FREE")
             }
             
-        print ("USERNAMEEXISTS = ", userNameExists)
             
             if (userNameExists)
             {
@@ -287,16 +286,20 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                                 // If success log in
                                 if (error == nil)
                                 {
-                                    let userId = authData.uid
-                                    let userInfo   = ["name" : userNameString, "image" : "none", "connections" : ""]
-                                    let mockConnectionUserID = "7adfaa38-aa95-4ce3-8a80-286a47c7b090" // "Aquaint", your first connection!
-                                    let collectionListInfo = ["dateConnected" : "GMT_TIME_HERE"]
+//                                  let userId = authData.uid
                                     
-                                    print("User signed up and logged in: ", userId)
+                                    let userInfo   = ["fullName" : "", "userImage" : "none", "dateCreated": FirebaseServerValue.timestamp()]
+                                    let linkedSocialMediaAccounts = ["twitter": "austinvaday", "facebook": "austinvaday", "instagram": "avtheman"]
+                                    let connections = ["Aquaint" : FirebaseServerValue.timestamp()]
+                                    
+                                    
+                                    print("User signed up and logged in: ", userNameString)
                                     
                                     // Store necessary information in JSON tree
-                                    self.firebaseRootRef.childByAppendingPath("Users/" + userId).setValue(userInfo)
-                                    self.firebaseRootRef.childByAppendingPath("Users/" + userId + "/connections/" + mockConnectionUserID).setValue(collectionListInfo)
+                                    self.firebaseRootRef.childByAppendingPath("Users/" + userNameString).setValue(userInfo)
+                                    self.firebaseRootRef.childByAppendingPath("LinkedSocialMediaAccounts/" + userNameString).setValue(linkedSocialMediaAccounts)
+                                    self.firebaseRootRef.childByAppendingPath("Connections/" + userNameString).setValue(connections)
+                                    
                                     
                                     // Perform update on UI on main thread
                                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
