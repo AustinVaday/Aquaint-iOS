@@ -198,7 +198,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         **********************************************************************/
         if (userNameString.isEmpty)
         {
-            showAlert("Error signing up", message: "Please enter in a name!", buttonTitle: "Try again", sender: self)
+            showAlert("Error signing up", message: "Please enter in a username!", buttonTitle: "Try again", sender: self)
             return
         }
         
@@ -243,6 +243,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
             
             self.spinner.startAnimating()
+            
+            //TODO: Check is username already exists or not....
             
             self.firebaseRootRef.createUser(userEmailString, password: userPasswordString, withValueCompletionBlock: { error1, authData in
                 // If success sign up
