@@ -36,6 +36,37 @@ func flipImageVertically(imageView:UIImageView)
     imageView.transform = CGAffineTransformMakeScale(1.0, -1.0)
 }
 
+// Check if username format is proper
+func verifyUserNameLength(userNameString: String) -> Bool
+{
+    if (!userNameString.isEmpty)
+    {
+        let numChar = userNameString.characters.count
+        
+        if (numChar >= 6 && numChar <= 20)
+        {
+            return true
+        }
+    }
+    
+    return false
+}
+
+func verifyUserNameFormat(userNameString: String) -> Bool
+{
+    
+    if (!userNameString.isEmpty)
+    {
+        let notAcceptableRange = userNameString.rangeOfCharacterFromSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+
+        if (notAcceptableRange == nil)
+        {
+            return true
+        }
+    }
+    
+    return false
+}
 
 // Check if email format is proper
 func verifyEmailFormat(emailString:String) -> Bool

@@ -100,32 +100,64 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
     }
     
+
+    // Ensure username is proper
+    @IBAction func nameEditingDidChange(sender: UITextField) {
+        // Prevent upper-case characters
+        // Prevent spaces
+        // Prevent special characters
+        
+        
+        var inputString = userName.text!
+        
+//        // Make the input field lowercase while we're at it.
+//        userName.text = inputString.lowercaseString
+        
+        if (!inputString.isEmpty)
+        {
+            // Get range of all characters in the string that are not digits
+            let notAcceptableRange = inputString.rangeOfCharacterFromSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+            
+            // If range of characters in given string has any non-digit characters
+            // Then we must remove them
+            if (notAcceptableRange != nil)
+            {
+                // Remove all non-digits
+                inputString.removeRange(notAcceptableRange!)
+                
+                // Enforce this on user, set text field to no digits (and make it lowercase too while we're at it!
+                userName.text = inputString
+            }
+        }
+        
+
+
+    }
+    
+    
     // EditingDidEnd functionality will be used for error checking user input
     @IBAction func nameEditingDidEnd(sender: UITextField) {
         
-        // Store the text inside the field. Make sure it's unwrapped by using a '!'.
-        let userNameString:String =  userName.text!
+//        // Store the text inside the field. Make sure it's unwrapped by using a '!'.
+//        let userNameString:String =  userName.text!
+//        
+//        print(userNameString)
+//        
+//        // Check if text field is empty
+//        if userNameString.isEmpty
+//        {
+////            userNameLabel.textColor = UIColor.redColor()
+//            print("Empy username string")
+//        }
+//        else
+//        {
+//            print("PROPER username string")
+//
+////            userNameLabel.textColor = UIColor.whiteColor()
+//        }
         
-        print(userNameString)
-        
-        // Check if text field is empty
-        if userNameString.isEmpty
-        {
-//            userNameLabel.textColor = UIColor.redColor()
-            print("Empy username string")
-        }
-        else
-        {
-            print("PROPER username string")
-
-//            userNameLabel.textColor = UIColor.whiteColor()
-        }
-        
-        //TODO: Escape every single character of the string
-        
-        // We do not have to ensure each user name is unique, because many people might have the same name.
-        
-//        userObject.name = userNameString
+        // Call this method one last time to ensure username is proper
+        self.nameEditingDidChange(sender)
 
     }
     
@@ -202,6 +234,19 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             showAlert("Error signing up", message: "Please enter in a username!", buttonTitle: "Try again", sender: self)
             return
         }
+        
+        if (!verifyUserNameLength(userNameString))
+        {
+            showAlert("Improper username format", message: "Please create a username between 6 and 20 characters long!", buttonTitle: "Try again", sender: self)
+            return
+        }
+        
+        if (!verifyUserNameFormat(userNameString))
+        {
+            showAlert("Improper username format", message: "Please use a proper username format: no spaces and no special characters!", buttonTitle: "Try again", sender: self)
+            return
+        }
+        
         
         if (userEmailString.isEmpty)
         {
