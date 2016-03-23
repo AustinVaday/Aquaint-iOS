@@ -22,17 +22,27 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     let defaultRowHeight:CGFloat = 55
     let expandedRowHeight:CGFloat = 100
     let socialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
+    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
+    
+    var userName : String!
     
     var socialMediaImageList : Array<UIImage>! // An array of social media emblem images
     
     var firebaseRootRef : Firebase!
+    var firebaseUsersRef: Firebase!
+    var firebaseLinkedAccountsRef: Firebase!
+    var firebaseConnectionsRef: Firebase!
     
     override func viewDidLoad() {
     
         // Firebase root, our data is stored here
-        firebaseRootRef = Firebase(url: "https://torrid-fire-8382.firebaseio.com")
+        firebaseRootRef = Firebase(url: firebaseRootRefString)
+        firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
+        firebaseLinkedAccountsRef = Firebase(url: firebaseRootRefString + "LinkedSocialMediaAccounts/")
+        firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/")
         
-//        firebaseRootRef.childByAppendingPath(
+        
+        
         
         // Load up all images we have
         var imageName:String!
@@ -53,7 +63,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             
             if (newUIImage != nil)
             {
-                // Store image
+                // Store image into our 'cache'
                 socialMediaImageList.append(newUIImage)
             }
             else

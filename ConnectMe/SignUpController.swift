@@ -295,12 +295,14 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
             //Check is username already exists or not....
             let firebaseUserRef = Firebase(url: self.firebaseRootRefString + "/Users/")
-            
-            
+        
+            //Important!! Make userNameString all lowercase from now on (for storing unique keys in the database)
+            let lowerCaseUserNameString = userNameString.lowercaseString
+        
             // This is a check if username already exists or not.
             firebaseUserRef.observeSingleEventOfType(FEventType.Value, andPreviousSiblingKeyWithBlock: { (snapshot, str) -> Void in
             
-            if snapshot.hasChild(userNameString)
+            if snapshot.hasChild(lowerCaseUserNameString)
             {
                 userNameExists = true
                 print("USERNAME IS TAKEN")
@@ -331,19 +333,20 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                                 // If success log in
                                 if (error == nil)
                                 {
-//                                  let userId = authData.uid
+                                    let userId = authData.uid
                                     
                                     let userInfo   = ["fullName" : "", "userImage" : "none", "dateCreated": FirebaseServerValue.timestamp()]
                                     let linkedSocialMediaAccounts = ["twitter": "austinvaday", "facebook": "austinvaday", "instagram": "avtheman"]
                                     let connections = ["Aquaint" : FirebaseServerValue.timestamp()]
                                     
                                     
-                                    print("User signed up and logged in: ", userNameString)
+                                    print("User signed up and logged in: ", lowerCaseUserNameString)
                                     
                                     // Store necessary information in JSON tree
-                                    self.firebaseRootRef.childByAppendingPath("Users/" + userNameString).setValue(userInfo)
-                                    self.firebaseRootRef.childByAppendingPath("LinkedSocialMediaAccounts/" + userNameString).setValue(linkedSocialMediaAccounts)
-                                    self.firebaseRootRef.childByAppendingPath("Connections/" + userNameString).setValue(connections)
+                                    self.firebaseRootRef.childByAppendingPath("Users/" + lowerCaseUserNameString).setValue(userInfo)
+                                    self.firebaseRootRef.childByAppendingPath("LinkedSocialMediaAccounts/" + lowerCaseUserNameString).setValue(linkedSocialMediaAccounts)
+                                    self.firebaseRootRef.childByAppendingPath("Connections/" + lowerCaseUserNameString).setValue(connections)
+                                    self.firebaseRootRef.childByAppendingPath("UserIdToUserName/" + userId).setValue(lowerCaseUserNameString)
                                     
                                     
                                     // Perform update on UI on main thread
