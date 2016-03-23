@@ -160,7 +160,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sb8-ve-frV" userLabel="PageHeaderView">
-                                <rect key="frame" x="0.0" y="20" width="600" height="45"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="46"/>
                                 <color key="backgroundColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Knk-ZS-je4" userLabel="SystemHeaderView">
@@ -188,7 +188,7 @@
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="Sb8-ve-frV" firstAttribute="centerY" secondItem="bcU-Dz-Dj3" secondAttribute="centerY" id="2nv-8R-bX7"/>
+                            <constraint firstItem="Sb8-ve-frV" firstAttribute="centerY" secondItem="bcU-Dz-Dj3" secondAttribute="centerY" constant="1" id="2nv-8R-bX7"/>
                             <constraint firstItem="ykO-rd-LqG" firstAttribute="top" secondItem="Knk-ZS-je4" secondAttribute="bottom" constant="8" symbolic="YES" id="4bE-dk-cb2"/>
                             <constraint firstAttribute="trailing" secondItem="Knk-ZS-je4" secondAttribute="trailing" id="6GG-qy-jw7"/>
                             <constraint firstItem="bcU-Dz-Dj3" firstAttribute="top" secondItem="iBk-5a-fwA" secondAttribute="bottom" constant="8" id="Guh-aX-1Et"/>
@@ -232,7 +232,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SCY-rM-Vc6" userLabel="PageHeaderView">
-                                <rect key="frame" x="0.0" y="19" width="600" height="45"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="46"/>
                                 <color key="backgroundColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KP4-wr-f1F" userLabel="SystemHeaderView">
@@ -281,10 +281,6 @@
                                     <action selector="logOutButtonClicked:" destination="8Yo-pa-87T" eventType="touchUpInside" id="Jj7-mA-GfT"/>
                                 </connections>
                             </button>
-                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Scan Code" translatesAutoresizingMaskIntoConstraints="NO" id="dbB-Yu-OXh">
-                                <rect key="frame" x="75" y="75" width="450" height="450"/>
-                                <gestureRecognizers/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
@@ -293,19 +289,15 @@
                             <constraint firstItem="KP4-wr-f1F" firstAttribute="top" secondItem="ckE-RN-rVs" secondAttribute="top" id="2dp-HT-AX9"/>
                             <constraint firstItem="KP4-wr-f1F" firstAttribute="leading" secondItem="SCY-rM-Vc6" secondAttribute="leading" id="4MW-Kl-XoK"/>
                             <constraint firstItem="lac-sa-SWi" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="6" id="68L-Bg-mS8"/>
-                            <constraint firstItem="dbB-Yu-OXh" firstAttribute="leading" secondItem="ckE-RN-rVs" secondAttribute="leadingMargin" constant="55" id="Jp0-2I-a9L"/>
                             <constraint firstItem="bhw-dZ-esF" firstAttribute="top" secondItem="3TD-OX-QTc" secondAttribute="bottom" constant="8" id="Pe8-2E-oov"/>
-                            <constraint firstItem="SCY-rM-Vc6" firstAttribute="top" secondItem="KP4-wr-f1F" secondAttribute="bottom" constant="-1" id="Prr-AE-mE1"/>
+                            <constraint firstItem="SCY-rM-Vc6" firstAttribute="top" secondItem="KP4-wr-f1F" secondAttribute="bottom" id="Prr-AE-mE1"/>
                             <constraint firstItem="SCY-rM-Vc6" firstAttribute="centerX" secondItem="lac-sa-SWi" secondAttribute="centerX" id="Tyw-qN-F4c"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gCx-w9-Vgf" secondAttribute="trailing" id="Ygk-5I-lII"/>
-                            <constraint firstItem="dbB-Yu-OXh" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="55" id="a2W-9V-MRY"/>
                             <constraint firstItem="SCY-rM-Vc6" firstAttribute="leading" secondItem="ckE-RN-rVs" secondAttribute="leading" id="cQj-LC-nuw"/>
                             <constraint firstItem="lac-sa-SWi" firstAttribute="centerX" secondItem="ckE-RN-rVs" secondAttribute="centerX" id="caP-UF-CbE"/>
                             <constraint firstItem="KP4-wr-f1F" firstAttribute="trailing" secondItem="SCY-rM-Vc6" secondAttribute="trailing" id="fgt-dm-jzG"/>
                             <constraint firstItem="xPW-Hw-kgz" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="8" id="hLR-oy-g7v"/>
-                            <constraint firstItem="dbB-Yu-OXh" firstAttribute="top" secondItem="SCY-rM-Vc6" secondAttribute="bottom" constant="11" id="ofa-UH-Pak"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="dbB-Yu-OXh" secondAttribute="trailing" constant="55" id="ooc-w3-Ffw"/>
-                            <constraint firstItem="bhw-dZ-esF" firstAttribute="top" secondItem="dbB-Yu-OXh" secondAttribute="bottom" constant="75" id="t7s-ug-3ey"/>
+                            <constraint firstItem="SCY-rM-Vc6" firstAttribute="centerY" secondItem="xPW-Hw-kgz" secondAttribute="centerY" constant="2" id="nck-Eg-ES9"/>
                             <constraint firstItem="3TD-OX-QTc" firstAttribute="leading" secondItem="ckE-RN-rVs" secondAttribute="leadingMargin" constant="-4" id="tOl-gK-qoR"/>
                             <constraint firstItem="xPW-Hw-kgz" firstAttribute="top" secondItem="KP4-wr-f1F" secondAttribute="bottom" constant="8" symbolic="YES" id="uhv-wt-dH6"/>
                             <constraint firstItem="gCx-w9-Vgf" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="5" id="ySG-M2-B0F"/>
@@ -335,8 +327,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="20"/>
                                 <color key="backgroundColor" red="0.055401942349999997" green="0.3908864695" blue="0.53284902899999997" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IPM-cJ-Nvi" userLabel="PageHeaderView">
-                                <rect key="frame" x="0.0" y="20" width="600" height="45"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPM-cJ-Nvi" userLabel="PageHeaderView">
+                                <rect key="frame" x="0.0" y="20" width="600" height="49"/>
                                 <color key="backgroundColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DtY-V0-sz0">
@@ -357,7 +349,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="110" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="esI-RI-nN1">
-                                <rect key="frame" x="0.0" y="64" width="600" height="528"/>
+                                <rect key="frame" x="0.0" y="69" width="600" height="523"/>
                                 <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="sectionIndexBackgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="sectionIndexTrackingBackgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -418,7 +410,7 @@
                                                                             <constraint firstAttribute="height" constant="32" id="DPh-tj-1Q7"/>
                                                                             <constraint firstAttribute="width" constant="32" id="GBX-Ja-AXt"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="B8E6F1F5-7928-4448-84C3-124E9381C8FA"/>
+                                                                        <state key="normal" image="32F79A83-250B-40E7-8832-D05F11B51873"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="JcZ-aN-92g">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -493,14 +485,14 @@
                             <constraint firstItem="GHt-r2-AXK" firstAttribute="centerX" secondItem="PbJ-wo-Hqe" secondAttribute="centerX" id="1ah-HH-EMd"/>
                             <constraint firstItem="esI-RI-nN1" firstAttribute="leading" secondItem="PbJ-wo-Hqe" secondAttribute="leading" id="5d3-Di-Ibi"/>
                             <constraint firstItem="IPM-cJ-Nvi" firstAttribute="trailing" secondItem="1RY-If-BfJ" secondAttribute="trailing" id="CCk-ra-3bB"/>
-                            <constraint firstItem="IPM-cJ-Nvi" firstAttribute="centerY" secondItem="GHt-r2-AXK" secondAttribute="centerY" id="EgA-8G-eaj"/>
+                            <constraint firstItem="IPM-cJ-Nvi" firstAttribute="centerY" secondItem="GHt-r2-AXK" secondAttribute="centerY" constant="1" id="EgA-8G-eaj"/>
                             <constraint firstItem="DtY-V0-sz0" firstAttribute="top" secondItem="tdL-VL-qiB" secondAttribute="bottom" constant="8" id="HZ7-cs-FL4"/>
                             <constraint firstItem="1RY-If-BfJ" firstAttribute="top" secondItem="PbJ-wo-Hqe" secondAttribute="top" id="IiD-WV-7gf"/>
                             <constraint firstItem="IPM-cJ-Nvi" firstAttribute="top" secondItem="1RY-If-BfJ" secondAttribute="bottom" id="Jxi-8w-O2b"/>
                             <constraint firstItem="esI-RI-nN1" firstAttribute="centerX" secondItem="GHt-r2-AXK" secondAttribute="centerX" id="OPh-jO-rxc"/>
                             <constraint firstItem="IPM-cJ-Nvi" firstAttribute="trailing" secondItem="esI-RI-nN1" secondAttribute="trailing" id="PFH-fF-cx1"/>
                             <constraint firstItem="GHt-r2-AXK" firstAttribute="top" secondItem="tdL-VL-qiB" secondAttribute="bottom" constant="8" id="Ve2-CJ-bxt"/>
-                            <constraint firstItem="esI-RI-nN1" firstAttribute="top" secondItem="GHt-r2-AXK" secondAttribute="bottom" constant="8" id="bYv-wg-SFN"/>
+                            <constraint firstItem="esI-RI-nN1" firstAttribute="top" secondItem="GHt-r2-AXK" secondAttribute="bottom" constant="13" id="bYv-wg-SFN"/>
                             <constraint firstItem="esI-RI-nN1" firstAttribute="bottom" secondItem="fLh-56-2g1" secondAttribute="top" constant="-8" id="fnd-9m-Ubb"/>
                             <constraint firstAttribute="leadingMargin" secondItem="DtY-V0-sz0" secondAttribute="leading" id="gk6-T1-mC5"/>
                             <constraint firstItem="IPM-cJ-Nvi" firstAttribute="leading" secondItem="esI-RI-nN1" secondAttribute="leading" id="ubo-gH-jVV"/>
@@ -1135,8 +1127,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add Photo Color" width="120" height="120"/>
-        <image name="B8E6F1F5-7928-4448-84C3-124E9381C8FA" width="32" height="32">
+        <image name="32F79A83-250B-40E7-8832-D05F11B51873" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -1255,6 +1246,7 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
+        <image name="Add Photo Color" width="120" height="120"/>
         <image name="Back Arrow" width="50" height="50"/>
         <image name="Camera Icon" width="70" height="70"/>
         <image name="Check Mark" width="350" height="271"/>
@@ -1267,7 +1259,6 @@ Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
         <image name="Menu Icon" width="42" height="36"/>
         <image name="Password Icon Black" width="50" height="50"/>
         <image name="Person Icon Black" width="50" height="50"/>
-        <image name="Scan Code" width="412" height="412"/>
         <image name="Up Caret" width="44" height="24"/>
         <image name="facebook" width="113" height="113"/>
     </resources>
