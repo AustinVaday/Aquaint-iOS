@@ -248,6 +248,7 @@
                                 <state key="normal" image="Menu Icon"/>
                                 <connections>
                                     <action selector="menuButtonClicked:" destination="8Yo-pa-87T" eventType="touchUpInside" id="Bct-ks-AL0"/>
+                                    <segue destination="thT-it-jqL" kind="show" id="xLk-Rh-sYG"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lac-sa-SWi">
@@ -419,7 +420,7 @@
                                                                             <constraint firstAttribute="height" constant="32" id="DPh-tj-1Q7"/>
                                                                             <constraint firstAttribute="width" constant="32" id="GBX-Ja-AXt"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="57AEE14A-F7F5-4812-8361-3E9837425632"/>
+                                                                        <state key="normal" image="0CE62B7B-2C2F-4EC8-9B4E-4865FACE2D2E"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="JcZ-aN-92g">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -1138,7 +1139,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="57AEE14A-F7F5-4812-8361-3E9837425632" width="32" height="32">
+        <image name="0CE62B7B-2C2F-4EC8-9B4E-4865FACE2D2E" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
