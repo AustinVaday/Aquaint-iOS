@@ -26,8 +26,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     var userName : String!
     
-    var socialMediaImageList : Array<UIImage>! // An array of social media emblem images
-    
+//    var socialMediaImageList : Array<UIImage>! // An array of social media emblem images
+    var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var firebaseRootRef : Firebase!
     var firebaseUsersRef: Firebase!
     var firebaseLinkedAccountsRef: Firebase!
@@ -43,13 +43,14 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         
         
-        
         // Load up all images we have
         var imageName:String!
         var newUIImage:UIImage!
         let size = socialMediaNameList.count
         
-        socialMediaImageList = Array<UIImage>()
+//        socialMediaImageList = Array<UIImage>()
+        socialMediaImageDictionary = Dictionary<String, UIImage>()
+        
         print("Size is: ", size)
         // Generate all necessary images for the emblems
         for (var i = 0; i < size; i++)
@@ -64,7 +65,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             if (newUIImage != nil)
             {
                 // Store image into our 'cache'
-                socialMediaImageList.append(newUIImage)
+//                socialMediaImageList.append(newUIImage)
+                socialMediaImageDictionary[imageName] = newUIImage
             }
             else
             {
@@ -158,7 +160,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
 
         return socialMediaNameList.count
-        
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -177,7 +178,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         delay(0) { () -> () in
             
             // Generate a UI image for the respective social media type
-            cell.emblemImage.image = self.socialMediaImageList[indexPath.item % self.socialMediaImageList.count]
+//            cell.emblemImage.image = self.socialMediaImageList[indexPath.item % self.socialMediaImageList.count]
+            cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaName]
             
             cell.socialMediaName = socialMediaName
 
