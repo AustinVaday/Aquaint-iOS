@@ -44,6 +44,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         // Create a reference to firebase location
         firebaseRootRef = Firebase(url: firebaseRootRefString)
         
+        // Log out of of firebase if already logged in
+        firebaseRootRef.unauth()
         
         self.checkMark.hidden = true
         self.checkMarkFlipped.hidden = true

@@ -70,12 +70,15 @@ class HomeController: UIViewController {
         if (userName != nil)
         {
             print(userName)
+
             userNameLabel.text = userName
         }
         else
         {
             userNameLabel.text = "Welcome!"
         }
+        
+
         
         
         

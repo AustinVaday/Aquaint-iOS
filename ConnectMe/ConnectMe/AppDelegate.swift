@@ -33,7 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Get the firebase ref so that we can logout on firebase
         let firebaseRootRef = Firebase(url: firebaseRootRefString)
 
-        print ("Hey")
         // If user is authenticated already, show correct view controller
         if (firebaseRootRef.authData != nil)
         {
