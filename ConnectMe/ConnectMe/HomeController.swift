@@ -9,7 +9,7 @@
 //  Code is owned by: Austin Vaday and Navid Sarvian
 
 import UIKit
-import Parse
+import Firebase
 
 class HomeController: UIViewController {
     
@@ -63,18 +63,23 @@ class HomeController: UIViewController {
     }
     @IBAction func logOutButtonClicked(sender: UIButton) {
         
-        // Ask user if they really want to log out...
-        let alert = UIAlertController(title: nil, message: "Are you really sure you want to log out?", preferredStyle: UIAlertControllerStyle.Alert)
-        
-        let logOutAction = UIAlertAction(title: "Log out", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
+            // Ask user if they really want to log out...
+            let alert = UIAlertController(title: nil, message: "Are you really sure you want to log out?", preferredStyle: UIAlertControllerStyle.Alert)
             
-            // present the log in home page
+            let logOutAction = UIAlertAction(title: "Log out", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
             
-            //TODO: Add spinner functionality
-            self.performSegueWithIdentifier("LogOut", sender: nil)
-            
-            // Log out of Parse, too
-            PFUser.logOutInBackground()
+                // present the log in home page
+                
+                //TODO: Add spinner functionality
+                self.performSegueWithIdentifier("LogOut", sender: nil)
+                
+                let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
+
+                // Get the firebase ref so that we can logout on firebase
+                let firebaseRootRef = Firebase(url: firebaseRootRefString)
+                
+                // Log out of of firebase
+                firebaseRootRef.unauth()
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil)

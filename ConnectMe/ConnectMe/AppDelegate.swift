@@ -26,48 +26,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        // If user is already logged into Firebase, go to home page instead of log-in/sign-up pages
         
+        let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
         
-//        print("LAUNCH EMBLEM PAGE HERE")
-//        
-//        // Power app with Local Datastore. For more info, go to
-//        Parse.enableLocalDatastore()
-//        
-//        // Initialize Parse.
-//        Parse.setApplicationId("nGRlNCMIIO6mhGcWD5inHrGwzyZT4T4LYH3otLLz",
-//            clientKey: "ypytbHHS1NBGgrQgZLOcAXwpHbYx62YXxUhUHKs3")
-//        
-//        // Track statistics around application opens.
-//        PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
-//        
-//        PFUser.logOutInBackground()
-        
-/*
-        // Create AWS credentials provider
-        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:178e3120-b277-4864-9654-094f674e582b")
-        
-        // Set configurations
-        let configurations = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialsProvider)
-        
-        // Can only set the configurations once
-        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configurations
-        
-        // Get Amizon Cognito ID
-        credentialsProvider.getIdentityId().continueWithBlock { (task: AWSTask!) -> AnyObject? in
+        // Get the firebase ref so that we can logout on firebase
+        let firebaseRootRef = Firebase(url: firebaseRootRefString)
+
+
+        // If user is authenticated already, show correct view controller
+        if (firebaseRootRef != nil)
+        {
             
-            
-            if (task.error != nil)
-            {
-                print("Error: ", task.error?.localizedDescription)
-            }
-            else
-            {
-                // Task will contain identity id
-                let cognitoID = task.result
-            }
-            return nil
+            let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+            let viewControllerIdentifier = "MainPageViewController"
+
+            // Go to home page, as if user was logged in already!
+            self.window?.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
+            print("user already logged in")
         }
-  */
+        else
+        {
+            print("no user logged in yet!")
+        }
+    
         
         return true
     }
