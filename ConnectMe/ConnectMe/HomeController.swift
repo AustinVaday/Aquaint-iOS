@@ -18,7 +18,7 @@ class HomeController: UIViewController {
     var userName : String!
     var userId   : String!
     
-    
+
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     var firebaseRootRef : Firebase!
     
@@ -31,43 +31,56 @@ class HomeController: UIViewController {
         // If we're not logged in, immediately go back to beginning page.
         let authData = firebaseRootRef.authData
         
+        
         if (authData == nil)
         {
             print("Error in HomeController. authData is somehow nil!")
             self.performSegueWithIdentifier("LogOut", sender: nil)
         
         }
+//        else
+//        {
+//            // Fetch unique user ID
+//            userId = authData.uid
+//            
+//            print (userId)
+//            
+//            let firebaseUserIdToUserNameRef = firebaseRootRef.childByAppendingPath("UserIdToUserName/" + userId)
+//            
+//            // Fetch respective username from this id
+//            firebaseUserIdToUserNameRef.observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+//                print ("DONE1")
+//
+//                self.userName = snapshot.value as! String
+//                
+//                print ("DONE")
+//                
+//                print(self.userName)
+//                
+//                self.userNameLabel.text = self.userName
+//            })
+//
+//        }
+        
+        // Get the user defaults set previously in the program (username of user)
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        userName = defaults.stringForKey("username")
+        
+        if (userName != nil)
+        {
+            print(userName)
+            userNameLabel.text = userName
+        }
         else
         {
-            // Fetch unique user ID
-            userId = authData.uid
-            
-            print (userId)
-            
-            let firebaseUserIdToUserNameRef = firebaseRootRef.childByAppendingPath("UserIdToUserName/" + userId)
-            
-            // Fetch respective username from this id
-            firebaseUserIdToUserNameRef.observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
-                print ("DONE1")
-
-                self.userName = snapshot.value as! String
-                
-                print ("DONE")
-                
-                print(self.userName)
-                
-                self.userNameLabel.text = self.userName
-            })
-            
-
-  
-      
-            
-            
-            
-            
-
+            userNameLabel.text = "Welcome!"
         }
+        
+        
+        
+        
+        
         
         
 //        // Add gesture recognizer programatacially (buggy if doing so through XIB)

@@ -349,6 +349,10 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                                     self.firebaseRootRef.childByAppendingPath("UserIdToUserName/" + userId).setValue(lowerCaseUserNameString)
                                     
                                     
+                                    // Cache the user name for future use!
+                                    let defaults = NSUserDefaults.standardUserDefaults()
+                                    defaults.setObject(lowerCaseUserNameString, forKey: "username")
+                                    
                                     // Perform update on UI on main thread
                                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                         
@@ -376,6 +380,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                                         self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
                                         
                                     })
+                                    
+
                                     
                                 }
                                 else // If not success log in

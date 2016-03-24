@@ -120,8 +120,32 @@ class LogInController: UIViewController {
                         if (error == nil)
                         {
                             
-                            print("User logged in: ", authData.uid)
+                            let userId = authData.uid
+                            var userName: String!
+                            print("User logged in: ", userId)
    
+                            
+                            let firebaseUserIdToUserNameRef = self.firebaseRootRef.childByAppendingPath("UserIdToUserName/" + userId)
+                
+                            // Fetch respective username from this id
+                            firebaseUserIdToUserNameRef.observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+                                print ("prior to snapshot")
+                
+                                userName = snapshot.value as! String
+                
+                                print ("after snapshot")
+                                
+                                print("User logged in has username: ", userName)
+                                
+                                // Obtain username and cache the user name for future use!
+                                let defaults = NSUserDefaults.standardUserDefaults()
+                                defaults.setObject(userName, forKey: "username")
+
+                            })
+                            
+
+                            
+                            
                             // Perform update on UI on main thread
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                 
