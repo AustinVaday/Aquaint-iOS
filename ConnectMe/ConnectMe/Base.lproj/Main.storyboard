@@ -289,10 +289,21 @@
                                     <color key="titleColor" red="0.058823529409999999" green="0.44833489599999998" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="USERNAME" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Hnq-Xb-kzb">
+                                <rect key="frame" x="130" y="82" width="340" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="Eg1-Qi-85o"/>
+                                    <constraint firstAttribute="width" constant="340" id="eC4-Sb-OoU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
+                                <color key="textColor" red="0.058823529409999999" green="0.44833489599999998" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="Hnq-Xb-kzb" firstAttribute="centerX" secondItem="ckE-RN-rVs" secondAttribute="centerX" id="1xl-Rb-UP3"/>
                             <constraint firstAttribute="leadingMargin" secondItem="xPW-Hw-kgz" secondAttribute="leading" id="2Jj-aY-0Xh"/>
                             <constraint firstItem="KP4-wr-f1F" firstAttribute="top" secondItem="ckE-RN-rVs" secondAttribute="top" id="2dp-HT-AX9"/>
                             <constraint firstItem="KP4-wr-f1F" firstAttribute="leading" secondItem="SCY-rM-Vc6" secondAttribute="leading" id="4MW-Kl-XoK"/>
@@ -311,9 +322,11 @@
                             <constraint firstItem="3TD-OX-QTc" firstAttribute="leading" secondItem="ckE-RN-rVs" secondAttribute="leadingMargin" constant="-4" id="tOl-gK-qoR"/>
                             <constraint firstItem="xPW-Hw-kgz" firstAttribute="top" secondItem="KP4-wr-f1F" secondAttribute="bottom" constant="8" symbolic="YES" id="uhv-wt-dH6"/>
                             <constraint firstItem="gCx-w9-Vgf" firstAttribute="top" secondItem="eKa-ke-8ez" secondAttribute="bottom" constant="5" id="ySG-M2-B0F"/>
+                            <constraint firstItem="Hnq-Xb-kzb" firstAttribute="top" secondItem="SCY-rM-Vc6" secondAttribute="bottom" constant="16" id="zVx-oT-wJ9"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="userNameLabel" destination="Hnq-Xb-kzb" id="Qga-WJ-BiR"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="LogOut" id="X0O-bq-tyh"/>
                     </connections>
                 </viewController>
@@ -420,7 +433,7 @@
                                                                             <constraint firstAttribute="height" constant="32" id="DPh-tj-1Q7"/>
                                                                             <constraint firstAttribute="width" constant="32" id="GBX-Ja-AXt"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="0CE62B7B-2C2F-4EC8-9B4E-4865FACE2D2E"/>
+                                                                        <state key="normal" image="611C619F-1ECC-4DA9-BDA9-4FF761F73897"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="JcZ-aN-92g">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -1139,7 +1152,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="0CE62B7B-2C2F-4EC8-9B4E-4865FACE2D2E" width="32" height="32">
+        <image name="611C619F-1ECC-4DA9-BDA9-4FF761F73897" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -1276,6 +1289,6 @@ Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="X0O-bq-tyh"/>
-        <segue reference="zEN-Jn-s14"/>
+        <segue reference="RqE-Y8-kVP"/>
     </inferredMetricsTieBreakers>
 </document>

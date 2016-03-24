@@ -13,22 +13,62 @@ import Firebase
 
 class HomeController: UIViewController {
     
-    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
     
-    // Get the firebase ref so that we can logout on firebase
-    let firebaseRootRef = Firebase(url: "https://torrid-fire-8382.firebaseio.com")
+    @IBOutlet weak var userNameLabel: UILabel!
+    var userName : String!
+    var userId   : String!
+    
+    
+    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
+    var firebaseRootRef : Firebase!
     
     
     override func viewDidLoad() {
         
+        firebaseRootRef = Firebase(url: firebaseRootRefString)
+        
         //*** NOTE: This is an extra check for top-notch security. It is not necessary.
         // If we're not logged in, immediately go back to beginning page.
-        if (firebaseRootRef.authData == nil)
+        let authData = firebaseRootRef.authData
+        
+        if (authData == nil)
         {
             print("Error in HomeController. authData is somehow nil!")
             self.performSegueWithIdentifier("LogOut", sender: nil)
         
         }
+        else
+        {
+            // Fetch unique user ID
+            userId = authData.uid
+            
+            print (userId)
+            
+            let firebaseUserIdToUserNameRef = firebaseRootRef.childByAppendingPath("UserIdToUserName/" + userId)
+            
+            // Fetch respective username from this id
+            firebaseUserIdToUserNameRef.observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+                print ("DONE1")
+
+                self.userName = snapshot.value as! String
+                
+                print ("DONE")
+                
+                print(self.userName)
+                
+                self.userNameLabel.text = self.userName
+            })
+            
+
+  
+      
+            
+            
+            
+            
+
+        }
+        
         
 //        // Add gesture recognizer programatacially (buggy if doing so through XIB)
 //        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePan:")

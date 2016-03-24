@@ -302,17 +302,17 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             // This is a check if username already exists or not.
             firebaseUserRef.observeSingleEventOfType(FEventType.Value, andPreviousSiblingKeyWithBlock: { (snapshot, str) -> Void in
             
-            if snapshot.hasChild(lowerCaseUserNameString)
-            {
-                userNameExists = true
-                print("USERNAME IS TAKEN")
-            }
-            else
-            {
-                userNameExists = false
-                print("USERNAME IS FREE")
-            }
-            
+                if snapshot.hasChild(lowerCaseUserNameString)
+                {
+                    userNameExists = true
+                    print("USERNAME IS TAKEN")
+                }
+                else
+                {
+                    userNameExists = false
+                    print("USERNAME IS FREE")
+                }
+                
             
             if (userNameExists)
             {
