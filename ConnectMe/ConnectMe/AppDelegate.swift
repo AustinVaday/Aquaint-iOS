@@ -33,11 +33,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Get the firebase ref so that we can logout on firebase
         let firebaseRootRef = Firebase(url: firebaseRootRefString)
 
-
+        print ("Hey")
         // If user is authenticated already, show correct view controller
-        if (firebaseRootRef != nil)
+        if (firebaseRootRef.authData != nil)
         {
-            
             let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
             let viewControllerIdentifier = "MainPageViewController"
 
@@ -76,7 +75,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         
     }
-
 
 }
 

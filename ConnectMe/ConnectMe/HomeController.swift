@@ -13,7 +13,22 @@ import Firebase
 
 class HomeController: UIViewController {
     
+    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
+    
+    // Get the firebase ref so that we can logout on firebase
+    let firebaseRootRef = Firebase(url: "https://torrid-fire-8382.firebaseio.com")
+    
+    
     override func viewDidLoad() {
+        
+        //*** NOTE: This is an extra check for top-notch security. It is not necessary.
+        // If we're not logged in, immediately go back to beginning page.
+        if (firebaseRootRef.authData == nil)
+        {
+            print("Error in HomeController. authData is somehow nil!")
+            self.performSegueWithIdentifier("LogOut", sender: nil)
+        
+        }
         
 //        // Add gesture recognizer programatacially (buggy if doing so through XIB)
 //        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePan:")
@@ -73,13 +88,22 @@ class HomeController: UIViewController {
                 //TODO: Add spinner functionality
                 self.performSegueWithIdentifier("LogOut", sender: nil)
                 
-                let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
-
-                // Get the firebase ref so that we can logout on firebase
-                let firebaseRootRef = Firebase(url: firebaseRootRefString)
-                
                 // Log out of of firebase
-                firebaseRootRef.unauth()
+                self.firebaseRootRef.unauth()
+                
+                if (self.firebaseRootRef.authData == nil)
+                {
+                    print("successful log out.")
+                    
+                    // Set initial view controller back to default
+//
+//                    let window = UIWindow(frame: UIScreen.mainScreen().bounds)
+//                    let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+//                    let viewControllerIdentifier = "BeginningViewController"
+//                    
+//                    // Go to beginning page, as if user was logged in already!
+//                    window.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
+                }
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil)
