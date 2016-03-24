@@ -118,3 +118,14 @@ func showAlert(title: String, message: String, buttonTitle: String, sender: AnyO
     
     sender.showViewController(alert, sender: nil)
 }
+
+
+// Get the current user that is signed into the app
+func getCurrentUser() -> String!
+{
+    // Get the user defaults set previously in the program (username of user)
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
+    return defaults.stringForKey("username")
+    
+}

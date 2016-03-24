@@ -11,6 +11,7 @@ import UIKit
 import Firebase
 import Contacts
 
+
 class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
     
@@ -24,7 +25,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     let socialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
-    var userName : String!
+    var currentUserName : String!
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var firebaseRootRef : Firebase!
@@ -32,13 +33,54 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var firebaseLinkedAccountsRef: Firebase!
     var firebaseConnectionsRef: Firebase!
     
-    override func viewDidLoad() {
+    var connectionList : Array<Connection>!
     
+    override func viewDidLoad() {
+        
+        // Fetch the user's username
+        currentUserName = getCurrentUser()
+        
         // Firebase root, our data is stored here
         firebaseRootRef = Firebase(url: firebaseRootRefString)
         firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
         firebaseLinkedAccountsRef = Firebase(url: firebaseRootRefString + "LinkedSocialMediaAccounts/")
-        firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/")
+        firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/" + currentUserName)
+        
+        connectionList = Array<Connection>()
+        
+        // Load all connections and respective information from servers
+        firebaseConnectionsRef.queryOrderedByValue().observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+            print("firebaseConnectionsRef snapshot value is: ", snapshot.value)
+            
+            // Get your connection's user name
+            let connectionUserName = snapshot.key
+            let connection = Connection()
+            
+            // Store server data into our local "cached" object -- connection
+            connection.userName = snapshot.key
+            connection.timestampGMT = snapshot.value as! Int
+            connection.userImage =  self.firebaseUsersRef.childByAppendingPath(connectionUserName).valueForKey("userImage") as! String
+
+            
+            self.firebaseLinkedAccountsRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+                
+                // Store dictionary of all key-val pairs.. 
+                // I.e.: (facebook, [user's facebook username])
+                //       (twitter,  [user's twitter username]) ... etc
+                connection.socialMediaUserNames = snapshot.value as! NSDictionary
+                
+                print("firebasedLinkedAccountsRef snapshot value is: ", snapshot.value)
+                
+            })
+            
+            
+            // Add connection to connection list -- sorted in ascending order by time!
+            self.connectionList.append(connection)
+            
+            
+        })
+        
+        
         
         
         
@@ -95,9 +137,16 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
 
-        // Set the user name
-        cell.cellName.text = "User " + String(indexPath.row)
-        
+        // Put the Aquaint Team as your first contact
+        if (indexPath.row == 0)
+        {
+            cell.cellName.text = "Aquaint Team"
+        }
+        else
+        {
+            // Set the user name
+            cell.cellName.text = "User " + String(indexPath.row)
+        }
         
         return cell
         

@@ -62,10 +62,7 @@ class HomeController: UIViewController {
 //
 //        }
         
-        // Get the user defaults set previously in the program (username of user)
-        let defaults = NSUserDefaults.standardUserDefaults()
-        
-        userName = defaults.stringForKey("username")
+        userName = getCurrentUser()
         
         if (userName != nil)
         {
@@ -146,6 +143,9 @@ class HomeController: UIViewController {
                 
                 // Log out of of firebase
                 self.firebaseRootRef.unauth()
+                
+                // Remove all observers
+                self.firebaseRootRef.removeAllObservers()
                 
                 if (self.firebaseRootRef.authData == nil)
                 {
