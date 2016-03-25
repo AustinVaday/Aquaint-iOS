@@ -25,7 +25,7 @@ class Connection
     var userName             = String()
     var userImage            = String()
     var userFullName         = String()
-    var timestampGMT         = Double()
+    var timestampGMT         = Int()
     var socialMediaUserNames = NSDictionary()
 
     
@@ -38,47 +38,46 @@ class Connection
         
         
         let date = NSDate()
-        let currentTime = date.timeIntervalSince1970
+        let currentTime = Int(date.timeIntervalSince1970)
         
         // Get time diff in seconds
         print ("currentTime is:", currentTime)
         print ("timestampGMT is:", timestampGMT)
-        let timeDiffMilliSec = abs(currentTime - timestampGMT)
-        let timeDiffSec = timeDiffMilliSec / 1000
-        
+        let timeDiffSec = abs(currentTime - timestampGMT)
+
         // If we're in seconds, return seconds
         if (timeDiffSec < 60)
         {
-            return String(Int(timeDiffSec)) + "s"
+            return String(Int(timeDiffSec)) + " s"
         }
         // If it's better to use minutes
         else if (timeDiffSec < (60 * 60))
         {
             let calcTime = Int(timeDiffSec / 60)
-            return String(calcTime) + "min"
+            return String(calcTime) + " min"
         }
         // If it's better to use hours
         else if (timeDiffSec < (60 * 60 * 24))
         {
             let calcTime = Int(timeDiffSec / 60 / 24)
-            return String(calcTime) + "h"
+            return String(calcTime) + " h"
         }
         // If it's better to use weeks
         else if (timeDiffSec < (60 * 60 * 24 * 7))
         {
             let calcTime = Int(timeDiffSec / 60 / 24 / 7)
-            return String(calcTime) + "w"
+            return String(calcTime) + " w"
         }
         // If it's better to use months
         else if (timeDiffSec < (60 * 60 * 24 * 7 * 4))
         {
             let calcTime = Int(timeDiffSec / 60 / 24 / 7 / 4)
-            return String(calcTime) + "mo"
+            return String(calcTime) + " mo"
         }
         else
         {
             let calcTime = Int(timeDiffSec / 60 / 24 / 365)
-            return String(calcTime) + "y"
+            return String(calcTime) + " y"
         }
         
     }

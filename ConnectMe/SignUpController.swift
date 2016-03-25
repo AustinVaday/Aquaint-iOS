@@ -337,7 +337,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                                 {
                                     let userId = authData.uid
                                     let date = NSDate()
-                                    let currentTime = date.timeIntervalSince1970
+                                    let currentTime = Int(date.timeIntervalSince1970)
                                     
                                     let userInfo   = ["fullName" : "", "userImage" : "none", "dateCreated": currentTime]
                                     let linkedSocialMediaAccounts = ["twitter": "austinvaday", "facebook": "austinvaday", "instagram": "avtheman"]
