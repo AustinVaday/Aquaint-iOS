@@ -62,12 +62,19 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             
             print("firebaseConnectionsRef snapshot value is: ", snapshot.value)
             print("conn username is:", connectionUserName)
+            print("##1")
             
             // Store the user's Image
-            self.firebaseUsersRef.childByAppendingPath(connectionUserName + "/userImage").observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+            self.firebaseUsersRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
                 
-                connection.userImage = snapshot.value as! String
+//                connection.userImage = snapshot.value as! String
+                connection.userImage = snapshot.childSnapshotForPath("/userImage").value as! String
+                connection.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
+               
+                print("##2")
                 
+                self.recentConnTableView.reloadData()
+
             })
             
             // Store the user's social media accounts
@@ -81,10 +88,16 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 
                 print("firebasedLinkedAccountsRef snapshot value is: ", snapshot.value)
                 
+                print("##3")
+                
+                self.recentConnTableView.reloadData()
+
             })
             
+            print("##4")
             // Add connection to connection list -- sorted in ascending order by time!
             self.connectionList.append(connection)
+            
             
             print("RELOADING TABLE VIEWS NOW!")
             self.recentConnTableView.reloadData()
@@ -133,8 +146,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         print("TABLEVIEW 1")
         
-        print(connectionList.count)
-        
         return connectionList.count
     }
     
@@ -145,17 +156,10 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
-
-        // Put the Aquaint Team as your first contact
-        if (indexPath.row == 0)
-        {
-            cell.cellName.text = "Aquaint Team"
-        }
-        else
-        {
-            // Set the user name
-            cell.cellName.text = "User " + String(indexPath.row)
-        }
+        
+        let connectedUser = connectionList[indexPath.row]
+        
+        cell.cellName.text = connectedUser.userFullName + " (" + connectedUser.userName + ")"
         
         return cell
         

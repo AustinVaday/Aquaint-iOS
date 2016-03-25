@@ -9,21 +9,22 @@
 import Foundation
 import Firebase
 
-class UserNames
-{
-    var facebook    : String!
-    var twitter     : String!
-    var instagram   : String!
-    var snapchat    : String!
-    var youtube     : String!
-    var linkedin    : String!
-}
+//class UserNames
+//{
+//    var facebook    : String!
+//    var twitter     : String!
+//    var instagram   : String!
+//    var snapchat    : String!
+//    var youtube     : String!
+//    var linkedin    : String!
+//}
 
 
 class Connection
 {
     var userName             = String()
     var userImage            = String()
+    var userFullName         = String()
     var timestampGMT         = Int()
     var socialMediaUserNames = NSDictionary()
 
