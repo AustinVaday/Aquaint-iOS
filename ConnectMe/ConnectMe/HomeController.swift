@@ -198,7 +198,8 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
         let userName     = allUsers[indexPath.item].userName
         let userImage    = allUsers[indexPath.item].userImage
         
-        cell.cellName.text = userFullName + " (" + userName + ")"
+        cell.cellName.text = userFullName
+        cell.cellUserName.text = userName
         
         return cell
         

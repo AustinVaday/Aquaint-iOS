@@ -20,8 +20,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var selectedRowIndex:Int = -1
     var expandedRow:Int = -1
     var isARowExpanded:Bool = false
-    let defaultRowHeight:CGFloat = 55
-    let expandedRowHeight:CGFloat = 100
+    let defaultRowHeight:CGFloat = 60
+    let expandedRowHeight:CGFloat = 120
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
@@ -167,7 +167,10 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         let connectedUser = connectionList[indexPath.row]
         
-        cell.cellName.text = connectedUser.userFullName + " (" + connectedUser.userName + ")"
+        cell.cellName.text = connectedUser.userFullName
+        cell.cellUserName.text = connectedUser.userName
+        
+        
         
         return cell
         
