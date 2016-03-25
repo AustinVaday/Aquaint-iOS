@@ -50,7 +50,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         // Load all connections and respective information from servers
         firebaseConnectionsRef.queryOrderedByValue().observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
-            print("firebaseConnectionsRef snapshot value is: ", snapshot.value)
+            
             
             // Get your connection's user name
             let connectionUserName = snapshot.key
@@ -59,11 +59,21 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             // Store server data into our local "cached" object -- connection
             connection.userName = snapshot.key
             connection.timestampGMT = snapshot.value as! Int
-            connection.userImage =  self.firebaseUsersRef.childByAppendingPath(connectionUserName).valueForKey("userImage") as! String
-
             
+            print("firebaseConnectionsRef snapshot value is: ", snapshot.value)
+            print("conn username is:", connectionUserName)
+            
+            // Store the user's Image
+            self.firebaseUsersRef.childByAppendingPath(connectionUserName + "/userImage").observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+                
+                connection.userImage = snapshot.value as! String
+                
+            })
+            
+            // Store the user's social media accounts
             self.firebaseLinkedAccountsRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
                 
+                print("LET'S DO THIS FOR: ", connectionUserName)
                 // Store dictionary of all key-val pairs.. 
                 // I.e.: (facebook, [user's facebook username])
                 //       (twitter,  [user's twitter username]) ... etc
@@ -73,16 +83,13 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 
             })
             
-            
             // Add connection to connection list -- sorted in ascending order by time!
             self.connectionList.append(connection)
             
+            print("RELOADING TABLE VIEWS NOW!")
+            self.recentConnTableView.reloadData()
             
         })
-        
-        
-        
-        
         
         // Load up all images we have
         var imageName:String!
@@ -126,7 +133,9 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         print("TABLEVIEW 1")
         
-        return 50
+        print(connectionList.count)
+        
+        return connectionList.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

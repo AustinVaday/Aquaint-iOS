@@ -339,7 +339,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                                     
                                     let userInfo   = ["fullName" : "", "userImage" : "none", "dateCreated": FirebaseServerValue.timestamp()]
                                     let linkedSocialMediaAccounts = ["twitter": "austinvaday", "facebook": "austinvaday", "instagram": "avtheman"]
-                                    let connections = ["Aquaint" : FirebaseServerValue.timestamp()]
+                                    let connections = ["aquaint" : FirebaseServerValue.timestamp()]
                                     
                                     
                                     print("User signed up and logged in: ", lowerCaseUserNameString)
