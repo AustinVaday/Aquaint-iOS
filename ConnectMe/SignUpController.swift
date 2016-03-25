@@ -336,10 +336,12 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                                 if (error == nil)
                                 {
                                     let userId = authData.uid
+                                    let date = NSDate()
+                                    let currentTime = date.timeIntervalSince1970
                                     
-                                    let userInfo   = ["fullName" : "", "userImage" : "none", "dateCreated": FirebaseServerValue.timestamp()]
+                                    let userInfo   = ["fullName" : "", "userImage" : "none", "dateCreated": currentTime]
                                     let linkedSocialMediaAccounts = ["twitter": "austinvaday", "facebook": "austinvaday", "instagram": "avtheman"]
-                                    let connections = ["aquaint" : FirebaseServerValue.timestamp()]
+                                    let connections = ["aquaint" : currentTime]
                                     
                                     
                                     print("User signed up and logged in: ", lowerCaseUserNameString)

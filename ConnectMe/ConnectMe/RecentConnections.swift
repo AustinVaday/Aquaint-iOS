@@ -58,7 +58,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             
             // Store server data into our local "cached" object -- connection
             connection.userName = snapshot.key
-            connection.timestampGMT = snapshot.value as! Int
+            connection.timestampGMT = snapshot.value as! Double
             
             print("firebaseConnectionsRef snapshot value is: ", snapshot.value)
             print("conn username is:", connectionUserName)
@@ -169,6 +169,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         cell.cellName.text = connectedUser.userFullName
         cell.cellUserName.text = connectedUser.userName
+        cell.cellTimeConnected.text = connectedUser.computeTimeDiff()
         
         
         

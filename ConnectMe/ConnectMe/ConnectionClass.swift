@@ -25,25 +25,61 @@ class Connection
     var userName             = String()
     var userImage            = String()
     var userFullName         = String()
-    var timestampGMT         = Int()
+    var timestampGMT         = Double()
     var socialMediaUserNames = NSDictionary()
 
     
-    
+    // Computes time difference to display from GMT (now) to timestampGMT
     func computeTimeDiff() -> String
     {
-        // Computes time difference to display from GMT (now) to GMTtimestamp
         
-//        // Get time diff in seconds
-//        var timeDiff = FirebaseServerValue.timestamp() - timestampGMT as! Int
-//        
-//        // Convert time diff to milliseconds
-//        timeDiff = timeDiff * 1000
+        // Don't know how to cast this to an int..
+//        let currentTime = FirebaseServerValue.timestamp()
         
         
-//        var formatedDate = NSDate(timeIntervalSinceNow: timestampGMT * 1000)
+        let date = NSDate()
+        let currentTime = date.timeIntervalSince1970
         
-        return "TIME"
+        // Get time diff in seconds
+        print ("currentTime is:", currentTime)
+        print ("timestampGMT is:", timestampGMT)
+        let timeDiffMilliSec = abs(currentTime - timestampGMT)
+        let timeDiffSec = timeDiffMilliSec / 1000
+        
+        // If we're in seconds, return seconds
+        if (timeDiffSec < 60)
+        {
+            return String(Int(timeDiffSec)) + "s"
+        }
+        // If it's better to use minutes
+        else if (timeDiffSec < (60 * 60))
+        {
+            let calcTime = Int(timeDiffSec / 60)
+            return String(calcTime) + "min"
+        }
+        // If it's better to use hours
+        else if (timeDiffSec < (60 * 60 * 24))
+        {
+            let calcTime = Int(timeDiffSec / 60 / 24)
+            return String(calcTime) + "h"
+        }
+        // If it's better to use weeks
+        else if (timeDiffSec < (60 * 60 * 24 * 7))
+        {
+            let calcTime = Int(timeDiffSec / 60 / 24 / 7)
+            return String(calcTime) + "w"
+        }
+        // If it's better to use months
+        else if (timeDiffSec < (60 * 60 * 24 * 7 * 4))
+        {
+            let calcTime = Int(timeDiffSec / 60 / 24 / 7 / 4)
+            return String(calcTime) + "mo"
+        }
+        else
+        {
+            let calcTime = Int(timeDiffSec / 60 / 24 / 365)
+            return String(calcTime) + "y"
+        }
         
     }
 
