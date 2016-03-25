@@ -11,10 +11,12 @@
 import UIKit
 import Firebase
 
-class HomeController: UIViewController {
+class HomeController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var searchTableView: UITableView!
+    
     var userName : String!
     var userId   : String!
     
@@ -38,30 +40,8 @@ class HomeController: UIViewController {
             self.performSegueWithIdentifier("LogOut", sender: nil)
         
         }
-//        else
-//        {
-//            // Fetch unique user ID
-//            userId = authData.uid
-//            
-//            print (userId)
-//            
-//            let firebaseUserIdToUserNameRef = firebaseRootRef.childByAppendingPath("UserIdToUserName/" + userId)
-//            
-//            // Fetch respective username from this id
-//            firebaseUserIdToUserNameRef.observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
-//                print ("DONE1")
-//
-//                self.userName = snapshot.value as! String
-//                
-//                print ("DONE")
-//                
-//                print(self.userName)
-//                
-//                self.userNameLabel.text = self.userName
-//            })
-//
-//        }
         
+        // Get current user from NSUserDefaults
         userName = getCurrentUser()
         
         if (userName != nil)
@@ -72,15 +52,8 @@ class HomeController: UIViewController {
         }
         else
         {
-            userNameLabel.text = "Welcome!"
+            userNameLabel.text = "Welcome, guest!"
         }
-        
-
-        
-        
-        
-        
-        
         
         
 //        // Add gesture recognizer programatacially (buggy if doing so through XIB)
@@ -89,26 +62,26 @@ class HomeController: UIViewController {
 //        self.view.addGestureRecognizer(panGestureRecognizer)
         
     }
+/*
+    // Functionality to handle user pan gestures (dragging left, right, up, down, etc)
+    func handlePan (recognizer: UIPanGestureRecognizer)
+    {
+        print("IN HANDLEPAN")
+        // Get the translation (how much the user moved their finger)
+        let translation = recognizer.translationInView(self.view)
+        let velocity = recognizer.velocityInView(self.view)
+        let view = recognizer.view!
+        
+        // Set the new view's center based on x/y translations that the user initiated
+        // No y translation for now
+        view.center = CGPoint(x: view.center.x + translation.x, y: view.center.y /*+ translation.y*/)
     
-//    // Functionality to handle user pan gestures (dragging left, right, up, down, etc)
-//    func handlePan (recognizer: UIPanGestureRecognizer)
-//    {
-//        print("IN HANDLEPAN")
-//        // Get the translation (how much the user moved their finger)
-//        let translation = recognizer.translationInView(self.view)
-//        let velocity = recognizer.velocityInView(self.view)
-//        let view = recognizer.view!
-//        
-//        // Set the new view's center based on x/y translations that the user initiated
-//        // No y translation for now
-//        view.center = CGPoint(x: view.center.x + translation.x, y: view.center.y /*+ translation.y*/)
-//    
-//        // Make sure to set recognizer's translation back to 0 to prevent compounding issues
-//        recognizer.setTranslation(CGPointZero, inView: self.view)
-////
-//        
-//    }
+        // Make sure to set recognizer's translation back to 0 to prevent compounding issues
+        recognizer.setTranslation(CGPointZero, inView: self.view)
 
+
+    }
+*/
     @IBAction func menuButtonClicked(sender: AnyObject) {
         // Transition to page on left (menu)
         
@@ -170,4 +143,27 @@ class HomeController: UIViewController {
         self.showViewController(alert, sender: nil)
         
     }
+    
+    
+    // **** SEARCH TABLE VIEW *****
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! SearchTableViewCell
+        
+        cell.cellName.text = "HEY"
+        
+        return cell
+        
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return 20
+        
+    }
+    
+    
+    
+    
 }

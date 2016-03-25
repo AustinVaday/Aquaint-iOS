@@ -9,13 +9,11 @@
 
 import UIKit
 
-class TableViewCell: UITableViewCell {
+class SearchTableViewCell: UITableViewCell {
     
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var cellName: UILabel!
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var cellAddButton: UIButton!
+        
     
-    var testing:String!
-    
-
 }

@@ -33,6 +33,7 @@
 		FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C341C01AC63001B2634 /* AppDelegate.swift */; };
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
+		FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */; };
 		FFB860281C4C38A800CFB621 /* AquaintTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */; };
 		FFB8602A1C4C38D300CFB621 /* AquaintUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB860291C4C38D300CFB621 /* AquaintUITestCase.swift */; };
 		FFBB872C1C5307F500500FAD /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87291C5307F500500FAD /* FBSDKCoreKit.framework */; };
@@ -93,6 +94,7 @@
 		FF897C401C01AC63001B2634 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FF897C451C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C501C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintTestCase.swift; sourceTree = "<group>"; };
 		FFB860291C4C38D300CFB621 /* AquaintUITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintUITestCase.swift; sourceTree = "<group>"; };
 		FFBB87291C5307F500500FAD /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				FF7878761C34EC4A00354936 /* RecentConnections.swift */,
 				FF7878781C352D0400354936 /* TableViewCell.swift */,
 				FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */,
+				FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */,
 			);
 			name = Aquaint;
 			path = ConnectMe;
@@ -459,6 +462,7 @@
 				FF7878611C3010E700354936 /* LogInController.swift in Sources */,
 				FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */,
 				FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */,
+				FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
