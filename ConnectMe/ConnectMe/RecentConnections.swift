@@ -22,7 +22,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var isARowExpanded:Bool = false
     let defaultRowHeight:CGFloat = 55
     let expandedRowHeight:CGFloat = 100
-    let socialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
+    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
     var currentUserName : String!
@@ -73,7 +73,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                
                 print("##2")
                 
-                self.recentConnTableView.reloadData()
+//                self.recentConnTableView.reloadData()
 
             })
             
@@ -90,24 +90,28 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 
                 print("##3")
                 
+//                self.recentConnTableView.reloadData()
+                
+                
+                // Add connection to connection list -- sorted in ascending order by time!
+                self.connectionList.append(connection)
+                
+                
+                print("RELOADING TABLE VIEWS NOW!")
                 self.recentConnTableView.reloadData()
 
             })
             
             print("##4")
-            // Add connection to connection list -- sorted in ascending order by time!
-            self.connectionList.append(connection)
             
-            
-            print("RELOADING TABLE VIEWS NOW!")
-            self.recentConnTableView.reloadData()
+
             
         })
         
         // Load up all images we have
         var imageName:String!
         var newUIImage:UIImage!
-        let size = socialMediaNameList.count
+        let size = possibleSocialMediaNameList.count
         
         socialMediaImageDictionary = Dictionary<String, UIImage>()
         
@@ -116,7 +120,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         for (var i = 0; i < size; i++)
         {
             // Fetch emblem name
-            imageName = socialMediaNameList[i]
+            imageName = possibleSocialMediaNameList[i]
          
             print("Generating image for: ", imageName)
             // Generate image
@@ -156,6 +160,10 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
+        
+        
+        // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
+        cell.collectionView.tag = indexPath.row
         
         let connectedUser = connectionList[indexPath.row]
         
@@ -217,8 +225,11 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("COLLECTIONVIEW 1")
         
+        print("TAG IS:", collectionView.tag)
 
-        return socialMediaNameList.count
+        // Use the tag to know which tableView row we're at
+        return connectionList[collectionView.tag].socialMediaUserNames.count
+        
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -227,7 +238,13 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
 
-        let socialMediaName = socialMediaNameList[indexPath.item % self.socialMediaNameList.count]
+        
+        // Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
+        // an array so that we can easily get the social media mediums that the user has (i.e. facebook, twitter, etc).
+        var userSocialMediaNames = connectionList[collectionView.tag].socialMediaUserNames.allKeys as! Array<String>
+        userSocialMediaNames = userSocialMediaNames.sort()
+        
+        let socialMediaName = userSocialMediaNames[indexPath.item % self.possibleSocialMediaNameList.count]
         
         print(socialMediaName)
         
@@ -269,7 +286,9 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         var socialMediaURL:NSURL!
         var contact:CNMutableContact = CNMutableContact()
         
-        let userName = "AustinVaday"
+//        let userName = "AustinVaday"
+        let connectionSocialMediaUserNames = connectionList[collectionView.tag].socialMediaUserNames
+        
         
         urlString = ""
         altString = ""
@@ -277,29 +296,41 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         switch (socialMediaName)
         {
         case "facebook":
-                urlString = "fb://requests/" + userName
-                altString = "http://www.facebook.com/" + userName
+            
+                let facebookUserName = connectionSocialMediaUserNames["facebook"] as! String
+                urlString = "fb://requests/" + facebookUserName
+                altString = "http://www.facebook.com/" + facebookUserName
             break;
         case "snapchat":
-                urlString = "snapchat://add/" + userName
+            
+                let snapchatUserName = connectionSocialMediaUserNames["snapchat"] as! String
+                urlString = "snapchat://add/" + snapchatUserName
                 altString = ""
             break;
         case "instagram":
-                urlString = "instagram://user?username=" + userName
-                altString = "http://www.instagram.com/" + userName
+            
+                let instagramUserName = connectionSocialMediaUserNames["instagram"] as! String
+                urlString = "instagram://user?username=" + instagramUserName
+                altString = "http://www.instagram.com/" + instagramUserName
             break;
         case "twitter":
-                urlString = "twitter:///user?screen_name=" + userName
-                altString = "http://www.twitter.com/" + userName
+            
+                let twitterUserName = connectionSocialMediaUserNames["twitter"] as! String
+                urlString = "twitter:///user?screen_name=" + twitterUserName
+                altString = "http://www.twitter.com/" + twitterUserName
             break;
         case "linkedin":
-                urlString = "linkedin://profile/" + userName
-                altString = "http://www.linkedin.com/in/" + userName
+            
+                let linkedinUserName = connectionSocialMediaUserNames["linkedin"] as! String
+                urlString = "linkedin://profile/" + linkedinUserName
+                altString = "http://www.linkedin.com/in/" + linkedinUserName
                 
             break;
         case "youtube":
-                urlString = "youtube:www.youtube.com/user/" + userName
-                altString = "http://www.youtube.com/" + userName
+            
+                let youtubeUserName = connectionSocialMediaUserNames["youtube"] as! String
+                urlString = "youtube:www.youtube.com/user/" + youtubeUserName
+                altString = "http://www.youtube.com/" + youtubeUserName
             break;
         case "phone":
                 print ("COMING SOON")
