@@ -43,12 +43,12 @@ class Connection
         // Get time diff in seconds
         print ("currentTime is:", currentTime)
         print ("timestampGMT is:", timestampGMT)
-        let timeDiffSec = abs(currentTime - timestampGMT)
+        let timeDiffSec = (currentTime - timestampGMT)
 
         // If we're in seconds, return seconds
         if (timeDiffSec < 60)
         {
-            return String(Int(timeDiffSec)) + " s"
+            return String(Int(timeDiffSec)) + " sec"
         }
         // If it's better to use minutes
         else if (timeDiffSec < (60 * 60))

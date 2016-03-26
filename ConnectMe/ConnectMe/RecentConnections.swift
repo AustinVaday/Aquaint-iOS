@@ -94,8 +94,14 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 
                 
                 // Add connection to connection list -- sorted in ascending order by time!
-                self.connectionList.append(connection)
+                // Front of list == largest time == most recent add
+//                print(snapshot)
+//                self.connectionList.insert(connection, atIndex: 0)
                 
+                print("INSERTING..", connection.userName)
+                
+              self.connectionList.append(connection)
+// NOTE: CODE CRASHES FOR connectionList.insert because apparantly it's fetching 'aquaint' at the beginning of the list... look into this!!!!)
                 
                 print("RELOADING TABLE VIEWS NOW!")
                 self.recentConnTableView.reloadData()
@@ -229,8 +235,21 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("COLLECTIONVIEW 1")
         
+        print("------------------------------------")
+        for (var i = 0; i < connectionList.count; i++)
+        {
+            print("username:", connectionList[i].userName)
+            print("social media accounts", connectionList[i].socialMediaUserNames)
+            
+        }
+        print("------------------------------------")
+
+        
         print("TAG IS:", collectionView.tag)
 
+        print(connectionList[collectionView.tag].userName)
+        print(connectionList[collectionView.tag].socialMediaUserNames.count)
+        
         // Use the tag to know which tableView row we're at
         return connectionList[collectionView.tag].socialMediaUserNames.count
         
@@ -241,6 +260,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
 
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
+        
+        print("CVTAG IS:", collectionView.tag)
 
         
         // Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
@@ -248,6 +269,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         var userSocialMediaNames = connectionList[collectionView.tag].socialMediaUserNames.allKeys as! Array<String>
         userSocialMediaNames = userSocialMediaNames.sort()
         
+        print(indexPath.item)
         let socialMediaName = userSocialMediaNames[indexPath.item % self.possibleSocialMediaNameList.count]
         
         print(socialMediaName)
