@@ -37,8 +37,7 @@ class Connection
 //        let currentTime = FirebaseServerValue.timestamp()
         
         
-        let date = NSDate()
-        let currentTime = Int(date.timeIntervalSince1970)
+        let currentTime = getTimestampAsInt()
         
         // Get time diff in seconds
         print ("currentTime is:", currentTime)

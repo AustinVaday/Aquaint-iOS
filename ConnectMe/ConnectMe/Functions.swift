@@ -129,3 +129,11 @@ func getCurrentUser() -> String!
     return defaults.stringForKey("username")
     
 }
+
+
+// Get timestamp as integer value
+func getTimestampAsInt() -> Int!
+{
+    let date = NSDate()
+    return Int(date.timeIntervalSince1970)
+}
