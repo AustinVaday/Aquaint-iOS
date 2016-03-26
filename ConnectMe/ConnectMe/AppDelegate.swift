@@ -15,6 +15,11 @@ import FBSDKLoginKit
 //import AWSCore
 //import AWSCognito
 
+import AWSS3
+import AWSCore
+
+
+
 // Begin using Firebase framework
 import Firebase
 
@@ -26,8 +31,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        // If user is already logged into Firebase, go to home page instead of log-in/sign-up pages
+        // Connect to Amazon Core Services
+        let credentialsProvider = AWSCognitoCredentialsProvider(
+            regionType: AWSRegionType.USEast1, identityPoolId: "aquaint_MOBILEHUB_1504998897")
         
+        let defaultServiceConfiguration = AWSServiceConfiguration(
+            region: AWSRegionType.USEast1, credentialsProvider: credentialsProvider)
+        
+        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = defaultServiceConfiguration
+        
+        
+        // If user is already logged into Firebase, go to home page instead of log-in/sign-up pages
         let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
         
         // Get the firebase ref so that we can logout on firebase

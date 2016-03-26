@@ -37,6 +37,8 @@ class Connection
 //        let currentTime = FirebaseServerValue.timestamp()
         
         
+        // 55234
+        
         let currentTime = getTimestampAsInt()
         
         // Get time diff in seconds
@@ -58,24 +60,24 @@ class Connection
         // If it's better to use hours
         else if (timeDiffSec < (60 * 60 * 24))
         {
-            let calcTime = Int(timeDiffSec / 60 / 24)
+            let calcTime = Int(timeDiffSec / 60 / 60)
             return String(calcTime) + " h"
         }
-        // If it's better to use weeks
-        else if (timeDiffSec < (60 * 60 * 24 * 7))
+        // If it's better to use days
+        else if (timeDiffSec < (60 * 60 * 24 * 30))
         {
-            let calcTime = Int(timeDiffSec / 60 / 24 / 7)
-            return String(calcTime) + " w"
+            let calcTime = Int(timeDiffSec / 60 / 60 / 24 )
+            return String(calcTime) + " d"
         }
         // If it's better to use months
-        else if (timeDiffSec < (60 * 60 * 24 * 7 * 4))
+        else if (timeDiffSec < (60 * 60 * 24 * 30 * 12))
         {
-            let calcTime = Int(timeDiffSec / 60 / 24 / 7 / 4)
+            let calcTime = Int(timeDiffSec / 60 / 60 / 24 / 30)
             return String(calcTime) + " mo"
         }
         else
         {
-            let calcTime = Int(timeDiffSec / 60 / 24 / 365)
+            let calcTime = Int(timeDiffSec / 60 / 60 / 24 / 365)
             return String(calcTime) + " y"
         }
         
