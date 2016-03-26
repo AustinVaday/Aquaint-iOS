@@ -33,6 +33,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var firebaseLinkedAccountsRef: Firebase!
     var firebaseConnectionsRef: Firebase!
     
+    var refreshControl : UIRefreshControl!
+    
     var connectionList : Array<Connection>!
     
     override func viewDidLoad() {
@@ -110,8 +112,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             
             print("##4")
             
-
-            
         })
         
         // Load up all images we have
@@ -146,7 +146,32 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             
         }
         
+        
+        // Set up refresh control for when user drags for a refresh.
+        refreshControl = UIRefreshControl()
+//        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        // When user pulls, this function will be called
+        refreshControl.addTarget(self, action: "refreshTable:", forControlEvents: UIControlEvents.ValueChanged)
+        recentConnTableView.addSubview(refreshControl)
+        
+        
+        
     }
+    
+    // Function that is called when user drags/pulls table with intention of refreshing it
+    func refreshTable(sender:AnyObject)
+    {
+        recentConnTableView.reloadData()
+        
+        // Need to end refreshing
+        delay(0.5)
+        {
+         self.refreshControl.endRefreshing()
+        }
+    }
+    
+    
+    
     // TABLE VIEW
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
