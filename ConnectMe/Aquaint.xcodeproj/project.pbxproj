@@ -41,6 +41,7 @@
 		FFBB872E1C5307F500500FAD /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB872B1C5307F500500FAD /* FBSDKShareKit.framework */; };
 		FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */; };
 		FFF2A34E1CA661B800C08E38 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF2A34D1CA661B800C08E38 /* SWRevealViewController.m */; };
+		FFF2A3501CA891E200C08E38 /* ServerFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */; };
 		FFF442361C4B2244007651DE /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF442351C4B2244007651DE /* Functions.swift */; };
 		FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFF442391C4C2B21007651DE /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
@@ -105,6 +106,7 @@
 		FFF2A34B1CA661B700C08E38 /* Aquaint-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Aquaint-Bridging-Header.h"; sourceTree = "<group>"; };
 		FFF2A34C1CA661B800C08E38 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		FFF2A34D1CA661B800C08E38 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerFunctions.swift; sourceTree = "<group>"; };
 		FFF442351C4B2244007651DE /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		FFF442391C4C2B21007651DE /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -197,6 +199,7 @@
 				FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */,
 				FFF442391C4C2B21007651DE /* Launch Screen.storyboard */,
 				FFF442351C4B2244007651DE /* Functions.swift */,
+				FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */,
 				FF7878601C3010E600354936 /* LogInController.swift */,
 				FF7878451C281A2500354936 /* HomeController.swift */,
 				FF78783F1C26A0A900354936 /* MenuController.swift */,
@@ -465,6 +468,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFF2A3501CA891E200C08E38 /* ServerFunctions.swift in Sources */,
 				FF7878421C26A0CC00354936 /* CameraController.swift in Sources */,
 				FF7878401C26A0A900354936 /* MenuController.swift in Sources */,
 				FFF2A34E1CA661B800C08E38 /* SWRevealViewController.m in Sources */,

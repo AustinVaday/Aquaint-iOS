@@ -10,6 +10,7 @@
 
 import UIKit
 import Firebase
+import AWSS3
 
 class HomeController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -17,17 +18,57 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var searchTableView: UITableView!
     
+    @IBOutlet weak var imageView: UIImageView!
     var userName : String!
     var userId   : String!
     
     
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     var firebaseRootRef : Firebase!
+    let awsBucketName = "aquaint-userimages"
     
     var allUsers: Array<Connection>!
     
     
     override func viewDidLoad() {
+        
+//        // AWS S3 IMAGE TESTING
+//        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+//        
+//        
+//        
+//        // Create NSURL for download location
+//        var downloadingFilePath = NSTemporaryDirectory()
+//        downloadingFilePath = downloadingFilePath.stringByAppendingString("downloaded-NSA.png")
+//        let downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath)
+//        
+//        // Construct download request
+//        let downloadRequest = AWSS3TransferManagerDownloadRequest()
+//        downloadRequest.bucket = awsBucketName
+//        downloadRequest.key = "NSA.png"
+//        downloadRequest.downloadingFileURL = downloadingFileURL
+//        
+//        // Request the downloaded image!
+//        let awsTask = transferManager.download(downloadRequest)
+//        
+//        // Handle any errors
+//        if (awsTask.error != nil)
+//        {
+//            print(awsTask.error.debugDescription)
+//        }
+//        
+//        if (awsTask.result != nil)
+//        {
+//            let downloadOutput = awsTask.result
+//            
+//            
+//            print("DOWNLOADED!")
+////            self.imageView.image = UIImage(contentsOfFile: downloadingFilePath)
+//        }
+//        
+        
+        
+        
         
         firebaseRootRef = Firebase(url: firebaseRootRefString)
         
@@ -145,6 +186,15 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         
     }
+    
+    @IBAction func recentConnectionsButtonClicked(sender: UIButton) {
+        
+        let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("MainPageViewController") as! MainPageViewController
+        
+        pageViewController.changePage()
+        
+    }
+    
     @IBAction func logOutButtonClicked(sender: UIButton) {
         
         // Ask user if they really want to log out...

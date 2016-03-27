@@ -29,6 +29,9 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         let firstViewController = arrayOfViewControllers[HOME]
         setViewControllers([firstViewController], direction: .Forward, animated: true, completion: nil)
+        
+        
+        print("DOPE")
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
@@ -72,4 +75,13 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         return nil
     }
 
+    
+    func changePage ()
+    {
+        
+        // Recent Connections
+        let recentConnectionsViewController = (storyboard?.instantiateViewControllerWithIdentifier("RecentConnectionsViewController"))!
+        setViewControllers([recentConnectionsViewController], direction: .Forward, animated: true, completion: nil)
+
+    }
 }

@@ -30,6 +30,7 @@ class Connection
 
     
     // Computes time difference to display from GMT (now) to timestampGMT
+    // Used in recentconnections tableview to indicate how long ago you connected with your friends
     func computeTimeDiff() -> String
     {
         
