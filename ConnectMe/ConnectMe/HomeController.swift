@@ -188,10 +188,10 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @IBAction func recentConnectionsButtonClicked(sender: UIButton) {
-        
-        let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("MainPageViewController") as! MainPageViewController
-        
-        pageViewController.changePage()
+//        
+//        let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("MainPageViewController") as! MainPageViewController
+//        
+//        pageViewController.changePage()
         
     }
     
