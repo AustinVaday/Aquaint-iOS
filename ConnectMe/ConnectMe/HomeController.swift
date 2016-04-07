@@ -21,6 +21,12 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var notificationViewLabel: UILabel!
     @IBOutlet weak var notificationView: UIView!
     
+    @IBOutlet weak var sectionUnderlineView0: UIView!
+    @IBOutlet weak var sectionUnderlineView1: UIView!
+    @IBOutlet weak var sectionUnderlineView2: UIView!
+    @IBOutlet weak var sectionUnderlineView3: UIView!
+    @IBOutlet weak var sectionUnderlineView4: UIView!
+    
     var userName : String!
     var userId   : String!
     
@@ -32,6 +38,19 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
     var allUsers: Array<Connection>!
     
     var connectionRequestList : Array<String>! // MAKE IT Connection type LATER
+    
+    
+    // Hides all the section bars for the section underline view/bars under the footer icons
+    func hideAllSectionUnderlineViews()
+    {
+        sectionUnderlineView0.hidden = true
+        sectionUnderlineView1.hidden = true
+        sectionUnderlineView2.hidden = true
+        sectionUnderlineView3.hidden = true
+        sectionUnderlineView4.hidden = true
+    }
+    
+    
     
     override func viewDidLoad() {
         
@@ -71,6 +90,9 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
 ////            self.imageView.image = UIImage(contentsOfFile: downloadingFilePath)
 //        }
 //        
+        
+        // SET UP NOTIFICATIONS
+        // ----------------------------------------------
         // Hide notificationView (if no notifications)
         notificationView.hidden = true
         
@@ -79,6 +101,15 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // Make notificationView circular
         notificationView.layer.cornerRadius = notificationView.frame.size.width / 2
+        
+        
+        // SET UP CONTROL BAR (FOOTER)
+        // ----------------------------------------------
+        hideAllSectionUnderlineViews()
+        
+        // Show only the bar for the home icon
+        sectionUnderlineView3.hidden = true
+        
         
         firebaseRootRef = Firebase(url: firebaseRootRefString)
         
