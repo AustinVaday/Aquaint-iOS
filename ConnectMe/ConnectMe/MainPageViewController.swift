@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainPageViewController: UIPageViewController, UIPageViewControllerDataSource {
+class MainPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
    
     let MENU = 0
@@ -18,11 +18,12 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     let RECENT_CONNECTIONS = 4
     
     var arrayOfViewControllers: Array<UIViewController>!
-    var currentVCIndex = 1
+    var currentPageIndex = 2
     override func viewDidLoad() {
         super.viewDidLoad()
 
         dataSource = self
+        delegate = self
 
         arrayOfViewControllers = Array<UIViewController>()
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))!)
@@ -32,11 +33,12 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("RecentConnectionsViewController"))!)
         
         let firstViewController = arrayOfViewControllers[HOME]
+        currentPageIndex = HOME
+        
         setViewControllers([firstViewController], direction: .Forward, animated: true, completion: nil)
         
-        
-        print("DOPE")
     }
+
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         
@@ -99,14 +101,80 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         return nil
     }
-
     
-    func changePage ()
+    
+    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        
+        
+        // Get current page index
+        currentPageIndex = (pageViewController.viewControllers?.first?.view.tag)!
+        
+        showAlert(String(currentPageIndex), message: "", buttonTitle: "", sender: self)
+        //
+//        if pageViewController.isKindOfClass(MenuController)
+//        {
+//            currentPageIndex = MENU
+//        }
+//        
+//        if pageViewController.isKindOfClass(ProfileViewController)
+//        {
+//            currentPageIndex = PROFILE
+//        }
+//        
+//        if pageViewController.isKindOfClass(HomeController)
+//        {
+//            currentPageIndex = HOME
+//        }
+//        
+//        if pageViewController.isKindOfClass(SearchViewController)
+//        {
+//            currentPageIndex = SEARCH
+//        }
+//        
+//        if pageViewController.isKindOfClass(RecentConnections)
+//        {
+//            currentPageIndex = RECENT_CONNECTIONS
+//        }
+        
+    }
+    
+
+    // Used so that we can use buttons to change the page!
+    func changePage (pageIndex: Int)
     {
         
-        // Recent Connections
-        let recentConnectionsViewController = (storyboard?.instantiateViewControllerWithIdentifier("RecentConnectionsViewController"))!
-        setViewControllers([recentConnectionsViewController], direction: .Forward, animated: true, completion: nil)
+        // We have 5 possible page indices (0 -> 5)
+        if (pageIndex >= 0 && pageIndex <= 4)
+        {
+        
+            let destinationViewController = arrayOfViewControllers[pageIndex]
+        
+            var direction : UIPageViewControllerNavigationDirection!
+        
+//            print ("CURRENT PAGE INDEX: ", currentPageIndex)
+//            print ("SELECTED PAGE INDEX:", pageIndex)
+            // Determine which direction to animate
+            
+            showAlert(String(currentPageIndex), message: String(pageIndex), buttonTitle: "button", sender: self)
+            
+            if (pageIndex < currentPageIndex)
+            {
+                direction = UIPageViewControllerNavigationDirection.Reverse
+            }
+            else
+            {
+                direction = UIPageViewControllerNavigationDirection.Forward
+
+            }
+            
+        
+            setViewControllers([destinationViewController], direction: direction, animated: true, completion: nil)
+        }
+        else
+        {
+            
+            print ("ERROR in MainPageViewController:changePage. pageIndex out of range.")
+        }
 
     }
 }

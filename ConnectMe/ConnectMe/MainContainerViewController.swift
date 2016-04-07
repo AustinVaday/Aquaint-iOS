@@ -29,7 +29,13 @@ class MainContainerViewController: UIViewController {
     var connectionRequestList : Array<String>! // MAKE IT Connection type LATER
     var firebaseRootRef : Firebase!
     var userName : String!
+    
+    // This is our child (container) view controller that holds all our pages
+    var mainPageViewController: MainPageViewController!
+
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
+    
+    
     
     // Hides all the section bars for the section underline view/bars under the footer icons
     func hideAllSectionUnderlineViews()
@@ -44,6 +50,9 @@ class MainContainerViewController: UIViewController {
     
     
     override func viewDidLoad() {
+        
+        // Get the mainPageViewController, this holds all our pages!
+        mainPageViewController = self.childViewControllers.last as! MainPageViewController
         
         // SET UP NOTIFICATIONS
         // ----------------------------------------------
@@ -152,6 +161,47 @@ class MainContainerViewController: UIViewController {
         
         
     }
+    
+    // BUTTONS TO CHANGE THE PAGE
+    
+    @IBAction func goToMenuPage(sender: UIButton) {
+                
+        mainPageViewController.changePage(0)
+        
+    }
+    
+    @IBAction func goToProfilePage(sender: UIButton) {
+
+        mainPageViewController.changePage(1)
+        
+        hideAllSectionUnderlineViews()
+        sectionUnderlineView1.hidden = false
+    }
+    
+    @IBAction func goToHomePage(sender: UIButton) {
+
+        mainPageViewController.changePage(2)
+        
+        hideAllSectionUnderlineViews()
+        sectionUnderlineView2.hidden = false
+    }
+    
+    @IBAction func goToSearchPage(sender: UIButton) {
+    
+        mainPageViewController.changePage(3)
+        
+        hideAllSectionUnderlineViews()
+        sectionUnderlineView3.hidden = false
+    }
+    
+    @IBAction func goToRecentConnectionsPage(sender: UIButton) {
+        
+        mainPageViewController.changePage(4)
+        
+        hideAllSectionUnderlineViews()
+        sectionUnderlineView4.hidden = false
+    }
+    
     
     
 }
