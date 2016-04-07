@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		697142444D85F0E5EB791FF8 /* Pods_Aquaint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7202A9582B230B33E46EB1D5 /* Pods_Aquaint.framework */; };
+		FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */; };
 		FF1001ED1C80374A00B53F8B /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */; };
 		FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF65D31C1C1E0BFC0015C99F /* Main.storyboard */; };
 		FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF65D3211C1EA3D60015C99F /* SignUpController.swift */; };
@@ -67,6 +68,7 @@
 		31B08B506FAC36FB643B6DF3 /* Pods-Aquaint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aquaint.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint.debug.xcconfig"; sourceTree = "<group>"; };
 		6B6CA908F45695CC8811E147 /* Pods-Aquaint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aquaint.release.xcconfig"; path = "Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint.release.xcconfig"; sourceTree = "<group>"; };
 		7202A9582B230B33E46EB1D5 /* Pods_Aquaint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Aquaint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainContainerViewController.swift; sourceTree = "<group>"; };
 		FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		FF65D31D1C1E0BFC0015C99F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FF65D3211C1EA3D60015C99F /* SignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignUpController.swift; path = ../SignUpController.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				FF897C361C01AC63001B2634 /* ViewController.swift */,
 				FF897C3B1C01AC63001B2634 /* Assets.xcassets */,
 				FF65D31C1C1E0BFC0015C99F /* Main.storyboard */,
+				FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */,
 				FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */,
 				FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */,
 				FFF442391C4C2B21007651DE /* Launch Screen.storyboard */,
@@ -482,6 +485,7 @@
 				FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */,
 				FF7878611C3010E700354936 /* LogInController.swift in Sources */,
 				FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */,
+				FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */,
 				FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */,
 				FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */,
 			);
