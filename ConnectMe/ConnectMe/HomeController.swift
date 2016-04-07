@@ -118,6 +118,7 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Set up Firebase listener for listening for new friend requests
         let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "/ReceivedRequests")
         
+        // WATCH FOR NEW NOTIFICATIONS
         firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
             
 
@@ -136,12 +137,47 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
                 self.notificationView.hidden = true
             }
             
-            
-
-            
-            
         })
         
+        // DELETE NOTIFICATIONS
+        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
+            
+            print("childRemoved:", snapshot.key)
+
+            
+            // If there are connection requests, show the notification view and how many requests.
+            if (self.connectionRequestList.count > 0)
+            {
+                
+                // Find person in list, remove that person from list
+                for (var i = 0; i < self.connectionRequestList.count; i++)
+                {
+                    if (self.connectionRequestList[i] == snapshot.key as String)
+                    {
+                        self.connectionRequestList.removeAtIndex(i)
+                    }
+                    
+                }
+                
+                let numConnections = self.connectionRequestList.count
+                
+                if (numConnections == 0)
+                {
+                    self.notificationView.hidden = true
+                }
+                else
+                {
+                    self.notificationView.hidden = false
+
+                }
+                self.notificationViewLabel.text = String(self.connectionRequestList.count)
+            }
+            else
+            {
+                self.notificationView.hidden = true
+            }
+            
+        })
         
         
         // FOR FILLING THE TABLE:
