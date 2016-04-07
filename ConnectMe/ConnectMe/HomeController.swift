@@ -18,14 +18,14 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var searchTableView: UITableView!
     
-    @IBOutlet weak var notificationViewLabel: UILabel!
-    @IBOutlet weak var notificationView: UIView!
-    
-    @IBOutlet weak var sectionUnderlineView0: UIView!
-    @IBOutlet weak var sectionUnderlineView1: UIView!
-    @IBOutlet weak var sectionUnderlineView2: UIView!
-    @IBOutlet weak var sectionUnderlineView3: UIView!
-    @IBOutlet weak var sectionUnderlineView4: UIView!
+//    @IBOutlet weak var notificationViewLabel: UILabel!
+//    @IBOutlet weak var notificationView: UIView!
+//    
+//    @IBOutlet weak var sectionUnderlineView0: UIView!
+//    @IBOutlet weak var sectionUnderlineView1: UIView!
+//    @IBOutlet weak var sectionUnderlineView2: UIView!
+//    @IBOutlet weak var sectionUnderlineView3: UIView!
+//    @IBOutlet weak var sectionUnderlineView4: UIView!
     
     var userName : String!
     var userId   : String!
@@ -40,16 +40,16 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
     var connectionRequestList : Array<String>! // MAKE IT Connection type LATER
     
     
-    // Hides all the section bars for the section underline view/bars under the footer icons
-    func hideAllSectionUnderlineViews()
-    {
-        sectionUnderlineView0.hidden = true
-        sectionUnderlineView1.hidden = true
-        sectionUnderlineView2.hidden = true
-        sectionUnderlineView3.hidden = true
-        sectionUnderlineView4.hidden = true
-    }
-    
+//    // Hides all the section bars for the section underline view/bars under the footer icons
+//    func hideAllSectionUnderlineViews()
+//    {
+//        sectionUnderlineView0.hidden = true
+//        sectionUnderlineView1.hidden = true
+//        sectionUnderlineView2.hidden = true
+//        sectionUnderlineView3.hidden = true
+//        sectionUnderlineView4.hidden = true
+//    }
+//    
     
     
     override func viewDidLoad() {
@@ -91,24 +91,24 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
 //        }
 //        
         
-        // SET UP NOTIFICATIONS
-        // ----------------------------------------------
-        // Hide notificationView (if no notifications)
-        notificationView.hidden = true
-        
-        // Set notificationViewLabel with value 0
-        notificationViewLabel.text = "0"
-        
-        // Make notificationView circular
-        notificationView.layer.cornerRadius = notificationView.frame.size.width / 2
-        
-        
-        // SET UP CONTROL BAR (FOOTER)
-        // ----------------------------------------------
-        hideAllSectionUnderlineViews()
-        
-        // Show only the bar for the home icon
-        sectionUnderlineView2.hidden = false
+//        // SET UP NOTIFICATIONS
+//        // ----------------------------------------------
+//        // Hide notificationView (if no notifications)
+//        notificationView.hidden = true
+//        
+//        // Set notificationViewLabel with value 0
+//        notificationViewLabel.text = "0"
+//        
+//        // Make notificationView circular
+//        notificationView.layer.cornerRadius = notificationView.frame.size.width / 2
+//        
+//        
+//        // SET UP CONTROL BAR (FOOTER)
+//        // ----------------------------------------------
+//        hideAllSectionUnderlineViews()
+//        
+//        // Show only the bar for the home icon
+//        sectionUnderlineView2.hidden = false
         
         
         firebaseRootRef = Firebase(url: firebaseRootRefString)
@@ -146,71 +146,71 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         
         
-        // Set up Firebase listener for listening for new friend requests
-        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "/ReceivedRequests")
-        
-        // WATCH FOR NEW NOTIFICATIONS
-        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
-            
-
-            print("childAdded:", snapshot.key)
-            
-            self.connectionRequestList.append(snapshot.key as String)
-            
-            // If there are connection requests, show the notification view and how many requests.
-            if (self.connectionRequestList.count > 0)
-            {
-                self.notificationView.hidden = false
-                self.notificationViewLabel.text = String(self.connectionRequestList.count)
-            }
-            else
-            {
-                self.notificationView.hidden = true
-            }
-            
-        })
-        
-        // DELETE NOTIFICATIONS
-        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
-            
-            print("childRemoved:", snapshot.key)
-
-            
-            // If there are connection requests, show the notification view and how many requests.
-            if (self.connectionRequestList.count > 0)
-            {
-                
-                // Find person in list, remove that person from list
-                for (var i = 0; i < self.connectionRequestList.count; i++)
-                {
-                    if (self.connectionRequestList[i] == snapshot.key as String)
-                    {
-                        self.connectionRequestList.removeAtIndex(i)
-                    }
-                    
-                }
-                
-                let numConnections = self.connectionRequestList.count
-                
-                if (numConnections == 0)
-                {
-                    self.notificationView.hidden = true
-                }
-                else
-                {
-                    self.notificationView.hidden = false
-
-                }
-                self.notificationViewLabel.text = String(self.connectionRequestList.count)
-            }
-            else
-            {
-                self.notificationView.hidden = true
-            }
-            
-        })
-        
-        
+//        // Set up Firebase listener for listening for new friend requests
+//        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "/ReceivedRequests")
+//        
+//        // WATCH FOR NEW NOTIFICATIONS
+//        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+//            
+//
+//            print("childAdded:", snapshot.key)
+//            
+//            self.connectionRequestList.append(snapshot.key as String)
+//            
+//            // If there are connection requests, show the notification view and how many requests.
+//            if (self.connectionRequestList.count > 0)
+//            {
+//                self.notificationView.hidden = false
+//                self.notificationViewLabel.text = String(self.connectionRequestList.count)
+//            }
+//            else
+//            {
+//                self.notificationView.hidden = true
+//            }
+//            
+//        })
+//        
+//        // DELETE NOTIFICATIONS
+//        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
+//            
+//            print("childRemoved:", snapshot.key)
+//
+//            
+//            // If there are connection requests, show the notification view and how many requests.
+//            if (self.connectionRequestList.count > 0)
+//            {
+//                
+//                // Find person in list, remove that person from list
+//                for (var i = 0; i < self.connectionRequestList.count; i++)
+//                {
+//                    if (self.connectionRequestList[i] == snapshot.key as String)
+//                    {
+//                        self.connectionRequestList.removeAtIndex(i)
+//                    }
+//                    
+//                }
+//                
+//                let numConnections = self.connectionRequestList.count
+//                
+//                if (numConnections == 0)
+//                {
+//                    self.notificationView.hidden = true
+//                }
+//                else
+//                {
+//                    self.notificationView.hidden = false
+//
+//                }
+//                self.notificationViewLabel.text = String(self.connectionRequestList.count)
+//            }
+//            else
+//            {
+//                self.notificationView.hidden = true
+//            }
+//            
+//        })
+//        
+//        
         // FOR FILLING THE TABLE:
         
         let firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
