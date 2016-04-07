@@ -28,7 +28,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     var prevEmailString: String!                // Used to prevent user from spamming requests
     var imagePicker:UIImagePickerController!    // Used for selecting image from user's device
 
-    let segueDestination = "toMainPageViewController"
+    let segueDestination = "toMainContainerViewController"
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
     
     override func viewDidLoad() {

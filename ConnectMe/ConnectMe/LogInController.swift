@@ -27,7 +27,7 @@ class LogInController: UIViewController {
     var checkMarkFlippedCopy: UIImageView!
     var firebaseRootRef: Firebase!
     
-    let segueDestination = "toMainPageViewController"
+    let segueDestination = "toMainContainerViewController"
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
     // Counts how many times the user has incorrectly logged in.

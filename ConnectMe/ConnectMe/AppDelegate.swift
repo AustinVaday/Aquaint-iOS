@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if (firebaseRootRef.authData != nil)
         {
             let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-            let viewControllerIdentifier = "MainPageViewController"
+            let viewControllerIdentifier = "MainContainerViewController"
 
             // Go to home page, as if user was logged in already!
             self.window?.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
