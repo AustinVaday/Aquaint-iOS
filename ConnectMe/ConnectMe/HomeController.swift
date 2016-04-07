@@ -18,7 +18,9 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var searchTableView: UITableView!
     
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var notificationViewLabel: UILabel!
+    @IBOutlet weak var notificationView: UIView!
+    
     var userName : String!
     var userId   : String!
     
@@ -29,8 +31,11 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var allUsers: Array<Connection>!
     
+    var connectionRequestList : Array<String>! // MAKE IT Connection type LATER
     
     override func viewDidLoad() {
+        
+    
         
 //        // AWS S3 IMAGE TESTING
 //        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
@@ -66,16 +71,20 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
 ////            self.imageView.image = UIImage(contentsOfFile: downloadingFilePath)
 //        }
 //        
+        // Hide notificationView (if no notifications)
+        notificationView.hidden = true
         
+        // Set notificationViewLabel with value 0
+        notificationViewLabel.text = "0"
         
-        
+        // Make notificationView circular
+        notificationView.layer.cornerRadius = notificationView.frame.size.width / 2
         
         firebaseRootRef = Firebase(url: firebaseRootRefString)
         
         //*** NOTE: This is an extra check for top-notch security. It is not necessary.
         // If we're not logged in, immediately go back to beginning page.
         let authData = firebaseRootRef.authData
-        
         
         if (authData == nil)
         {
@@ -105,10 +114,42 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
         //        self.view.addGestureRecognizer(panGestureRecognizer)
         
         
+        
+        // Set up Firebase listener for listening for new friend requests
+        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "/ReceivedRequests")
+        
+        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+            
+
+            print("childAdded:", snapshot.key)
+            
+            self.connectionRequestList.append(snapshot.key as String)
+            
+            // If there are connection requests, show the notification view and how many requests.
+            if (self.connectionRequestList.count > 0)
+            {
+                self.notificationView.hidden = false
+                self.notificationViewLabel.text = String(self.connectionRequestList.count)
+            }
+            else
+            {
+                self.notificationView.hidden = true
+            }
+            
+            
+
+            
+            
+        })
+        
+        
+        
         // FOR FILLING THE TABLE:
         
         let firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
+
         allUsers = Array<Connection>()
+        connectionRequestList = Array<String>()
         
         firebaseUsersRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
             
@@ -188,7 +229,7 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @IBAction func recentConnectionsButtonClicked(sender: UIButton) {
-//        
+//
 //        let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("MainPageViewController") as! MainPageViewController
 //        
 //        pageViewController.changePage()
