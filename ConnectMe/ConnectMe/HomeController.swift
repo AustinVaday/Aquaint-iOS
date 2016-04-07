@@ -108,7 +108,7 @@ class HomeController: UIViewController, UITableViewDataSource, UITableViewDelega
         hideAllSectionUnderlineViews()
         
         // Show only the bar for the home icon
-        sectionUnderlineView3.hidden = true
+        sectionUnderlineView2.hidden = false
         
         
         firebaseRootRef = Firebase(url: firebaseRootRefString)
