@@ -18,7 +18,8 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     let RECENT_CONNECTIONS = 4
     
     var arrayOfViewControllers: Array<UIViewController>!
-    var currentPageIndex = 2
+    var currentPageIndex = 2 //UPDATED in changePage and didFinishAnimating methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,25 +47,21 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         print ("HEY")
         if viewController.isKindOfClass(MenuController)
         {
-            currentPageIndex = PROFILE
             return arrayOfViewControllers[PROFILE]
         }
         
         if viewController.isKindOfClass(ProfileViewController)
         {
-            currentPageIndex = HOME
             return arrayOfViewControllers[HOME]
         }
         
         if viewController.isKindOfClass(HomeController)
         {
-            currentPageIndex = SEARCH
             return arrayOfViewControllers[SEARCH]
         }
         
         if viewController.isKindOfClass(SearchViewController)
         {
-            currentPageIndex = RECENT_CONNECTIONS
             return arrayOfViewControllers[RECENT_CONNECTIONS]
         }
         
@@ -80,7 +77,6 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         
-        print("HEY")
         if viewController.isKindOfClass(MenuController)
         {
             return nil
@@ -88,31 +84,26 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         if viewController.isKindOfClass(ProfileViewController)
         {
-            currentPageIndex = MENU
             return arrayOfViewControllers[MENU]
         }
         
         if viewController.isKindOfClass(HomeController)
         {
-            currentPageIndex = PROFILE
             return arrayOfViewControllers[PROFILE]
         }
         
         if viewController.isKindOfClass(SearchViewController)
         {
-            currentPageIndex = HOME
             return arrayOfViewControllers[HOME]
         }
         
         if viewController.isKindOfClass(RecentConnections)
         {
-            currentPageIndex = SEARCH
             return arrayOfViewControllers[SEARCH]
         }
                 
         return nil
     }
-    
     
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         
@@ -120,7 +111,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         // Get current page index
         let currentViewController = (pageViewController.viewControllers?.last)!
         
-//        showAlert(String(currentPageIndex), message: "", buttonTitle: "", sender: self)
+//        showAlert(String("DID FINISH ANIMATING"), message: "", buttonTitle: "", sender: self)
         
         if currentViewController.isKindOfClass(MenuController)
         {
@@ -161,13 +152,8 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             let destinationViewController = arrayOfViewControllers[pageIndex]
         
             var direction : UIPageViewControllerNavigationDirection!
-        
-//            print ("CURRENT PAGE INDEX: ", currentPageIndex)
-//            print ("SELECTED PAGE INDEX:", pageIndex)
+
             // Determine which direction to animate
-            
-//            showAlert(String(currentPageIndex), message: String(pageIndex), buttonTitle: "button", sender: self)
-            
             if (pageIndex < currentPageIndex)
             {
                 direction = UIPageViewControllerNavigationDirection.Reverse
@@ -180,6 +166,9 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             
         
             setViewControllers([destinationViewController], direction: direction, animated: true, completion: nil)
+            
+            // Update the currentPageIndex
+            currentPageIndex = pageIndex
         }
         else
         {
