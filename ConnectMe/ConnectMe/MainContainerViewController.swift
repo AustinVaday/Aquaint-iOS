@@ -168,6 +168,8 @@ class MainContainerViewController: UIViewController {
                 
         mainPageViewController.changePage(0)
         
+        hideAllSectionUnderlineViews()
+        sectionUnderlineView0.hidden = false
     }
     
     @IBAction func goToProfilePage(sender: UIButton) {

@@ -43,23 +43,28 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         
         
+        print ("HEY")
         if viewController.isKindOfClass(MenuController)
         {
+            currentPageIndex = PROFILE
             return arrayOfViewControllers[PROFILE]
         }
         
         if viewController.isKindOfClass(ProfileViewController)
         {
+            currentPageIndex = HOME
             return arrayOfViewControllers[HOME]
         }
         
         if viewController.isKindOfClass(HomeController)
         {
+            currentPageIndex = SEARCH
             return arrayOfViewControllers[SEARCH]
         }
         
         if viewController.isKindOfClass(SearchViewController)
         {
+            currentPageIndex = RECENT_CONNECTIONS
             return arrayOfViewControllers[RECENT_CONNECTIONS]
         }
         
@@ -68,12 +73,14 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             return nil
         }
         
+        
         return nil
         
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         
+        print("HEY")
         if viewController.isKindOfClass(MenuController)
         {
             return nil
@@ -81,24 +88,28 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         if viewController.isKindOfClass(ProfileViewController)
         {
+            currentPageIndex = MENU
             return arrayOfViewControllers[MENU]
         }
         
         if viewController.isKindOfClass(HomeController)
         {
+            currentPageIndex = PROFILE
             return arrayOfViewControllers[PROFILE]
         }
         
         if viewController.isKindOfClass(SearchViewController)
         {
+            currentPageIndex = HOME
             return arrayOfViewControllers[HOME]
         }
         
         if viewController.isKindOfClass(RecentConnections)
         {
+            currentPageIndex = SEARCH
             return arrayOfViewControllers[SEARCH]
         }
-        
+                
         return nil
     }
     
@@ -107,34 +118,34 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         
         // Get current page index
-        currentPageIndex = (pageViewController.viewControllers?.first?.view.tag)!
+        let currentViewController = (pageViewController.viewControllers?.last)!
         
-        showAlert(String(currentPageIndex), message: "", buttonTitle: "", sender: self)
-        //
-//        if pageViewController.isKindOfClass(MenuController)
-//        {
-//            currentPageIndex = MENU
-//        }
-//        
-//        if pageViewController.isKindOfClass(ProfileViewController)
-//        {
-//            currentPageIndex = PROFILE
-//        }
-//        
-//        if pageViewController.isKindOfClass(HomeController)
-//        {
-//            currentPageIndex = HOME
-//        }
-//        
-//        if pageViewController.isKindOfClass(SearchViewController)
-//        {
-//            currentPageIndex = SEARCH
-//        }
-//        
-//        if pageViewController.isKindOfClass(RecentConnections)
-//        {
-//            currentPageIndex = RECENT_CONNECTIONS
-//        }
+//        showAlert(String(currentPageIndex), message: "", buttonTitle: "", sender: self)
+        
+        if currentViewController.isKindOfClass(MenuController)
+        {
+            currentPageIndex = MENU
+        }
+        
+        if currentViewController.isKindOfClass(ProfileViewController)
+        {
+            currentPageIndex = PROFILE
+        }
+        
+        if currentViewController.isKindOfClass(HomeController)
+        {
+            currentPageIndex = HOME
+        }
+        
+        if currentViewController.isKindOfClass(SearchViewController)
+        {
+            currentPageIndex = SEARCH
+        }
+        
+        if currentViewController.isKindOfClass(RecentConnections)
+        {
+            currentPageIndex = RECENT_CONNECTIONS
+        }
         
     }
     
@@ -155,7 +166,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
 //            print ("SELECTED PAGE INDEX:", pageIndex)
             // Determine which direction to animate
             
-            showAlert(String(currentPageIndex), message: String(pageIndex), buttonTitle: "button", sender: self)
+//            showAlert(String(currentPageIndex), message: String(pageIndex), buttonTitle: "button", sender: self)
             
             if (pageIndex < currentPageIndex)
             {
