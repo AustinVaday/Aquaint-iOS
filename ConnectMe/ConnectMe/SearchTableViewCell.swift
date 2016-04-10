@@ -15,16 +15,35 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var cellName: UILabel!
     @IBOutlet weak var cellAddButton: UIButton!
+    @IBOutlet weak var cellAddPendingButton: UIButton!
     @IBOutlet weak var cellUserName: UILabel!
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
+
+
+    func activateAddButton()
+    {
+        // Activate the pending button
+        cellAddButton.hidden  = false
+        cellAddButton.enabled = true
+        cellAddPendingButton.hidden  = true
+        cellAddPendingButton.enabled = false
+    }
     
-    
-    
+    func deactivateAddButton()
+    {
+        // Deactivate the pending button
+        cellAddButton.hidden  = true
+        cellAddButton.enabled = false
+        cellAddPendingButton.hidden  = false
+        cellAddPendingButton.enabled = true
+    }
+
     @IBAction func onAddConnectionButtonClicked(sender: UIButton) {
+        
+        deactivateAddButton()
         
         // Fetch current user from NSUserDefaults
         let currentUser = getCurrentUser()
-        
         
         // If currentUser is not trying to add themselves
         if (currentUser != cellUserName.text)

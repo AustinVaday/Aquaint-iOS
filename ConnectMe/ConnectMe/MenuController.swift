@@ -83,17 +83,23 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         switch (menuOption)
         {
         case .YOUR_ACCOUNT:
+            
+            showAlert("Hold Tight.", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
             break;
         case .LINKED_ACCOUNTS:
+            showAlert("Hold Tight.", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
             break;
         case .NOTIFICATIONS:
+            showAlert("Hold Tight.", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
             break;
         case .INVITE_FRIENDS:
+            showAlert("Hold Tight.", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
             break;
         case .HELP:
+            showAlert("Hold Tight.", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
             break;
         case .LOG_OUT:
-                logUserOut()
+            logUserOut()
             break;
         }
     }
