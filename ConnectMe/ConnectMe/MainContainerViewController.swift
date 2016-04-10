@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class MainContainerViewController: UIViewController {
+class MainContainerViewController: UIViewController, MainPageViewControllerDelegate, UIPageViewControllerDelegate {
     
     @IBOutlet weak var sectionUnderlineView0: UIView!
     @IBOutlet weak var sectionUnderlineView1: UIView!
@@ -37,6 +37,14 @@ class MainContainerViewController: UIViewController {
     
     
     
+    // Self-added protocol for MainPageViewControllerDelegate
+    func didTransitionPage(sender: MainPageViewController) {
+
+        print("YUUUUUUUUUS")
+        showAlert("DELEGATE IMPLEMENTATION SUCCESS", message: "", buttonTitle: "OK", sender: self)
+        
+    }
+    
     // Hides all the section bars for the section underline view/bars under the footer icons
     func hideAllSectionUnderlineViews()
     {
@@ -51,8 +59,14 @@ class MainContainerViewController: UIViewController {
     
     override func viewDidLoad() {
         
+        
+        
         // Get the mainPageViewController, this holds all our pages!
         mainPageViewController = self.childViewControllers.last as! MainPageViewController
+        
+        mainPageViewController.delegate = self
+        
+        print("YOLO", mainPageViewController.delegate)
         
         // SET UP NOTIFICATIONS
         // ----------------------------------------------

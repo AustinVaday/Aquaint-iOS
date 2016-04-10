@@ -8,6 +8,13 @@
 
 import UIKit
 
+
+// CREATE PROTOCOL TO Communicate easily with MainPageViewController
+protocol MainPageViewControllerDelegate : class {
+    func didTransitionPage(sender: MainPageViewController)
+    
+}
+
 class MainPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
    
@@ -19,12 +26,22 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     
     var arrayOfViewControllers: Array<UIViewController>!
     var currentPageIndex = 2 //UPDATED in changePage and didFinishAnimating methods
+    // Delegating properties
+    weak var pageDelegate:MainPageViewControllerDelegate?
+
+
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
 
         dataSource = self
-        delegate = self
+//        delegate = self
+        
+        print("YOLO2", self.delegate)
+
 
         arrayOfViewControllers = Array<UIViewController>()
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))!)
@@ -145,6 +162,8 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     func changePage (pageIndex: Int)
     {
         
+        print("YOLO3", self.delegate)
+
         // We have 5 possible page indices (0 -> 5)
         if (pageIndex >= 0 && pageIndex <= 4)
         {
@@ -163,12 +182,14 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
                 direction = UIPageViewControllerNavigationDirection.Forward
 
             }
-            
         
             setViewControllers([destinationViewController], direction: direction, animated: true, completion: nil)
             
             // Update the currentPageIndex
             currentPageIndex = pageIndex
+            
+            pageDelegate?.didTransitionPage(self)
+
         }
         else
         {
