@@ -16,31 +16,58 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var cellName: UILabel!
     @IBOutlet weak var cellAddButton: UIButton!
     @IBOutlet weak var cellAddPendingButton: UIButton!
+    @IBOutlet weak var cellDeleteButton: UIButton!
     @IBOutlet weak var cellUserName: UILabel!
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
 
 
+    func deactivateAllButtons()
+    {
+        // Deactivate the pending button
+        cellAddButton.hidden  = true
+        cellAddButton.userInteractionEnabled = false
+        cellDeleteButton.hidden  = true
+        cellDeleteButton.userInteractionEnabled = false
+        cellAddPendingButton.hidden = true
+        cellAddPendingButton.userInteractionEnabled = false
+    }
+    
     func activateAddButton()
     {
         // Activate the pending button
         cellAddButton.hidden  = false
-        cellAddButton.enabled = true
+        cellAddButton.userInteractionEnabled = true
         cellAddPendingButton.hidden  = true
-        cellAddPendingButton.enabled = false
+        cellAddPendingButton.userInteractionEnabled = false
+        cellDeleteButton.hidden = true
+        cellDeleteButton.userInteractionEnabled = false
     }
     
-    func deactivateAddButton()
+    func activateDeleteButton()
     {
-        // Deactivate the pending button
-        cellAddButton.hidden  = true
-        cellAddButton.enabled = false
+        cellDeleteButton.hidden  = false
+        cellDeleteButton.userInteractionEnabled = true
+        cellAddPendingButton.hidden  = true
+        cellAddPendingButton.userInteractionEnabled = false
+        cellAddButton.hidden = true
+        cellAddButton.userInteractionEnabled = false
+    }
+    
+    func activatePendingButton()
+    {
+        // Activate the pending button
         cellAddPendingButton.hidden  = false
-        cellAddPendingButton.enabled = true
+        cellAddPendingButton.userInteractionEnabled = true
+        cellAddButton.hidden  = true
+        cellAddButton.userInteractionEnabled = false
+        cellDeleteButton.hidden = true
+        cellDeleteButton.userInteractionEnabled = false
     }
 
     @IBAction func onAddConnectionButtonClicked(sender: UIButton) {
         
-        deactivateAddButton()
+        deactivateAllButtons()
+        activatePendingButton()
         
         // Fetch current user from NSUserDefaults
         let currentUser = getCurrentUser()

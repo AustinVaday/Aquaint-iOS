@@ -548,6 +548,17 @@
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZsG-lm-sP9" userLabel="Cell Delete Button">
+                                                    <rect key="frame" x="515" y="15" width="35" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="WlA-ZP-ej2"/>
+                                                        <constraint firstAttribute="width" constant="35" id="uqN-66-hov"/>
+                                                    </constraints>
+                                                    <state key="normal" image="Delete People"/>
+                                                    <connections>
+                                                        <action selector="onAddConnectionButtonClicked:" destination="wZU-Io-M1I" eventType="touchUpInside" id="fgc-oX-ycw"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
@@ -560,6 +571,8 @@
                                                 <constraint firstItem="rTC-qy-7zB" firstAttribute="centerY" secondItem="3Do-SJ-fqp" secondAttribute="centerY" id="Vbg-Ic-NNa"/>
                                                 <constraint firstItem="8xz-Lq-QI9" firstAttribute="leading" secondItem="rTC-qy-7zB" secondAttribute="trailing" constant="14" id="Vis-UT-eel"/>
                                                 <constraint firstItem="lSy-hs-3fb" firstAttribute="top" secondItem="3Do-SJ-fqp" secondAttribute="topMargin" constant="7" id="XXu-X8-j4M"/>
+                                                <constraint firstItem="ZsG-lm-sP9" firstAttribute="top" secondItem="3Do-SJ-fqp" secondAttribute="topMargin" constant="7" id="Y45-Jt-sjS"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="ZsG-lm-sP9" secondAttribute="trailing" constant="42" id="fIa-yn-ovM"/>
                                                 <constraint firstItem="nhQ-kA-VwL" firstAttribute="leading" secondItem="rTC-qy-7zB" secondAttribute="trailing" constant="14" id="fwz-aO-m2q"/>
                                                 <constraint firstItem="lSy-hs-3fb" firstAttribute="leading" secondItem="nhQ-kA-VwL" secondAttribute="trailing" constant="5" id="fxS-ig-p3F"/>
                                                 <constraint firstItem="mlX-u5-bov" firstAttribute="top" secondItem="lSy-hs-3fb" secondAttribute="top" id="iP5-kp-oeO"/>
@@ -568,8 +581,9 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <outlet property="cellAddButton" destination="lSy-hs-3fb" id="DIV-Ks-0mR"/>
-                                            <outlet property="cellAddPendingButton" destination="mlX-u5-bov" id="P7V-78-znB"/>
+                                            <outlet property="cellAddButton" destination="lSy-hs-3fb" id="Equ-9N-wR1"/>
+                                            <outlet property="cellAddPendingButton" destination="mlX-u5-bov" id="mdB-7m-INQ"/>
+                                            <outlet property="cellDeleteButton" destination="ZsG-lm-sP9" id="M1Y-Xr-Imd"/>
                                             <outlet property="cellImage" destination="rTC-qy-7zB" id="JNU-V4-U2F"/>
                                             <outlet property="cellName" destination="nhQ-kA-VwL" id="59h-Nz-k4u"/>
                                             <outlet property="cellUserName" destination="8xz-Lq-QI9" id="tLh-Cj-8Ji"/>
@@ -676,7 +690,7 @@
                                                                             <constraint firstAttribute="height" constant="32" id="DPh-tj-1Q7"/>
                                                                             <constraint firstAttribute="width" constant="32" id="GBX-Ja-AXt"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="F82D71C2-5208-4366-BE7E-7F92A92B0043"/>
+                                                                        <state key="normal" image="943CD26B-77CD-4EAC-AF34-4EF0884E9A51"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="JcZ-aN-92g">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -1765,17 +1779,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add People" width="60" height="50"/>
-        <image name="Add People Pending" width="60" height="50"/>
-        <image name="Add Photo Color" width="120" height="120"/>
-        <image name="Back Arrow" width="50" height="50"/>
-        <image name="Check Mark" width="350" height="271"/>
-        <image name="Check Mark Flipped" width="349" height="270"/>
-        <image name="Down Caret" width="50" height="50"/>
-        <image name="Email Icon Black" width="50" height="50"/>
-        <image name="Emblem" width="362" height="361"/>
-        <image name="Emblem White" width="362" height="361"/>
-        <image name="F82D71C2-5208-4366-BE7E-7F92A92B0043" width="32" height="32">
+        <image name="943CD26B-77CD-4EAC-AF34-4EF0884E9A51" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -1894,6 +1898,17 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
+        <image name="Add People" width="60" height="50"/>
+        <image name="Add People Pending" width="60" height="50"/>
+        <image name="Add Photo Color" width="120" height="120"/>
+        <image name="Back Arrow" width="50" height="50"/>
+        <image name="Check Mark" width="350" height="271"/>
+        <image name="Check Mark Flipped" width="349" height="270"/>
+        <image name="Delete People" width="60" height="50"/>
+        <image name="Down Caret" width="50" height="50"/>
+        <image name="Email Icon Black" width="50" height="50"/>
+        <image name="Emblem" width="362" height="361"/>
+        <image name="Emblem White" width="362" height="361"/>
         <image name="Group Dots Icon" width="50" height="50"/>
         <image name="Line Separator Black" width="753" height="4"/>
         <image name="Login Background" width="457" height="811"/>
