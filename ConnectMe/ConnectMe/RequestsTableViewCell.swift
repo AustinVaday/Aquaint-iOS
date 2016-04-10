@@ -29,7 +29,7 @@ class RequestsTableViewCell: UITableViewCell {
         
         
         // Remove relationship in ReceivedRequests
-        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "ReceivedRequests/" + currentUser)
+        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "ReceivedRequests/" + currentUser + "/" + connectedUserToAdd)
         
         firebaseReceivedRequestsRef.removeValueWithCompletionBlock { (error, ref) -> Void in
             if (error != nil)
@@ -40,7 +40,7 @@ class RequestsTableViewCell: UITableViewCell {
         
         
         // Remove relationship in SentRequests
-        let firebaseSentRequestsRef = Firebase(url: firebaseRootRefString + "SentRequests/" + connectedUserToAdd)
+        let firebaseSentRequestsRef = Firebase(url: firebaseRootRefString + "SentRequests/" + connectedUserToAdd + "/" + currentUser)
         
         firebaseSentRequestsRef.removeValueWithCompletionBlock { (error, ref) -> Void in
             if (error != nil)

@@ -49,7 +49,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
                 //Store a listing of all users that current user sent a connection request to. Used
                 //to determine which kind of button to display to user (add button, delete button, pending button)
-                self.allUsersSentARequest = snapshot.value as! NSDictionary
+                if !(snapshot.value is NSNull)
+                {
+                    self.allUsersSentARequest = snapshot.value as! NSDictionary
+                }
             
                 self.searchTableView.reloadData()
             
@@ -58,8 +61,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         // Used to determine delete buttons
         firebaseConnectionsRef.observeEventType(FEventType.Value, withBlock: { (snapshot) -> Void in
             
-                self.allUsersConnections = snapshot.value as! NSDictionary
-            
+                if !(snapshot.value is NSNull)
+                {
+                    self.allUsersConnections = snapshot.value as! NSDictionary
+                }
                 self.searchTableView.reloadData()
             
             })

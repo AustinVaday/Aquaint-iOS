@@ -202,7 +202,7 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
         let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "ReceivedRequests/" + userName)
     
-        firebaseReceivedRequestsRef.observeEventType(FEventType.ChildChanged, withBlock: { (snapshot) -> Void in
+        firebaseReceivedRequestsRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
             let user = Connection()
 
             // Store respective user info (key is the username)
@@ -227,6 +227,24 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
         })
 
         
+        firebaseReceivedRequestsRef.observeEventType(FEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
+            
+            // Store respective user info (key is the username of connectee)
+            let keyName = snapshot.key
+            
+            for (var i = 0; i < self.connectionRequestList.count; i++)
+            {
+                // Find the person to remove from this list
+                if (self.connectionRequestList[i].userName == keyName)
+                {
+                    self.connectionRequestList.removeAtIndex(i)
+                    break
+                }
+                
+            }
+                self.requestsTableView.reloadData()
+            
+        })
         
         
         
