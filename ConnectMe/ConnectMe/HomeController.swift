@@ -12,9 +12,10 @@ import UIKit
 import Firebase
 import AWSS3
 
-class HomeController: UIViewController{
+class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
+    @IBOutlet weak var requestsTableView: UITableView!
     @IBOutlet weak var userNameLabel: UILabel!
 //    @IBOutlet weak var searchTableView: UITableView!
     
@@ -35,26 +36,11 @@ class HomeController: UIViewController{
     var firebaseRootRef : Firebase!
     let awsBucketName = "aquaint-userimages"
     
-//    var allUsers: Array<Connection>!
-    
-    var connectionRequestList : Array<String>! // MAKE IT Connection type LATER
-    
-    
-//    // Hides all the section bars for the section underline view/bars under the footer icons
-//    func hideAllSectionUnderlineViews()
-//    {
-//        sectionUnderlineView0.hidden = true
-//        sectionUnderlineView1.hidden = true
-//        sectionUnderlineView2.hidden = true
-//        sectionUnderlineView3.hidden = true
-//        sectionUnderlineView4.hidden = true
-//    }
-//    
-    
+    var connectionRequestList : Array<Connection>! // MAKE IT Connection type LATER
     
     override func viewDidLoad() {
         
-    
+        connectionRequestList = Array<Connection>()
         
 //        // AWS S3 IMAGE TESTING
 //        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
@@ -214,37 +200,33 @@ class HomeController: UIViewController{
         // FOR FILLING THE TABLE:
         
         let firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
+        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "ReceivedRequests/" + userName)
+    
+        firebaseReceivedRequestsRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+            let user = Connection()
 
-//        allUsers = Array<Connection>()
-        connectionRequestList = Array<String>()
+            // Store respective user info (key is the username)
+            user.userName = snapshot.key
+
+
+            // Retrieve user's other info
+            firebaseUsersRef.childByAppendingPath(user.userName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+
+                print(snapshot)
+                user.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
+                user.userImage    = snapshot.childSnapshotForPath("/userImage").value as! String
+
+                self.connectionRequestList.append(user)
+                
+                self.requestsTableView.reloadData()
+                
+                print("RELOADED")
+                
+            })
+            
+        })
+
         
-//        firebaseUsersRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
-//            
-//            print(snapshot.value)
-//            print("KEY IS: ", snapshot.key)
-//            
-//            let user = Connection()
-//
-//            // Store respective user info (key is the username)
-//            user.userName = snapshot.key
-//            
-//            
-//            // Retrieve user's other info
-//            firebaseUsersRef.childByAppendingPath(user.userName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
-//                
-//                print(snapshot)
-//                user.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
-//                user.userImage    = snapshot.childSnapshotForPath("/userImage").value as! String
-//                
-//                self.allUsers.append(user)
-//                
-//                self.searchTableView.reloadData()
-//                
-//                print("RELOADED")
-//                
-//            })
-//            
-//        })
         
         
         
@@ -269,6 +251,8 @@ class HomeController: UIViewController{
     
     }
     */
+    
+    
     @IBAction func menuButtonClicked(sender: AnyObject) {
         // Transition to page on left (menu)
         
@@ -303,30 +287,31 @@ class HomeController: UIViewController{
         
     }
     
-//    
-//    // **** SEARCH TABLE VIEW *****
-//    
-//    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        
-//        let cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! SearchTableViewCell
-//        
-//        let userFullName = allUsers[indexPath.item].userFullName
-//        let userName     = allUsers[indexPath.item].userName
-//        let userImage    = allUsers[indexPath.item].userImage
-//        
-//        cell.cellName.text = userFullName
-//        cell.cellUserName.text = userName
-//        
-//        return cell
-//        
-//    }
-//    
-//    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        
-//        return allUsers.count
-//        
+    
+    // **** REQUESTS TABLE VIEW *****
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("requestsCell", forIndexPath: indexPath) as! SearchTableViewCell
+        
+        let userFullName = connectionRequestList[indexPath.item].userFullName
+        let userName     = connectionRequestList[indexPath.item].userName
+        let userImage    = connectionRequestList[indexPath.item].userImage
+        
+        cell.cellName.text = userFullName
+        cell.cellUserName.text = userName
+        
+        return cell
+        
     }
     
-    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return connectionRequestList.count
+        
+    }
     
 
+    
+
+}

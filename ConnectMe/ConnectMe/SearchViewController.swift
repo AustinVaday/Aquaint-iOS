@@ -26,6 +26,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewDidLoad(){
         
+        allUsersSentARequest = NSDictionary()
+        allUsersConnections = NSDictionary()
+        
+        
         userName = getCurrentUser()
         
 //        firebaseRootRef = Firebase(url: firebaseRootRefString)
@@ -47,6 +51,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 //to determine which kind of button to display to user (add button, delete button, pending button)
                 self.allUsersSentARequest = snapshot.value as! NSDictionary
             
+                self.searchTableView.reloadData()
             
             })
         
@@ -54,6 +59,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         firebaseConnectionsRef.observeEventType(FEventType.Value, withBlock: { (snapshot) -> Void in
             
                 self.allUsersConnections = snapshot.value as! NSDictionary
+            
+                self.searchTableView.reloadData()
+            
             })
         
         firebaseUsersRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
