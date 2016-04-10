@@ -97,7 +97,6 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         if (authData == nil)
         {
             print("Error in HomeController. authData is somehow nil!")
-//            self.performSegueWithIdentifier("LogOut", sender: nil)
             
         }
         

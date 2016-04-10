@@ -202,7 +202,7 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
         let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "ReceivedRequests/" + userName)
     
-        firebaseReceivedRequestsRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+        firebaseReceivedRequestsRef.observeEventType(FEventType.ChildChanged, withBlock: { (snapshot) -> Void in
             let user = Connection()
 
             // Store respective user info (key is the username)
@@ -292,7 +292,7 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("requestsCell", forIndexPath: indexPath) as! SearchTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("requestsCell", forIndexPath: indexPath) as! RequestsTableViewCell
         
         let userFullName = connectionRequestList[indexPath.item].userFullName
         let userName     = connectionRequestList[indexPath.item].userName
