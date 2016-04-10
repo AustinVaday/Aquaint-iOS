@@ -9,12 +9,25 @@
 
 
 import UIKit
+import Firebase
 
 class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    @IBOutlet weak var testLabel: UILabel!
 
+    var firebaseRootRef : Firebase!
+    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
+    
+    enum MenuData: Int {
+        case YOUR_ACCOUNT
+        case LINKED_ACCOUNTS
+        case NOTIFICATIONS
+        case INVITE_FRIENDS
+        case HELP
+        case LOG_OUT
+    }
     
     override func viewDidLoad() {
+        
+        firebaseRootRef = Firebase(url: firebaseRootRefString)
         
         
         
@@ -29,24 +42,26 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
         
-        switch (indexPath.row)
+        let menuOption = MenuData(rawValue: indexPath.row)!
+        
+        switch (menuOption)
         {
-        case 0:
+        case .YOUR_ACCOUNT:
             cell.cellName.text = "Your Account"
             break;
-        case 1:
+        case .LINKED_ACCOUNTS:
             cell.cellName.text = "Linked Social Media Accounts"
             break;
-        case 2:
+        case .NOTIFICATIONS:
             cell.cellName.text = "Notification Settings"
             break;
-        case 3:
+        case .INVITE_FRIENDS:
             cell.cellName.text = "Invite Friends"
             break;
-        case 4:
+        case .HELP:
             cell.cellName.text = "Help & About Us"
             break;
-        case 5:
+        case .LOG_OUT:
             cell.cellName.text = "Log Out"
             break;
     
@@ -63,5 +78,66 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
+        let menuOption = MenuData(rawValue: indexPath.row)!
+        
+        switch (menuOption)
+        {
+        case .YOUR_ACCOUNT:
+            break;
+        case .LINKED_ACCOUNTS:
+            break;
+        case .NOTIFICATIONS:
+            break;
+        case .INVITE_FRIENDS:
+            break;
+        case .HELP:
+            break;
+        case .LOG_OUT:
+                logUserOut()
+            break;
+        }
+    }
+    
+    
+    func logUserOut()
+    {
+        
+        // Ask user if they really want to log out...
+        let alert = UIAlertController(title: nil, message: "Are you really sure you want to log out?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let logOutAction = UIAlertAction(title: "Log out", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
+            
+            // present the log in home page
+            
+            //TODO: Add spinner functionality
+            self.performSegueWithIdentifier("logOut", sender: nil)
+            
+            // Log out of of firebase
+            self.firebaseRootRef.unauth()
+            
+            // Remove all observers
+            self.firebaseRootRef.removeAllObservers()
+            
+            if (self.firebaseRootRef.authData == nil)
+            {
+                print("successful log out.")
+                
+                // Set initial view controller back to default
+                //
+                //                    let window = UIWindow(frame: UIScreen.mainScreen().bounds)
+                //                    let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+                //                    let viewControllerIdentifier = "BeginningViewController"
+                //
+                //                    // Go to beginning page, as if user was logged in already!
+                //                    window.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil)
+        
+        alert.addAction(logOutAction)
+        alert.addAction(cancelAction)
+        
+        self.showViewController(alert, sender: nil)
     }
 }

@@ -11,5 +11,4 @@ import UIKit
 class MenuTableViewCell: UITableViewCell {
 
     @IBOutlet weak var cellName: UILabel!
-    @IBOutlet weak var cellImage: UIImageView!
 }
