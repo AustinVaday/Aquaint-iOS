@@ -24,6 +24,27 @@ func delay(delay:Double, closure:()->()) {
         dispatch_get_main_queue(), closure)
 }
 
+// Convert UIImage to base64
+func convertImageToBase64(image: UIImage) -> String
+{
+    // Get image representation
+    let imageData = UIImagePNGRepresentation(image)
+    
+    // Return b64
+    return (imageData?.base64EncodedStringWithOptions(.Encoding64CharacterLineLength))!
+}
+
+
+// Convert base64 to UIImage
+func convertBase64ToImage(base64String: String) -> UIImage
+{
+    let decodedData = NSData(base64EncodedString: base64String, options: .IgnoreUnknownCharacters)!
+    
+    return UIImage(data: decodedData)!
+}
+
+
+
 // Flips any image horizontally
 func flipImageHorizontally(imageView:UIImageView)
 {

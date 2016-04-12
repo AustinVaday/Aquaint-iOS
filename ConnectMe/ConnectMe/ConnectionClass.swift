@@ -23,7 +23,7 @@ import Firebase
 class Connection
 {
     var userName             = String()
-    var userImage            = String()
+    var userImage            = UIImage()
     var userFullName         = String()
     var timestampGMT         = Int()
     var socialMediaUserNames = NSDictionary()

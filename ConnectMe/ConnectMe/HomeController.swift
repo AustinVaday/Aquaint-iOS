@@ -213,8 +213,22 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
             firebaseUsersRef.childByAppendingPath(user.userName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
 
                 print(snapshot)
+                
+                // STORE USER INFO
+                // ================
                 user.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
-                user.userImage    = snapshot.childSnapshotForPath("/userImage").value as! String
+                
+                let userImageBase64String = snapshot.childSnapshotForPath("/userImage").value as! String
+                
+                // Convert base 64 image to UIImage
+                if (userImageBase64String == "none")
+                {
+                    user.userImage = UIImage(imageLiteral: "Add Photo Color")
+                }
+                else
+                {
+                    user.userImage = convertBase64ToImage(userImageBase64String)
+                }
 
                 self.connectionRequestList.append(user)
                 

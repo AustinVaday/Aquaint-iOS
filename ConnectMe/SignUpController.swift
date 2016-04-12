@@ -340,16 +340,31 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                                     
                                     let currentTime = getTimestampAsInt()
                                     
+                                    var base64String : String!
+                                    // If user did not add a photo
+                                    if ((self.userPhoto.currentImage == UIImage(named: "Add Photo Color")))
+                                    {
+                                        base64String = "none"
+                                    }
+                                    else
+                                    {
+                                        print ("B64 YES")
+
+                                        base64String = convertImageToBase64(self.userPhoto.currentImage!)
+                                    }
                                     
-                                    let userInfo   = ["fullName" : "", "userImage" : "none", "dateCreated": currentTime]
+                                    let userInfo   = ["fullName" : "", "userImage" : base64String, "dateCreated": currentTime]
                                     let linkedSocialMediaAccounts = ["twitter": "austinvaday", "facebook": "austinvaday", "instagram": "avtheman"]
                                     let connections = ["aquaint" : currentTime]
                                     
                                     
                                     print("User signed up and logged in: ", lowerCaseUserNameString)
                                     
+
+                                    
                                     // Store necessary information in JSON tree
                                     self.firebaseRootRef.childByAppendingPath("Users/" + lowerCaseUserNameString).setValue(userInfo)
+                                    
                                     self.firebaseRootRef.childByAppendingPath("LinkedSocialMediaAccounts/" + lowerCaseUserNameString).setValue(linkedSocialMediaAccounts)
                                     self.firebaseRootRef.childByAppendingPath("Connections/" + lowerCaseUserNameString).setValue(connections)
                                     self.firebaseRootRef.childByAppendingPath("UserIdToUserName/" + userId).setValue(lowerCaseUserNameString)

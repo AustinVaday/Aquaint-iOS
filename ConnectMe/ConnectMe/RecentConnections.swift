@@ -37,6 +37,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     var connectionList : Array<Connection>!
     
+    var defaultImage : UIImage!
+    
     override func viewDidLoad() {
         
         // Fetch the user's username
@@ -49,6 +51,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/" + currentUserName)
         
         connectionList = Array<Connection>()
+        
+        defaultImage = UIImage(imageLiteral: "Person Icon Black")
         
         // Load all connections and respective information from servers
         firebaseConnectionsRef.queryOrderedByValue().observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
@@ -69,8 +73,19 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             // Store the user's Image
             self.firebaseUsersRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
                 
-//                connection.userImage = snapshot.value as! String
-                connection.userImage = snapshot.childSnapshotForPath("/userImage").value as! String
+                // Get base 64 string image
+                let userImageBase64String = snapshot.childSnapshotForPath("/userImage").value as! String
+                
+                // Convert base 64 image to UIImage
+                if (userImageBase64String == "none")
+                {
+                    connection.userImage = self.defaultImage
+                }
+                else
+                {
+                    connection.userImage = convertBase64ToImage(userImageBase64String)
+                }
+
                 connection.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
                
                 print("##2")
@@ -200,6 +215,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         cell.cellName.text = connectedUser.userFullName
         cell.cellUserName.text = connectedUser.userName
+        cell.cellImage.image = connectedUser.userImage
         cell.cellTimeConnected.text = connectedUser.computeTimeDiff()
         
         

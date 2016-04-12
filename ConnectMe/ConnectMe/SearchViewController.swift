@@ -22,7 +22,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
-
+    var defaultImage : UIImage!
 
     override func viewDidLoad(){
         
@@ -31,6 +31,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         
         userName = getCurrentUser()
+        
+        defaultImage = UIImage(imageLiteral: "Person Icon Black")
+
         
 //        firebaseRootRef = Firebase(url: firebaseRootRefString)
 
@@ -85,7 +88,17 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 print(snapshot)
                 user.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
-                user.userImage    = snapshot.childSnapshotForPath("/userImage").value as! String
+                let userImageBase64String = snapshot.childSnapshotForPath("/userImage").value as! String
+                
+                // Convert base 64 image to UIImage
+                if (userImageBase64String == "none")
+                {
+                    user.userImage = self.defaultImage
+                }
+                else
+                {
+                    user.userImage = convertBase64ToImage(userImageBase64String)
+                }
                 
                 self.allUsers.append(user)
                 
@@ -143,6 +156,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
         cell.cellName.text = userFullName
         cell.cellUserName.text = userName
+        cell.cellImage.image = userImage
         
         return cell
         
