@@ -8,15 +8,15 @@
 //  Code is owned by: Austin Vaday and Navid Sarvian
 
 import UIKit
-import Parse
-import Bolts
+//import Parse
+//import Bolts
 import FBSDKCoreKit
 import FBSDKLoginKit
 //import AWSCore
 //import AWSCognito
 
-import AWSS3
-import AWSCore
+//import AWSS3
+//import AWSCore
 
 
 
@@ -29,8 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    
         
-
         
         // Connect to Amazon Core Services
 //        let credentialsProvider = AWSCognitoCredentialsProvider(
@@ -42,24 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = defaultServiceConfiguration
         
         
-        // Set up OneAll for sole-access to various social media APIs
-        OAManager.sharedInstance().setupWithSubdomain("Aquaint")
-    
         
-        
-//        OAManager.sharedInstance().loginWithSuccess({ (user, booleanVal) in
-//            print("SUCCESS", user)
-//        }, andFailure: { (error) in
-//                print("ERROR", error.localizedDescription)
-//        })
-        
-        
-        let testURL = NSURL(fileReferenceLiteral: "https://aquaint.api.oneall.com/socialize/connect/mobile/facebook/?nonce=6ba7b810-9dad-11d1-80b4-00c04fd430c8&callback_uri=aquaint://callback")
-        
-        OAManager.sharedInstance().handleOpenUrl(testURL, sourceApplication: "Aquaint")
-//
-//        UIApplication.sharedApplication().openURL(testURL)
-//        
         // If user is already logged into Firebase, go to home page instead of log-in/sign-up pages
         let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
         
@@ -84,7 +67,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
+    // Process results & set up for Facebook API integration
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        
+        let handled = FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication , annotation: annotation)
+        print("FBSDK HANDLED:", handled)
 
+        
+        return handled
+    }
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.

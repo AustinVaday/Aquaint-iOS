@@ -318,9 +318,17 @@
                                     <action selector="addPhotoButtonClicked:" destination="54r-9I-5XD" eventType="touchUpInside" id="azD-7R-ElV"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oqa-hM-xHz">
+                                <rect key="frame" x="238" y="395" width="125" height="30"/>
+                                <state key="normal" title="Get Facebook Info"/>
+                                <connections>
+                                    <action selector="onGetFacebookInfoButtonClicked:" destination="EiS-Tj-w75" eventType="touchUpInside" id="Xjn-yM-FnK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="Oqa-hM-xHz" firstAttribute="top" secondItem="Inj-dP-tqe" secondAttribute="bottom" constant="134" id="24N-vt-a99"/>
                             <constraint firstItem="4OF-bs-cYe" firstAttribute="leading" secondItem="H7k-5t-6Id" secondAttribute="leadingMargin" constant="-20" id="4LS-37-beF"/>
                             <constraint firstItem="JuS-IW-Ogj" firstAttribute="top" secondItem="eEC-o0-FoO" secondAttribute="bottom" id="F55-cG-2jE"/>
                             <constraint firstItem="JuS-IW-Ogj" firstAttribute="leading" secondItem="4OF-bs-cYe" secondAttribute="leading" id="QTt-ad-S4u"/>
@@ -329,6 +337,7 @@
                             <constraint firstItem="Inj-dP-tqe" firstAttribute="centerX" secondItem="H7k-5t-6Id" secondAttribute="centerX" id="Uy6-Ow-B2D"/>
                             <constraint firstItem="JuS-IW-Ogj" firstAttribute="trailing" secondItem="4OF-bs-cYe" secondAttribute="trailing" id="j7j-QI-B88"/>
                             <constraint firstItem="Inj-dP-tqe" firstAttribute="top" secondItem="dY0-VT-mcc" secondAttribute="bottom" constant="48" id="mdC-c2-BWU"/>
+                            <constraint firstItem="Oqa-hM-xHz" firstAttribute="leading" secondItem="H7k-5t-6Id" secondAttribute="leadingMargin" constant="218" id="wTc-F8-1GZ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4OF-bs-cYe" secondAttribute="trailing" constant="-20" id="zcg-ad-txC"/>
                         </constraints>
                     </view>
@@ -764,7 +773,7 @@
                                                                             <constraint firstAttribute="height" constant="32" id="DPh-tj-1Q7"/>
                                                                             <constraint firstAttribute="width" constant="32" id="GBX-Ja-AXt"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="61560F6E-3A27-4E09-9028-63093F97A4BB"/>
+                                                                        <state key="normal" image="8AF3CC35-2DF3-401F-9A6F-F4AE96F566FC"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="JcZ-aN-92g">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -1853,7 +1862,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="61560F6E-3A27-4E09-9028-63093F97A4BB" width="32" height="32">
+        <image name="8AF3CC35-2DF3-401F-9A6F-F4AE96F566FC" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
