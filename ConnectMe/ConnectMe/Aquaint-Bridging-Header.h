@@ -6,3 +6,4 @@
 //  Copyright © 2016 ConnectMe. All rights reserved.
 //
 
+#import <SimpleAuth/SimpleAuth.h>

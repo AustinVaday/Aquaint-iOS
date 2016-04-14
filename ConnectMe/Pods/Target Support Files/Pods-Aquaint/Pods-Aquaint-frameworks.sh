@@ -100,7 +100,14 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Aquaint/AWSSNS.framework"
   install_framework "Pods-Aquaint/AWSSQS.framework"
   install_framework "Pods-Aquaint/AWSSimpleDB.framework"
+  install_framework "Pods-Aquaint/CMDQueryStringSerialization.framework"
   install_framework "Pods-Aquaint/Firebase.framework"
+  install_framework "Pods-Aquaint/ISO8601.framework"
+  install_framework "Pods-Aquaint/NSData_Base64.framework"
+  install_framework "Pods-Aquaint/ReactiveCocoa.framework"
+  install_framework "Pods-Aquaint/Result.framework"
+  install_framework "Pods-Aquaint/SimpleAuth.framework"
+  install_framework "Pods-Aquaint/cocoa_oauth.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Aquaint/AWSAutoScaling.framework"
@@ -119,5 +126,12 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Aquaint/AWSSNS.framework"
   install_framework "Pods-Aquaint/AWSSQS.framework"
   install_framework "Pods-Aquaint/AWSSimpleDB.framework"
+  install_framework "Pods-Aquaint/CMDQueryStringSerialization.framework"
   install_framework "Pods-Aquaint/Firebase.framework"
+  install_framework "Pods-Aquaint/ISO8601.framework"
+  install_framework "Pods-Aquaint/NSData_Base64.framework"
+  install_framework "Pods-Aquaint/ReactiveCocoa.framework"
+  install_framework "Pods-Aquaint/Result.framework"
+  install_framework "Pods-Aquaint/SimpleAuth.framework"
+  install_framework "Pods-Aquaint/cocoa_oauth.framework"
 fi

@@ -30,7 +30,85 @@ PODS:
     - AWSCore (= 2.3.6)
   - AWSSQS (2.3.6):
     - AWSCore (= 2.3.6)
+  - CMDQueryStringSerialization (0.4.1):
+    - ISO8601
+  - cocoa-oauth (0.0.1):
+    - NSData+Base64 (~> 1.0)
   - Firebase (2.5.0)
+  - ISO8601 (0.5.0)
+  - NSData+Base64 (1.0.0)
+  - ReactiveCocoa (4.1.0):
+    - ReactiveCocoa/UI (= 4.1.0)
+    - Result (~> 2.0)
+  - ReactiveCocoa/Core (4.1.0):
+    - ReactiveCocoa/no-arc
+    - Result (~> 2.0)
+  - ReactiveCocoa/no-arc (4.1.0):
+    - Result (~> 2.0)
+  - ReactiveCocoa/UI (4.1.0):
+    - ReactiveCocoa/Core
+    - Result (~> 2.0)
+  - Result (2.0.0)
+  - SimpleAuth (0.3.9):
+    - SimpleAuth/BoxWeb (= 0.3.9)
+    - SimpleAuth/Core (= 0.3.9)
+    - SimpleAuth/DropboxWeb (= 0.3.9)
+    - SimpleAuth/Facebook (= 0.3.9)
+    - SimpleAuth/FacebookWeb (= 0.3.9)
+    - SimpleAuth/FoursquareWeb (= 0.3.9)
+    - SimpleAuth/GoogleWeb (= 0.3.9)
+    - SimpleAuth/Instagram (= 0.3.9)
+    - SimpleAuth/LinkedInWeb (= 0.3.9)
+    - SimpleAuth/Meetup (= 0.3.9)
+    - SimpleAuth/OneDriveWeb (= 0.3.9)
+    - SimpleAuth/SinaWeiboWeb (= 0.3.9)
+    - SimpleAuth/Strava (= 0.3.9)
+    - SimpleAuth/Trello (= 0.3.9)
+    - SimpleAuth/TripIt (= 0.3.9)
+    - SimpleAuth/Tumblr (= 0.3.9)
+    - SimpleAuth/Twitter (= 0.3.9)
+    - SimpleAuth/TwitterWeb (= 0.3.9)
+  - SimpleAuth/BoxWeb (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/Core (0.3.9):
+    - CMDQueryStringSerialization
+    - ReactiveCocoa
+  - SimpleAuth/DropboxWeb (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/Facebook (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/FacebookWeb (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/FoursquareWeb (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/GoogleWeb (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/Instagram (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/LinkedInWeb (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/Meetup (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/OneDriveWeb (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/SinaWeiboWeb (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/Strava (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/Trello (0.3.9):
+    - SimpleAuth/Core
+  - SimpleAuth/TripIt (0.3.9):
+    - cocoa-oauth
+    - SimpleAuth/Core
+  - SimpleAuth/Tumblr (0.3.9):
+    - cocoa-oauth
+    - SimpleAuth/Core
+  - SimpleAuth/Twitter (0.3.9):
+    - cocoa-oauth
+    - SimpleAuth/Core
+  - SimpleAuth/TwitterWeb (0.3.9):
+    - cocoa-oauth
+    - SimpleAuth/Core
 
 DEPENDENCIES:
   - AWSAutoScaling
@@ -50,6 +128,7 @@ DEPENDENCIES:
   - AWSSNS
   - AWSSQS
   - Firebase (>= 2.5.0)
+  - SimpleAuth
 
 SPEC CHECKSUMS:
   AWSAutoScaling: 49d9f49984a82852511be4caa2a510f522cd8de1
@@ -68,6 +147,13 @@ SPEC CHECKSUMS:
   AWSSimpleDB: 0e4f2160b572be584baf8e2ef6ba257117f75114
   AWSSNS: 37c7f4c80657a621fbabccf7d0f352e3c018fbd0
   AWSSQS: aa53b836c21a10611120e8bf361feef54fd73ae1
+  CMDQueryStringSerialization: 4bb0a2f5e7d8d8678d911d88072274952cbef4e5
+  cocoa-oauth: 1200a2170276a62a975f2786d505dab6e2db1fa8
   Firebase: 744617c0733b45198f9486ebd5cac64ec2d10d79
+  ISO8601: 25d7a973fa8daf31a50bbd0401d2e7b98e8a7df3
+  NSData+Base64: 4e84902c4db907a15673474677e57763ef3903e4
+  ReactiveCocoa: d70004d7a366a7b8e87e60ce2347182c77701949
+  Result: 9e75e1111c774c6ac594e14907b15057053a7959
+  SimpleAuth: bc7d594f90711a7e6ef7624dce5aa8c8b09770ab
 
 COCOAPODS: 0.39.0

@@ -9,13 +9,24 @@
 import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
+import SimpleAuth
 
 
 class ProfileViewController: UIViewController {
     
     
     @IBAction func onGetFacebookInfoButtonClicked(sender: UIButton) {
-        
+//        
+//        SimpleAuth.authorize("facebook-web") { (result, error) in
+//            
+//            print ("RESULT IS: ", result, error)
+//            
+//            if (error == nil)
+//            {
+//                print ("RESULT IS: ", result)
+//            }
+//            
+//        }
 
         // If no user currently logged in with access token, get one
         if (FBSDKAccessToken.currentAccessToken() == nil)
@@ -52,13 +63,46 @@ class ProfileViewController: UIViewController {
 
     
     @IBAction func onGetTwitterInfoClicked(sender: UIButton) {
-        showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+//        showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
 
+        
+        SimpleAuth.authorize("twitter-web") { (result, error) in
+
+            if (result == nil)
+            {
+                print("CANCELLED REQUEST")
+            }
+            else if (error == nil)
+            {
+                print ("RESULT IS: ", result)
+            }
+            else
+            {
+                print ("FAILED TO PROCESS REQUEST")
+            }
+            
+        }
+    
     }
     
     @IBAction func onGetInstagramInfoClicked(sender: UIButton) {
-        showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
 
+        SimpleAuth.authorize("instagram") { (result, error) in
+            
+            if (result == nil)
+            {
+                print("CANCELLED REQUEST")
+            }
+            else if (error == nil)
+            {
+                print ("RESULT IS: ", result)
+            }
+            else
+            {
+                print ("FAILED TO PROCESS REQUEST")
+            }
+            
+        }
     }
     
     @IBAction func onGetYoutubeInfoClicked(sender: UIButton) {
@@ -67,8 +111,25 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func onGetLinkedinInfoClicked(sender: UIButton) {
-        showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+        
+        SimpleAuth.authorize("linkedin-web") { (result, error) in
+            
+            if (result == nil)
+            {
+                print("CANCELLED REQUEST")
+            }
+            else if (error == nil)
+            {
+                print ("RESULT IS: ", result)
+            }
+            else
+            {
+                print ("FAILED TO PROCESS REQUEST")
+            }
+            
+        }
 
+        
     }
     
 }

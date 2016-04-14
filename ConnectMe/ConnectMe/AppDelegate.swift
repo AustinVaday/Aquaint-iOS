@@ -18,7 +18,7 @@ import FBSDKLoginKit
 //import AWSS3
 //import AWSCore
 
-
+import SimpleAuth
 
 // Begin using Firebase framework
 import Firebase
@@ -29,8 +29,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-    
         
+        SimpleAuth.configuration()["facebook"] = [
+            "app_id"  : "544667035683597"
+        ]
+        
+        SimpleAuth.configuration()["facebook-web"] = [
+            "app_id"  : "544667035683597"
+        ]
+
+        SimpleAuth.configuration()["twitter"] = [
+            "consumer_key": "idyf0Uxakx1q8r4dWA0Xs6sej",
+            "consumer_secret": "cX23fqgPYzF82oloYIoxTRr6AfgQ0XhV40KyoV6KlHN81QxWht"
+        ]
+        
+        SimpleAuth.configuration()["twitter-web"] = [
+            "consumer_key": "idyf0Uxakx1q8r4dWA0Xs6sej",
+            "consumer_secret": "cX23fqgPYzF82oloYIoxTRr6AfgQ0XhV40KyoV6KlHN81QxWht"
+        ]
+        
+        SimpleAuth.configuration()["linkedin-web"] = [
+            "client_id" : "75533hjqfplgv3",
+            "client_secret" : "YjzhxmwGJlK4meBA",
+            "redirect_uri": "http://aquaint"
+        ]
+        
+        SimpleAuth.configuration()["instagram"] = [
+            "client_id" : "08e0622dff7846d2850a506dfbc723a3",
+            SimpleAuthRedirectURIKey : "aquaint://"
+        ]
+                
         
         // Connect to Amazon Core Services
 //        let credentialsProvider = AWSCognitoCredentialsProvider(

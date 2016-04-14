@@ -47,9 +47,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         // Used to determine pending buttons
         firebaseSentRequestsRef.observeEventType(FEventType.Value, withBlock: { (snapshot) -> Void in
             
-            
-                print ("YO25", snapshot.value)
-            
                 //Store a listing of all users that current user sent a connection request to. Used
                 //to determine which kind of button to display to user (add button, delete button, pending button)
                 if !(snapshot.value is NSNull)
@@ -74,9 +71,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         firebaseUsersRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
             
-            print(snapshot.value)
-            print("KEY IS: ", snapshot.key)
-            
             let user = Connection()
             
             // Store respective user info (key is the username)
@@ -86,7 +80,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             // Retrieve user's other info
             firebaseUsersRef.childByAppendingPath(user.userName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
                 
-                print(snapshot)
                 user.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
                 let userImageBase64String = snapshot.childSnapshotForPath("/userImage").value as! String
                 

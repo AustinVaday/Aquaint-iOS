@@ -7,6 +7,7 @@ target 'Aquaint' do
 
 pod 'Firebase', '>= 2.5.0'
 
+pod 'SimpleAuth'
 pod 'AWSCore'
 pod 'AWSAutoScaling'
 pod 'AWSCloudWatch'
