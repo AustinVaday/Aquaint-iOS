@@ -45,7 +45,8 @@
 		FFBB872D1C5307F500500FAD /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB872A1C5307F500500FAD /* FBSDKLoginKit.framework */; };
 		FFBB872E1C5307F500500FAD /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB872B1C5307F500500FAD /* FBSDKShareKit.framework */; };
 		FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */; };
-		FFF2A34E1CA661B800C08E38 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF2A34D1CA661B800C08E38 /* SWRevealViewController.m */; };
+		FFEC2F011CBF46C20044BEC9 /* libOneAll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFEC2EF71CBF3CEA0044BEC9 /* libOneAll.a */; };
+		FFEC2F021CBF46DE0044BEC9 /* OneAllResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FFEC2EF91CBF3CEA0044BEC9 /* OneAllResources.bundle */; };
 		FFF2A3501CA891E200C08E38 /* ServerFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */; };
 		FFF442361C4B2244007651DE /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF442351C4B2244007651DE /* Functions.swift */; };
 		FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFF442391C4C2B21007651DE /* Launch Screen.storyboard */; };
@@ -65,6 +66,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = FF897C301C01AC63001B2634;
 			remoteInfo = ConnectMe;
+		};
+		FFEC2EF61CBF3CEA0044BEC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFEC2EF11CBF3CEA0044BEC9 /* OneAll.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1E3299571961AAE1008896A8;
+			remoteInfo = OneAll;
+		};
+		FFEC2EF81CBF3CEA0044BEC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFEC2EF11CBF3CEA0044BEC9 /* OneAll.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1E329A001961D37E008896A8;
+			remoteInfo = OneAllResources;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -113,9 +128,8 @@
 		FFBB872A1C5307F500500FAD /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		FFBB872B1C5307F500500FAD /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionClass.swift; sourceTree = "<group>"; };
-		FFF2A34B1CA661B700C08E38 /* Aquaint-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Aquaint-Bridging-Header.h"; sourceTree = "<group>"; };
-		FFF2A34C1CA661B800C08E38 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
-		FFF2A34D1CA661B800C08E38 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		FFEC2EF11CBF3CEA0044BEC9 /* OneAll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OneAll.xcodeproj; path = OneAll/OneAll.xcodeproj; sourceTree = "<group>"; };
+		FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Aquaint-Bridging-Header.h"; path = "ConnectMe/Aquaint-Bridging-Header.h"; sourceTree = "<group>"; };
 		FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerFunctions.swift; sourceTree = "<group>"; };
 		FFF442351C4B2244007651DE /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		FFF442391C4C2B21007651DE /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -126,6 +140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFEC2F011CBF46C20044BEC9 /* libOneAll.a in Frameworks */,
 				FF7878711C30268C00354936 /* SystemConfiguration.framework in Frameworks */,
 				FF78786F1C30268500354936 /* StoreKit.framework in Frameworks */,
 				FFBB872E1C5307F500500FAD /* FBSDKShareKit.framework in Frameworks */,
@@ -174,6 +189,8 @@
 		FF897C281C01AC63001B2634 = {
 			isa = PBXGroup;
 			children = (
+				FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */,
+				FFEC2EF11CBF3CEA0044BEC9 /* OneAll.xcodeproj */,
 				FFB8602D1C4C390400CFB621 /* AquaintTestCases */,
 				FFB8602C1C4C38F800CFB621 /* AquaintUITestCases */,
 				FFBB87251C5307B700500FAD /* Frameworks */,
@@ -198,7 +215,6 @@
 		FF897C331C01AC63001B2634 /* Aquaint */ = {
 			isa = PBXGroup;
 			children = (
-				FFF2A34A1CA6616700C08E38 /* SWRevealViewController */,
 				FF65D3211C1EA3D60015C99F /* SignUpController.swift */,
 				FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */,
 				FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */,
@@ -289,15 +305,13 @@
 			name = "Facebook Frameworks";
 			sourceTree = "<group>";
 		};
-		FFF2A34A1CA6616700C08E38 /* SWRevealViewController */ = {
+		FFEC2EF21CBF3CEA0044BEC9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FFF2A34C1CA661B800C08E38 /* SWRevealViewController.h */,
-				FFF2A34D1CA661B800C08E38 /* SWRevealViewController.m */,
-				FFF2A34B1CA661B700C08E38 /* Aquaint-Bridging-Header.h */,
+				FFEC2EF71CBF3CEA0044BEC9 /* libOneAll.a */,
+				FFEC2EF91CBF3CEA0044BEC9 /* OneAllResources.bundle */,
 			);
-			name = SWRevealViewController;
-			path = ..;
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -394,6 +408,12 @@
 			mainGroup = FF897C281C01AC63001B2634;
 			productRefGroup = FF897C321C01AC63001B2634 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FFEC2EF21CBF3CEA0044BEC9 /* Products */;
+					ProjectRef = FFEC2EF11CBF3CEA0044BEC9 /* OneAll.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				FF897C301C01AC63001B2634 /* Aquaint */,
@@ -403,11 +423,29 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		FFEC2EF71CBF3CEA0044BEC9 /* libOneAll.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOneAll.a;
+			remoteRef = FFEC2EF61CBF3CEA0044BEC9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFEC2EF91CBF3CEA0044BEC9 /* OneAllResources.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OneAllResources.bundle;
+			remoteRef = FFEC2EF81CBF3CEA0044BEC9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		FF897C2F1C01AC63001B2634 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFEC2F021CBF46DE0044BEC9 /* OneAllResources.bundle in Resources */,
 				FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */,
 				FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */,
 				FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */,
@@ -486,7 +524,6 @@
 				FFF2A3501CA891E200C08E38 /* ServerFunctions.swift in Sources */,
 				FF7878421C26A0CC00354936 /* CameraController.swift in Sources */,
 				FF7878401C26A0A900354936 /* MenuController.swift in Sources */,
-				FFF2A34E1CA661B800C08E38 /* SWRevealViewController.m in Sources */,
 				FF0BF0251CB6DCB3005188DA /* SearchViewController.swift in Sources */,
 				FF7878461C281A2500354936 /* HomeController.swift in Sources */,
 				FF7878771C34EC4A00354936 /* RecentConnections.swift in Sources */,
@@ -654,7 +691,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Aquaint;
 				PRODUCT_NAME = Aquaint;
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Aquaint-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "ConnectMe/Aquaint-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -680,7 +717,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Aquaint;
 				PRODUCT_NAME = Aquaint;
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Aquaint-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "ConnectMe/Aquaint-Bridging-Header.h";
 			};
 			name = Release;
 		};

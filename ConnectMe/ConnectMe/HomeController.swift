@@ -14,7 +14,7 @@ import AWSS3
 
 class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    
+ 
     @IBOutlet weak var requestsTableView: UITableView!
     @IBOutlet weak var userNameLabel: UILabel!
 //    @IBOutlet weak var searchTableView: UITableView!
@@ -39,6 +39,7 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var connectionRequestList : Array<Connection>! // MAKE IT Connection type LATER
     
     override func viewDidLoad() {
+        
         
         connectionRequestList = Array<Connection>()
         

@@ -23,7 +23,6 @@ import AWSCore
 // Begin using Firebase framework
 import Firebase
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -31,16 +30,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+
+        
         // Connect to Amazon Core Services
-        let credentialsProvider = AWSCognitoCredentialsProvider(
-            regionType: AWSRegionType.USEast1, identityPoolId: "aquaint_MOBILEHUB_1504998897")
+//        let credentialsProvider = AWSCognitoCredentialsProvider(
+//            regionType: AWSRegionType.USEast1, identityPoolId: "aquaint_MOBILEHUB_1504998897")
+//        
+//        let defaultServiceConfiguration = AWSServiceConfiguration(
+//            region: AWSRegionType.USEast1, credentialsProvider: credentialsProvider)
+//        
+//        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = defaultServiceConfiguration
         
-        let defaultServiceConfiguration = AWSServiceConfiguration(
-            region: AWSRegionType.USEast1, credentialsProvider: credentialsProvider)
         
-        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = defaultServiceConfiguration
+        // Set up OneAll for sole-access to various social media APIs
+        OAManager.sharedInstance().setupWithSubdomain("Aquaint")
+    
         
         
+//        OAManager.sharedInstance().loginWithSuccess({ (user, booleanVal) in
+//            print("SUCCESS", user)
+//        }, andFailure: { (error) in
+//                print("ERROR", error.localizedDescription)
+//        })
+        
+        
+        let testURL = NSURL(fileReferenceLiteral: "https://aquaint.api.oneall.com/socialize/connect/mobile/facebook/?nonce=6ba7b810-9dad-11d1-80b4-00c04fd430c8&callback_uri=aquaint://callback")
+        
+        OAManager.sharedInstance().handleOpenUrl(testURL, sourceApplication: "Aquaint")
+//
+//        UIApplication.sharedApplication().openURL(testURL)
+//        
         // If user is already logged into Firebase, go to home page instead of log-in/sign-up pages
         let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
         
