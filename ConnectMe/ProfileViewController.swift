@@ -17,18 +17,22 @@ class ProfileViewController: UIViewController {
     @IBAction func onGetFacebookInfoButtonClicked(sender: UIButton) {
         
 
+        // If no user currently logged in with access token, get one
         if (FBSDKAccessToken.currentAccessToken() == nil)
         {
-            print ("Log in token is NIL. Fixing this.")
             let login = FBSDKLoginManager.init()
             
+            // Open in app instead of web browser!
+            login.loginBehavior = FBSDKLoginBehavior.Native
+            
+            // Request basic profile permissions just to get user ID
             login.logInWithReadPermissions(["public_profile"], fromViewController: self) { (result, error) in
                 
+                // If no error, store facebook user ID
                 if (error == nil)
                 {
                     print("SUCCESS LOG IN!", result.debugDescription)
                     print(FBSDKAccessToken.currentAccessToken().userID)
-                    
                 }
                 else if (result.isCancelled)
                 {
@@ -46,4 +50,25 @@ class ProfileViewController: UIViewController {
         }
     }
 
+    
+    @IBAction func onGetTwitterInfoClicked(sender: UIButton) {
+        showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+
+    }
+    
+    @IBAction func onGetInstagramInfoClicked(sender: UIButton) {
+        showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+
+    }
+    
+    @IBAction func onGetYoutubeInfoClicked(sender: UIButton) {
+        showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+
+    }
+    
+    @IBAction func onGetLinkedinInfoClicked(sender: UIButton) {
+        showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+
+    }
+    
 }
