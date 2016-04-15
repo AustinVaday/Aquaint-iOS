@@ -32,11 +32,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var firebaseUsersRef: Firebase!
     var firebaseLinkedAccountsRef: Firebase!
     var firebaseConnectionsRef: Firebase!
-    
     var refreshControl : UIRefreshControl!
-    
     var connectionList : Array<Connection>!
-    
     var defaultImage : UIImage!
     
     override func viewDidLoad() {
@@ -206,8 +203,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
-        
-        
+    
         // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
         cell.collectionView.tag = indexPath.row
         
