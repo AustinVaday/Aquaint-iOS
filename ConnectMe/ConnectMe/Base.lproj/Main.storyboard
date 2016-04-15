@@ -438,7 +438,7 @@
                                                         <constraint firstAttribute="width" constant="32" id="7GG-eg-BfU"/>
                                                         <constraint firstAttribute="height" constant="32" id="9JA-gD-gqy"/>
                                                     </constraints>
-                                                    <state key="normal" image="73849D67-D61C-4AA3-B670-B32BDB89B43B"/>
+                                                    <state key="normal" image="8931599C-4BE0-448F-91BA-0FD69DE7E4BB"/>
                                                 </button>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="n1l-EC-6IF">
                                                     <rect key="frame" x="-1" y="0.0" width="46" height="46"/>
@@ -961,7 +961,7 @@
                                                                             <constraint firstAttribute="height" constant="32" id="DPh-tj-1Q7"/>
                                                                             <constraint firstAttribute="width" constant="32" id="GBX-Ja-AXt"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="F77C8138-2257-4F94-970B-4038BCAF1420"/>
+                                                                        <state key="normal" image="FB469936-084B-4826-ADD2-CF1ABFB456D4"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="JcZ-aN-92g">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -1736,13 +1736,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="120" height="66"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Se1-Ws-ji9">
-                                                <rect key="frame" x="45" y="18" width="30" height="30"/>
+                                                <rect key="frame" x="40" y="13" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="Se1-Ws-ji9" secondAttribute="height" multiplier="1:1" id="KIL-V1-wtu"/>
-                                                    <constraint firstAttribute="width" constant="30" id="Z5O-E9-rfR"/>
-                                                    <constraint firstAttribute="height" constant="30" id="orn-7g-LS4"/>
+                                                    <constraint firstAttribute="width" constant="40" id="Z5O-E9-rfR"/>
+                                                    <constraint firstAttribute="height" constant="40" id="orn-7g-LS4"/>
                                                 </constraints>
-                                                <state key="normal" image="Menu Icon"/>
+                                                <state key="normal" image="Home Icon"/>
                                                 <connections>
                                                     <action selector="menuButtonClicked:" destination="8Yo-pa-87T" eventType="touchUpInside" id="Usc-Qs-9pi"/>
                                                 </connections>
@@ -1775,7 +1775,7 @@
                                             <constraint firstItem="Se1-Ws-ji9" firstAttribute="centerX" secondItem="oPU-bH-miz" secondAttribute="centerX" id="Mgh-LL-Kcd"/>
                                             <constraint firstAttribute="trailing" secondItem="9bU-Z5-MNS" secondAttribute="trailing" id="QAi-XT-L3x"/>
                                             <constraint firstItem="nCs-ij-agk" firstAttribute="centerY" secondItem="oPU-bH-miz" secondAttribute="centerY" id="RYf-ye-glB"/>
-                                            <constraint firstItem="9bU-Z5-MNS" firstAttribute="top" secondItem="Se1-Ws-ji9" secondAttribute="bottom" constant="15" id="Rui-K0-7X7"/>
+                                            <constraint firstItem="9bU-Z5-MNS" firstAttribute="top" secondItem="Se1-Ws-ji9" secondAttribute="bottom" constant="10" id="Rui-K0-7X7"/>
                                             <constraint firstItem="Se1-Ws-ji9" firstAttribute="centerY" secondItem="oPU-bH-miz" secondAttribute="centerY" id="ecz-0e-A05"/>
                                         </constraints>
                                     </view>
@@ -1972,7 +1972,7 @@
                                                     <constraint firstAttribute="width" secondItem="vyT-x5-InE" secondAttribute="height" multiplier="1:1" id="qiT-Gm-A8p"/>
                                                     <constraint firstAttribute="width" constant="40" id="y3M-i2-M8g"/>
                                                 </constraints>
-                                                <state key="normal" image="Group Dots Icon"/>
+                                                <state key="normal" image="Settings Icon"/>
                                                 <variation key="default">
                                                     <mask key="constraints">
                                                         <exclude reference="gWt-cx-8Hg"/>
@@ -2050,7 +2050,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="73849D67-D61C-4AA3-B670-B32BDB89B43B" width="32" height="32">
+        <image name="8931599C-4BE0-448F-91BA-0FD69DE7E4BB" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -2181,7 +2181,7 @@ Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
         <image name="Email Icon Black" width="50" height="50"/>
         <image name="Emblem" width="362" height="361"/>
         <image name="Emblem White" width="362" height="361"/>
-        <image name="F77C8138-2257-4F94-970B-4038BCAF1420" width="32" height="32">
+        <image name="FB469936-084B-4826-ADD2-CF1ABFB456D4" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -2300,16 +2300,16 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
-        <image name="Group Dots Icon" width="50" height="50"/>
+        <image name="Home Icon" width="54" height="50"/>
         <image name="Line Separator Black" width="753" height="4"/>
         <image name="Login Background" width="457" height="811"/>
         <image name="Logo White" width="243" height="64"/>
-        <image name="Menu Icon" width="44" height="39"/>
         <image name="Password Icon Black" width="50" height="50"/>
         <image name="Person Icon Black" width="50" height="50"/>
         <image name="Person Icon Thick" width="50" height="50"/>
         <image name="Profile Picture" width="240" height="240"/>
         <image name="Search Icon" width="50" height="50"/>
+        <image name="Settings Icon" width="50" height="50"/>
         <image name="facebook" width="113" height="113"/>
     </resources>
     <inferredMetricsTieBreakers>
