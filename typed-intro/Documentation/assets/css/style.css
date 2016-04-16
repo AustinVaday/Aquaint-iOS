@@ -1,0 +1,324 @@
+/*================= FONT (OPEN SANS) IMPORT FROM GOOGLE FONTS =================*/
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext,cyrillic);
+
+
+/*=============================== COMMON BEGIN ================================*/
+
+* {
+	margin:0; 
+	padding:0;
+}
+
+:focus {
+	outline:0;
+}
+
+img {
+	border: none;
+}
+
+html,
+body {
+	height:100%;
+	-webkit-text-size-adjust: none;
+}
+
+body {
+	background: #FFF; 
+	font-family: 'Open Sans',sans-serif; 
+	font-size: 16px;
+	line-height:25px;
+	color: #555;
+}
+
+ul {
+	list-style:none;
+}
+
+input[type="button"],
+input[type="submit"],
+button {
+	cursor: pointer;
+}
+
+a {
+	color: inherit;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+h2 {
+	font-size: 30px;
+	font-weight: 300;
+	color: #222;
+	line-height: 30px;
+	padding:120px 0 30px 0;
+	margin-bottom:30px;
+	border-bottom: 1px solid #eee;
+
+}
+
+h3 {
+	font-size: 22px;
+	font-weight: 300;
+	line-height: 25px;
+	margin:60px 0 20px 0;
+	color: #222;
+}
+
+h4 {
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 25px;
+	margin:40px 0 10px 0;
+	color: #222;
+}
+
+p {
+	line-height: inherit;
+	font-size:inherit;
+}
+
+
+/*=============================== COMMON END ================================*/
+/*=============================== BLOCK STYLES BEGIN ================================*/
+
+.wrap{
+	max-width:1200px;
+	min-width:980px;
+	margin:0 auto;
+	padding:0 20px;
+}
+
+.wrap:after {
+	content: ""; 
+	display: block; 
+	clear: both;
+}
+
+header{
+	background-color:#444;
+	padding:0;
+	color:#FFF;
+	position:fixed;
+	z-index:100;
+	top:0;
+	left:0;
+	right:0;
+}
+
+
+header .logo{
+	background:url(../images/logo.png) left center no-repeat;
+	float:left;
+	width:50px;
+	height:60px;
+	display:block;
+}
+
+header #top-menu a{
+	float:left;
+	color:#ccc;
+	line-height:60px;
+	font-size:16px;
+	padding:0 20px;
+	text-decoration:none;
+	-webkit-transition: 0.5s all ease;
+    -moz-transition: 0.5s all ease;
+    transition: 0.5s all ease;
+}
+
+header ul#top-menu{
+	list-style:none;
+}
+
+header #top-menu a:hover, header #top-menu li.active a{
+	background-color:#222;
+}
+
+header #top-menu li.active a{
+	color:#fff;
+}
+
+
+#info{
+	background-color:#00aeff;
+	margin-top:60px;
+}
+
+#info .wrap{
+	padding:80px 20px;
+	color:#fff;
+}
+
+#info .wrap h1{
+	display:block;
+	float:left;
+	line-height:50px;
+	font-size:44px;
+	font-weight:bold;
+	text-transform:uppercase;
+}
+
+#info .wrap h1 span{
+	text-transform:none;
+	font-size:26px;
+	font-weight:300;
+	display:block;
+}
+
+#info .wrap ul{
+	float:right;
+	display:block;
+	text-align:right;
+	line-height:40px;
+	font-size:20px;
+	font-weight:300;
+	text-decoration:none;
+}
+
+#info .wrap ul span{
+	opacity:0.5;
+}
+
+#info a{
+	text-decoration:none;
+}
+
+
+#main .wrap{
+	position:relative;
+	padding-bottom:50px;
+}
+
+
+#main .banner_top{
+	margin:50px 0 0 0;
+	background: url(../images/assist.png) right -35px no-repeat #f4f4f4;
+	padding:40px;
+}
+
+#main .banner_top h2{
+	padding:0;
+	margin:0 0 30px 0;
+	border:none;
+	line-height:40px;
+}
+
+
+#main ol{
+	margin-left:20px;
+}
+
+#main ul li,#main ol li{
+	margin:20px 0;
+}
+
+#main ul.folder_list li:before {
+	font-family: FontAwesome;
+	font-size:25px;
+  	content: "\f07b";
+	padding: 0 10px 0 0;
+	color:#f2d46a;
+}
+
+#main ul.folder_list li.open_folder:before {
+	font-family: FontAwesome;
+	font-size:25px;
+  	content: "\f07c";
+	padding: 0 10px 0 0;
+	color:#e8ca62;
+}
+
+#main ul.folder_list li.file:before {
+	font-family: FontAwesome;
+	font-size:25px;
+  	content: "\f15b";
+	padding: 0 10px 0 0;
+	color:#ff7800;
+}
+
+
+#main ul.css_list li:before {
+	font-family: FontAwesome;
+	font-size:25px;
+  	content: "\f15b";
+	padding: 0 10px 0 0;
+	color:#72bd21;
+}
+
+
+#main ul.scripts_list li:before {
+	font-family: FontAwesome;
+	font-size:25px;
+  	content: "\f15b";
+	padding: 0 10px 0 0;
+	color:#4db1da;
+}
+
+#main ul.psd_list li:before {
+	font-family: FontAwesome;
+	font-size:25px;
+  	content: "\f15b";
+	padding: 0 10px 0 0;
+	color:#1a51a8;
+}
+
+#main ul ul{ 
+	padding-left:40px;
+	border-left:1px solid #eee;
+	}
+
+#main .note{
+	background:#eee;
+	padding:10px 15px;
+	display: inline-block;
+	position:relative;
+	border-left:55px solid #888;
+}
+
+#main .note:before{
+	font-family: FontAwesome;
+	font-size:25px;
+  	content: "\f071";
+	color:#fff;
+	width:40px;
+	position:absolute;
+	left:-40px;
+}
+
+
+#main span.star{
+	font-weight:bold;
+}
+
+#main span.star:before {
+	font-family: FontAwesome;
+	font-size:25px;
+  	content: "\f005";
+	padding: 0 5px 0 0;
+	color:#ffc000;
+}
+
+ul.color_line{
+	border-left:0px !important;
+	padding-left:30px !important
+}
+
+ul.color_line li{
+	display:inline-block;
+	padding:10px 20px;
+}
+
+ul.color_line li:before{
+	display:none;
+}
+
+.resp-img{
+	max-width:100%;
+	height:auto;
+}
+
+.icon{ margin:0 0 0 10px;}

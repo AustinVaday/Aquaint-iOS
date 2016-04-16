@@ -1,0 +1,470 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Ray - App Landing Page v1.4</title>
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Mobile Specific Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link href="assets/css/style.css" rel="stylesheet" >
+<link href="assets/css/font-awesome.css" rel="stylesheet" >
+<link href="assets/css/shCoreDefault.css" rel="stylesheet"/>
+<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="assets/scripts/common.js"></script>
+<script type="text/javascript" src="assets/scripts/shCore.js"></script>
+<script type="text/javascript" src="assets/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="assets/scripts/shBrushXml.js"></script>
+<script type="text/javascript" src="assets/scripts/shBrushJScript.js"></script>
+<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+
+<body>
+<header>
+	<div class="wrap"> <a href="http://themeforest.net/user/multifour" target="_blank" class="logo"></a>
+		<ul id="top-menu">
+			<li><a href="#installing">Installing</a></li>
+			<li><a href="#struct">Code Structure</a></li>
+			<li><a href="#scripts">Scripts</a></li>
+			<li><a href="#customization">Сustomization</a></li>
+			<li><a href="#psdfiles">PSD</a></li>
+			<li><a href="#credits">Credits</a></li>
+		</ul>
+	</div>
+</header>
+<div id="info">
+	<div class="wrap">
+		<H1>Ray - App Landing Page<br>
+			<span>Documentation v1.4</span></H1>
+		<ul>
+			<li><span>Created by MultiFour:</span> 03.09.2014</li>
+			<li><span>Email:</span> <a href="mailto:support@multifour.com" target="_blank">support@multifour.com</a></li>
+		</ul>
+	</div>
+</div>
+<div id="main">
+	<div class="wrap">
+		<div class="banner_top">
+			<h2>Thank you for purchasing our theme.</h2>
+			If you have any questions that are beyond the scope of this help file,<br>
+			please feel free to email via our user page contact form <a href="http://themeforest.net/user/multifour" target="_blank">here</a>. </div>
+		<h2 id="installing">Installing</h2>
+		<h3>Files structure</h3>
+		<ul class="folder_list">
+			<li><b>Documentation</b> – folder contains the documentation to this work.</li>
+			<li><b>PSD</b> – folder contains graphic source files of the work. They can be needed in case of redesign by other designer.</li>
+			<li class="open_folder"><b>HTML</b> – contains the main files of the work: .html, .css, .js etc. In the sequel we will copy exactly these files on your server.
+				<ul>
+					<li><b>image-intro</b> – version with image against the background of Intro section.</li>
+					<li><b>image-intro-minimal</b> – version with image against the background of Intro section (does not contain application screenshot).</li>
+					<li><b>slider-intro</b> – version with slider against the background of Intro section.</li>
+					<li><b>slider-intro-minimal</b> – version with slider against the background of Intro section (does not contain application screenshot)</li>
+					<li><b>typed-intro</b> – version with image against the background of Intro section and typed slogan.</li>
+					<li><b>typed-intro-minimal</b> – version with image against the background of Intro section and typed slogan (does not contain application screenshot).</li>
+					<li><b>video-intro</b> – version with video background.</li>
+					<li><b>video-intro-minimal</b> – version with video background (does not contain application screenshot).
+						<ul>
+							<li><b>images</b> – folder contains images for theme.</li>
+							<li><b>fonts</b> – folder contains fonts of the work.</li>
+							<li><b>css</b> – here you will find theme style sheets.</li>
+							<li><b>scripts</b> – folder contains scripts which are necessary for correct theme operation (.js, .php, etc.).</li>
+							<li class="file"><b>index.html</b> – it is the main theme file. It combines all the ingredients and can be open with any browser on your computer.</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h3>Uploading</h3>
+		<p>After you chose an example suitable you, it is necessary upload all contents of the folder (index.html and the css, scripts, fonts, images folders) on your server. For this purpose you can use online FTP the manager of yours a hosting or use the desktop version (FileZilla for example).</p>
+		<ol>
+			<li>Enter on the server by means of the manager and choose the necessary folder for downloading.</li>
+			<li>Upload the chosen files (index.html and the css, js, fonts and images folders).</li>
+			<li>Once the files are done uploading, you can try access your website via browser.</li>
+		</ol>
+		<p class="note">Performance of this operation means that you have the server space and the domain.</p>
+		<h2 id="struct">Code Structure</h2>
+		<h3>HTML Structure</h3>
+		<p>Page is based on latest version of the Bootstrap framework (3.X) and is fully compatible with it. HTML marking of the page consists from 2 the main parts, &lt;Head&gt; and &lt;Body&gt;.</p>
+		<br>
+		<p>In &lt;Head&gt; we connect all external files which we are necessary for our work of this page (css and by javascript), an also we determine specifications.</p>
+		<p>To &lt;Body&gt; be in the main content of the page (our blocks with functionality). Each block is marked by special comments at the beginning and at the end (this applies to both html and css files). The general structure &lt;Body&gt;:</p>
+		<pre class="brush: html; toolbar: false; auto-links: false;">
+                        <!-- NAVIGATION BEGIN -->   
+                        block code here
+                        <!-- NAVIGATION END -->
+                        <!-- INTRO BEGIN -->
+                        block code here
+                        <!-- INTRO END --> 
+                        
+                        ...
+                        
+                        <!-- DOWNLOAD BEGIN -->
+                        block code here   
+                        <!-- DOWNLOAD END --> 
+                        <!-- FOOTER BEGIN -->
+                        block code here   
+                        <!-- FOOTER END --> 
+                   </pre>
+		<h3>CSS Structure</h3>
+		<p>Files contained in CSS folder (and their short description):</p>
+		<ul class="css_list">
+			<li><b>style.css</b> – the main style sheet. It responds for the appearance of your project.</li>
+			<li><b>style-dark.css</b> – the main style sheet for Dark version.</li>
+			<li><b>simple-line-icons.css</b> – style sheet of "Simple Line Icons" font.</li>
+			<li><b>icomoon-soc-icons.css</b> – style sheet of "IcoMoon" font.</li>
+			<li><b>magnific-popup.css</b> – style sheet of "Magnific Popup" script (necessary for pop-ups displaying).</li>
+			<li><b>animate.css</b> – style sheet which contains animation styles (<a href="http://daneden.github.io/animate.css/" target="_blank">here</a> is the full version).</li>
+			<li><b>bootstrap.min.css</b> – style sheet of bootstrap framework.</li>
+			<li><b>style-black.css</b> – style sheet with styles for black color scheme.</li>
+			<li><b>style-dark-black.css</b> – style sheet with styles for black color scheme (Dark version).</li>
+			<li><b>style-gold.css</b> – style sheet with styles for golden color scheme.</li>
+			<li><b>style-green.css</b> – style sheet with styles for green color scheme.</li>
+			<li><b>style-purple.css</b> – style sheet with styles for purple color scheme.</li>
+			<li><b>style-red.css</b> – style sheet with styles for red color scheme.</li>
+		</ul>
+		<br>
+		<p>File style.css contains the main styles of your project, its code is structured in the following way:</p>
+		<pre class="brush: css; toolbar: false; auto-links: false;">
+                        /*--------------------- FONT (OPEN SANS) IMPORT FROM GOOGLE FONTS ----------------------*/
+                        
+
+                        /*----------------------------------------------------------------------------------------
+														COMMON STYLES
+						-----------------------------------------------------------------------------------------*/
+                        Common styles
+						
+						
+						/*----------------------------------------------------------------------------------------
+															PRELOADER
+						----------------------------------------------------------------------------------------*/
+						Preloader styles
+
+                       	...
+                        
+                        /*----------------------------------------------------------------------------------------
+																FOOTER
+						----------------------------------------------------------------------------------------*/
+						Styles for Retina displays
+						
+                   </pre>
+		<p>If you want to change a certain section – just find it with the narrative and then change to the style you need.</p>
+		
+		
+		<h2 id="scripts">Scripts</h2>
+		<p>Files contained in SCRIPTS folder (and their short description):</p>
+		<ul class="scripts_list">
+			<li><b>сustom.js</b> – file contains all the specific settings of scripts attached, and also small self-made scripts.</li>
+			<li><b>bootstrap.min.js</b> – contains the functions of bootstrap framework.</li>
+			<li><b>jquery.validate.min.js</b> – validation script.</li>
+			<li><b>jquery-1.8.2.min.js</b> – JavaScript library. Very important file, don't delete.</li>
+			<li><b>owl.carousel.min.js</b> – plugin that create beautiful responsive carousel slider.</li>
+			<li><b>wow.min.js</b> – plugin that help reveal animations when you scroll.</li>
+			<li><b>html5shiv.js</b> –  provides basic HTML5 styling for Internet Explorer 6-9, Safari 4.x (and iPhone 3.x), and Firefox 3.x.</li>
+			<li><b>respond.min.js</b> – a fast & lightweight polyfill for min/max-width CSS3 Media Queries (for IE 6-8, and more).</li>
+			<li><b>placeholders.jquery.min.js</b> - a script for browsers not supporting placeholder property.</li>
+			<li><b>jquery.stellar.min.js</b> - a jQuery plugin that provides parallax scrolling effects to any scrolling element.</li>
+			<li><b>jquery.superslides.min.js</b> - a fullscreen slider for jQuery.</li>
+			<li><b>smoothscroll.js</b> - SmoothScroll for websites.</li>
+			<li><b>bigvideo.js</b> - This plugin makes it easy to add fit-to-fill background video to websites</li>
+			<li><b>retina.min.js</b> – Open source script that makes it easy to serve high-resolution images to devices with retina displays.</li>
+			<li><b>jquery.magnific-popup.min.js</b> – Fast, light and responsive lightbox plugin, for jQuery and Zepto.js.</li>
+			<li><b>subscribe.php</b> – script for subscription through Mailchimp.</li>
+			<li><b>contact.php</b> – script for data sending from contact form.</li>
+		</ul>
+		
+		
+		<h2 id="customization">Customization.</h2>
+		<h3>Logotype.</h3>
+		<p>In order to add your logo, you need to open index.html file code, find the code you see below and change default data to yours.</p>
+		<p>Or just change the logo image in a folder with pictures (the picture size must be identical, if it is not – change the size in index.html page code).</p>
+		<pre class="brush: html; toolbar: false; auto-links: false; highlight: [2]">&lt;div class=&quot;col-md-8 col-sm-12&quot;&gt;
+	&lt;img class=&quot;logo&quot; src=&quot;./images/logo.png&quot; alt=&quot;Your Logo&quot; height=&quot;70&quot; width=&quot;144&quot; /&gt;
+	&lt;h1 class=&quot;slogan&quot;&gt;The Best Start Up For &lt;br&gt; Your Elegant App&lt;/h1&gt;</pre>
+                        </pre>
+		<p class="note">Do not forget to change images for Retina displays, they have @2x prefix (Example: logo@2x.png).</p>
+		
+		<h3>Preloader.</h3>
+		<p>If you want to change the type of preloader, you need to open html file, find a preloader code (look below) and change class, choose between "battery" and "radius".</p>
+		
+		<pre class="brush: html; toolbar: false; highlight: [3]">&lt;!-- PRELOADER --&gt;
+&lt;div id=&quot;preloader&quot;&gt;
+	&lt;div class=&quot;radius inner&quot;&gt;
+		&lt;div class=&quot;load-line&quot;&gt;&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</pre>
+
+
+<pre class="brush: html; toolbar: false; highlight: [3]">&lt;!-- PRELOADER --&gt;
+&lt;div id=&quot;preloader&quot;&gt;
+	&lt;div class=&quot;battery inner&quot;&gt;
+		&lt;div class=&quot;load-line&quot;&gt;&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;</pre>
+
+		
+		<h3>Mockups.</h3>
+		<p>To add the image of your product (application or site) easy, we prepared new mockups.<br>
+All you need is to open PSD file with a mockup needed and add there a screenshot of your product. Also you can choose different types of device in PSD file (if this option is provided), for instance, phone with different OS. All mock-ups are kept in PSD folder (in archive root).</p>
+		
+		<h3>Light &amp; Dark versions.</h3>
+		<p>To change color gamma from Light to Dark, replace "style.css" on "style-dark.css".</p>
+		
+		<h3>Rays.</h3>
+		<p>In order to put ray in Intro section, open index.html page code, find &lt;header&gt; section and put the ray code at the beginning as it is shown below.</p>
+		<pre class="brush: html; toolbar: false; highlight: [3]">&lt;!-- INTRO BEGIN --&gt;
+	&lt;header id=&quot;full-intro&quot; class=&quot;intro-block bg-color-main&quot; &gt;
+		&lt;div class=&quot;ray ray-vertical y-100 x-50 ray-rotate-135 laser-blink hidden-sm hidden-xs&quot; &gt;&lt;/div&gt;
+		&lt;div class=&quot;container&quot;&gt;
+			&lt;div class=&quot;row&quot;&gt;</pre>
+			<br>
+
+		<h4>Ray constructor:</h4>
+		<ul>
+			<li><b>ray-vertical / ray-horizontal</b> - orientation( horizontal or vertical);</li>
+			<li><b>y-0 / y-25 / y-50 / y-75 / y-100</b> - axis Y coordinates;</li>
+			<li><b>x-0 / x-25 / x-50 / x-75 / x-100</b> - axis X coordinates;</li>
+			<li><b>ray-rotate45 / ray-rotate-45 / ray-rotate135 / ray-rotate-135</b> - rotation;</li>
+			<li><b>laser-blink</b> - ray animation;</li>
+			<li><b>hidden-sm hidden-xs</b> - hide on small screen resolution;</li>
+		</ul>
+		<br>
+
+		<img class="resp-img" src="assets/images/chart.png" alt="ray constructor example" />
+		<br><br>
+		<a href="http://multifour.com/projects/ray/ray-col" target="_blank"><strong>Сomplete collection of rays here<i class="icon fa fa-arrow-right"></i></strong></a>
+		
+		<h3>Intro Slider: image exchange.</h3>
+		<p>Just change the images in Images folder to yours.</p>
+		<p>Or find slider in Index.html file code (see below) and change paths to file to yours (src).</p>
+		<pre class="brush: html; toolbar: false; highlight: [2]">&lt;div id=&quot;slides&quot; data-stellar-ratio=&quot;0.4&quot;&gt;
+	&lt;div class=&quot;slides-container&quot; &gt; &lt;img src=&quot;images/1.jpg&quot; alt=&quot;&quot;&gt; &lt;img src=&quot;images/2.jpg&quot; alt=&quot;&quot;&gt; &lt;img src=&quot;images/3.jpg&quot; alt=&quot;&quot;&gt; &lt;/div&gt;
+&lt;/div&gt;</pre>
+
+		<h3>Intro Slider: settings.</h3>
+		<p>If you want to change the settings of Intro Slider, you need to open custom.js file, find a slider code (look below) and change the settings you need.</p>
+		<pre class="brush: javascript; toolbar: false">//------------------------------------------------------------------------
+//						INTRO SUPERSLIDER SETTINGS
+//------------------------------------------------------------------------
+	$(&quot;#slides&quot;).superslides({
+		play: 8000, //Milliseconds before progressing to next slide automatically. Use a falsey value to disable.
+		animation: &quot;fade&quot;, //slide or fade. This matches animations defined by fx engine.
+		pagination: false, //Generate pagination. Add an id to your slide to use custom pagination on that slide.
+		inherit_height_from:&quot;#intro&quot; // Accepts window or element selector. Use to constrain slider to an element's height.
+		
+		// more options: https://github.com/nicinabox/superslides
+	});</pre>
+
+		<h3>Video background: settings.</h3>
+		<p>If you want to change the settings of video background, you need to open custom.js file, find a background code (look below) and change the settings you need.</p>
+		<pre class="brush: javascript; toolbar: false">//------------------------------------------------------------------------
+//						VIDEO BACKGROUND SETTINGS
+//------------------------------------------------------------------------
+	$(function() {
+    	var BV = new $.BigVideo({container: $('.block-video-bg'), useFlashForFirefox:false});
+    	BV.init();
+		if(navigator.userAgent.match(/iPhone|iPad|iPod|Android|BlackBerry|IEMobile/i)) {
+                BV.show('images/video_gag.jpg');
+        } else{
+			if (!!window.opera || navigator.userAgent.indexOf(' OPR/') &gt;= 0) {
+				BV.show('video_bg.ogv', {doLoop:true, ambient:true});
+			} else{
+				BV.show('video_bg.mp4', {doLoop:true, ambient:true, altSource:'video_bg.ogv'});
+			}
+			BV.getPlayer().on('loadedmetadata', function(){
+   	 			$('#big-video-wrap video').fadeIn('slow');
+			});
+		}
+	});</pre>
+	
+	also you can  play a series of ambient background videos
+	<pre class="brush: javascript; toolbar: false; highlight: [4]">$(function() {
+    var BV = new $.BigVideo();
+    BV.init();
+    BV.show(['vid1.mp4','vid2.mp4','vid3.mp4'],{ambient:true});
+});</pre>
+		
+
+		<h3>Testimonials slider and Screenshot Slider: settings.</h3>
+		<p>If you want to change the settings of sliders, you need to open custom.js file, find slider code (look below) and change the settings you need.</p>
+		<pre class="brush: javascript; toolbar: false">//------------------------------------------------------------------------
+//						SCREENSHOTS SLIDER SETTINGS
+//------------------------------------------------------------------------
+    var owl = $(&quot;#screenshots-slider&quot;);
+    owl.owlCarousel({
+        items : 5, 
+        itemsDesktop : [1400,4], 
+        itemsDesktopSmall : [1200,3], 
+        itemsTablet: [900,2], 
+        itemsMobile : [600,1],
+		stopOnHover:true
+    });</pre>
+
+<pre class="brush: javascript">//------------------------------------------------------------------------
+//						TESTIMONIALS SLIDER SETTINGS
+//------------------------------------------------------------------------
+    var owl = $(&quot;#testimonials-slider&quot;);
+    owl.owlCarousel({
+        singleItem:true,
+		autoPlay:5000,
+		stopOnHover:true
+    });</pre>
+	
+		<h3>Contact form: settings.</h3>
+		<p><b>Insert of your e-mail address.</b> <br>
+			Open the script of contact form data sending (scripts/contact.php) and type your e-mail address into "$to" field (look below).</p>
+		<pre class="brush: html; toolbar: false; highlight: [4]">&lt;?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if(!empty($_POST['contactname']) &amp;&amp; !empty($_POST['contactemail']) &amp;&amp; !empty($_POST['contactmessage'])) {
+	$to = 'your@email.com'; // Your e-mail address here.
+	$body = &quot;\nName: {$_POST['contactname']}\nEmail: {$_POST['contactemail']}\n\n\n{$_POST['contactmessage']}\n\n&quot;;
+	mail($to, &quot;Message from yoursite.com&quot;, $body, &quot;From: {$_POST['contactemail']}&quot;); // E-Mail subject here.
+    }
+}
+?&gt;</pre>
+		<br>
+		<p><b>Extension of contact form with additional field.</b> <br>
+			1. Add a new field code into HTML page code (look below).</p>
+		<pre class="brush: html; toolbar: false; highlight: [5,6,7]">&lt;form action=&quot;scripts/contact.php&quot; role=&quot;form&quot;  id=&quot;contact_form&quot;&gt;
+	&lt;div class=&quot;form-group&quot;&gt;
+		&lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;contact_name&quot; placeholder=&quot;Full name&quot; name=&quot;name&quot;&gt;
+	&lt;/div&gt;
+	&lt;div class=&quot;form-group&quot;&gt;
+		&lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;contact_new_field&quot; placeholder=&quot;Your new field&quot; name=&quot;new_field&quot;&gt;
+	&lt;/div&gt;
+	&lt;div class=&quot;form-group&quot;&gt;
+		&lt;input type=&quot;email&quot; class=&quot;form-control&quot; id=&quot;contact_email&quot; placeholder=&quot;Email Address&quot; name=&quot;email&quot;&gt;
+	&lt;/div&gt;</pre>
+		<br>
+		<p>2. Update a validation script of contact form in custom.js file (look below), add a validation rule and error message.</p>
+		<pre class="brush: javascript; toolbar: false; highlight: [10,22]">//------------------------------------------------------------------------------------
+//						CONTACT FORM VALIDATION'S SETTINGS
+//------------------------------------------------------------------------------------		  
+    $('#contact_form').validate({
+        onfocusout: false,
+        onkeyup: false,
+        rules: {
+            name: &quot;required&quot;,
+            message: &quot;required&quot;,
+			new_field:&quot;required&quot;,
+            email: {
+                required: true,
+                email: true
+            }
+        },
+        errorPlacement: function(error, element) {
+            error.insertAfter(element);
+        },
+        messages: {
+            name: &quot;What's your name?&quot;,
+            message: &quot;Type your message&quot;,
+			new_field:&quot;New field error message&quot;,
+            email: {
+                required: &quot;What's your email?&quot;,
+                email: &quot;Please, enter a valid email&quot;
+            }
+        },</pre>
+		<br>
+		<p>3. Update a script of contact data transmission in custom.js file (look below), add data transmission of a new field.</p>
+		<pre class="brush: javascript; toolbar: false; highlight: [12]">    $('#contact_form').submit(function() {
+        // submit the form
+        if($(this).valid()){
+            $('#contact_submit').button('loading'); 
+            var action = $(this).attr('action');
+            $.ajax({
+                url: action,
+                type: 'POST',
+                data: {
+                    contactname: $('#contact_name').val(),
+                    contactemail: $('#contact_email').val(),
+					contactnewfield: $('#contact_new_field').val(), //ID from html page
+                    contactmessage: $('#contact_message').val()
+                },</pre>
+		<br>
+		<p>4. Update a script of contact data transmission onto contact.php server (look below), add a variable of a new field.</p>
+		<pre class="brush: css; toolbar: false; highlight: [3,5]">&lt;?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if(!empty($_POST['contactname']) &amp;&amp; !empty($_POST['contactemail']) &amp;&amp; !empty($_POST['contactmessage']) &amp;&amp; !empty($_POST['contactnewfield'])) {
+	$to = 'your@email.com'; // Your e-mail address here.
+	$body = &quot;\nName: {$_POST['contactname']}\nEmail: {$_POST['contactemail']}\n\n\n{$_POST['contactmessage']}\n\n{$_POST['contactnewfield']}\n\n&quot;;
+	mail($to, &quot;Message from yoursite.com&quot;, $body, &quot;From: {$_POST['contactemail']}&quot;); // E-Mail subject here.
+    }
+}
+?&gt;</pre>
+		<h3>Subscription: settings.</h3>
+		<p>In order to customize a subscription through Mailchimp, you need to create a new account and get your own apiKey and listID. Then you need to add these data ina subscription script, subscribe.php file (look below). Do not forget to change Datacenter to yours. You can learn your DataCenter from apiKey (for example: us-3).</p>
+		<pre class="brush: html; toolbar: false; highlight: [2,3]">&lt;?php
+$apiKey = ''; // your mailchimp API KEY here
+$listId = ''; // your mailchimp LIST ID here
+$double_optin=false;
+$send_welcome=false;
+$email_type = 'html';
+$email = $_POST['newsletter_email'];</pre>
+
+
+		<h3>Font Icons exchange. "Simple Line Font".</h3>
+		<p>All  160 simple line icons are now embedded in a webfont for more convenient use on the web or in a native application. Big thanks to Jamal Jama for creating this awesome webfont.</p>
+		<p>To change an icon to one you need - just change a class of this icon.</p>
+		<p>For example: you can see below an element with icon-screen-desktop. In order to change this icon – choose the icon you need from <a href="http://graphicburger.com/simple-line-icons-webfont/" target="_blank">this list</a> and put its class instead of "icon-screen-desktop".</p>
+		<pre class="brush: html; toolbar: false; highlight: [4]">&lt;section id=&quot;services&quot;&gt;
+	&lt;div class=&quot;container&quot;&gt;
+		&lt;div class=&quot;row&quot;&gt;
+			&lt;div class=&quot;col-md-4 service&quot;&gt; &lt;i class=&quot;icon-screen-desktop&quot;&gt;&lt;/i&gt;
+				&lt;h4&gt;Responsive design&lt;/h4&gt;
+				&lt;p&gt;Etiam dictum auctor interdum. Aenean egestas vehicula purus in euismod. Quisque gravida commodo velit, eget porta leo sagittis vel. &lt;/p&gt;
+			&lt;/div&gt;</pre>
+            
+            
+        <h3>Update to v1.4 (Add collapse menu).</h3>
+        <p>Open scripts/custom.js and paste the code below:</p>
+        <pre class="brush: javascript; toolbar: false">//------------------------------------------------------------------------
+//						NAVBAR HIDE ON CLICK (COLLAPSED) SCRIPT
+//------------------------------------------------------------------------ 		
+    $('.nav a').on('click', function(){ 
+        if($('.navbar-toggle').css('display') !='none'){
+            $(&quot;.navbar-toggle&quot;).click()
+        }
+    });</pre>
+		
+		
+		<h2 id="psdfiles">PSD files</h2>
+		<p>Files contained in PSD folder (and their short description):</p>
+		<ul class="psd_list">
+			<li><b>ray_landing.psd</b> - graphic source of a landing page.</li>
+			<li><b>ray_blog.psd</b> - graphic source of a blog page.</li>
+			<li><b>ray_single.psd</b> - graphic source of a single page.</li>
+			<li><b>intro_screen.psd</b> -  application mockup of Intro section.</li>
+			<li><b>features_screen.psd</b> - application mockup of Features section.</li>
+			<li><b>innovation_screen.psd</b> - application mockup of Innovation section.</li>
+			<li><b>screen_couple_above.psd</b> - application mockup of Benefits, above layer.</li>
+			<li><b>screen_couple_beyond.psd</b> - application mockup of Benefits, beyond layer.</li>
+		</ul>
+		<h2 id="credits">Credits</h2>
+		<p>The following materials were used in order to create this work (we’d like to say that we are much obliged to their developers):</p>
+		<br>
+		<ul>
+			<li><strong>jQuery </strong><a href="http://jquery.com/" target="_blank">http://jquery.com/</a></li>
+			<li><strong>Bootstrap</strong> <a href="http://getbootstrap.com/" target="_blank">http://getbootstrap.com</a></li>
+			<li><strong>Simple Line Icons Webfont</strong> <a href="http://graphicburger.com/simple-line-icons-webfont/" target="_blank">http://graphicburger.com/simple-line-icons-webfont</a></li>
+			<li><strong>IcoMoon</strong> <a href="https://icomoon.io/" target="_blank">https://icomoon.io/</a></li>
+			<li><strong>jQuery Validation</strong> <a href="http://jqueryvalidation.org/" target="_blank">http://jqueryvalidation.org</a></li>
+			<li><strong>Owl Carousel</strong> <a href="http://owlgraphic.com/owlcarousel/" target="_blank">http://owlgraphic.com/owlcarousel</a></li>
+			<li><strong>WOW</strong> <a href="http://mynameismatthieu.com/WOW/index.html" target="_blank">http://mynameismatthieu.com/WOW/index.html</a></li>
+			<li><strong>SmoothScroll.js</strong> <a href="https://gist.github.com/galambalazs/6477177" target="_blank">https://gist.github.com/galambalazs/6477177</a></li>
+			<li><strong>jQuery-smooth-scroll</strong> <a href="https://github.com/kswedberg/jquery-smooth-scroll" target="_blank">https://github.com/kswedberg/jquery-smooth-scroll</a></li>
+			<li><strong>Animate.css</strong> <a href="http://daneden.github.io/animate.css/" target="_blank">http://daneden.github.io/animate.css/</a></li>
+			<li><strong>Superslides</strong> <a href="http://nicinabox.com/superslides/" target="_blank">http://nicinabox.com/superslides/</a></li>
+			<li><strong>BigVideo.js</strong> <a href="https://github.com/dfcb/BigVideo.js" target="_blank">https://github.com/dfcb/BigVideo.js</a></li>
+			<li><strong>Placeholders.js</strong> <a href="http://jamesallardice.github.io/Placeholders.js/" target="_blank">http://jamesallardice.github.io/Placeholders.js/</a></li>
+			<li><strong>retina.js</strong> <a href="http://imulus.github.io/retinajs/" target="_blank">http://imulus.github.io/retinajs/</a></li>
+		</ul>
+		<div class="banner_top">
+			<h2>Once again, thank you so much<br>
+				for purchasing this template.</h2>
+			If you liked it, please <a href="http://themeforest.net/downloads" target="_blank">rate our work</a> <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>.<br>
+			<br>
+			MultiFour Team. </div>
+	</div>
+</div>
+</body>
+</html>
