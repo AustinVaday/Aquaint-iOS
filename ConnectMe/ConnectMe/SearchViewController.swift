@@ -167,6 +167,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         cell.cellUserName.text = userName
         cell.cellImage.image = userImage
         
+        
+        // Ensure that internal cellImage is circular
+        cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
+        
         return cell
         
     }
