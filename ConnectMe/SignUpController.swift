@@ -341,19 +341,29 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                                     let currentTime = getTimestampAsInt()
                                     
                                     var base64String : String!
-                                    // If user did not add a photo
-                                    if ((self.userPhoto.currentImage == UIImage(named: "Add Photo Color")))
-                                    {
-                                        base64String = "none"
-                                    }
-                                    else
+                                    // If user did add a photo
+                                    if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
                                     {
                                         print ("B64 YES")
-
-                                        base64String = convertImageToBase64(self.userPhoto.currentImage!)
+                                        let userPhoto = self.userPhoto.currentImage!
+                                        
+                                        let targetSize = CGSize(width: 120, height: 120)
+                                        
+                                        // Only resize photo if necessary
+//                                        if ()
+//                                        {
+//                                            
+//                                            
+//                                        }
+                                        
+                                        let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
+                                        
+                                        
+                                        // Convert photo to base64
+                                        base64String = convertImageToBase64(newImage)
                                     }
                                     
-                                    let userInfo   = ["fullName" : "", "userImage" : base64String, "dateCreated": currentTime]
+                                    let userInfo   = ["fullName" : "", "dateCreated": currentTime]
                                     let linkedSocialMediaAccounts = ["twitter": "austinvaday", "facebook": "austinvaday", "instagram": "avtheman"]
                                     let connections = ["aquaint" : currentTime]
                                     
@@ -364,6 +374,12 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                                     
                                     // Store necessary information in JSON tree
                                     self.firebaseRootRef.childByAppendingPath("Users/" + lowerCaseUserNameString).setValue(userInfo)
+                                    
+                                    // If user did add a photo, store it on database
+                                    if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
+                                    {
+                                        self.firebaseRootRef.childByAppendingPath("UserImages/" + lowerCaseUserNameString + "/profileImage").setValue(base64String)
+                                    }
                                     
                                     self.firebaseRootRef.childByAppendingPath("LinkedSocialMediaAccounts/" + lowerCaseUserNameString).setValue(linkedSocialMediaAccounts)
                                     self.firebaseRootRef.childByAppendingPath("Connections/" + lowerCaseUserNameString).setValue(connections)

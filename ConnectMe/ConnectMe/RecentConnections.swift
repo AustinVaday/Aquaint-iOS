@@ -32,6 +32,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var firebaseUsersRef: Firebase!
     var firebaseLinkedAccountsRef: Firebase!
     var firebaseConnectionsRef: Firebase!
+    var firebaseUserImagesRef: Firebase!
     var refreshControl : UIRefreshControl!
     var connectionList : Array<Connection>!
     var defaultImage : UIImage!
@@ -44,6 +45,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Firebase root, our data is stored here
         firebaseRootRef = Firebase(url: firebaseRootRefString)
         firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
+        firebaseUserImagesRef = Firebase(url: firebaseRootRefString + "UserImages/")
         firebaseLinkedAccountsRef = Firebase(url: firebaseRootRefString + "LinkedSocialMediaAccounts/")
         firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/" + currentUserName)
         
@@ -67,28 +69,36 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             print("conn username is:", connectionUserName)
             print("##1")
             
-            // Store the user's Image
+            // Store the user's info (except image)
             self.firebaseUsersRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
-                
-                // Get base 64 string image
-                let userImageBase64String = snapshot.childSnapshotForPath("/userImage").value as! String
-                
-                // Convert base 64 image to UIImage
-                if (userImageBase64String == "none")
-                {
-                    connection.userImage = self.defaultImage
-                }
-                else
-                {
-                    connection.userImage = convertBase64ToImage(userImageBase64String)
-                }
-
+            
                 connection.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
-               
-                print("##2")
                 
 //                self.recentConnTableView.reloadData()
 
+            })
+            
+            // Store the user's image
+            self.firebaseUserImagesRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+                
+                // Get base 64 string image
+                
+                // If user has an image, display it in table. Else, display default image
+                if (snapshot.hasChild(connectionUserName))
+                {
+                    let userImageBase64String = snapshot.childSnapshotForPath("/profileImage").value as! String
+                    connection.userImage = convertBase64ToImage(userImageBase64String)
+
+                    
+                }
+                else
+                {
+                    connection.userImage = self.defaultImage
+
+                }
+
+                self.recentConnTableView.reloadData()
+                
             })
             
             // Store the user's social media accounts

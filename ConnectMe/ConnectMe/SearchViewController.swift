@@ -38,6 +38,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 //        firebaseRootRef = Firebase(url: firebaseRootRefString)
 
         let firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
+        let firebaseUserImagesRef = Firebase(url: firebaseRootRefString + "UserImages/")
         let firebaseSentRequestsRef = Firebase(url: firebaseRootRefString + "SentRequests/" + userName)
         let firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/" + userName)
         
@@ -77,29 +78,44 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             user.userName = snapshot.key
             
             
-            // Retrieve user's other info
+            // Retrieve user's info (except image)
             firebaseUsersRef.childByAppendingPath(user.userName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
                 
                 user.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
-                let userImageBase64String = snapshot.childSnapshotForPath("/userImage").value as! String
                 
-                // Convert base 64 image to UIImage
-                if (userImageBase64String == "none")
+            })
+            
+            
+            // Store the user's image
+            firebaseUserImagesRef.childByAppendingPath(user.userName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+                
+                // Get base 64 string image
+                
+                // If user has an image, display it in table. Else, display default image
+                if (snapshot.exists())
                 {
-                    user.userImage = self.defaultImage
+                    
+                    print("PERFORMING USERIMAGEREF ACCESS FOR", user.userName)
+                    
+                    let userImageBase64String = snapshot.childSnapshotForPath("/profileImage").value as! String
+                    user.userImage = convertBase64ToImage(userImageBase64String)
                 }
                 else
                 {
-                    user.userImage = convertBase64ToImage(userImageBase64String)
+                    
+                    print("DEFAULT DEFAULT IMAGE BEING DISPLAYED")
+                    user.userImage = self.defaultImage
+                    
                 }
-                
-                self.allUsers.append(user)
                 
                 self.searchTableView.reloadData()
                 
-                print("RELOADED")
-                
             })
+            
+            
+            self.allUsers.append(user)
+
+            
             
         })
 

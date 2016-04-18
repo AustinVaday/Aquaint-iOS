@@ -35,6 +35,7 @@
 		FF7878751C3026C200354936 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF7878741C3026C200354936 /* Parse.framework */; };
 		FF7878771C34EC4A00354936 /* RecentConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7878761C34EC4A00354936 /* RecentConnections.swift */; };
 		FF7878791C352D0400354936 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7878781C352D0400354936 /* TableViewCell.swift */; };
+		FF83A4DF1CC59A3900AFB26B /* RBResizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83A4DE1CC59A3800AFB26B /* RBResizer.swift */; };
 		FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C341C01AC63001B2634 /* AppDelegate.swift */; };
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
@@ -98,6 +99,7 @@
 		FF7878741C3026C200354936 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = "../../../Downloads/parse-library-1.11.0/Parse.framework"; sourceTree = "<group>"; };
 		FF7878761C34EC4A00354936 /* RecentConnections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentConnections.swift; sourceTree = "<group>"; };
 		FF7878781C352D0400354936 /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		FF83A4DE1CC59A3800AFB26B /* RBResizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RBResizer.swift; sourceTree = "<group>"; };
 		FF897C311C01AC63001B2634 /* Aquaint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aquaint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C341C01AC63001B2634 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FF897C361C01AC63001B2634 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				FF897C341C01AC63001B2634 /* AppDelegate.swift */,
 				FF7878411C26A0CC00354936 /* CameraController.swift */,
 				FF897C361C01AC63001B2634 /* ViewController.swift */,
+				FF83A4DE1CC59A3800AFB26B /* RBResizer.swift */,
 				FF897C3B1C01AC63001B2634 /* Assets.xcassets */,
 				FF65D31C1C1E0BFC0015C99F /* Main.storyboard */,
 				FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */,
@@ -485,6 +488,7 @@
 				FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */,
 				FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */,
 				FF7878611C3010E700354936 /* LogInController.swift in Sources */,
+				FF83A4DF1CC59A3900AFB26B /* RBResizer.swift in Sources */,
 				FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */,
 				FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */,
 				FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */,
