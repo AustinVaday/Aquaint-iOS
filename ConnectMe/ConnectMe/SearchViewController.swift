@@ -108,6 +108,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
             
             self.allUsers.append(user)
+            self.searchTableView.reloadData()
 
             
             
@@ -133,26 +134,23 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         // Do not let user add him/herself
         if (userName == self.userName)
         {
-            cell.deactivateAllButtons()
+            cell.hideAllButtons()
         }
         else
         {
             // If already sent a request, display pending symbol
             if ((allUsersSentARequest[userName]) != nil && (allUsersConnections[userName]) == nil)
             {
-                cell.deactivateAllButtons()
                 cell.activatePendingButton()
             }
             // If already friends, display delete button
             else if ((allUsersConnections[userName]) != nil)
             {
-                cell.deactivateAllButtons()
                 cell.activateDeleteButton()
             }
             // If no relationship, show add button
             else
             {
-                cell.deactivateAllButtons()
                 cell.activateAddButton()
             }
             

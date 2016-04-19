@@ -200,6 +200,7 @@
 			children = (
 				FF65D3211C1EA3D60015C99F /* SignUpController.swift */,
 				FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */,
+				FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */,
 				FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */,
 				FF897C341C01AC63001B2634 /* AppDelegate.swift */,
 				FF7878411C26A0CC00354936 /* CameraController.swift */,
@@ -222,7 +223,6 @@
 				FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */,
 				FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */,
 				FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */,
-				FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */,
 			);
 			name = Aquaint;
 			path = ConnectMe;

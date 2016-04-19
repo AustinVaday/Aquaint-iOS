@@ -20,54 +20,51 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var cellUserName: UILabel!
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
 
-
-    func deactivateAllButtons()
+    func hideAllButtons()
     {
         // Deactivate the pending button
         cellAddButton.hidden  = true
-        cellAddButton.userInteractionEnabled = false
         cellDeleteButton.hidden  = true
-        cellDeleteButton.userInteractionEnabled = false
         cellAddPendingButton.hidden = true
-        cellAddPendingButton.userInteractionEnabled = false
+    }
+    
+    func unHideAllButtons()
+    {
+        // Deactivate the pending button
+        cellAddButton.hidden  = false
+        cellDeleteButton.hidden  = false
+        cellAddPendingButton.hidden = false
     }
     
     func activateAddButton()
     {
         // Activate the pending button
-        cellAddButton.hidden  = false
-        cellAddButton.userInteractionEnabled = true
-        cellAddPendingButton.hidden  = true
-        cellAddPendingButton.userInteractionEnabled = false
-        cellDeleteButton.hidden = true
-        cellDeleteButton.userInteractionEnabled = false
+//        cellAddButton.hidden  = false
+//        cellAddButton.userInteractionEnabled = true
+//        cellAddPendingButton.hidden  = true
+//        cellAddPendingButton.userInteractionEnabled = false
+//        cellDeleteButton.hidden = true
+//        cellDeleteButton.userInteractionEnabled = false
+        
+        cellAddButton.superview?.bringSubviewToFront(cellAddButton)
+        
     }
     
     func activateDeleteButton()
     {
-        cellDeleteButton.hidden  = false
-        cellDeleteButton.userInteractionEnabled = true
-        cellAddPendingButton.hidden  = true
-        cellAddPendingButton.userInteractionEnabled = false
-        cellAddButton.hidden = true
-        cellAddButton.userInteractionEnabled = false
+        
+        cellDeleteButton.superview?.bringSubviewToFront(cellDeleteButton)
+
     }
     
     func activatePendingButton()
     {
         // Activate the pending button
-        cellAddPendingButton.hidden  = false
-        cellAddPendingButton.userInteractionEnabled = true
-        cellAddButton.hidden  = true
-        cellAddButton.userInteractionEnabled = false
-        cellDeleteButton.hidden = true
-        cellDeleteButton.userInteractionEnabled = false
+        cellAddPendingButton.superview?.bringSubviewToFront(cellAddPendingButton)
+
     }
 
     @IBAction func onAddConnectionButtonClicked(sender: UIButton) {
-        
-        deactivateAllButtons()
-        activatePendingButton()
         
         // Fetch current user from NSUserDefaults
         let currentUser = getCurrentUser()
@@ -75,15 +72,9 @@ class SearchTableViewCell: UITableViewCell {
         // If currentUser is not trying to add themselves
         if (currentUser != cellUserName.text)
         {
-            let firebaseRootRef = Firebase(url: firebaseRootRefString)
             let firebaseSentRequestsRef = Firebase(url: firebaseRootRefString + "SentRequests/")
             let firebaseReceivedRequests = Firebase(url: firebaseRootRefString + "ReceivedRequests/")
-            
-            // We need to add a two-way relationship for each user.
-//            let firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/")
-            
-//            firebaseConnectionsRef.childByAppendingPath("currentUser/")
-            
+
             let connectionUserToAdd = cellUserName.text!
             
             // Get time of connection
@@ -92,18 +83,62 @@ class SearchTableViewCell: UITableViewCell {
             // User sends connection request to connectionUserToAdd. Storing relationship on server.
             firebaseSentRequestsRef.childByAppendingPath(currentUser + "/" + connectionUserToAdd).setValue(connectionTime)
             firebaseReceivedRequests.childByAppendingPath(connectionUserToAdd + "/" + currentUser).setValue(connectionTime)
-            
-            
-//            // Add friend info to currentUser's database info
-//            firebaseRootRef.childByAppendingPath("Connections/" + currentUser + "/" + connectionUserToAdd).setValue(connectionTime)
-//            
-//            // Add friend info to connectionUserToAdd's database info
-//            firebaseRootRef.childByAppendingPath("Connections/" + connectionUserToAdd + "/" + currentUser).setValue(connectionTime)
 
         }
         
         print("You connected", currentUser ,"and", cellName.text)
     }
     
+    // Undo friend add request
+    @IBAction func onAddPendingButtonClicked(sender: UIButton) {
+        
+        print("PENDING CLICKED")
+        
+        // Fetch current user from NSUserDefaults
+        let currentUser = getCurrentUser()
+        
+        // If currentUser is not trying to add themselves
+        if (currentUser != cellUserName.text)
+        {
+            let firebaseSentRequestsRef = Firebase(url: firebaseRootRefString + "SentRequests/")
+            let firebaseReceivedRequests = Firebase(url: firebaseRootRefString + "ReceivedRequests/")
+            
+            let connectionUserToRemove = cellUserName.text!
+            
+            // User sends connection request to connectionUserToAdd. Storing relationship on server.
+            firebaseSentRequestsRef.childByAppendingPath(currentUser + "/" + connectionUserToRemove).removeValue()
+            firebaseReceivedRequests.childByAppendingPath(connectionUserToRemove + "/" + currentUser).removeValue()
+            
+            activateAddButton()
+        }
+        
+        
+    }
+    
+    @IBAction func onRemoveButtonClicked(sender: UIButton) {
+        
+        print("REMOVE CLICKED")
+        
+        // Fetch current user from NSUserDefaults
+        let currentUser = getCurrentUser()
+        
+        // If currentUser is not trying to add themselves
+        if (currentUser != cellUserName.text)
+        {
+            
+            let connectionUserToRemove = cellUserName.text!
+            
+            let firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/")
+            
+            
+            
+            // Deletes friendship
+            firebaseConnectionsRef.childByAppendingPath(connectionUserToRemove + "/" + currentUser).removeValue()
+            firebaseConnectionsRef.childByAppendingPath(currentUser + "/" + connectionUserToRemove).removeValue()
+            
+            activateAddButton()
+        }
+
+    }
     
 }
