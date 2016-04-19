@@ -30,10 +30,10 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     var userName : String!
     var userId   : String!
-    
+    var firebaseRootRef : Firebase!
+    var defaultImage : UIImage!
     
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
-    var firebaseRootRef : Firebase!
     let awsBucketName = "aquaint-userimages"
     
     var connectionRequestList : Array<Connection>! // MAKE IT Connection type LATER
@@ -43,40 +43,7 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         connectionRequestList = Array<Connection>()
         
-//        // AWS S3 IMAGE TESTING
-//        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-//        
-//        
-//        
-//        // Create NSURL for download location
-//        var downloadingFilePath = NSTemporaryDirectory()
-//        downloadingFilePath = downloadingFilePath.stringByAppendingString("downloaded-NSA.png")
-//        let downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath)
-//        
-//        // Construct download request
-//        let downloadRequest = AWSS3TransferManagerDownloadRequest()
-//        downloadRequest.bucket = awsBucketName
-//        downloadRequest.key = "NSA.png"
-//        downloadRequest.downloadingFileURL = downloadingFileURL
-//        
-//        // Request the downloaded image!
-//        let awsTask = transferManager.download(downloadRequest)
-//        
-//        // Handle any errors
-//        if (awsTask.error != nil)
-//        {
-//            print(awsTask.error.debugDescription)
-//        }
-//        
-//        if (awsTask.result != nil)
-//        {
-//            let downloadOutput = awsTask.result
-//            
-//            
-//            print("DOWNLOADED!")
-////            self.imageView.image = UIImage(contentsOfFile: downloadingFilePath)
-//        }
-//        
+        defaultImage = UIImage(imageLiteral: "Person Icon Black")
         
 //        // SET UP NOTIFICATIONS
 //        // ----------------------------------------------
@@ -201,6 +168,7 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // FOR FILLING THE TABLE:
         
         let firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
+        let firebaseUserImagesRef = Firebase(url: firebaseRootRefString + "UserImages/")
         let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "ReceivedRequests/" + userName)
     
         firebaseReceivedRequestsRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
@@ -209,35 +177,37 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
             // Store respective user info (key is the username)
             user.userName = snapshot.key
 
-
-            // Retrieve user's other info
+            // Retrieve user's info (except image)
             firebaseUsersRef.childByAppendingPath(user.userName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
-
-                print(snapshot)
                 
-                // STORE USER INFO
-                // ================
                 user.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
                 
-                let userImageBase64String = snapshot.childSnapshotForPath("/userImage").value as! String
+            })
+            
+            
+            // Store the user's image
+            firebaseUserImagesRef.childByAppendingPath(user.userName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
                 
-                // Convert base 64 image to UIImage
-                if (userImageBase64String == "none")
+                // Get base 64 string image
+                
+                // If user has an image, display it in table. Else, display default image
+                if (snapshot.exists())
                 {
-                    user.userImage = UIImage(imageLiteral: "Add Photo Color")
+                    let userImageBase64String = snapshot.childSnapshotForPath("/profileImage").value as! String
+                    user.userImage = convertBase64ToImage(userImageBase64String)
                 }
                 else
                 {
-                    user.userImage = convertBase64ToImage(userImageBase64String)
+                    user.userImage = self.defaultImage
                 }
-
-                self.connectionRequestList.append(user)
                 
                 self.requestsTableView.reloadData()
                 
-                print("RELOADED")
-                
             })
+            
+            self.connectionRequestList.append(user)
+            
+            self.requestsTableView.reloadData()
             
         })
 

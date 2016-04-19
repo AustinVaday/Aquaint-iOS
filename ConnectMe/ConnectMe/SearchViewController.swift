@@ -94,18 +94,12 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 // If user has an image, display it in table. Else, display default image
                 if (snapshot.exists())
                 {
-                    
-                    print("PERFORMING USERIMAGEREF ACCESS FOR", user.userName)
-                    
                     let userImageBase64String = snapshot.childSnapshotForPath("/profileImage").value as! String
                     user.userImage = convertBase64ToImage(userImageBase64String)
                 }
                 else
                 {
-                    
-                    print("DEFAULT DEFAULT IMAGE BEING DISPLAYED")
                     user.userImage = self.defaultImage
-                    
                 }
                 
                 self.searchTableView.reloadData()
@@ -170,6 +164,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
+        
+//        // Create a nice border for the cellImage
+//        cell.cellImage.layer.borderWidth = 0.5
+//        cell.cellImage.layer.borderColor = UIColor.blackColor().CGColor
         
         return cell
         

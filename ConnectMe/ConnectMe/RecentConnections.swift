@@ -84,12 +84,10 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 // Get base 64 string image
                 
                 // If user has an image, display it in table. Else, display default image
-                if (snapshot.hasChild(connectionUserName))
+                if (snapshot.exists())
                 {
                     let userImageBase64String = snapshot.childSnapshotForPath("/profileImage").value as! String
                     connection.userImage = convertBase64ToImage(userImageBase64String)
-
-                    
                 }
                 else
                 {
@@ -121,7 +119,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 // Front of list == largest time == most recent add
 //                print(snapshot)
 //                self.connectionList.insert(connection, atIndex: 0)
-                
+
                 print("INSERTING..", connection.userName)
                 
               self.connectionList.append(connection)
@@ -215,9 +213,11 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
     
         // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
-        cell.collectionView.tag = indexPath.row
+        cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
         
         let connectedUser = connectionList[indexPath.row]
+        
+        print("CVTAG#: ", cell.collectionView.tag, "CORRESPONDS TO: ", connectedUser.userName )
         
         cell.cellName.text = connectedUser.userFullName
         cell.cellUserName.text = connectedUser.userName
