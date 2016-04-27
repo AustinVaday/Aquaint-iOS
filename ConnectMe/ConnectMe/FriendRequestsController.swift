@@ -1,5 +1,5 @@
 //
-//  HomeController.swift
+//  FriendRequestsController.swift
 //  ConnectMe
 //
 //  Created by Austin Vaday on 12/21/15.
@@ -12,7 +12,7 @@ import UIKit
 import Firebase
 import AWSS3
 
-class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FriendRequestsController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
  
     @IBOutlet weak var requestsTableView: UITableView!
@@ -73,7 +73,7 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if (authData == nil)
         {
-            print("Error in HomeController. authData is somehow nil!")
+            print("Error in FriendRequestsController. authData is somehow nil!")
             self.performSegueWithIdentifier("LogOut", sender: nil)
             
         }

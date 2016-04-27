@@ -19,7 +19,7 @@
 		FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */; };
 		FF7878401C26A0A900354936 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF78783F1C26A0A900354936 /* MenuController.swift */; };
 		FF7878421C26A0CC00354936 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7878411C26A0CC00354936 /* CameraController.swift */; };
-		FF7878461C281A2500354936 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7878451C281A2500354936 /* HomeController.swift */; };
+		FF7878461C281A2500354936 /* FriendRequestsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7878451C281A2500354936 /* FriendRequestsController.swift */; };
 		FF78785C1C30008C00354936 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FF78785B1C30008C00354936 /* libz.tbd */; };
 		FF78785E1C30009900354936 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FF78785D1C30009900354936 /* libsqlite3.tbd */; };
 		FF7878611C3010E700354936 /* LogInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7878601C3010E600354936 /* LogInController.swift */; };
@@ -39,6 +39,7 @@
 		FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C341C01AC63001B2634 /* AppDelegate.swift */; };
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
+		FF90CFF61CD08DE8003DEA18 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */; };
 		FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */; };
 		FFB860281C4C38A800CFB621 /* AquaintTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */; };
 		FFB8602A1C4C38D300CFB621 /* AquaintUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB860291C4C38D300CFB621 /* AquaintUITestCase.swift */; };
@@ -83,7 +84,7 @@
 		FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialMediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		FF78783F1C26A0A900354936 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		FF7878411C26A0CC00354936 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
-		FF7878451C281A2500354936 /* HomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
+		FF7878451C281A2500354936 /* FriendRequestsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequestsController.swift; sourceTree = "<group>"; };
 		FF78785B1C30008C00354936 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		FF78785D1C30009900354936 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		FF7878601C3010E600354936 /* LogInController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInController.swift; sourceTree = "<group>"; };
@@ -107,6 +108,7 @@
 		FF897C401C01AC63001B2634 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FF897C451C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C501C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintTestCase.swift; sourceTree = "<group>"; };
 		FFB860291C4C38D300CFB621 /* AquaintUITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintUITestCase.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				FF65D3211C1EA3D60015C99F /* SignUpController.swift */,
+				FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */,
 				FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */,
 				FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */,
 				FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */,
@@ -215,7 +218,7 @@
 				FFF442351C4B2244007651DE /* Functions.swift */,
 				FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */,
 				FF7878601C3010E600354936 /* LogInController.swift */,
-				FF7878451C281A2500354936 /* HomeController.swift */,
+				FF7878451C281A2500354936 /* FriendRequestsController.swift */,
 				FF78783F1C26A0A900354936 /* MenuController.swift */,
 				FF897C401C01AC63001B2634 /* Info.plist */,
 				FF7878761C34EC4A00354936 /* RecentConnections.swift */,
@@ -476,9 +479,10 @@
 				FF7878421C26A0CC00354936 /* CameraController.swift in Sources */,
 				FF7878401C26A0A900354936 /* MenuController.swift in Sources */,
 				FF0BF0251CB6DCB3005188DA /* SearchViewController.swift in Sources */,
-				FF7878461C281A2500354936 /* HomeController.swift in Sources */,
+				FF7878461C281A2500354936 /* FriendRequestsController.swift in Sources */,
 				FF7878771C34EC4A00354936 /* RecentConnections.swift in Sources */,
 				FF0BF0231CB6DC78005188DA /* ProfileViewController.swift in Sources */,
+				FF90CFF61CD08DE8003DEA18 /* HomeViewController.swift in Sources */,
 				FFF442361C4B2244007651DE /* Functions.swift in Sources */,
 				FF897C371C01AC63001B2634 /* ViewController.swift in Sources */,
 				FF7878791C352D0400354936 /* TableViewCell.swift in Sources */,

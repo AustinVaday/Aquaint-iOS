@@ -17,12 +17,11 @@ protocol MainPageViewControllerDelegate : class {
 
 class MainPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-   
-    let MENU = 0
-    let PROFILE = 1
+    let FRIEND_REQUESTS = 0
+    let SEARCH = 1
     let HOME = 2
-    let SEARCH = 3
-    let RECENT_CONNECTIONS = 4
+    let PROFILE = 3
+    let MENU = 4
     
     var arrayOfViewControllers: Array<UIViewController>!
     var currentPageIndex = 2 //UPDATED in changePage and didFinishAnimating methods
@@ -44,11 +43,11 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
 
 
         arrayOfViewControllers = Array<UIViewController>()
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))!)
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("ProfileViewController"))!)
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("FriendRequestsViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("SearchViewController"))!)
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("RecentConnectionsViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("ProfileViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))!)
         
         let firstViewController = arrayOfViewControllers[HOME]
         currentPageIndex = HOME
@@ -62,27 +61,27 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         
         print ("HEY")
-        if viewController.isKindOfClass(MenuController)
-        {
-            return arrayOfViewControllers[PROFILE]
-        }
-        
-        if viewController.isKindOfClass(ProfileViewController)
-        {
-            return arrayOfViewControllers[HOME]
-        }
-        
-        if viewController.isKindOfClass(HomeController)
+        if viewController.isKindOfClass(FriendRequestsController)
         {
             return arrayOfViewControllers[SEARCH]
         }
         
         if viewController.isKindOfClass(SearchViewController)
         {
-            return arrayOfViewControllers[RECENT_CONNECTIONS]
+            return arrayOfViewControllers[HOME]
         }
         
-        if viewController.isKindOfClass(RecentConnections)
+        if viewController.isKindOfClass(HomeViewController)
+        {
+            return arrayOfViewControllers[PROFILE]
+        }
+        
+        if viewController.isKindOfClass(ProfileViewController)
+        {
+            return arrayOfViewControllers[MENU]
+        }
+        
+        if viewController.isKindOfClass(MenuController)
         {
             return nil
         }
@@ -94,29 +93,29 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         
-        if viewController.isKindOfClass(MenuController)
+        if viewController.isKindOfClass(FriendRequestsController)
         {
             return nil
         }
         
-        if viewController.isKindOfClass(ProfileViewController)
-        {
-            return arrayOfViewControllers[MENU]
-        }
-        
-        if viewController.isKindOfClass(HomeController)
-        {
-            return arrayOfViewControllers[PROFILE]
-        }
-        
         if viewController.isKindOfClass(SearchViewController)
+        {
+            return arrayOfViewControllers[FRIEND_REQUESTS]
+        }
+        
+        if viewController.isKindOfClass(HomeViewController)
+        {
+            return arrayOfViewControllers[SEARCH]
+        }
+        
+        if viewController.isKindOfClass(ProfileViewController)
         {
             return arrayOfViewControllers[HOME]
         }
         
-        if viewController.isKindOfClass(RecentConnections)
+        if viewController.isKindOfClass(MenuController)
         {
-            return arrayOfViewControllers[SEARCH]
+            return arrayOfViewControllers[PROFILE]
         }
                 
         return nil
@@ -140,7 +139,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             currentPageIndex = PROFILE
         }
         
-        if currentViewController.isKindOfClass(HomeController)
+        if currentViewController.isKindOfClass(HomeViewController)
         {
             currentPageIndex = HOME
         }
@@ -150,9 +149,9 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             currentPageIndex = SEARCH
         }
         
-        if currentViewController.isKindOfClass(RecentConnections)
+        if currentViewController.isKindOfClass(FriendRequestsController)
         {
-            currentPageIndex = RECENT_CONNECTIONS
+            currentPageIndex = FRIEND_REQUESTS
         }
         
     }
