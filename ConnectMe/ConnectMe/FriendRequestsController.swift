@@ -16,7 +16,6 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
     
  
     @IBOutlet weak var requestsTableView: UITableView!
-    @IBOutlet weak var userNameLabel: UILabel!
 //    @IBOutlet weak var searchTableView: UITableView!
     
 //    @IBOutlet weak var notificationViewLabel: UILabel!
@@ -81,16 +80,16 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
         // Get current user from NSUserDefaults
         userName = getCurrentUser()
         
-        if (userName != nil)
-        {
-            print(userName)
-            
-            userNameLabel.text = userName
-        }
-        else
-        {
-            userNameLabel.text = "Welcome, guest!"
-        }
+//        if (userName != nil)
+//        {
+//            print(userName)
+//            
+//            userNameLabel.text = userName
+//        }
+//        else
+//        {
+//            userNameLabel.text = "Welcome, guest!"
+//        }
         
         
         //        // Add gesture recognizer programatacially (buggy if doing so through XIB)
