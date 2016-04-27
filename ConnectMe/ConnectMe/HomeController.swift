@@ -169,6 +169,7 @@ class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
         let firebaseUserImagesRef = Firebase(url: firebaseRootRefString + "UserImages/")
+        print (userName)
         let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "ReceivedRequests/" + userName)
     
         firebaseReceivedRequestsRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in

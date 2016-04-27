@@ -83,6 +83,8 @@ class SearchTableViewCell: UITableViewCell {
             // User sends connection request to connectionUserToAdd. Storing relationship on server.
             firebaseSentRequestsRef.childByAppendingPath(currentUser + "/" + connectionUserToAdd).setValue(connectionTime)
             firebaseReceivedRequests.childByAppendingPath(connectionUserToAdd + "/" + currentUser).setValue(connectionTime)
+            
+            activatePendingButton()
 
         }
         
@@ -129,8 +131,6 @@ class SearchTableViewCell: UITableViewCell {
             let connectionUserToRemove = cellUserName.text!
             
             let firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/")
-            
-            
             
             // Deletes friendship
             firebaseConnectionsRef.childByAppendingPath(connectionUserToRemove + "/" + currentUser).removeValue()

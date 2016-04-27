@@ -55,6 +55,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                     self.allUsersSentARequest = snapshot.value as! NSDictionary
                 }
             
+                print("DETERMINES PENDING BUTTON")
                 self.searchTableView.reloadData()
             
             })
@@ -134,10 +135,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         // Do not let user add him/herself
         if (userName == self.userName)
         {
+            print("HIDING ALL BUTTONS FOR: ", self.userName)
             cell.hideAllButtons()
         }
         else
         {
+            cell.unHideAllButtons()
+            
             // If already sent a request, display pending symbol
             if ((allUsersSentARequest[userName]) != nil && (allUsersConnections[userName]) == nil)
             {
