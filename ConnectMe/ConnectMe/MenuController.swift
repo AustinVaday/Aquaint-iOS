@@ -22,6 +22,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case NOTIFICATIONS
         case INVITE_FRIENDS
         case HELP
+        case TERMS
+        case CLEAR_HISTORY
         case LOG_OUT
     }
     
@@ -34,7 +36,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return 8
     }
 
     
@@ -61,6 +63,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case .HELP:
             cell.cellName.text = "Help & About Us"
             break;
+        case .TERMS:
+            cell.cellName.text = "Terms of Service"
+            break;
+        case .CLEAR_HISTORY:
+            cell.cellName.text = "Clear Search History"
+            break;
         case .LOG_OUT:
             cell.cellName.text = "Log Out"
             break;
@@ -84,22 +92,30 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         {
         case .YOUR_ACCOUNT:
             
-            showAlert("Hold Tight.", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+            self.performSegueWithIdentifier("yourAccountSegue", sender: nil)
             break;
         case .LINKED_ACCOUNTS:
-            showAlert("Hold Tight.", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+            self.performSegueWithIdentifier("linkedAccountsSegue", sender: nil)
             break;
         case .NOTIFICATIONS:
-            showAlert("Hold Tight.", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+            self.performSegueWithIdentifier("notificationSegue", sender: nil)
             break;
         case .INVITE_FRIENDS:
-            showAlert("Hold Tight.", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+            self.performSegueWithIdentifier("inviteFriendsSegue", sender: nil)
             break;
         case .HELP:
-            showAlert("Hold Tight.", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+            self.performSegueWithIdentifier("helpSegue", sender: nil)
+            break;
+        case .TERMS:
+            self.performSegueWithIdentifier("termsSegue", sender: nil)
+            break;
+        case .CLEAR_HISTORY:
+            self.performSegueWithIdentifier("clearHistorySegue", sender: nil)
             break;
         case .LOG_OUT:
             logUserOut()
+            break;
+        default:
             break;
         }
     }
