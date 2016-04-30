@@ -15,13 +15,13 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
     @IBOutlet weak var sectionUnderlineView1: UIView!
     @IBOutlet weak var sectionUnderlineView2: UIView!
     @IBOutlet weak var sectionUnderlineView3: UIView!
-    @IBOutlet weak var sectionUnderlineView4: UIView!
     
-    @IBOutlet weak var menuButton: UIButton!
-    @IBOutlet weak var profileButton: UIButton!
+
     @IBOutlet weak var homeButton: UIButton!
     @IBOutlet weak var searchButton: UIButton!
-    @IBOutlet weak var recentConnectionsButton: UIButton!
+    @IBOutlet weak var connectionsButton: UIButton!
+    @IBOutlet weak var menuButton: UIButton!
+    
     
     @IBOutlet weak var notificationView: UIView!
     @IBOutlet weak var notificationViewLabel: UILabel!
@@ -52,7 +52,6 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         sectionUnderlineView1.hidden = true
         sectionUnderlineView2.hidden = true
         sectionUnderlineView3.hidden = true
-        sectionUnderlineView4.hidden = true
     }
     
     
@@ -85,7 +84,7 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         hideAllSectionUnderlineViews()
         
         // Show only the bar for the home icon
-        sectionUnderlineView2.hidden = false
+        sectionUnderlineView0.hidden = false
         
         // Set up Firebase
         firebaseRootRef = Firebase(url: firebaseRootRefString)
@@ -177,7 +176,7 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
     
     // BUTTONS TO CHANGE THE PAGE
     
-    @IBAction func goToMenuPage(sender: UIButton) {
+    @IBAction func goToPage0(sender: UIButton) {
                 
         mainPageViewController.changePage(0)
         
@@ -185,7 +184,7 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         sectionUnderlineView0.hidden = false
     }
     
-    @IBAction func goToProfilePage(sender: UIButton) {
+    @IBAction func goToPage1(sender: UIButton) {
 
         mainPageViewController.changePage(1)
         
@@ -193,7 +192,7 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         sectionUnderlineView1.hidden = false
     }
     
-    @IBAction func goToHomePage(sender: UIButton) {
+    @IBAction func goToPage2(sender: UIButton) {
 
         mainPageViewController.changePage(2)
         
@@ -201,7 +200,7 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         sectionUnderlineView2.hidden = false
     }
     
-    @IBAction func goToSearchPage(sender: UIButton) {
+    @IBAction func goToPage3(sender: UIButton) {
     
         mainPageViewController.changePage(3)
         
@@ -209,13 +208,13 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         sectionUnderlineView3.hidden = false
     }
     
-    @IBAction func goToRecentConnectionsPage(sender: UIButton) {
-        
-        mainPageViewController.changePage(4)
-        
-        hideAllSectionUnderlineViews()
-        sectionUnderlineView4.hidden = false
-    }
+//    @IBAction func goToRecentConnectionsPage(sender: UIButton) {
+//        
+//        mainPageViewController.changePage(4)
+//        
+//        hideAllSectionUnderlineViews()
+//        sectionUnderlineView4.hidden = false
+//    }
     
     
     

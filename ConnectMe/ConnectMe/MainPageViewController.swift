@@ -17,14 +17,13 @@ protocol MainPageViewControllerDelegate : class {
 
 class MainPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    let FRIEND_REQUESTS = 0
+    let HOME = 0
     let SEARCH = 1
-    let HOME = 2
-    let PROFILE = 3
-    let MENU = 4
+    let CONNECTIONS = 2
+    let MENU = 3
     
     var arrayOfViewControllers: Array<UIViewController>!
-    var currentPageIndex = 2 //UPDATED in changePage and didFinishAnimating methods
+    var currentPageIndex = 0 //UPDATED in changePage and didFinishAnimating methods
     // Delegating properties
     weak var pageDelegate:MainPageViewControllerDelegate?
 
@@ -43,9 +42,8 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
 
 
         arrayOfViewControllers = Array<UIViewController>()
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("FriendRequestsViewController"))!)
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("SearchViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("SearchViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("ProfileViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))!)
         
@@ -61,19 +59,14 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         
         print ("HEY")
-        if viewController.isKindOfClass(FriendRequestsController)
+        if viewController.isKindOfClass(HomeViewController)
         {
             return arrayOfViewControllers[SEARCH]
         }
         
         if viewController.isKindOfClass(SearchViewController)
         {
-            return arrayOfViewControllers[HOME]
-        }
-        
-        if viewController.isKindOfClass(HomeViewController)
-        {
-            return arrayOfViewControllers[PROFILE]
+            return arrayOfViewControllers[CONNECTIONS]
         }
         
         if viewController.isKindOfClass(ProfileViewController)
@@ -93,29 +86,24 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         
-        if viewController.isKindOfClass(FriendRequestsController)
+        if viewController.isKindOfClass(HomeViewController)
         {
             return nil
         }
         
         if viewController.isKindOfClass(SearchViewController)
         {
-            return arrayOfViewControllers[FRIEND_REQUESTS]
-        }
-        
-        if viewController.isKindOfClass(HomeViewController)
-        {
-            return arrayOfViewControllers[SEARCH]
+            return arrayOfViewControllers[HOME]
         }
         
         if viewController.isKindOfClass(ProfileViewController)
         {
-            return arrayOfViewControllers[HOME]
+            return arrayOfViewControllers[SEARCH]
         }
         
         if viewController.isKindOfClass(MenuController)
         {
-            return arrayOfViewControllers[PROFILE]
+            return arrayOfViewControllers[CONNECTIONS]
         }
                 
         return nil
@@ -136,7 +124,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         if currentViewController.isKindOfClass(ProfileViewController)
         {
-            currentPageIndex = PROFILE
+            currentPageIndex = CONNECTIONS
         }
         
         if currentViewController.isKindOfClass(HomeViewController)
@@ -147,11 +135,6 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         if currentViewController.isKindOfClass(SearchViewController)
         {
             currentPageIndex = SEARCH
-        }
-        
-        if currentViewController.isKindOfClass(FriendRequestsController)
-        {
-            currentPageIndex = FRIEND_REQUESTS
         }
         
     }
