@@ -46,6 +46,10 @@
 		FFBB872C1C5307F500500FAD /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87291C5307F500500FAD /* FBSDKCoreKit.framework */; };
 		FFBB872D1C5307F500500FAD /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB872A1C5307F500500FAD /* FBSDKLoginKit.framework */; };
 		FFBB872E1C5307F500500FAD /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB872B1C5307F500500FAD /* FBSDKShareKit.framework */; };
+		FFBDD7541CD58F910007A188 /* HomeContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7531CD58F910007A188 /* HomeContainerViewController.swift */; };
+		FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7551CD599690007A188 /* HomePageViewController.swift */; };
+		FFBDD7581CD59A0B0007A188 /* NewsfeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7571CD59A0B0007A188 /* NewsfeedViewController.swift */; };
+		FFBDD75A1CD59A2D0007A188 /* YouNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7591CD59A2D0007A188 /* YouNotificationsViewController.swift */; };
 		FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */; };
 		FFF2A3501CA891E200C08E38 /* ServerFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */; };
 		FFF442361C4B2244007651DE /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF442351C4B2244007651DE /* Functions.swift */; };
@@ -115,6 +119,10 @@
 		FFBB87291C5307F500500FAD /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		FFBB872A1C5307F500500FAD /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		FFBB872B1C5307F500500FAD /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		FFBDD7531CD58F910007A188 /* HomeContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeContainerViewController.swift; sourceTree = "<group>"; };
+		FFBDD7551CD599690007A188 /* HomePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
+		FFBDD7571CD59A0B0007A188 /* NewsfeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsfeedViewController.swift; sourceTree = "<group>"; };
+		FFBDD7591CD59A2D0007A188 /* YouNotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouNotificationsViewController.swift; sourceTree = "<group>"; };
 		FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionClass.swift; sourceTree = "<group>"; };
 		FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Aquaint-Bridging-Header.h"; path = "ConnectMe/Aquaint-Bridging-Header.h"; sourceTree = "<group>"; };
 		FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerFunctions.swift; sourceTree = "<group>"; };
@@ -175,6 +183,7 @@
 		FF897C281C01AC63001B2634 = {
 			isa = PBXGroup;
 			children = (
+				FFBDD7551CD599690007A188 /* HomePageViewController.swift */,
 				FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */,
 				FFB8602D1C4C390400CFB621 /* AquaintTestCases */,
 				FFB8602C1C4C38F800CFB621 /* AquaintUITestCases */,
@@ -211,8 +220,9 @@
 				FF83A4DE1CC59A3800AFB26B /* RBResizer.swift */,
 				FF897C3B1C01AC63001B2634 /* Assets.xcassets */,
 				FF65D31C1C1E0BFC0015C99F /* Main.storyboard */,
-				FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */,
+				FFBDD75B1CD59A390007A188 /* Home/Newsfeed */,
 				FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */,
+				FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */,
 				FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */,
 				FFF442391C4C2B21007651DE /* Launch Screen.storyboard */,
 				FFF442351C4B2244007651DE /* Functions.swift */,
@@ -290,6 +300,16 @@
 				FFBB872B1C5307F500500FAD /* FBSDKShareKit.framework */,
 			);
 			name = "Facebook Frameworks";
+			sourceTree = "<group>";
+		};
+		FFBDD75B1CD59A390007A188 /* Home/Newsfeed */ = {
+			isa = PBXGroup;
+			children = (
+				FFBDD7591CD59A2D0007A188 /* YouNotificationsViewController.swift */,
+				FFBDD7571CD59A0B0007A188 /* NewsfeedViewController.swift */,
+				FFBDD7531CD58F910007A188 /* HomeContainerViewController.swift */,
+			);
+			name = Home/Newsfeed;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -475,6 +495,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFBDD7581CD59A0B0007A188 /* NewsfeedViewController.swift in Sources */,
+				FFBDD7541CD58F910007A188 /* HomeContainerViewController.swift in Sources */,
 				FFF2A3501CA891E200C08E38 /* ServerFunctions.swift in Sources */,
 				FF7878421C26A0CC00354936 /* CameraController.swift in Sources */,
 				FF7878401C26A0A900354936 /* MenuController.swift in Sources */,
@@ -494,6 +516,8 @@
 				FF7878611C3010E700354936 /* LogInController.swift in Sources */,
 				FF83A4DF1CC59A3900AFB26B /* RBResizer.swift in Sources */,
 				FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */,
+				FFBDD75A1CD59A2D0007A188 /* YouNotificationsViewController.swift in Sources */,
+				FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */,
 				FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */,
 				FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */,
 				FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */,

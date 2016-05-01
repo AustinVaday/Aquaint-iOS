@@ -17,5 +17,4 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var cellUserName: UILabel!
     @IBOutlet weak var cellTimeConnected: UILabel!
 
-
 }

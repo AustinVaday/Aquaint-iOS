@@ -15,19 +15,14 @@ import Contacts
 class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
     
-    let NO_ROW = -1
     @IBOutlet weak var recentConnTableView: UITableView!
-    var selectedRowIndex:Int = -1
-    var expandedRow:Int = -1
-    var isARowExpanded:Bool = false
-    let defaultRowHeight:CGFloat = 60
-    let expandedRowHeight:CGFloat = 120
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
     var currentUserName : String!
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
+    var expansionObj:CellExpansion!
     var firebaseRootRef : Firebase!
     var firebaseUsersRef: Firebase!
     var firebaseLinkedAccountsRef: Firebase!
@@ -236,7 +231,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         print("TABLEVIEW 3")
 
         // Set the new selectedRowIndex
-        selectedRowIndex = indexPath.row
+        expansionObj.selectedRowIndex = indexPath.row
         
         // Update UI with animation
         tableView.beginUpdates()
@@ -255,25 +250,25 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         let currentRow = indexPath.row
         
         // If a row is selected, we want to expand the cells
-        if (currentRow == selectedRowIndex)
+        if (currentRow == expansionObj.selectedRowIndex)
         {
             // Collapse if it is already expanded
-            if (isARowExpanded && expandedRow == currentRow)
+            if (expansionObj.isARowExpanded && expansionObj.expandedRow == currentRow)
             {
-                isARowExpanded = false
-                expandedRow = NO_ROW
-                return defaultRowHeight
+                expansionObj.isARowExpanded = false
+                expansionObj.expandedRow = expansionObj.NO_ROW
+                return expansionObj.defaultRowHeight
             }
             else
             {
-                isARowExpanded = true
-                expandedRow = currentRow
-                return expandedRowHeight
+                expansionObj.isARowExpanded = true
+                expansionObj.expandedRow = currentRow
+                return expansionObj.expandedRowHeight
             }
         }
         else
         {
-            return defaultRowHeight
+            return expansionObj.defaultRowHeight
         }
         
     }

@@ -42,7 +42,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
 
 
         arrayOfViewControllers = Array<UIViewController>()
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeContainerViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("SearchViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("ProfileViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))!)
@@ -59,7 +59,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         
         print ("HEY")
-        if viewController.isKindOfClass(HomeViewController)
+        if viewController.isKindOfClass(HomeContainerViewController)
         {
             return arrayOfViewControllers[SEARCH]
         }
@@ -86,7 +86,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         
-        if viewController.isKindOfClass(HomeViewController)
+        if viewController.isKindOfClass(HomeContainerViewController)
         {
             return nil
         }
