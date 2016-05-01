@@ -12,6 +12,7 @@ import Firebase
 class HomeContainerViewController: UIViewController, UIPageViewControllerDelegate {
     
     
+    @IBOutlet weak var userNameLabel: UILabel!
     
     @IBOutlet weak var sectionUnderlineView0: UILabel!
     @IBOutlet weak var sectionUnderlineView1: UILabel!
@@ -66,6 +67,9 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         userName = getCurrentUser()
         
         connectionRequestList = Array<String>()
+        
+        // Set username label 
+        userNameLabel.text = userName
         
         // Set up Firebase listener for listening for new friend requests
         let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "/ReceivedRequests")

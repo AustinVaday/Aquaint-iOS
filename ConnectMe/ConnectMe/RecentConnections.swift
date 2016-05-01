@@ -9,14 +9,13 @@
 
 import UIKit
 import Firebase
-import Contacts
 
 
 class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
     
     @IBOutlet weak var recentConnTableView: UITableView!
-    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
+    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube")
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
     var currentUserName : String!
@@ -45,6 +44,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/" + currentUserName)
         
         connectionList = Array<Connection>()
+        expansionObj = CellExpansion()
         
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
         
@@ -59,10 +59,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             // Store server data into our local "cached" object -- connection
             connection.userName = snapshot.key
             connection.timestampGMT = snapshot.value as! Int
-            
-            print("firebaseConnectionsRef snapshot value is: ", snapshot.value)
-            print("conn username is:", connectionUserName)
-            print("##1")
             
             // Store the user's info (except image)
             self.firebaseUsersRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
@@ -96,16 +92,11 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             
             // Store the user's social media accounts
             self.firebaseLinkedAccountsRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
-                
-                print("LET'S DO THIS FOR: ", connectionUserName)
-                // Store dictionary of all key-val pairs.. 
+
+                // Store dictionary of all key-val pairs..
                 // I.e.: (facebook, [user's facebook username])
                 //       (twitter,  [user's twitter username]) ... etc
                 connection.socialMediaUserNames = snapshot.value as! NSDictionary
-                
-                print("firebasedLinkedAccountsRef snapshot value is: ", snapshot.value)
-                
-                print("##3")
                 
 //                self.recentConnTableView.reloadData()
                 
@@ -114,18 +105,15 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 // Front of list == largest time == most recent add
 //                print(snapshot)
 //                self.connectionList.insert(connection, atIndex: 0)
-
-                print("INSERTING..", connection.userName)
                 
               self.connectionList.append(connection)
 // NOTE: CODE CRASHES FOR connectionList.insert because apparantly it's fetching 'aquaint' at the beginning of the list... look into this!!!!)
-                
-                print("RELOADING TABLE VIEWS NOW!")
+
                 self.recentConnTableView.reloadData()
 
             })
-            
-            print("##4")
+
+
             
         })
         
@@ -136,14 +124,12 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         socialMediaImageDictionary = Dictionary<String, UIImage>()
         
-        print("Size is: ", size)
         // Generate all necessary images for the emblems
         for (var i = 0; i < size; i++)
         {
             // Fetch emblem name
             imageName = possibleSocialMediaNameList[i]
          
-            print("Generating image for: ", imageName)
             // Generate image
             newUIImage = UIImage(named: imageName)
             
@@ -194,13 +180,10 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Display up to 30 users immediately
         // Display 20 more if user keeps sliding down
         
-        print("TABLEVIEW 1")
-        
         return connectionList.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        print("TABLEVIEW 2")
 
         let cell = tableView.dequeueReusableCellWithIdentifier("recentConnCell", forIndexPath: indexPath) as! TableViewCell
         
@@ -228,8 +211,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        print("TABLEVIEW 3")
-
         // Set the new selectedRowIndex
         expansionObj.selectedRowIndex = indexPath.row
         
@@ -245,7 +226,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        print("TABLEVIEW 4")
 
         let currentRow = indexPath.row
         
@@ -275,22 +255,21 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     // COLLECTION VIEW
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("COLLECTIONVIEW 1")
         
-        print("------------------------------------")
-        for (var i = 0; i < connectionList.count; i++)
-        {
-            print("username:", connectionList[i].userName)
-            print("social media accounts", connectionList[i].socialMediaUserNames)
-            
-        }
-        print("------------------------------------")
+//        print("------------------------------------")
+//        for (var i = 0; i < connectionList.count; i++)
+//        {
+//            print("username:", connectionList[i].userName)
+//            print("social media accounts", connectionList[i].socialMediaUserNames)
+//            
+//        }
+//        print("------------------------------------")
 
         
-        print("TAG IS:", collectionView.tag)
-
-        print(connectionList[collectionView.tag].userName)
-        print(connectionList[collectionView.tag].socialMediaUserNames.count)
+//        print("TAG IS:", collectionView.tag)
+//
+//        print(connectionList[collectionView.tag].userName)
+//        print(connectionList[collectionView.tag].socialMediaUserNames.count)
         
         // Use the tag to know which tableView row we're at
         return connectionList[collectionView.tag].socialMediaUserNames.count
@@ -352,7 +331,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         var urlString:String!
         var altString:String!
         var socialMediaURL:NSURL!
-        var contact:CNMutableContact = CNMutableContact()
         
 //        let userName = "AustinVaday"
         let connectionSocialMediaUserNames = connectionList[collectionView.tag].socialMediaUserNames

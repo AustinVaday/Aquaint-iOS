@@ -44,7 +44,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         arrayOfViewControllers = Array<UIViewController>()
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeContainerViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("SearchViewController"))!)
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("ProfileViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("RecentConnectionsViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))!)
         
         let firstViewController = arrayOfViewControllers[HOME]
@@ -69,7 +69,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             return arrayOfViewControllers[CONNECTIONS]
         }
         
-        if viewController.isKindOfClass(ProfileViewController)
+        if viewController.isKindOfClass(RecentConnections)
         {
             return arrayOfViewControllers[MENU]
         }
@@ -96,7 +96,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             return arrayOfViewControllers[HOME]
         }
         
-        if viewController.isKindOfClass(ProfileViewController)
+        if viewController.isKindOfClass(RecentConnections)
         {
             return arrayOfViewControllers[SEARCH]
         }
