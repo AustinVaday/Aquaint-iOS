@@ -271,7 +271,8 @@ class YouNotificationsViewController: UIViewController, UITableViewDelegate, UIT
 //        let mutableMessageString = NSMutableAttributedString(string: connectedUser.userFullName + " became aquainted with you",
 //                                                             attributes: [NSFontAttributeName : ])
         
-        cell.cellMessage.text = connectedUser.userFullName +  " became aquainted with you. "
+        let textString = connectedUser.userFullName +  " became aquainted with you. "
+        cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [connectedUser.userFullName.characters.count])
         cell.cellImage.image = connectedUser.userImage
         cell.cellTimeConnected.text = connectedUser.computeTimeDiff()
         

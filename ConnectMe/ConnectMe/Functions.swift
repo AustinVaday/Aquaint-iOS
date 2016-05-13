@@ -39,19 +39,21 @@ func delay(delay:Double, closure:()->()) {
 
 // Create attributed text string. Specify which range values you'd lke to be bold using
 // parallel arrays
-func createAttributedTextString(string: String, boldStartArray: NSArray, boldEndArray: NSArray) -> NSAttributedString
+func createAttributedTextString(string: String, boldStartArray: [Int], boldEndArray: [Int]) -> NSAttributedString
 {
     if boldStartArray.count != boldEndArray.count
     {
         print("CREATE ATTRIBUTE TEXT STRING FUNCTION ERROR: ARRAY SIZES DIFFER")
     }
     
-    var attributedString = NSMutableAttributedString(string: string)
+    let attributedString = NSMutableAttributedString(string: string)
     let boldFontAttribute = [NSFontAttributeName: UIFont.boldSystemFontOfSize(15.0)]
     
-    for (start,end) in zip(boldStartArray, boldEndArray)
+    for (start,end) in zip(boldStartArray,boldEndArray)
     {
-            attributedString.addAttributes(boldFontAttribute, range: NSRange(location: start,length: end))
+        // NSRange works by specifying a starting location and then how many characters after.
+        // So if we have a range from [5 to 10], we need to specify NSRange(location: 5, length: 5)
+        attributedString.addAttributes(boldFontAttribute, range: NSRange(location: start ,length: end - start))
     }
     
     return attributedString

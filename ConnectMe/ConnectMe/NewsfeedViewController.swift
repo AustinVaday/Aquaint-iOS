@@ -273,17 +273,21 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         if (indexPath.row == 0 || indexPath.row == 3 )
         {
-            cell.cellMessage.text = connectedUser.userFullName +  " added a Snapchat account, check it out!"
+            let textString = connectedUser.userFullName +  " added a Snapchat account, check it out!"
+
+            cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [connectedUser.userFullName.characters.count])
         }
         else if (indexPath.row == 5 )
         {
-             cell.cellMessage.text = connectedUser.userFullName +  " added a Twitter account, check it out!"
+            let textString = connectedUser.userFullName +  " added a Twitter account, check it out!"
             
+            cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [connectedUser.userFullName.characters.count])
         }
         else if (indexPath.row == 9)
         {
-            cell.cellMessage.text = connectedUser.userFullName +  " added an Instagram account, check it out!"
-
+            let textString = connectedUser.userFullName +  " added a Instagram account, check it out!"
+            
+            cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [connectedUser.userFullName.characters.count])
         }
         else
         {
@@ -318,7 +322,12 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 person = "Felicia Markov"
             }
             
-             cell.cellMessage.text = connectedUser.userFullName +  " became aquainted with " + person
+            let textString = connectedUser.userFullName +  " became aquainted with " + person
+            let personStringLength = person.characters.count
+            let textStringLength = textString.characters.count
+            
+            // Find location of and bold the user names in the text string, store as cell message. 
+            cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0, textStringLength - personStringLength], boldEndArray: [connectedUser.userFullName.characters.count, textStringLength])
             
         }
         cell.cellImage.image = connectedUser.userImage
