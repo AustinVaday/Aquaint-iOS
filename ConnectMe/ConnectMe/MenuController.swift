@@ -75,7 +75,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
         default:
             cell.cellName.text = "Error"
-        
+            break;
         }
         
 

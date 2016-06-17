@@ -223,7 +223,7 @@ class YouNotificationsViewController: UIViewController, UITableViewDelegate, UIT
         refreshControl = UIRefreshControl()
         //        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         // When user pulls, this function will be called
-        refreshControl.addTarget(self, action: "refreshTable:", forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(YouNotificationsViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
         youConnectionsTableView.addSubview(refreshControl)
         
         
