@@ -210,6 +210,7 @@
 		FF7C0A491D13A29200C1502D /* Archived/Unused */ = {
 			isa = PBXGroup;
 			children = (
+				FF7878451C281A2500354936 /* FriendRequestsController.swift */,
 				FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */,
 				FF7878411C26A0CC00354936 /* CameraController.swift */,
 			);
@@ -272,7 +273,6 @@
 				FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */,
 				FF7878761C34EC4A00354936 /* RecentConnections.swift */,
 				FF78783F1C26A0A900354936 /* MenuController.swift */,
-				FF7878451C281A2500354936 /* FriendRequestsController.swift */,
 				FF897C401C01AC63001B2634 /* Info.plist */,
 			);
 			name = Aquaint;

@@ -73,9 +73,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             cell.cellName.text = "Log Out"
             break;
     
-        default:
-            cell.cellName.text = "Error"
-            break;
+//        default:
+//            cell.cellName.text = "Error"
+//            break;
         }
         
 
@@ -115,8 +115,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case .LOG_OUT:
             logUserOut()
             break;
-        default:
-            break;
+//        default:
+//            break;
         }
     }
     

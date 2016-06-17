@@ -72,7 +72,7 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         userNameLabel.text = userName
         
         // Set up Firebase listener for listening for new friend requests
-        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "/ReceivedRequests")
+//        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "/ReceivedRequests")
         
 //        // WATCH FOR NEW NOTIFICATIONS
 //        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in

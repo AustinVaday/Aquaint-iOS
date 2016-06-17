@@ -299,7 +299,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
         
         let userFullName = connectionRequestList[indexPath.item].userFullName
         let userName     = connectionRequestList[indexPath.item].userName
-        let userImage    = connectionRequestList[indexPath.item].userImage
+//        let userImage    = connectionRequestList[indexPath.item].userImage
         
         cell.cellName.text = userFullName
         cell.cellUserName.text = userName
