@@ -195,7 +195,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         socialMediaImageDictionary = Dictionary<String, UIImage>()
         
         // Generate all necessary images for the emblems
-        for (var i = 0; i < size; i++)
+        for i in 0...size-1
         {
             // Fetch emblem name
             imageName = possibleSocialMediaNameList[i]

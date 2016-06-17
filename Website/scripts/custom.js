@@ -196,6 +196,8 @@ $(document).ready(function(){
 //						SUBSCRIBE FORM MAILCHIMP INTEGRATIONS SCRIPT
 //------------------------------------------------------------------------------------		
     $('#subscribe_form').submit(function() {
+
+        alert("INSIDE SUBSCRIBE_FORM!");
         $('.error').hide();
         $('.error').fadeIn();
         // submit the form

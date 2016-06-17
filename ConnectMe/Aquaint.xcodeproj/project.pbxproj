@@ -184,6 +184,49 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		FF7C0A471D13A20700C1502D /* TableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */,
+				FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */,
+				FFBDD75E1CD5B5FA0007A188 /* YouNotificationsTableViewCell.swift */,
+				FFBDD7601CD5B6190007A188 /* NewsfeedTableViewCell.swift */,
+				FF7878781C352D0400354936 /* TableViewCell.swift */,
+				FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */,
+				FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */,
+			);
+			name = TableViewCells;
+			sourceTree = "<group>";
+		};
+		FF7C0A481D13A24200C1502D /* Login/Signup */ = {
+			isa = PBXGroup;
+			children = (
+				FF65D3211C1EA3D60015C99F /* SignUpController.swift */,
+				FF7878601C3010E600354936 /* LogInController.swift */,
+			);
+			name = Login/Signup;
+			sourceTree = "<group>";
+		};
+		FF7C0A491D13A29200C1502D /* Archived/Unused */ = {
+			isa = PBXGroup;
+			children = (
+				FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */,
+				FF7878411C26A0CC00354936 /* CameraController.swift */,
+			);
+			name = Archived/Unused;
+			sourceTree = "<group>";
+		};
+		FF7C0A4A1D13A2A800C1502D /* HelperFunctions */ = {
+			isa = PBXGroup;
+			children = (
+				FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */,
+				FF83A4DE1CC59A3800AFB26B /* RBResizer.swift */,
+				FFF442351C4B2244007651DE /* Functions.swift */,
+				FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */,
+			);
+			name = HelperFunctions;
+			sourceTree = "<group>";
+		};
 		FF897C281C01AC63001B2634 = {
 			isa = PBXGroup;
 			children = (
@@ -213,35 +256,24 @@
 		FF897C331C01AC63001B2634 /* Aquaint */ = {
 			isa = PBXGroup;
 			children = (
-				FF65D3211C1EA3D60015C99F /* SignUpController.swift */,
-				FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */,
-				FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */,
-				FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */,
-				FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */,
-				FF897C341C01AC63001B2634 /* AppDelegate.swift */,
-				FF7878411C26A0CC00354936 /* CameraController.swift */,
-				FF897C361C01AC63001B2634 /* ViewController.swift */,
-				FF83A4DE1CC59A3800AFB26B /* RBResizer.swift */,
 				FF897C3B1C01AC63001B2634 /* Assets.xcassets */,
 				FF65D31C1C1E0BFC0015C99F /* Main.storyboard */,
-				FFBDD75B1CD59A390007A188 /* Home/Newsfeed */,
+				FFF442391C4C2B21007651DE /* Launch Screen.storyboard */,
+				FF897C341C01AC63001B2634 /* AppDelegate.swift */,
 				FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */,
 				FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */,
-				FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */,
-				FFF442391C4C2B21007651DE /* Launch Screen.storyboard */,
-				FFF442351C4B2244007651DE /* Functions.swift */,
-				FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */,
-				FF7878601C3010E600354936 /* LogInController.swift */,
-				FF7878451C281A2500354936 /* FriendRequestsController.swift */,
-				FF78783F1C26A0A900354936 /* MenuController.swift */,
-				FF897C401C01AC63001B2634 /* Info.plist */,
+				FF7C0A491D13A29200C1502D /* Archived/Unused */,
+				FF7C0A4A1D13A2A800C1502D /* HelperFunctions */,
+				FFBDD75B1CD59A390007A188 /* Newsfeed */,
+				FF7C0A481D13A24200C1502D /* Login/Signup */,
+				FF7C0A471D13A20700C1502D /* TableViewCells */,
+				FF897C361C01AC63001B2634 /* ViewController.swift */,
+				FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */,
+				FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */,
 				FF7878761C34EC4A00354936 /* RecentConnections.swift */,
-				FF7878781C352D0400354936 /* TableViewCell.swift */,
-				FFBDD75E1CD5B5FA0007A188 /* YouNotificationsTableViewCell.swift */,
-				FFBDD7601CD5B6190007A188 /* NewsfeedTableViewCell.swift */,
-				FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */,
-				FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */,
-				FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */,
+				FF78783F1C26A0A900354936 /* MenuController.swift */,
+				FF7878451C281A2500354936 /* FriendRequestsController.swift */,
+				FF897C401C01AC63001B2634 /* Info.plist */,
 			);
 			name = Aquaint;
 			path = ConnectMe;
@@ -308,14 +340,14 @@
 			name = "Facebook Frameworks";
 			sourceTree = "<group>";
 		};
-		FFBDD75B1CD59A390007A188 /* Home/Newsfeed */ = {
+		FFBDD75B1CD59A390007A188 /* Newsfeed */ = {
 			isa = PBXGroup;
 			children = (
 				FFBDD7591CD59A2D0007A188 /* YouNotificationsViewController.swift */,
 				FFBDD7571CD59A0B0007A188 /* NewsfeedViewController.swift */,
 				FFBDD7531CD58F910007A188 /* HomeContainerViewController.swift */,
 			);
-			name = Home/Newsfeed;
+			name = Newsfeed;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

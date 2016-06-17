@@ -141,7 +141,7 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
             {
                 
                 // Find person in list, remove that person from list
-                for (var i = 0; i < self.connectionRequestList.count; i++)
+                for i in 0...self.connectionRequestList.count - 1
                 {
                     if (self.connectionRequestList[i] == snapshot.key as String)
                     {

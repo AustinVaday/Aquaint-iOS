@@ -217,7 +217,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
             // Store respective user info (key is the username of connectee)
             let keyName = snapshot.key
             
-            for (var i = 0; i < self.connectionRequestList.count; i++)
+            for i in 0...self.connectionRequestList.count-1
             {
                 // Find the person to remove from this list
                 if (self.connectionRequestList[i].userName == keyName)
