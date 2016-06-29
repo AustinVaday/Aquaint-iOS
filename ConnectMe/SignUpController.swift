@@ -44,7 +44,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         firebaseRootRef = FIRDatabase.database().reference()
         
         // Log out of of firebase if already logged in
-        firebaseRootRef.unauth()
+        try! FIRAuth.auth()!.signOut()
         
         self.checkMark.hidden = true
         self.checkMarkFlipped.hidden = true
@@ -322,20 +322,17 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             }
             else
             {
-            
-                self.firebaseRootRef.createUser(userEmailString, password: userPasswordString, withValueCompletionBlock: { error1, authData in
+                FIRAuth.auth()?.createUserWithEmail(userEmailString, password: userPasswordString, completion: { (user, error1) in
+
                     // If success sign up
                     if (error1 == nil)
                     {
                         // Log user in
-                        self.firebaseRootRef.authUser(userEmailString, password: userPasswordString, withCompletionBlock:
-                            { error, authData in
-                                
+                        FIRAuth.auth()?.signInWithEmail(userEmailString, password: userPasswordString, completion: { (user, error) in
                                 // If success log in
                                 if (error == nil)
                                 {
-                                    let userId = authData.uid
-                                    
+                                    let userId = user!.uid
                                     
                                     let currentTime = getTimestampAsInt()
                                     

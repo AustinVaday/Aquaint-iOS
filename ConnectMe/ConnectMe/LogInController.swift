@@ -38,7 +38,7 @@ class LogInController: UIViewController {
         firebaseRootRef = FIRDatabase.database().reference()
         
         // Log out of of firebase if already logged in
-        firebaseRootRef.unauth()
+//        try! FIRAuth.auth()!.signOut()
         
         self.checkMark.hidden = true
         self.checkMarkFlipped.hidden = true
@@ -114,14 +114,11 @@ class LogInController: UIViewController {
             
                 self.spinner.startAnimating()
             
-                self.firebaseRootRef.authUser(userEmailString, password: userPasswordString, withCompletionBlock:
-                    { error, authData in
-
+            FIRAuth.auth()?.signInWithEmail(userEmailString, password: userPasswordString, completion: { (user, error) in
                         // If success log in
-                        if (error == nil)
+                        if (user != nil)
                         {
-                            
-                            let userId = authData.uid
+                            let userId = user!.uid
                             var userName: String!
                             print("User logged in: ", userId)
    
@@ -133,7 +130,7 @@ class LogInController: UIViewController {
                                 print ("prior to snapshot")
                 
                                 // Means we have an error, display error..
-                                if (snapshot.value.isKindOfClass(NSNull))
+                                if (snapshot.value!.isKindOfClass(NSNull))
                                 {
                                     
                                     // Obtain username and cache the user name for future use!
@@ -149,7 +146,7 @@ class LogInController: UIViewController {
                                     
                                     self.spinner.stopAnimating()
                                     
-                                    self.firebaseRootRef.unauth()
+                                    try! FIRAuth.auth()!.signOut()
 
                                     return
                                     

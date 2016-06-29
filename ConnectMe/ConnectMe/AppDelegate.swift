@@ -18,8 +18,15 @@ import Firebase
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    
     var window: UIWindow?
 
+    override init() {
+        // Firebase Init
+        //FIRDatabase.database().persistenceEnabled = true
+        FIRApp.configure()
+    }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         SimpleAuth.configuration()["facebook"] = [
@@ -67,22 +74,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let firebaseRootRef = FIRDatabase.database().reference()
 
         // If user is authenticated already, show correct view controller
-        if (firebaseRootRef.authData != nil)
-        {
-            let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-            let viewControllerIdentifier = "MainContainerViewController"
+        FIRAuth.auth()!.addAuthStateDidChangeListener() { (auth, user) in
+            if user != nil
+            {
+                let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+                let viewControllerIdentifier = "MainContainerViewController"
+                
+                // Go to home page, as if user was logged in already!
+                self.window?.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
+                print("user already logged in")
 
-            // Go to home page, as if user was logged in already!
-            self.window?.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
-            print("user already logged in")
-        }
-        else
-        {
-            print("no user logged in yet!")
+            } else
+            {
+                print("no user logged in yet!")
+            }
         }
         
-        FIRDatabase.database().persistenceEnabled = true
-        FIRApp.configure()
+        
+        
+//        FIRApp.configure()
 
         
         return true

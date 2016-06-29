@@ -132,24 +132,24 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             self.performSegueWithIdentifier("logOut", sender: nil)
             
             // Log out of of firebase
-            self.firebaseRootRef.unauth()
+            try! FIRAuth.auth()?.signOut()
             
             // Remove all observers
             self.firebaseRootRef.removeAllObservers()
             
-            if (self.firebaseRootRef.authData == nil)
-            {
-                print("successful log out.")
-                
-                // Set initial view controller back to default
-                //
-                //                    let window = UIWindow(frame: UIScreen.mainScreen().bounds)
-                //                    let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-                //                    let viewControllerIdentifier = "BeginningViewController"
-                //
-                //                    // Go to beginning page, as if user was logged in already!
-                //                    window.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
-            }
+//            if (self.firebaseRootRef.authData == nil)
+//            {
+//                print("successful log out.")
+//                
+//                // Set initial view controller back to default
+//                //
+//                //                    let window = UIWindow(frame: UIScreen.mainScreen().bounds)
+//                //                    let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+//                //                    let viewControllerIdentifier = "BeginningViewController"
+//                //
+//                //                    // Go to beginning page, as if user was logged in already!
+//                //                    window.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
+//            }
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil)
