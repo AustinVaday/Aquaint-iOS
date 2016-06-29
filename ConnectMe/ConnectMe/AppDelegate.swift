@@ -91,7 +91,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         {
             print("no user logged in yet!")
         }
-    
+        
+        
+        FIRApp.configure()
+
         
         return true
     }
@@ -102,6 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let handled = FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication , annotation: annotation)
         print("FBSDK HANDLED:", handled)
 
+        
         
         return handled
     }

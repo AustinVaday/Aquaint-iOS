@@ -54,6 +54,7 @@
 		FFBDD7611CD5B6190007A188 /* NewsfeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7601CD5B6190007A188 /* NewsfeedTableViewCell.swift */; };
 		FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */; };
 		FFF2A3501CA891E200C08E38 /* ServerFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */; };
+		FFF419B11D23752C00DE4352 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFF419B01D23752C00DE4352 /* GoogleService-Info.plist */; };
 		FFF442361C4B2244007651DE /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF442351C4B2244007651DE /* Functions.swift */; };
 		FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFF442391C4C2B21007651DE /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
@@ -130,6 +131,7 @@
 		FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionClass.swift; sourceTree = "<group>"; };
 		FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Aquaint-Bridging-Header.h"; path = "ConnectMe/Aquaint-Bridging-Header.h"; sourceTree = "<group>"; };
 		FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerFunctions.swift; sourceTree = "<group>"; };
+		FFF419B01D23752C00DE4352 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FFF442351C4B2244007651DE /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		FFF442391C4C2B21007651DE /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -231,6 +233,7 @@
 		FF897C281C01AC63001B2634 = {
 			isa = PBXGroup;
 			children = (
+				FFF419B01D23752C00DE4352 /* GoogleService-Info.plist */,
 				FFBDD7551CD599690007A188 /* HomePageViewController.swift */,
 				FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */,
 				FFB8602D1C4C390400CFB621 /* AquaintTestCases */,
@@ -459,6 +462,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */,
+				FFF419B11D23752C00DE4352 /* GoogleService-Info.plist in Resources */,
 				FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */,
 				FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */,
 			);

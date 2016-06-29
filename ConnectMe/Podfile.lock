@@ -1,40 +1,25 @@
 PODS:
-  - AWSAutoScaling (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSCloudWatch (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSCognito (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSCore (2.3.6)
-  - AWSDynamoDB (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSEC2 (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSElasticLoadBalancing (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSKinesis (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSLambda (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSMachineLearning (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSMobileAnalytics (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSS3 (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSSES (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSSimpleDB (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSSNS (2.3.6):
-    - AWSCore (= 2.3.6)
-  - AWSSQS (2.3.6):
-    - AWSCore (= 2.3.6)
   - CMDQueryStringSerialization (0.4.1):
     - ISO8601
   - cocoa-oauth (0.0.1):
     - NSData+Base64 (~> 1.0)
-  - Firebase (2.5.0)
+  - Firebase (3.2.1):
+    - Firebase/Core (= 3.2.1)
+  - Firebase/Analytics (3.2.1):
+    - FirebaseAnalytics (= 3.2.0)
+  - Firebase/Core (3.2.1):
+    - Firebase/Analytics (= 3.2.1)
+  - FirebaseAnalytics (3.2.0):
+    - FirebaseInstanceID (~> 1.0)
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleSymbolUtilities (~> 1.1)
+    - GoogleUtilities (~> 1.3)
+  - FirebaseInstanceID (1.0.6)
+  - GoogleInterchangeUtilities (1.2.1):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleSymbolUtilities (1.1.1)
+  - GoogleUtilities (1.3.1):
+    - GoogleSymbolUtilities (~> 1.0)
   - ISO8601 (0.5.0)
   - NSData+Base64 (1.0.0)
   - ReactiveCocoa (4.1.0):
@@ -111,45 +96,18 @@ PODS:
     - SimpleAuth/Core
 
 DEPENDENCIES:
-  - AWSAutoScaling
-  - AWSCloudWatch
-  - AWSCognito
-  - AWSCore
-  - AWSDynamoDB
-  - AWSEC2
-  - AWSElasticLoadBalancing
-  - AWSKinesis
-  - AWSLambda
-  - AWSMachineLearning
-  - AWSMobileAnalytics
-  - AWSS3
-  - AWSSES
-  - AWSSimpleDB
-  - AWSSNS
-  - AWSSQS
-  - Firebase (>= 2.5.0)
+  - Firebase
   - SimpleAuth
 
 SPEC CHECKSUMS:
-  AWSAutoScaling: 49d9f49984a82852511be4caa2a510f522cd8de1
-  AWSCloudWatch: 45fb53f7b76b4d0260d54b3284fc30cb6c7ebdef
-  AWSCognito: af54fe65171c7c994c134e5d29b1ee60ee234825
-  AWSCore: 917d84b32974136194a905b98c0ae25c9f3350b8
-  AWSDynamoDB: 0bfd95eb10363090d8570a48d5feb4e3d7ec5264
-  AWSEC2: 42f0db0be7ded684b5d5ecf5aa444689fa2bc8ce
-  AWSElasticLoadBalancing: b68b0bb0dce50cc4d1c193c53a42b5963fe78381
-  AWSKinesis: 89c0042637c088ba54f2bb892d285693b44d93e8
-  AWSLambda: 9882d7bf98d368fa7e0c98d0f6e15dbbd4eb0e26
-  AWSMachineLearning: 97768294558e0586d98eb34acaf5fa5961b7b35a
-  AWSMobileAnalytics: 56ce9e671640fbd702f8ce52b0f128e525f3e51c
-  AWSS3: 1caaf6b45100503fecf3d418c394519a89409a74
-  AWSSES: 8d33c48393d459c649cca781a4a4ae553379f846
-  AWSSimpleDB: 0e4f2160b572be584baf8e2ef6ba257117f75114
-  AWSSNS: 37c7f4c80657a621fbabccf7d0f352e3c018fbd0
-  AWSSQS: aa53b836c21a10611120e8bf361feef54fd73ae1
   CMDQueryStringSerialization: 4bb0a2f5e7d8d8678d911d88072274952cbef4e5
   cocoa-oauth: 1200a2170276a62a975f2786d505dab6e2db1fa8
-  Firebase: 744617c0733b45198f9486ebd5cac64ec2d10d79
+  Firebase: 6c80ac28d59d06bfd9152a7b6ea17625ca93183d
+  FirebaseAnalytics: 6f75b04e6bfb8e0b6e9ef298e04c24eea3b13863
+  FirebaseInstanceID: d014d574053a2fe84478f12f7bae96979e7051bb
+  GoogleInterchangeUtilities: def8415a862effc67d549d5b5b0b9c7a2f97d4de
+  GoogleSymbolUtilities: 33117db1b5f290c6fbf259585e4885b4c84b98d7
+  GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
   ISO8601: 25d7a973fa8daf31a50bbd0401d2e7b98e8a7df3
   NSData+Base64: 4e84902c4db907a15673474677e57763ef3903e4
   ReactiveCocoa: d70004d7a366a7b8e87e60ce2347182c77701949
