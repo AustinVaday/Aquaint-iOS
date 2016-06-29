@@ -7,20 +7,34 @@ PODS:
     - Firebase/Core (= 3.2.1)
   - Firebase/Analytics (3.2.1):
     - FirebaseAnalytics (= 3.2.0)
+  - Firebase/Auth (3.2.1):
+    - Firebase/Analytics (= 3.2.1)
+    - FirebaseAuth (= 3.0.2)
   - Firebase/Core (3.2.1):
     - Firebase/Analytics (= 3.2.1)
+  - Firebase/Database (3.2.1):
+    - Firebase/Analytics (= 3.2.1)
+    - FirebaseDatabase (= 3.0.1)
   - FirebaseAnalytics (3.2.0):
     - FirebaseInstanceID (~> 1.0)
     - GoogleInterchangeUtilities (~> 1.2)
     - GoogleSymbolUtilities (~> 1.1)
     - GoogleUtilities (~> 1.3)
+  - FirebaseAuth (3.0.2):
+    - FirebaseAnalytics (~> 3.2)
+    - GoogleNetworkingUtilities (~> 1.2)
+    - GoogleUtilities (~> 1.3)
+  - FirebaseDatabase (3.0.1):
+    - FirebaseAnalytics (~> 3.2)
   - FirebaseInstanceID (1.0.6)
   - GoogleInterchangeUtilities (1.2.1):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleNetworkingUtilities (1.2.1):
     - GoogleSymbolUtilities (~> 1.0)
   - GoogleSymbolUtilities (1.1.1)
   - GoogleUtilities (1.3.1):
     - GoogleSymbolUtilities (~> 1.0)
-  - ISO8601 (0.5.0)
+  - ISO8601 (0.6.0)
   - NSData+Base64 (1.0.0)
   - ReactiveCocoa (4.1.0):
     - ReactiveCocoa/UI (= 4.1.0)
@@ -33,7 +47,7 @@ PODS:
   - ReactiveCocoa/UI (4.1.0):
     - ReactiveCocoa/Core
     - Result (~> 2.0)
-  - Result (2.0.0)
+  - Result (2.1.1)
   - SimpleAuth (0.3.9):
     - SimpleAuth/BoxWeb (= 0.3.9)
     - SimpleAuth/Core (= 0.3.9)
@@ -97,6 +111,9 @@ PODS:
 
 DEPENDENCIES:
   - Firebase
+  - Firebase/Auth
+  - Firebase/Core
+  - Firebase/Database
   - SimpleAuth
 
 SPEC CHECKSUMS:
@@ -104,14 +121,17 @@ SPEC CHECKSUMS:
   cocoa-oauth: 1200a2170276a62a975f2786d505dab6e2db1fa8
   Firebase: 6c80ac28d59d06bfd9152a7b6ea17625ca93183d
   FirebaseAnalytics: 6f75b04e6bfb8e0b6e9ef298e04c24eea3b13863
+  FirebaseAuth: 94b851fc345ce98036dfedfdc2eddeaef8fa3b4c
+  FirebaseDatabase: 34301d11621a83546f39f670d256477ba6f7fcea
   FirebaseInstanceID: d014d574053a2fe84478f12f7bae96979e7051bb
   GoogleInterchangeUtilities: def8415a862effc67d549d5b5b0b9c7a2f97d4de
+  GoogleNetworkingUtilities: 3e83269048cfb498dc7ec83ab36813360965c74f
   GoogleSymbolUtilities: 33117db1b5f290c6fbf259585e4885b4c84b98d7
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
-  ISO8601: 25d7a973fa8daf31a50bbd0401d2e7b98e8a7df3
+  ISO8601: d3ea3ba9b752820cf92c6b47a9ee327e9f0e13fc
   NSData+Base64: 4e84902c4db907a15673474677e57763ef3903e4
   ReactiveCocoa: d70004d7a366a7b8e87e60ce2347182c77701949
-  Result: 9e75e1111c774c6ac594e14907b15057053a7959
+  Result: 822c879f145943320cc80a9a8372378e3d699fe4
   SimpleAuth: bc7d594f90711a7e6ef7624dce5aa8c8b09770ab
 
 COCOAPODS: 0.39.0

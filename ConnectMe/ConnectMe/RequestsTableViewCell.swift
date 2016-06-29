@@ -19,6 +19,7 @@ class RequestsTableViewCell: UITableViewCell {
     @IBOutlet weak var cellUserName: UILabel!
     
     var currentUser : String!
+    var firebaseRootRef: FIRDatabaseReference!
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
     @IBAction func onAddButtonClicked(sender: UIButton) {
@@ -27,9 +28,10 @@ class RequestsTableViewCell: UITableViewCell {
         let currentUser = getCurrentUser()
         let connectedUserToAdd = cellUserName.text!
         
+        firebaseRootRef = FIRDatabase.database().reference()
         
         // Remove relationship in ReceivedRequests
-        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "ReceivedRequests/" + currentUser + "/" + connectedUserToAdd)
+        let firebaseReceivedRequestsRef = firebaseRootRef.child("ReceivedRequests/" + currentUser + "/" + connectedUserToAdd)
         
         firebaseReceivedRequestsRef.removeValueWithCompletionBlock { (error, ref) -> Void in
             if (error != nil)
@@ -40,7 +42,7 @@ class RequestsTableViewCell: UITableViewCell {
         
         
         // Remove relationship in SentRequests
-        let firebaseSentRequestsRef = Firebase(url: firebaseRootRefString + "SentRequests/" + connectedUserToAdd + "/" + currentUser)
+        let firebaseSentRequestsRef = firebaseRootRef.child("SentRequests/" + connectedUserToAdd + "/" + currentUser)
         
         firebaseSentRequestsRef.removeValueWithCompletionBlock { (error, ref) -> Void in
             if (error != nil)
@@ -51,16 +53,16 @@ class RequestsTableViewCell: UITableViewCell {
         
         
         // Add relationship to Connections
-        let firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/" )
+        let firebaseConnectionsRef = firebaseRootRef.child("Connections/" )
         
         // Get time of connection
         let connectionTime = getTimestampAsInt()
         
         // Add friend info to currentUser's database info
-        firebaseConnectionsRef.childByAppendingPath(currentUser + "/" + connectedUserToAdd).setValue(connectionTime)
+        firebaseConnectionsRef.child(currentUser + "/" + connectedUserToAdd).setValue(connectionTime)
 
         // Add friend info to connectionUserToAdd's database info
-        firebaseConnectionsRef.childByAppendingPath(connectedUserToAdd + "/" + currentUser).setValue(connectionTime)
+        firebaseConnectionsRef.child(connectedUserToAdd + "/" + currentUser).setValue(connectionTime)
         
     }
     
@@ -75,7 +77,7 @@ class RequestsTableViewCell: UITableViewCell {
         
         
         // Remove relationship in ReceivedRequests
-        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "ReceivedRequests/" + currentUser + "/" + connectedUserToAdd)
+        let firebaseReceivedRequestsRef = firebaseRootRef.child("ReceivedRequests/" + currentUser + "/" + connectedUserToAdd)
         
         firebaseReceivedRequestsRef.removeValueWithCompletionBlock { (error, ref) -> Void in
             if (error != nil)
@@ -86,7 +88,7 @@ class RequestsTableViewCell: UITableViewCell {
         
         
         // Remove relationship in SentRequests
-        let firebaseSentRequestsRef = Firebase(url: firebaseRootRefString + "SentRequests/" + connectedUserToAdd + "/" + currentUser)
+        let firebaseSentRequestsRef = firebaseRootRef.child("SentRequests/" + connectedUserToAdd + "/" + currentUser)
         
         firebaseSentRequestsRef.removeValueWithCompletionBlock { (error, ref) -> Void in
             if (error != nil)

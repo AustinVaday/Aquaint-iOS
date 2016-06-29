@@ -20,12 +20,11 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet weak var linkedAccountsCollectionView: UICollectionView!
     
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
-    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
-    var firebaseLinkedAccountsRef: Firebase!
-
+    var firebaseLinkedAccountsRef: FIRDatabaseReference!
+    var firebaseRootRef : FIRDatabaseReference!
 
     
     
@@ -41,11 +40,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         socialMediaUserNames = NSMutableDictionary()
         
         // Firebase LinkedSocialMediaAccoutns for user, our data is stored here
-        firebaseLinkedAccountsRef = Firebase(url: firebaseRootRefString + "LinkedSocialMediaAccounts/" + currentUserName)
-
+        firebaseRootRef = FIRDatabase.database().reference()
+        firebaseLinkedAccountsRef = firebaseRootRef.child("LinkedSocialMediaAccounts/" + currentUserName)
         
-        
-        firebaseLinkedAccountsRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+        firebaseLinkedAccountsRef.observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
             
             let socialMediaNameType = snapshot.key
             let socialMediaName = snapshot.value as! String

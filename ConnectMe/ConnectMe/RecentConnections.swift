@@ -16,17 +16,16 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     @IBOutlet weak var recentConnTableView: UITableView!
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube")
-    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
     var currentUserName : String!
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var expansionObj:CellExpansion!
-    var firebaseRootRef : Firebase!
-    var firebaseUsersRef: Firebase!
-    var firebaseLinkedAccountsRef: Firebase!
-    var firebaseConnectionsRef: Firebase!
-    var firebaseUserImagesRef: Firebase!
+    var firebaseRootRef : FIRDatabaseReference!
+    var firebaseUsersRef: FIRDatabaseReference!
+    var firebaseLinkedAccountsRef: FIRDatabaseReference!
+    var firebaseConnectionsRef: FIRDatabaseReference!
+    var firebaseUserImagesRef: FIRDatabaseReference!
     var refreshControl : UIRefreshControl!
     var connectionList : Array<Connection>!
     var defaultImage : UIImage!
@@ -37,11 +36,11 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         currentUserName = getCurrentUser()
         
         // Firebase root, our data is stored here
-        firebaseRootRef = Firebase(url: firebaseRootRefString)
-        firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
-        firebaseUserImagesRef = Firebase(url: firebaseRootRefString + "UserImages/")
-        firebaseLinkedAccountsRef = Firebase(url: firebaseRootRefString + "LinkedSocialMediaAccounts/")
-        firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/" + currentUserName)
+        firebaseRootRef = FIRDatabase.database().reference()
+        firebaseUsersRef = firebaseRootRef.child("Users/")
+        firebaseUserImagesRef = firebaseRootRef.child("UserImages/")
+        firebaseLinkedAccountsRef = firebaseRootRef.child("LinkedSocialMediaAccounts/")
+        firebaseConnectionsRef = firebaseRootRef.child("Connections/" + currentUserName)
         
         connectionList = Array<Connection>()
         expansionObj = CellExpansion()
@@ -49,7 +48,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
         
         // Load all connections and respective information from servers
-        firebaseConnectionsRef.queryOrderedByValue().observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+        firebaseConnectionsRef.queryOrderedByValue().observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
             
             
             // Get your connection's user name
@@ -61,7 +60,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             connection.timestampGMT = snapshot.value as! Int
             
             // Store the user's info (except image)
-            self.firebaseUsersRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+            self.firebaseUsersRef.child(connectionUserName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
             
                 connection.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
                 
@@ -70,7 +69,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             })
             
             // Store the user's image
-            self.firebaseUserImagesRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+            self.firebaseUserImagesRef.child(connectionUserName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
                 
                 // Get base 64 string image
                 
@@ -91,7 +90,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             })
             
             // Store the user's social media accounts
-            self.firebaseLinkedAccountsRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+            self.firebaseLinkedAccountsRef.child(connectionUserName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
 
                 // Store dictionary of all key-val pairs..
                 // I.e.: (facebook, [user's facebook username])

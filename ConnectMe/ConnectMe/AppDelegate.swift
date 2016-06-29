@@ -8,16 +8,8 @@
 //  Code is owned by: Austin Vaday and Navid Sarvian
 
 import UIKit
-//import Parse
-//import Bolts
 import FBSDKCoreKit
 import FBSDKLoginKit
-//import AWSCore
-//import AWSCognito
-
-//import AWSS3
-//import AWSCore
-
 import SimpleAuth
 
 // Begin using Firebase framework
@@ -69,13 +61,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        
 //        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = defaultServiceConfiguration
         
-        
-        
-        // If user is already logged into Firebase, go to home page instead of log-in/sign-up pages
-        let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
+
         
         // Get the firebase ref so that we can logout on firebase
-        let firebaseRootRef = Firebase(url: firebaseRootRefString)
+        let firebaseRootRef = FIRDatabase.database().reference()
 
         // If user is authenticated already, show correct view controller
         if (firebaseRootRef.authData != nil)
@@ -92,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("no user logged in yet!")
         }
         
-        
+        FIRDatabase.database().persistenceEnabled = true
         FIRApp.configure()
 
         

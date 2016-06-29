@@ -27,13 +27,11 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
     @IBOutlet weak var notificationViewLabel: UILabel!
     
     var connectionRequestList : Array<String>! // MAKE IT Connection type LATER
-    var firebaseRootRef : Firebase!
+    var firebaseRootRef : FIRDatabaseReference!
     var userName : String!
     
     // This is our child (container) view controller that holds all our pages
     var mainPageViewController: MainPageViewController!
-
-    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
     
     
@@ -87,7 +85,7 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         sectionUnderlineView0.hidden = false
         
         // Set up Firebase
-        firebaseRootRef = Firebase(url: firebaseRootRefString)
+        firebaseRootRef = FIRDatabase.database().reference()
         
         //*** NOTE: This is an extra check for top-notch security. It is not necessary.
         // If we're not logged in, immediately go back to beginning page.
@@ -107,10 +105,10 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         connectionRequestList = Array<String>()
         
         // Set up Firebase listener for listening for new friend requests
-        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "/ReceivedRequests")
+        let firebaseReceivedRequestsRef = firebaseRootRef.child("ReceivedRequests")
         
         // WATCH FOR NEW NOTIFICATIONS
-        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+        firebaseReceivedRequestsRef.child(userName).observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
             
             
             print("childAdded:", snapshot.key)
@@ -131,7 +129,7 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         })
         
         // DELETE NOTIFICATIONS
-        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
+        firebaseReceivedRequestsRef.child(userName).observeEventType(FIRDataEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
             
             print("childRemoved:", snapshot.key)
             

@@ -29,10 +29,9 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
     
     var userName : String!
     var userId   : String!
-    var firebaseRootRef : Firebase!
+    var firebaseRootRef : FIRDatabaseReference!
     var defaultImage : UIImage!
     
-    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     let awsBucketName = "aquaint-userimages"
     
     var connectionRequestList : Array<Connection>! // MAKE IT Connection type LATER
@@ -64,7 +63,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
 //        sectionUnderlineView2.hidden = false
         
         
-        firebaseRootRef = Firebase(url: firebaseRootRefString)
+        firebaseRootRef = FIRDatabase.database().reference()
         
         //*** NOTE: This is an extra check for top-notch security. It is not necessary.
         // If we're not logged in, immediately go back to beginning page.
@@ -100,10 +99,10 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
         
         
 //        // Set up Firebase listener for listening for new friend requests
-//        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "/ReceivedRequests")
+//        let firebaseReceivedRequestsRef = firebaseRootRef.child("ReceivedRequests")
 //        
 //        // WATCH FOR NEW NOTIFICATIONS
-//        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+//        firebaseReceivedRequestsRef.child(userName).observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
 //            
 //
 //            print("childAdded:", snapshot.key)
@@ -124,7 +123,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
 //        })
 //        
 //        // DELETE NOTIFICATIONS
-//        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
+//        firebaseReceivedRequestsRef.child(userName).observeEventType(FIRDataEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
 //            
 //            print("childRemoved:", snapshot.key)
 //
@@ -166,19 +165,18 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
 //        
         // FOR FILLING THE TABLE:
         
-        let firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
-        let firebaseUserImagesRef = Firebase(url: firebaseRootRefString + "UserImages/")
+        let firebaseUsersRef = firebaseRootRef.child("Users/")
+        let firebaseUserImagesRef = firebaseRootRef.child("UserImages/")
         print (userName)
-        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "ReceivedRequests/" + userName)
-    
-        firebaseReceivedRequestsRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+        let firebaseReceivedRequestsRef = firebaseRootRef.child("ReceivedRequests/" + userName)
+        firebaseReceivedRequestsRef.observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
             let user = Connection()
 
             // Store respective user info (key is the username)
             user.userName = snapshot.key
 
             // Retrieve user's info (except image)
-            firebaseUsersRef.childByAppendingPath(user.userName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+            firebaseUsersRef.child(user.userName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
                 
                 user.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
                 
@@ -186,7 +184,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
             
             
             // Store the user's image
-            firebaseUserImagesRef.childByAppendingPath(user.userName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+            firebaseUserImagesRef.child(user.userName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
                 
                 // Get base 64 string image
                 
@@ -212,7 +210,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
         })
 
         
-        firebaseReceivedRequestsRef.observeEventType(FEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
+        firebaseReceivedRequestsRef.observeEventType(FIRDataEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
             
             // Store respective user info (key is the username of connectee)
             let keyName = snapshot.key

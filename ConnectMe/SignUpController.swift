@@ -24,12 +24,11 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     @IBOutlet weak var signUpButton: UIButton!
     
     var checkMarkFlippedCopy: UIImageView!
-    var firebaseRootRef: Firebase!
+    var firebaseRootRef: FIRDatabaseReference!
     var prevEmailString: String!                // Used to prevent user from spamming requests
     var imagePicker:UIImagePickerController!    // Used for selecting image from user's device
 
     let segueDestination = "toMainContainerViewController"
-    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +41,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
         
         // Create a reference to firebase location
-        firebaseRootRef = Firebase(url: firebaseRootRefString)
+        firebaseRootRef = FIRDatabase.database().reference()
         
         // Log out of of firebase if already logged in
         firebaseRootRef.unauth()
@@ -296,13 +295,13 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             })
         
             //Check is username already exists or not....
-            let firebaseUserRef = Firebase(url: self.firebaseRootRefString + "/Users/")
+            let firebaseUserRef = firebaseRootRef.child("Users/")
         
             //Important!! Make userNameString all lowercase from now on (for storing unique keys in the database)
             let lowerCaseUserNameString = userNameString.lowercaseString
         
             // This is a check if username already exists or not.
-            firebaseUserRef.observeSingleEventOfType(FEventType.Value, andPreviousSiblingKeyWithBlock: { (snapshot, str) -> Void in
+            firebaseUserRef.observeSingleEventOfType(FIRDataEventType.Value, andPreviousSiblingKeyWithBlock: { (snapshot, str) -> Void in
             
                 if snapshot.hasChild(lowerCaseUserNameString)
                 {
@@ -373,17 +372,17 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
 
                                     
                                     // Store necessary information in JSON tree
-                                    self.firebaseRootRef.childByAppendingPath("Users/" + lowerCaseUserNameString).setValue(userInfo)
+                                    self.firebaseRootRef.child("Users/" + lowerCaseUserNameString).setValue(userInfo)
                                     
                                     // If user did add a photo, store it on database
                                     if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
                                     {
-                                        self.firebaseRootRef.childByAppendingPath("UserImages/" + lowerCaseUserNameString + "/profileImage").setValue(base64String)
+                                        self.firebaseRootRef.child("UserImages/" + lowerCaseUserNameString + "/profileImage").setValue(base64String)
                                     }
                                     
-                                    self.firebaseRootRef.childByAppendingPath("LinkedSocialMediaAccounts/" + lowerCaseUserNameString).setValue(linkedSocialMediaAccounts)
-                                    self.firebaseRootRef.childByAppendingPath("Connections/" + lowerCaseUserNameString).setValue(connections)
-                                    self.firebaseRootRef.childByAppendingPath("UserIdToUserName/" + userId).setValue(lowerCaseUserNameString)
+                                    self.firebaseRootRef.child("LinkedSocialMediaAccounts/" + lowerCaseUserNameString).setValue(linkedSocialMediaAccounts)
+                                    self.firebaseRootRef.child("Connections/" + lowerCaseUserNameString).setValue(connections)
+                                    self.firebaseRootRef.child("UserIdToUserName/" + userId).setValue(lowerCaseUserNameString)
                                     
                                     
                                     // Cache the user name for future use!

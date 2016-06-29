@@ -16,9 +16,9 @@
 //    
 //    var currentUserName : String!
 //    
-//    var firebaseUsersRef: Firebase!
-//    var firebaseLinkedAccountsRef: Firebase!
-//    var firebaseConnectionsRef: Firebase!
+//    var firebaseUsersRef: FIRDatabaseReference!
+//    var firebaseLinkedAccountsRef: FIRDatabaseReference!
+//    var firebaseConnectionsRef: FIRDatabaseReference!
 //    var connectionList : Array<Connection>!
 //    
 //    
@@ -26,14 +26,14 @@
 //    currentUserName = getCurrentUser()
 //    
 //    // Firebase root, our data is stored here
-//    firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
-//    firebaseLinkedAccountsRef = Firebase(url: firebaseRootRefString + "LinkedSocialMediaAccounts/")
-//    firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/" + currentUserName)
+//    firebaseUsersRef = firebaseRootRef.child("Users/")
+//    firebaseLinkedAccountsRef = firebaseRootRef.child("LinkedSocialMediaAccounts/")
+//    firebaseConnectionsRef = firebaseRootRef.child("Connections/" + currentUserName)
 //    
 //    connectionList = Array<Connection>()
 //    
 //    // Load all connections and respective information from servers
-//    firebaseConnectionsRef.queryOrderedByValue().observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+//    firebaseConnectionsRef.queryOrderedByValue().observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
 //        
 //        
 //        // Get your connection's user name
@@ -49,7 +49,7 @@
 //        print("##1")
 //        
 //        // Store the user's Image
-//        firebaseUsersRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+//        firebaseUsersRef.child(connectionUserName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
 //            
 //            //                connection.userImage = snapshot.value as! String
 //            connection.userImage = snapshot.childSnapshotForPath("/userImage").value as! String
@@ -62,7 +62,7 @@
 //        })
 //        
 //        // Store the user's social media accounts
-//        firebaseLinkedAccountsRef.childByAppendingPath(connectionUserName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+//        firebaseLinkedAccountsRef.child(connectionUserName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
 //            
 //            print("LET'S DO THIS FOR: ", connectionUserName)
 //            // Store dictionary of all key-val pairs..

@@ -15,12 +15,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     var userName : String!
     var userId   : String!
-    var firebaseRootRef : Firebase!
+    var firebaseRootRef : FIRDatabaseReference!
     var allUsers: Array<Connection>!
     var allUsersSentARequest : NSDictionary!
     var allUsersConnections : NSDictionary!
-    
-    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
     var defaultImage : UIImage!
 
@@ -35,18 +33,18 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
 
         
-//        firebaseRootRef = Firebase(url: firebaseRootRefString)
-
-        let firebaseUsersRef = Firebase(url: firebaseRootRefString + "Users/")
-        let firebaseUserImagesRef = Firebase(url: firebaseRootRefString + "UserImages/")
-        let firebaseSentRequestsRef = Firebase(url: firebaseRootRefString + "SentRequests/" + userName)
-        let firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/" + userName)
+        firebaseRootRef = FIRDatabase.database().reference()
+        
+        let firebaseUsersRef = firebaseRootRef.child("Users/")
+        let firebaseUserImagesRef = firebaseRootRef.child("UserImages/")
+        let firebaseSentRequestsRef = firebaseRootRef.child("SentRequests/" + userName)
+        let firebaseConnectionsRef = firebaseRootRef.child("Connections/" + userName)
         
         allUsers = Array<Connection>()
         
         
         // Used to determine pending buttons
-        firebaseSentRequestsRef.observeEventType(FEventType.Value, withBlock: { (snapshot) -> Void in
+        firebaseSentRequestsRef.observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
             
                 //Store a listing of all users that current user sent a connection request to. Used
                 //to determine which kind of button to display to user (add button, delete button, pending button)
@@ -61,7 +59,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             })
         
         // Used to determine delete buttons
-        firebaseConnectionsRef.observeEventType(FEventType.Value, withBlock: { (snapshot) -> Void in
+        firebaseConnectionsRef.observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
             
                 if !(snapshot.value is NSNull)
                 {
@@ -71,7 +69,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
             })
         
-        firebaseUsersRef.observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+        firebaseUsersRef.observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
             
             let user = Connection()
             
@@ -80,7 +78,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
             
             // Retrieve user's info (except image)
-            firebaseUsersRef.childByAppendingPath(user.userName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+            firebaseUsersRef.child(user.userName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
                 
                 user.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
                 
@@ -88,7 +86,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
             
             // Store the user's image
-            firebaseUserImagesRef.childByAppendingPath(user.userName).observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+            firebaseUserImagesRef.child(user.userName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
                 
                 // Get base 64 string image
                 

@@ -25,10 +25,9 @@ class LogInController: UIViewController {
     @IBOutlet weak var logInButton: UIButton!
     
     var checkMarkFlippedCopy: UIImageView!
-    var firebaseRootRef: Firebase!
+    var firebaseRootRef: FIRDatabaseReference!
     
     let segueDestination = "toMainContainerViewController"
-    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
     // Counts how many times the user has incorrectly logged in.
     /* var wrongLogInCount: Int = 0 */
@@ -36,7 +35,7 @@ class LogInController: UIViewController {
     override func viewDidLoad() {
         
         // Create a reference to firebase location
-        firebaseRootRef = Firebase(url: firebaseRootRefString)
+        firebaseRootRef = FIRDatabase.database().reference()
         
         // Log out of of firebase if already logged in
         firebaseRootRef.unauth()
@@ -127,10 +126,10 @@ class LogInController: UIViewController {
                             print("User logged in: ", userId)
    
                             
-                            let firebaseUserIdToUserNameRef = self.firebaseRootRef.childByAppendingPath("UserIdToUserName/" + userId)
+                            let firebaseUserIdToUserNameRef = self.firebaseRootRef.child("UserIdToUserName/" + userId)
                 
                             // Fetch respective username from this id
-                            firebaseUserIdToUserNameRef.observeSingleEventOfType(FEventType.Value, withBlock: { (snapshot) -> Void in
+                            firebaseUserIdToUserNameRef.observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
                                 print ("prior to snapshot")
                 
                                 // Means we have an error, display error..

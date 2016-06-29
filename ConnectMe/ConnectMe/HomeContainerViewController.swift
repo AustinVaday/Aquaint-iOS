@@ -21,13 +21,11 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
     @IBOutlet weak var youButton: UIButton!
     
     var connectionRequestList : Array<String>! // MAKE IT Connection type LATER
-    var firebaseRootRef : Firebase!
+    var firebaseRootRef : FIRDatabaseReference!
     var userName : String!
     
     // This is our child (container) view controller that holds all our pages
     var homePageViewController: HomePageViewController!
-    
-    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
     // Self-added protocol for MainPageViewControllerDelegate
     func didTransitionPage(sender: MainPageViewController) {
@@ -61,7 +59,7 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         sectionUnderlineView0.hidden = false
         
         // Set up Firebase
-        firebaseRootRef = Firebase(url: firebaseRootRefString)
+        firebaseRootRef = FIRDatabase.database().reference()
         
         // Get current user from NSUserDefaults
         userName = getCurrentUser()
@@ -72,10 +70,10 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         userNameLabel.text = userName
         
         // Set up Firebase listener for listening for new friend requests
-//        let firebaseReceivedRequestsRef = Firebase(url: firebaseRootRefString + "/ReceivedRequests")
+//        let firebaseReceivedRequestsRef = firebaseRootRef.child("ReceivedRequests") 
         
 //        // WATCH FOR NEW NOTIFICATIONS
-//        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+//        firebaseReceivedRequestsRef.child(userName).observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
 //            
 //            
 //            print("childAdded:", snapshot.key)
@@ -96,7 +94,7 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
 //        })
 //        
 //        // DELETE NOTIFICATIONS
-//        firebaseReceivedRequestsRef.childByAppendingPath(userName).observeEventType(FEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
+//        firebaseReceivedRequestsRef.child(userName).observeEventType(FIRDataEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
 //            
 //            print("childRemoved:", snapshot.key)
 //            

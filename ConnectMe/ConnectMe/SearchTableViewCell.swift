@@ -18,7 +18,7 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var cellAddPendingButton: UIButton!
     @IBOutlet weak var cellDeleteButton: UIButton!
     @IBOutlet weak var cellUserName: UILabel!
-    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
+    let firebaseRootRef = FIRDatabase.database().reference()
 
     func hideAllButtons()
     {
@@ -72,8 +72,8 @@ class SearchTableViewCell: UITableViewCell {
         // If currentUser is not trying to add themselves
         if (currentUser != cellUserName.text)
         {
-            let firebaseSentRequestsRef = Firebase(url: firebaseRootRefString + "SentRequests/")
-            let firebaseReceivedRequests = Firebase(url: firebaseRootRefString + "ReceivedRequests/")
+            let firebaseSentRequestsRef = firebaseRootRef.child("SentRequests/")
+            let firebaseReceivedRequests = firebaseRootRef.child("ReceivedRequests/")
 
             let connectionUserToAdd = cellUserName.text!
             
@@ -81,8 +81,8 @@ class SearchTableViewCell: UITableViewCell {
             let connectionTime = getTimestampAsInt()
 
             // User sends connection request to connectionUserToAdd. Storing relationship on server.
-            firebaseSentRequestsRef.childByAppendingPath(currentUser + "/" + connectionUserToAdd).setValue(connectionTime)
-            firebaseReceivedRequests.childByAppendingPath(connectionUserToAdd + "/" + currentUser).setValue(connectionTime)
+            firebaseSentRequestsRef.child(currentUser + "/" + connectionUserToAdd).setValue(connectionTime)
+            firebaseReceivedRequests.child(connectionUserToAdd + "/" + currentUser).setValue(connectionTime)
             
             activatePendingButton()
 
@@ -102,14 +102,14 @@ class SearchTableViewCell: UITableViewCell {
         // If currentUser is not trying to add themselves
         if (currentUser != cellUserName.text)
         {
-            let firebaseSentRequestsRef = Firebase(url: firebaseRootRefString + "SentRequests/")
-            let firebaseReceivedRequests = Firebase(url: firebaseRootRefString + "ReceivedRequests/")
+            let firebaseSentRequestsRef = firebaseRootRef.child("SentRequests/")
+            let firebaseReceivedRequests = firebaseRootRef.child("ReceivedRequests/")
             
             let connectionUserToRemove = cellUserName.text!
             
             // User sends connection request to connectionUserToAdd. Storing relationship on server.
-            firebaseSentRequestsRef.childByAppendingPath(currentUser + "/" + connectionUserToRemove).removeValue()
-            firebaseReceivedRequests.childByAppendingPath(connectionUserToRemove + "/" + currentUser).removeValue()
+            firebaseSentRequestsRef.child(currentUser + "/" + connectionUserToRemove).removeValue()
+            firebaseReceivedRequests.child(connectionUserToRemove + "/" + currentUser).removeValue()
             
             activateAddButton()
         }
@@ -130,11 +130,11 @@ class SearchTableViewCell: UITableViewCell {
             
             let connectionUserToRemove = cellUserName.text!
             
-            let firebaseConnectionsRef = Firebase(url: firebaseRootRefString + "Connections/")
+            let firebaseConnectionsRef = firebaseRootRef.child("Connections/")
             
             // Deletes friendship
-            firebaseConnectionsRef.childByAppendingPath(connectionUserToRemove + "/" + currentUser).removeValue()
-            firebaseConnectionsRef.childByAppendingPath(currentUser + "/" + connectionUserToRemove).removeValue()
+            firebaseConnectionsRef.child(connectionUserToRemove + "/" + currentUser).removeValue()
+            firebaseConnectionsRef.child(currentUser + "/" + connectionUserToRemove).removeValue()
             
             activateAddButton()
         }

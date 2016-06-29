@@ -13,8 +13,7 @@ import Firebase
 
 class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    var firebaseRootRef : Firebase!
-    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com"
+    var firebaseRootRef : FIRDatabaseReference!
     
     enum MenuData: Int {
         case YOUR_ACCOUNT
@@ -29,10 +28,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     override func viewDidLoad() {
         
-        firebaseRootRef = Firebase(url: firebaseRootRefString)
-        
-        
-        
+        firebaseRootRef = FIRDatabase.database().reference()
+
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
