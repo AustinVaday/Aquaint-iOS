@@ -267,6 +267,13 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             return
         }
         
+        // Firebase restriction: Password must be at least 6 characters... (or it will throw an error)
+        if (userPasswordString.characters.count < 6)
+        {
+            showAlert("Error signing up", message: "Please enter in a password that is more than 6 characters!", buttonTitle: "Try again", sender: self)
+            return
+        }
+        
         // Do not send request to server if user didn't change email input
         if (userEmailString == self.prevEmailString)
         {
@@ -446,6 +453,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                     }
                     else // If user couldn't sign up
                     {
+                        print("ERROR IS: ")
+                        print(error1.debugDescription) // LOG THIS
                         // Perform update on UI on main thread
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             self.spinner.stopAnimating()
@@ -453,7 +462,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
 
                             print("COULDN'T SIGN UP")
                             
-                            showAlert("Sorry", message: "The email you entered already exists! Please try a different email address.", buttonTitle: "Try again", sender: self)
+//                            showAlert("Sorry", message: "The email you entered already exists! Please try a different email address.", buttonTitle: "Try again", sender: self)
+                            showAlert("Sorry", message: "There was an error with your request. Please try again!", buttonTitle: "Try again", sender: self)
                         })
                     }
                     
