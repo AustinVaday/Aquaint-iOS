@@ -25,7 +25,8 @@ class LogInController: UIViewController {
     @IBOutlet weak var logInButton: UIButton!
     
     var checkMarkFlippedCopy: UIImageView!
-    var firebaseRootRef: FIRDatabaseReference!
+    // Create a reference to firebase location
+    let firebaseRootRef = FIRDatabase.database().reference()
     
     let segueDestination = "toMainContainerViewController"
     
@@ -33,9 +34,6 @@ class LogInController: UIViewController {
     /* var wrongLogInCount: Int = 0 */
     
     override func viewDidLoad() {
-        
-        // Create a reference to firebase location
-        firebaseRootRef = FIRDatabase.database().reference()
         
         // Log out of of firebase if already logged in
 //        try! FIRAuth.auth()!.signOut()

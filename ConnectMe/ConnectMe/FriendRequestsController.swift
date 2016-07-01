@@ -67,13 +67,13 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
         
         //*** NOTE: This is an extra check for top-notch security. It is not necessary.
         // If we're not logged in, immediately go back to beginning page.
-        FIRAuth.auth()!.addAuthStateDidChangeListener() { (auth, user) in
-            if let user = user {
-                print("User is signed in with uid:", user.uid)
-            } else {
-                print("Error in HomeController. authData is somehow nil!")
-            }
-        }
+//        FIRAuth.auth()!.addAuthStateDidChangeListener() { (auth, user) in
+//            if let user = user {
+//                print("User is signed in with uid:", user.uid)
+//            } else {
+//                print("Error in HomeController. authData is somehow nil!")
+//            }
+//        }
         
         // Get current user from NSUserDefaults
         userName = getCurrentUser()
