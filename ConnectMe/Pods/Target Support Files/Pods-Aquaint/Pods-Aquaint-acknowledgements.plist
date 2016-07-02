@@ -77,6 +77,15 @@
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>The AWS Mobile SDK for iOS is generally licensed under the Apache 2.0 License, with the Amazon Cognito Identity Provider and Amazon Cognito Sync subcomponents being licensed under the Amazon Software License.
+</string>
+			<key>Title</key>
+			<string>AWSSNS</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>The MIT License (MIT)
 
 Copyright (c) 2014 Caleb Davenport.
@@ -147,6 +156,22 @@ THE SOFTWARE.</string>
 			<key>FooterText</key>
 			<string>Copyright 2015 Google Inc.</string>
 			<key>Title</key>
+			<string>GoogleAppUtilities</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>Copyright 2015 Google Inc.</string>
+			<key>Title</key>
+			<string>GoogleAuthUtilities</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>Copyright 2015 Google Inc.</string>
+			<key>Title</key>
 			<string>GoogleInterchangeUtilities</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
@@ -164,6 +189,14 @@ THE SOFTWARE.</string>
 			<string>Copyright 2015 Google Inc.</string>
 			<key>Title</key>
 			<string>GoogleParsingUtilities</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>Copyright 2015 Google Inc. All Rights Reserved.</string>
+			<key>Title</key>
+			<string>GoogleSignIn</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

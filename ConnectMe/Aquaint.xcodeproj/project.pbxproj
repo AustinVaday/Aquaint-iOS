@@ -16,9 +16,10 @@
 		FF29BB1D9643BB46054B3871 /* Pods_Aquaint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D1CC9F354D9EF78F36FCC8C /* Pods_Aquaint.framework */; };
 		FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */; };
 		FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */; };
-		FF6331661D286B3900967266 /* AmazonAws in Resources */ = {isa = PBXBuildFile; fileRef = FF6331651D286B3900967266 /* AmazonAws */; };
 		FF6331681D286BAB00967266 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6331671D286BAB00967266 /* AddressBook.framework */; };
 		FF63316A1D286BB200967266 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6331691D286BB200967266 /* SafariServices.framework */; };
+		FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF63316B1D286D4300967266 /* AWSMobileClient.swift */; };
+		FF63316E1D286D4300967266 /* AWSMobileHubHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF63316C1D286D4300967266 /* AWSMobileHubHelper.framework */; };
 		FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF65D31C1C1E0BFC0015C99F /* Main.storyboard */; };
 		FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF65D3211C1EA3D60015C99F /* SignUpController.swift */; };
 		FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */; };
@@ -97,9 +98,10 @@
 		FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsTableViewCell.swift; sourceTree = "<group>"; };
-		FF6331651D286B3900967266 /* AmazonAws */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AmazonAws; sourceTree = "<group>"; };
 		FF6331671D286BAB00967266 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		FF6331691D286BB200967266 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		FF63316B1D286D4300967266 /* AWSMobileClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSMobileClient.swift; sourceTree = "<group>"; };
+		FF63316C1D286D4300967266 /* AWSMobileHubHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSMobileHubHelper.framework; sourceTree = "<group>"; };
 		FF65D31D1C1E0BFC0015C99F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FF65D3211C1EA3D60015C99F /* SignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignUpController.swift; path = ../SignUpController.swift; sourceTree = "<group>"; };
 		FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialMediaCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF63316E1D286D4300967266 /* AWSMobileHubHelper.framework in Frameworks */,
 				FF7878711C30268C00354936 /* SystemConfiguration.framework in Frameworks */,
 				FF78786F1C30268500354936 /* StoreKit.framework in Frameworks */,
 				FF63316A1D286BB200967266 /* SafariServices.framework in Frameworks */,
@@ -206,6 +209,15 @@
 				C0A85DC514249201247ACD2E /* Pods-AquaintUITests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		FF63316F1D286D5100967266 /* AmazonAWS */ = {
+			isa = PBXGroup;
+			children = (
+				FF63316B1D286D4300967266 /* AWSMobileClient.swift */,
+				FF63316C1D286D4300967266 /* AWSMobileHubHelper.framework */,
+			);
+			name = AmazonAWS;
 			sourceTree = "<group>";
 		};
 		FF7C0A471D13A20700C1502D /* TableViewCells */ = {
@@ -263,7 +275,6 @@
 				FFBB87251C5307B700500FAD /* Frameworks */,
 				FF78785D1C30009900354936 /* libsqlite3.tbd */,
 				FF78785B1C30008C00354936 /* libz.tbd */,
-				FF6331651D286B3900967266 /* AmazonAws */,
 				FF897C331C01AC63001B2634 /* Aquaint */,
 				FF897C321C01AC63001B2634 /* Products */,
 				083B25C0CBB20B8AA59FCC7B /* Pods */,
@@ -283,6 +294,7 @@
 		FF897C331C01AC63001B2634 /* Aquaint */ = {
 			isa = PBXGroup;
 			children = (
+				FF63316F1D286D5100967266 /* AmazonAWS */,
 				FF897C3B1C01AC63001B2634 /* Assets.xcassets */,
 				FF65D31C1C1E0BFC0015C99F /* Main.storyboard */,
 				FFF442391C4C2B21007651DE /* Launch Screen.storyboard */,
@@ -498,7 +510,6 @@
 				FFF419B11D23752C00DE4352 /* GoogleService-Info.plist in Resources */,
 				FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */,
 				FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */,
-				FF6331661D286B3900967266 /* AmazonAws in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -682,6 +693,7 @@
 				FFBDD7611CD5B6190007A188 /* NewsfeedTableViewCell.swift in Sources */,
 				FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */,
 				FF7878611C3010E700354936 /* LogInController.swift in Sources */,
+				FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */,
 				FF83A4DF1CC59A3900AFB26B /* RBResizer.swift in Sources */,
 				FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */,
 				FFBDD75A1CD59A2D0007A188 /* YouNotificationsViewController.swift in Sources */,
@@ -829,12 +841,84 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/ConnectMe",
+					"$(PROJECT_DIR)/Sdk/Google",
 				);
 				INFOPLIST_FILE = ConnectMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/Firebase",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"icucore\"",
+					"-l\"sqlite3\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AWSCognito\"",
+					"-framework",
+					"\"AWSCore\"",
+					"-framework",
+					"\"AWSDynamoDB\"",
+					"-framework",
+					"\"AWSEC2\"",
+					"-framework",
+					"\"AWSLambda\"",
+					"-framework",
+					"\"AWSMobileAnalytics\"",
+					"-framework",
+					"\"AWSS3\"",
+					"-framework",
+					"\"AdSupport\"",
+					"-framework",
+					"\"AddressBook\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CMDQueryStringSerialization\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"FirebaseAnalytics\"",
+					"-framework",
+					"\"FirebaseAuth\"",
+					"-framework",
+					"\"FirebaseDatabase\"",
+					"-framework",
+					"\"FirebaseInstanceID\"",
+					"-framework",
+					"\"GoogleInterchangeUtilities\"",
+					"-framework",
+					"\"GoogleNetworkingUtilities\"",
+					"-framework",
+					"\"GoogleParsingUtilities\"",
+					"-framework",
+					"\"GoogleSymbolUtilities\"",
+					"-framework",
+					"\"GoogleUtilities\"",
+					"-framework",
+					"\"ISO8601\"",
+					"-framework",
+					"\"NSData_Base64\"",
+					"-framework",
+					"\"ReactiveCocoa\"",
+					"-framework",
+					"\"Result\"",
+					"-framework",
+					"\"SafariServices\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SimpleAuth\"",
+					"-framework",
+					"\"StoreKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"cocoa_oauth\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Aquaint;
 				PRODUCT_NAME = Aquaint;
@@ -855,12 +939,84 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/ConnectMe",
+					"$(PROJECT_DIR)/Sdk/Google",
 				);
 				INFOPLIST_FILE = ConnectMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/Firebase",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"icucore\"",
+					"-l\"sqlite3\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AWSCognito\"",
+					"-framework",
+					"\"AWSCore\"",
+					"-framework",
+					"\"AWSDynamoDB\"",
+					"-framework",
+					"\"AWSEC2\"",
+					"-framework",
+					"\"AWSLambda\"",
+					"-framework",
+					"\"AWSMobileAnalytics\"",
+					"-framework",
+					"\"AWSS3\"",
+					"-framework",
+					"\"AdSupport\"",
+					"-framework",
+					"\"AddressBook\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CMDQueryStringSerialization\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"FirebaseAnalytics\"",
+					"-framework",
+					"\"FirebaseAuth\"",
+					"-framework",
+					"\"FirebaseDatabase\"",
+					"-framework",
+					"\"FirebaseInstanceID\"",
+					"-framework",
+					"\"GoogleInterchangeUtilities\"",
+					"-framework",
+					"\"GoogleNetworkingUtilities\"",
+					"-framework",
+					"\"GoogleParsingUtilities\"",
+					"-framework",
+					"\"GoogleSymbolUtilities\"",
+					"-framework",
+					"\"GoogleUtilities\"",
+					"-framework",
+					"\"ISO8601\"",
+					"-framework",
+					"\"NSData_Base64\"",
+					"-framework",
+					"\"ReactiveCocoa\"",
+					"-framework",
+					"\"Result\"",
+					"-framework",
+					"\"SafariServices\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SimpleAuth\"",
+					"-framework",
+					"\"StoreKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"cocoa_oauth\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Aquaint;
 				PRODUCT_NAME = Aquaint;

@@ -11,12 +11,7 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import SimpleAuth
-import AWSCore
-import AWSS3
-import AWSLambda
-import AWSEC2
-import AWSCognito
-//import AWSLambda
+
 
 
 // Begin using Firebase framework
@@ -112,12 +107,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         
-        
-//        FIRApp.configure()
+        return AWSMobileClient.sharedInstance.didFinishLaunching(application, withOptions: launchOptions)
 
         
-        return true
-    }
+        }
     
     // Process results & set up for Facebook API integration
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {

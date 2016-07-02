@@ -26,6 +26,10 @@ pod 'AWSCognito'
 pod 'AWSDynamoDB'
 pod 'AWSMobileAnalytics'
 pod 'AWSEC2'
+pod 'AWSSNS'
+pod 'AWSCognito'
+
+pod 'GoogleSignIn'
 
 
 # EXCESS AWS Pods

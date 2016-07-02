@@ -39,6 +39,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>AWSSNS.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>CMDQueryStringSerialization.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -102,7 +107,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>35B1CA47F47B402ECD527382D955A75C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>3B41A9B1D49827D58E203AF61D34F608</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>42A6B99F99BED80F732C9DCA3BC374C1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>60CFB1C64B05116C85463A569CC337C4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7051517F12CD2BBD8AE2AD214DB4EC0C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -137,32 +162,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C3BB8D2A624263B2DD286B8C351C0C4A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D6C28FCF38DC563B14EA0E91D0FE4D54</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>D7C577A782ECBFCC395DF4C6F01965C3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E6D77EB08FC66F699A400E2E2E85918D</key>
+		<key>E9890CBAF72738369BA968D201703872</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F24E49A868C75F761F2945E409462D59</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FA2CEDAFB1EBBC4E5706460F97762DC5</key>
+		<key>EF0E51D0C75E5DB3F6F4ABEDC2B75F62</key>
 		<dict>
 			<key>primary</key>
 			<true/>

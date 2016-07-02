@@ -9,6 +9,7 @@
 
 import UIKit
 import Firebase
+import AWSMobileHubHelper
 
 class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     

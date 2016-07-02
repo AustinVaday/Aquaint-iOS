@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'C2BAC975CE787EABC689CD00'
+               BlueprintIdentifier = '05ED9BD8B157500C18F870B0'
                BlueprintName = 'cocoa-oauth'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'cocoa_oauth.framework'>
