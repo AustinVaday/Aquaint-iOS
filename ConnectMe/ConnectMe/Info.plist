@@ -2,6 +2,82 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AWS</key>
+	<dict>
+		<key>CloudLogic</key>
+		<dict>
+			<key>Default</key>
+			<dict>
+				<key>Region</key>
+				<string>us-east-1</string>
+			</dict>
+		</dict>
+		<key>Cognito</key>
+		<dict>
+			<key>Default</key>
+			<dict>
+				<key>Region</key>
+				<string>USEast1</string>
+			</dict>
+		</dict>
+		<key>CredentialsProvider</key>
+		<dict>
+			<key>CognitoIdentity</key>
+			<dict>
+				<key>Default</key>
+				<dict>
+					<key>PoolId</key>
+					<string>us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e</string>
+					<key>Region</key>
+					<string>USEast1</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>DynamoDBObjectMapper</key>
+		<dict>
+			<key>Default</key>
+			<dict>
+				<key>Region</key>
+				<string>us-east-1</string>
+			</dict>
+		</dict>
+		<key>IdentityManager</key>
+		<dict>
+			<key>Default</key>
+			<dict>
+				<key>Google</key>
+				<dict>
+					<key>ClientId</key>
+					<string>269206069707-3gkuvl4lhim17ujn46ojl4mkto46gvrb.apps.googleusercontent.com	</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>MobileAnalytics</key>
+		<dict>
+			<key>Default</key>
+			<dict>
+				<key>AppId</key>
+				<string>30015f2093b34a77b53d899901acd093</string>
+				<key>Region</key>
+				<string>USEast1</string>
+			</dict>
+		</dict>
+		<key>MobileHub</key>
+		<dict>
+			<key>ProjectClientId</key>
+			<string>MobileHub a47ad60e-df1c-4a7e-829c-cecad9a97d3e aws-my-sample-app-ios-swift-v0.2</string>
+		</dict>
+		<key>UserFileManager</key>
+		<dict>
+			<key>Default</key>
+			<dict>
+				<key>Region</key>
+				<string>USEast1</string>
+				<key>S3Bucket</key>
+				<string>aquaint-userfiles-mobilehub-146546989</string>
+			</dict>
+		</dict>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
