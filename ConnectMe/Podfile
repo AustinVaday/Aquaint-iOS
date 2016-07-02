@@ -5,11 +5,42 @@ use_frameworks!
 
 target 'Aquaint' do
 
+# Firebase Pods
+# -------------
 pod 'Firebase'
 pod 'Firebase/Core'
 pod 'Firebase/Database'
 pod 'Firebase/Auth'
+
+# Misc Pods
+# -------------
 pod 'SimpleAuth'
+
+
+# AWS Pods
+# -------------
+pod 'AWSCore'
+pod 'AWSLambda'
+pod 'AWSS3'
+pod 'AWSCognito'
+pod 'AWSDynamoDB'
+pod 'AWSMobileAnalytics'
+pod 'AWSEC2'
+
+
+# EXCESS AWS Pods
+# -------------
+#pod 'AWSAutoScaling'
+#pod 'AWSCloudWatch'
+#pod 'AWSCognitoIdentityProvider'
+#pod 'AWSElasticLoadBalancing'
+#pod 'AWSIoT'
+#pod 'AWSKinesis'
+#pod 'AWSMachineLearning'
+#pod 'AWSSES'
+#pod 'AWSSimpleDB'
+#pod 'AWSSNS'
+#pod 'AWSSQS'
 
 end
 

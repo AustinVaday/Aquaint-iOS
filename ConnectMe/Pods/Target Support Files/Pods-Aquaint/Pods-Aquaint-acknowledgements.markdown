@@ -1,6 +1,41 @@
 # Acknowledgements
 This application makes use of the following third party libraries:
 
+## AWSCognito
+
+The AWS Mobile SDK for iOS is generally licensed under the Apache 2.0 License, with the Amazon Cognito Identity Provider and Amazon Cognito Sync subcomponents being licensed under the Amazon Software License.
+
+
+## AWSCore
+
+The AWS Mobile SDK for iOS is generally licensed under the Apache 2.0 License, with the Amazon Cognito Identity Provider and Amazon Cognito Sync subcomponents being licensed under the Amazon Software License.
+
+
+## AWSDynamoDB
+
+The AWS Mobile SDK for iOS is generally licensed under the Apache 2.0 License, with the Amazon Cognito Identity Provider and Amazon Cognito Sync subcomponents being licensed under the Amazon Software License.
+
+
+## AWSEC2
+
+The AWS Mobile SDK for iOS is generally licensed under the Apache 2.0 License, with the Amazon Cognito Identity Provider and Amazon Cognito Sync subcomponents being licensed under the Amazon Software License.
+
+
+## AWSLambda
+
+The AWS Mobile SDK for iOS is generally licensed under the Apache 2.0 License, with the Amazon Cognito Identity Provider and Amazon Cognito Sync subcomponents being licensed under the Amazon Software License.
+
+
+## AWSMobileAnalytics
+
+The AWS Mobile SDK for iOS is generally licensed under the Apache 2.0 License, with the Amazon Cognito Identity Provider and Amazon Cognito Sync subcomponents being licensed under the Amazon Software License.
+
+
+## AWSS3
+
+The AWS Mobile SDK for iOS is generally licensed under the Apache 2.0 License, with the Amazon Cognito Identity Provider and Amazon Cognito Sync subcomponents being licensed under the Amazon Software License.
+
+
 ## CMDQueryStringSerialization
 
 The MIT License (MIT)
@@ -31,11 +66,11 @@ Copyright 2016 Google Inc.
 
 ## FirebaseAnalytics
 
-Copyright 2016 Google Inc.
+Copyright 2016 Google
 
 ## FirebaseAuth
 
-Copyright 2016 Google Inc. All Rights Reserved.
+Copyright 2016 Google
 
 ## FirebaseDatabase
 
@@ -50,6 +85,10 @@ Copyright 2016 Google Inc.
 Copyright 2015 Google Inc.
 
 ## GoogleNetworkingUtilities
+
+Copyright 2015 Google Inc.
+
+## GoogleParsingUtilities
 
 Copyright 2015 Google Inc.
 

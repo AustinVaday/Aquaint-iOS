@@ -11,6 +11,13 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import SimpleAuth
+import AWSCore
+import AWSS3
+import AWSLambda
+import AWSEC2
+import AWSCognito
+//import AWSLambda
+
 
 // Begin using Firebase framework
 import Firebase

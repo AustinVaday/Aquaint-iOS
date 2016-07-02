@@ -84,6 +84,13 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods-Aquaint/AWSCognito.framework"
+  install_framework "Pods-Aquaint/AWSCore.framework"
+  install_framework "Pods-Aquaint/AWSDynamoDB.framework"
+  install_framework "Pods-Aquaint/AWSEC2.framework"
+  install_framework "Pods-Aquaint/AWSLambda.framework"
+  install_framework "Pods-Aquaint/AWSMobileAnalytics.framework"
+  install_framework "Pods-Aquaint/AWSS3.framework"
   install_framework "Pods-Aquaint/CMDQueryStringSerialization.framework"
   install_framework "Pods-Aquaint/ISO8601.framework"
   install_framework "Pods-Aquaint/NSData_Base64.framework"
@@ -93,6 +100,13 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Aquaint/cocoa_oauth.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods-Aquaint/AWSCognito.framework"
+  install_framework "Pods-Aquaint/AWSCore.framework"
+  install_framework "Pods-Aquaint/AWSDynamoDB.framework"
+  install_framework "Pods-Aquaint/AWSEC2.framework"
+  install_framework "Pods-Aquaint/AWSLambda.framework"
+  install_framework "Pods-Aquaint/AWSMobileAnalytics.framework"
+  install_framework "Pods-Aquaint/AWSS3.framework"
   install_framework "Pods-Aquaint/CMDQueryStringSerialization.framework"
   install_framework "Pods-Aquaint/ISO8601.framework"
   install_framework "Pods-Aquaint/NSData_Base64.framework"
