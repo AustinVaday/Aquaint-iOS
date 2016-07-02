@@ -10,7 +10,7 @@
 
 import UIKit
 import Firebase
-import AWSS3
+//import AWSS3
 
 class FriendRequestsController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
