@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="8XP-yG-oPN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -362,7 +362,7 @@
                                                         <constraint firstAttribute="width" constant="32" id="7GG-eg-BfU"/>
                                                         <constraint firstAttribute="height" constant="32" id="9JA-gD-gqy"/>
                                                     </constraints>
-                                                    <state key="normal" image="95276962-E5FA-469B-A5AF-E8AF1F19B73E"/>
+                                                    <state key="normal" image="A41227A2-1ADC-49C1-9F85-872E538ACA66"/>
                                                 </button>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="n1l-EC-6IF">
                                                     <rect key="frame" x="-1" y="0.0" width="46" height="46"/>
@@ -543,7 +543,7 @@
                                                                             <constraint firstAttribute="height" constant="32" id="Xbr-eP-9TI"/>
                                                                             <constraint firstAttribute="width" constant="32" id="bvk-df-pA2"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="8D64C8F2-9DE1-4646-9996-E8E8BD661636"/>
+                                                                        <state key="normal" image="01CB7EEE-2F6B-471A-B064-727ED2ABE43E"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="kZH-lF-N2N">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -1105,7 +1105,7 @@
                                                                             <constraint firstAttribute="height" constant="32" id="DPh-tj-1Q7"/>
                                                                             <constraint firstAttribute="width" constant="32" id="GBX-Ja-AXt"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="FB7D0EA9-B91E-4CAC-B2E8-1BF616DCE7F0"/>
+                                                                        <state key="normal" image="BF7B8173-00D3-4205-B369-F962459A63A2"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="JcZ-aN-92g">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -2913,7 +2913,7 @@
                                                                             <constraint firstAttribute="width" constant="32" id="RxB-Up-7aY"/>
                                                                             <constraint firstAttribute="height" constant="32" id="yvG-qF-CcJ"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="7425333A-AFDD-4926-9D40-97A9B0E4BBF0"/>
+                                                                        <state key="normal" image="982A02ED-958D-4892-8AF8-54F13918E0EF"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="i9W-9n-gLz">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -3026,7 +3026,7 @@
         <!--Sign Up 2-->
         <scene sceneID="iST-As-1sC">
             <objects>
-                <viewController title="Sign Up" modalTransitionStyle="crossDissolve" id="8XP-yG-oPN" userLabel="Sign Up 2" customClass="SignUpVerificationController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Sign Up Verification" modalTransitionStyle="crossDissolve" id="8XP-yG-oPN" userLabel="Sign Up 2" customClass="SignUpVerificationController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wSj-V0-HyX"/>
                         <viewControllerLayoutGuide type="bottom" id="KcG-3g-sDc"/>
@@ -3048,6 +3048,9 @@
                                 <state key="normal" title="VERIFY">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="onVerifyButtonClicked:" destination="8XP-yG-oPN" eventType="touchUpInside" id="NKH-OU-ox8"/>
+                                </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AJG-ei-oMT">
                                 <rect key="frame" x="0.0" y="0.0" width="601" height="539"/>
@@ -3065,12 +3068,16 @@
                                                 </constraints>
                                                 <color key="textColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="go" secureTextEntry="YES"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="go"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
                                                         <color key="value" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onTextFieldDidEndOnExit:" destination="8XP-yG-oPN" eventType="editingDidEndOnExit" id="x4C-yi-Jjo"/>
+                                                    <action selector="onTextFieldEditingDidChange:" destination="8XP-yG-oPN" eventType="editingChanged" id="izY-Rh-HjX"/>
+                                                </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter the code in below:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YMZ-ed-bOv">
                                                 <rect key="frame" x="188" y="84" width="208" height="22"/>
@@ -3170,6 +3177,12 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="checkMark" destination="btp-Nc-fvS" id="02R-Da-VV8"/>
+                        <outlet property="checkMarkFlipped" destination="l6w-jY-3QC" id="6K8-eD-tig"/>
+                        <outlet property="checkMarkView" destination="agx-Ga-Xbu" id="Mo7-fg-lPx"/>
+                        <outlet property="spinner" destination="KK6-l8-t0L" id="aZp-hV-5FT"/>
+                        <outlet property="verificationCodeField" destination="Ty6-Ds-Ak4" id="Ww9-Xa-4pF"/>
+                        <outlet property="verifyButton" destination="oy5-7o-sHe" id="H5o-wH-PzQ"/>
                         <segue destination="0dQ-sF-4e3" kind="show" identifier="toSignUpFetchMoreDataController" id="gKQ-Nk-bIx"/>
                     </connections>
                 </viewController>
@@ -3180,7 +3193,7 @@
         <!--Sign Up 3-->
         <scene sceneID="3bw-9o-JA4">
             <objects>
-                <viewController title="Sign Up" modalTransitionStyle="crossDissolve" id="0dQ-sF-4e3" userLabel="Sign Up 3" customClass="SignUpFetchMoreDataController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Sign Up Fetch More Data" modalTransitionStyle="crossDissolve" id="0dQ-sF-4e3" userLabel="Sign Up 3" customClass="SignUpFetchMoreDataController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9St-Cc-DHd"/>
                         <viewControllerLayoutGuide type="bottom" id="2Px-lR-Zs8"/>
@@ -3199,6 +3212,9 @@
                                 <state key="normal" title="FINISH">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="onFinishButtonClicked:" destination="0dQ-sF-4e3" eventType="touchUpInside" id="eV2-Oq-2gm"/>
+                                </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0jH-vQ-K9W">
                                 <rect key="frame" x="0.0" y="0.0" width="601" height="539"/>
@@ -3219,12 +3235,15 @@
                                                 </constraints>
                                                 <color key="textColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="go" secureTextEntry="YES"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
                                                         <color key="value" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="onTextFieldDidEndOnExit:" destination="0dQ-sF-4e3" eventType="editingDidEndOnExit" id="FPN-d4-KEA"/>
+                                                </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You've been verified! One last thing..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRv-DQ-yJW">
                                                 <rect key="frame" x="153" y="50" width="279" height="39"/>
@@ -3248,15 +3267,15 @@ find and interact with you better.</string>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="kmU-x1-b1V" secondAttribute="bottom" constant="26" id="28x-67-sjo"/>
                                             <constraint firstAttribute="bottom" secondItem="0Ls-FV-CJ6" secondAttribute="bottom" constant="28" id="4ib-gE-xus"/>
+                                            <constraint firstItem="Rbl-CN-O2I" firstAttribute="top" secondItem="GPa-U3-sss" secondAttribute="top" constant="84" id="94P-uj-2gw"/>
                                             <constraint firstItem="0Ls-FV-CJ6" firstAttribute="top" secondItem="bRv-DQ-yJW" secondAttribute="bottom" constant="47" id="IIw-2L-Rna"/>
                                             <constraint firstItem="bRv-DQ-yJW" firstAttribute="centerX" secondItem="0Ls-FV-CJ6" secondAttribute="centerX" id="NPD-Gd-1wZ"/>
+                                            <constraint firstItem="Rbl-CN-O2I" firstAttribute="centerY" secondItem="GPa-U3-sss" secondAttribute="centerY" constant="9" id="Nqw-2V-QcY"/>
                                             <constraint firstItem="0Ls-FV-CJ6" firstAttribute="leading" secondItem="kmU-x1-b1V" secondAttribute="leading" id="Tsr-dg-tA5"/>
                                             <constraint firstItem="bRv-DQ-yJW" firstAttribute="top" secondItem="GPa-U3-sss" secondAttribute="top" constant="50" id="VWC-tg-qNe"/>
                                             <constraint firstItem="0Ls-FV-CJ6" firstAttribute="trailing" secondItem="kmU-x1-b1V" secondAttribute="trailing" id="cCV-ay-Osf"/>
-                                            <constraint firstItem="Rbl-CN-O2I" firstAttribute="top" secondItem="GPa-U3-sss" secondAttribute="top" constant="84" id="h9j-oU-8es"/>
-                                            <constraint firstItem="0Ls-FV-CJ6" firstAttribute="top" secondItem="Rbl-CN-O2I" secondAttribute="bottom" constant="13" id="hzm-u2-R0o"/>
-                                            <constraint firstItem="kmU-x1-b1V" firstAttribute="top" secondItem="Rbl-CN-O2I" secondAttribute="bottom" constant="37" id="nt4-JM-dz2"/>
-                                            <constraint firstItem="Rbl-CN-O2I" firstAttribute="leading" secondItem="GPa-U3-sss" secondAttribute="leading" constant="120" id="nw5-Me-0H0"/>
+                                            <constraint firstItem="0Ls-FV-CJ6" firstAttribute="top" secondItem="Rbl-CN-O2I" secondAttribute="bottom" constant="13" id="ifr-WI-TNJ"/>
+                                            <constraint firstItem="Rbl-CN-O2I" firstAttribute="centerX" secondItem="GPa-U3-sss" secondAttribute="centerX" constant="3" id="l06-qc-rMB"/>
                                             <constraint firstItem="bRv-DQ-yJW" firstAttribute="centerX" secondItem="GPa-U3-sss" secondAttribute="centerX" id="rRq-Oj-0aC"/>
                                         </constraints>
                                     </view>
@@ -3325,6 +3344,12 @@ find and interact with you better.</string>
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="checkMark" destination="a4S-hL-xg1" id="u4U-fF-tcj"/>
+                        <outlet property="checkMarkFlipped" destination="Y1h-Pq-9O1" id="a6J-Oq-8zg"/>
+                        <outlet property="checkMarkView" destination="xyp-Ax-5BI" id="42A-Cf-xOq"/>
+                        <outlet property="realNameButton" destination="31L-lS-JL4" id="lGo-uS-X3J"/>
+                        <outlet property="realNameField" destination="0Ls-FV-CJ6" id="vbn-mw-IzH"/>
+                        <outlet property="spinner" destination="FXz-nx-tfb" id="N38-9l-o4t"/>
                         <segue destination="Tj0-VG-mMQ" kind="show" identifier="toMainContainerViewController" id="ucw-u5-8UP"/>
                     </connections>
                 </viewController>
@@ -3334,7 +3359,7 @@ find and interact with you better.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="7425333A-AFDD-4926-9D40-97A9B0E4BBF0" width="32" height="32">
+        <image name="01CB7EEE-2F6B-471A-B064-727ED2ABE43E" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3453,7 +3478,7 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
-        <image name="8D64C8F2-9DE1-4646-9996-E8E8BD661636" width="32" height="32">
+        <image name="982A02ED-958D-4892-8AF8-54F13918E0EF" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3572,7 +3597,7 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
-        <image name="95276962-E5FA-469B-A5AF-E8AF1F19B73E" width="32" height="32">
+        <image name="A41227A2-1ADC-49C1-9F85-872E538ACA66" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3695,15 +3720,7 @@ Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
         <image name="Add People Pending" width="60" height="57"/>
         <image name="Add People Success" width="60" height="57"/>
         <image name="Add Photo Color" width="120" height="120"/>
-        <image name="Back Arrow" width="50" height="50"/>
-        <image name="Check Mark" width="350" height="271"/>
-        <image name="Check Mark Flipped" width="349" height="270"/>
-        <image name="Contacts Icon" width="50" height="50"/>
-        <image name="Delete People" width="60" height="57"/>
-        <image name="Email Icon Black" width="50" height="50"/>
-        <image name="Emblem" width="362" height="361"/>
-        <image name="Emblem White" width="362" height="361"/>
-        <image name="FB7D0EA9-B91E-4CAC-B2E8-1BF616DCE7F0" width="32" height="32">
+        <image name="BF7B8173-00D3-4205-B369-F962459A63A2" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3822,6 +3839,14 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
+        <image name="Back Arrow" width="50" height="50"/>
+        <image name="Check Mark" width="350" height="271"/>
+        <image name="Check Mark Flipped" width="349" height="270"/>
+        <image name="Contacts Icon" width="50" height="50"/>
+        <image name="Delete People" width="60" height="57"/>
+        <image name="Email Icon Black" width="50" height="50"/>
+        <image name="Emblem" width="362" height="361"/>
+        <image name="Emblem White" width="362" height="361"/>
         <image name="FacebookButton" width="240" height="37"/>
         <image name="Line Separator Black" width="753" height="4"/>
         <image name="Login Background" width="457" height="811"/>

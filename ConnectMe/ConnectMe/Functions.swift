@@ -116,7 +116,7 @@ func verifyUserNameFormat(userNameString: String) -> Bool
     if (!userNameString.isEmpty)
     {
         let notAcceptableRange = userNameString.rangeOfCharacterFromSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
-
+        
         if (notAcceptableRange == nil)
         {
             return true
@@ -125,6 +125,38 @@ func verifyUserNameFormat(userNameString: String) -> Bool
     
     return false
 }
+
+// Check if real name format is proper
+func verifyRealNameLength(realNameString: String) -> Bool
+{
+    if (!realNameString.isEmpty)
+    {
+        let numChar = realNameString.characters.count
+        
+        if (numChar >= 1 && numChar <= 30)
+        {
+            return true
+        }
+    }
+    
+    return false
+}
+
+//func verifyRealNameFormat(realNameString: String) -> Bool
+//{
+//    
+//    if (!realNameString.isEmpty)
+//    {
+//        let notAcceptableRange = realNameString.rangeOfCharacterFromSet(NSCharacterSet.letterCharacterSet().invertedSet)
+//
+//        if (notAcceptableRange == nil)
+//        {
+//            return true
+//        }
+//    }
+//    
+//    return false
+//}
 
 // Check if email format is proper
 func verifyEmailFormat(emailString:String) -> Bool
@@ -160,6 +192,23 @@ func verifyPasswordFormat(passwordString:String) -> Bool
     
 }
 
+// Check if verification length is proper
+func verifyVerificationCodeLength(verificationString: String) -> Bool
+{
+    if (!verificationString.isEmpty)
+    {
+        let numChar = verificationString.characters.count
+        
+        // Verification codes are 6 characters long.
+        if (numChar == 6)
+        {
+            return true
+        }
+        
+    }
+    
+    return false
+}
 
 // Show an alert to the user
 func showAlert(title: String, message: String, buttonTitle: String, sender: AnyObject)
@@ -218,6 +267,12 @@ func getCurrentUser() -> String!
     
     return defaults.stringForKey("username")
     
+}
+
+func setCurrentUser(value: AnyObject, forKey: String)
+{
+    let defaults = NSUserDefaults.standardUserDefaults()
+    defaults.setObject(value, forKey: forKey)
 }
 
 

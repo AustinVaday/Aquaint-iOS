@@ -47,32 +47,25 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
         print("VIEW JUST LOADED!")
         
+        // Get the IDENTITY POOL
+        pool = getAWSCognitoIdentityUserPool()
         
-        // Set up AWS service config (default log-in/sign-up)
-        let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: nil)
-        let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "41v7gese46ar214saeurloufe7", clientSecret: "1lr1abieg6g8fpq06hngo9edqg4qtf63n3cql1rgsvomc11jvs9b", poolId: "us-east-1_yyImSiaeD")
-        AWSCognitoIdentityUserPool.registerCognitoIdentityUserPoolWithConfiguration(serviceConfiguration, userPoolConfiguration: userPoolConfiguration, forKey: "UserPool")
-        pool = AWSCognitoIdentityUserPool(forKey: "UserPool")
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1_yyImSiaeD", identityProviderManager:pool)
         
         
-
-
-        
-        
-        didSignInObserver =  NSNotificationCenter.defaultCenter().addObserverForName(AWSIdentityManagerDidSignInNotification,
-             object: AWSIdentityManager.defaultIdentityManager(),
-             queue: NSOperationQueue.mainQueue(),
-             usingBlock: {(note: NSNotification) -> Void in
-                
-                // perform successful login actions here
-                
-                print("SUCCESSFUL LOG IN", note)
-                print(AWSIdentityManager.defaultIdentityManager().userName)
-                print(AWSIdentityManager.defaultIdentityManager().imageURL)
-                print(AWSIdentityManager.defaultIdentityManager().identityId)
-        })
-
+//        didSignInObserver =  NSNotificationCenter.defaultCenter().addObserverForName(AWSIdentityManagerDidSignInNotification,
+//             object: AWSIdentityManager.defaultIdentityManager(),
+//             queue: NSOperationQueue.mainQueue(),
+//             usingBlock: {(note: NSNotification) -> Void in
+//                
+//                // perform successful login actions here
+//                
+//                print("SUCCESSFUL LOG IN", note)
+//                print(AWSIdentityManager.defaultIdentityManager().userName)
+//                print(AWSIdentityManager.defaultIdentityManager().imageURL)
+//                print(AWSIdentityManager.defaultIdentityManager().identityId)
+//        })
+ 
 //        AWSIdentityManager.defaultIdentityManager().logoutWithCompletionHandler { (obj, error) in
 //            print("LOGGING USER OUT!")
 //        }
@@ -84,40 +77,12 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         userPhoto.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Fill
         
         
-        //TODO: Log out just in case
-        
+        // Set up animation
         self.checkMark.hidden = true
         self.checkMarkFlipped.hidden = true
         self.userPhoto.hidden = false
-        
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
-        
         flipImageHorizontally(checkMarkFlippedCopy)
-        
-        
-        
-        
-        print("*****TESTING*****")
-        let usaname = "sammyv"
-        print("Current user is: " , pool.currentUser()?.username)
-        
-        print ("Is he signed in?:", pool.getUser(usaname).signedIn)
-        
-        pool.getUser(usaname).getSession(usaname, password: "123456", validationData: nil, scopes: nil)
-        
-        
-     
-          print("DELAY")
-        
-        
-        print ("Is he signed in?:", self.pool.getUser(usaname).signedIn)
-        
-        print("Current user is: " , self.pool.currentUser()?.username)
-
-        
-
-        print("*****END TESTING*****")
-        
         
         // Empty previous email string
         prevEmailString = ""
@@ -415,9 +380,10 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             {
                 print("Successful signup")
                 
+                
+                
                 // Cache the user name for future use!
-                let defaults = NSUserDefaults.standardUserDefaults()
-                defaults.setObject(lowerCaseUserNameString, forKey: "username")
+                setCurrentUser(lowerCaseUserNameString, forKey: "username")
 
                 // Perform update on UI on main thread
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -655,4 +621,17 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
 
     }
     
+    
+    // Used to pass password to next view controller
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        // Pass the password to next view controller so we can log user in there
+        if(segue.identifier == segueDestination)
+        {
+            let nextViewController = segue.destinationViewController as! SignUpVerificationController
+            
+            nextViewController.userPassword = userPassword.text
+            
+        }
+    }
 }
