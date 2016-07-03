@@ -26,10 +26,11 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     @IBOutlet weak var formView: UIView!
     
     @IBOutlet weak var facebookButton: UIButton!
+    
 //    @IBOutlet weak var orSignInWithLabel: UIView!
 
 
-    
+    var didSignInObserver: AnyObject!
     var checkMarkFlippedCopy: UIImageView!
     var firebaseRootRef: FIRDatabaseReference!
     var prevEmailString: String!                // Used to prevent user from spamming requests
@@ -39,6 +40,25 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("VIEW JUST LOADED!")
+
+        didSignInObserver =  NSNotificationCenter.defaultCenter().addObserverForName(AWSIdentityManagerDidSignInNotification,
+             object: AWSIdentityManager.defaultIdentityManager(),
+             queue: NSOperationQueue.mainQueue(),
+             usingBlock: {(note: NSNotification) -> Void in
+                
+                // perform successful login actions here
+                
+                print("SUCCESSFUL LOG IN", note)
+                print(AWSIdentityManager.defaultIdentityManager().userName)
+                print(AWSIdentityManager.defaultIdentityManager().imageURL)
+                print(AWSIdentityManager.defaultIdentityManager().identityId)
+        })
+
+        AWSIdentityManager.defaultIdentityManager().logoutWithCompletionHandler { (obj, error) in
+            print("LOGGING USER OUT!")
+        }
         
         // Make the button round!
         userPhoto.clipsToBounds = true
