@@ -23,6 +23,12 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     @IBOutlet weak var checkMarkView: UIView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var formView: UIView!
+    
+    @IBOutlet weak var facebookButton: UIButton!
+//    @IBOutlet weak var orSignInWithLabel: UIView!
+
+
     
     var checkMarkFlippedCopy: UIImageView!
     var firebaseRootRef: FIRDatabaseReference!
@@ -39,7 +45,6 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         userPhoto.layer.cornerRadius = userPhoto.frame.size.width / 2
         userPhoto.contentVerticalAlignment = UIControlContentVerticalAlignment.Fill
         userPhoto.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Fill
-        
         
         // Create a reference to firebase location
         firebaseRootRef = FIRDatabase.database().reference()
@@ -71,6 +76,31 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func handleLoginWithSignInProvider(sender: UIButton) {
+        
+        AWSIdentityManager.defaultIdentityManager().loginWithSignInProvider(AWSFacebookSignInProvider.sharedInstance(), completionHandler: {(result: AnyObject?, error: NSError?) -> Void in
+            // If no error reported by SignInProvider, discard the sign-in view controller.
+            if error == nil {
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                })
+            }
+            print("result = \(result), error = \(error)")
+        })
+
+    }
+    func handleLoginWithSignInProvide(signInProvider: AWSSignInProvider) {
+        AWSIdentityManager.defaultIdentityManager().loginWithSignInProvider(signInProvider, completionHandler: {(result: AnyObject?, error: NSError?) -> Void in
+            // If no error reported by SignInProvider, discard the sign-in view controller.
+            if error == nil {
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                })
+            }
+            print("result = \(result), error = \(error)")
+        })
     }
     
     // Functionality for adding in a user specific photograph
