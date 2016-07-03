@@ -85,6 +85,7 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Aquaint/AWSCognito.framework"
+  install_framework "Pods-Aquaint/AWSCognitoIdentityProvider.framework"
   install_framework "Pods-Aquaint/AWSCore.framework"
   install_framework "Pods-Aquaint/AWSDynamoDB.framework"
   install_framework "Pods-Aquaint/AWSEC2.framework"
@@ -102,6 +103,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Aquaint/AWSCognito.framework"
+  install_framework "Pods-Aquaint/AWSCognitoIdentityProvider.framework"
   install_framework "Pods-Aquaint/AWSCore.framework"
   install_framework "Pods-Aquaint/AWSDynamoDB.framework"
   install_framework "Pods-Aquaint/AWSEC2.framework"

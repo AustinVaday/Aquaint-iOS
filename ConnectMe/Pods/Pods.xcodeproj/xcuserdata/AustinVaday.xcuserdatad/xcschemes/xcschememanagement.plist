@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>AWSCognitoIdentityProvider.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>AWSCore.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -107,22 +112,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>35B1CA47F47B402ECD527382D955A75C</key>
+		<key>21327D44DE201C28003E7270B73CF80C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>227CAB7C5B53958921B7FC4BE5F9A2F6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>3B41A9B1D49827D58E203AF61D34F608</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>42A6B99F99BED80F732C9DCA3BC374C1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>60CFB1C64B05116C85463A569CC337C4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -137,7 +137,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>7C53217BC2D71DDBC69F04C103EA9C11</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7E2BD7C9F0D611F125C129099D7A1B32</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>9AF5CDE957670DCFFF410F2DBF61592C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9E092F6F363F314309EDFD69117FD22B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -162,17 +177,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>C3AAA0BBF31A8CBEBC5CB9F20571A9A9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>D7C577A782ECBFCC395DF4C6F01965C3</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E9890CBAF72738369BA968D201703872</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EF0E51D0C75E5DB3F6F4ABEDC2B75F62</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -11,6 +11,8 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import SimpleAuth
+import AWSCore
+import AWSCognito
 
 
 
@@ -69,29 +71,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            region: AWSRegionType.USEast1, credentialsProvider: credentialsProvider)
 //        
 //        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = defaultServiceConfiguration
-        
+
 
         // Get the firebase ref so that we can logout on firebase
         let firebaseRootRef = FIRDatabase.database().reference()
 
-        // If user is authenticated already, show correct view controller
-//        FIRAuth.auth()!.addAuthStateDidChangeListener() { (auth, user) in
-//            if user != nil
-//            {
-//                let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-//                let viewControllerIdentifier = "MainContainerViewController"
-//                
-//                // Go to home page, as if user was logged in already!
-//                self.window?.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
-//                print("user already logged in")
-//                print(FIRAuth.auth()!.currentUser)
-//
-//
-//            } else
-//            {
-//                print("no user logged in yet!")
-//            }
-//        }
+
         if (FIRAuth.auth()!.currentUser != nil)
         {
             let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
@@ -106,6 +91,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("no user logged in yet!")
         }
         
+        
+        
+        // Initialize Amazon Cognito Credentials Provider
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1_yyImSiaeD")
+        let configuration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: credentialsProvider)
+        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
+
         
         return AWSMobileClient.sharedInstance.didFinishLaunching(application, withOptions: launchOptions)
 

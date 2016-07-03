@@ -178,6 +178,38 @@ func showAlert(title: String, message: String, buttonTitle: String, sender: AnyO
 }
 
 
+func showAlertFetchText(title: String, message: String, buttonTitle: String, textFetch: String, sender: AnyObject)
+{
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+    
+    let confirmAction = UIAlertAction(title: "Confirm", style: .Default) { (_) in
+        if let field = alertController.textFields![0] as? UITextField {
+            // store your data
+            print("STORING DATA!!!")
+            NSUserDefaults.standardUserDefaults().setObject(field.text, forKey: "textFetch")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        } else {
+            // user did not fill field
+        }
+    }
+    
+    let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (_) in }
+    
+    alertController.addTextFieldWithConfigurationHandler { (textField) in
+        textField.placeholder = "Enter here"
+    }
+    
+    alertController.addAction(confirmAction)
+    alertController.addAction(cancelAction)
+    
+    sender.presentViewController(alertController, animated: true, completion: nil)
+
+ 
+    
+}
+
+
+
 // Get the current user that is signed into the app
 func getCurrentUser() -> String!
 {

@@ -1,0 +1,12 @@
+framework module AWSCognitoIdentityProvider {
+  umbrella header "AWSCognitoIdentityProvider-umbrella.h"
+
+  export *
+  module * { export * }
+
+  private header "AWSCognitoIdentityProviderHKDF.h"
+  private header "AWSCognitoIdentityProviderSrpHelper.h"
+  private header "AWSCognitoIdentityUser_Internal.h"
+  private header "AWSCognitoIdentityUserPool_Internal.h"
+  private header "NSData+AWSCognitoIdentityProvider.h"
+}

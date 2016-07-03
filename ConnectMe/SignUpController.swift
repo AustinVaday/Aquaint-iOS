@@ -8,8 +8,10 @@
 //  Code is owned by: Austin Vaday and Navid Sarvian
 
 import UIKit
-import Firebase
+//import Firebase
 import AWSMobileHubHelper
+import AWSCognitoIdentityProvider
+
 
 class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -31,18 +33,33 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
 
 
     var didSignInObserver: AnyObject!
+    var pool: AWSCognitoIdentityUserPool!
+    var credentialsProvider: AWSCognitoCredentialsProvider!
+    
     var checkMarkFlippedCopy: UIImageView!
-    var firebaseRootRef: FIRDatabaseReference!
     var prevEmailString: String!                // Used to prevent user from spamming requests
     var imagePicker:UIImagePickerController!    // Used for selecting image from user's device
 
-    let segueDestination = "toMainContainerViewController"
+    let segueDestination = "toSignUpVerificationController"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         print("VIEW JUST LOADED!")
+        
+        
+        // Set up AWS service config (default log-in/sign-up)
+        let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: nil)
+        let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "41v7gese46ar214saeurloufe7", clientSecret: "1lr1abieg6g8fpq06hngo9edqg4qtf63n3cql1rgsvomc11jvs9b", poolId: "us-east-1_yyImSiaeD")
+        AWSCognitoIdentityUserPool.registerCognitoIdentityUserPoolWithConfiguration(serviceConfiguration, userPoolConfiguration: userPoolConfiguration, forKey: "UserPool")
+        pool = AWSCognitoIdentityUserPool(forKey: "UserPool")
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1_yyImSiaeD", identityProviderManager:pool)
+        
+        
 
+
+        
+        
         didSignInObserver =  NSNotificationCenter.defaultCenter().addObserverForName(AWSIdentityManagerDidSignInNotification,
              object: AWSIdentityManager.defaultIdentityManager(),
              queue: NSOperationQueue.mainQueue(),
@@ -56,9 +73,9 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                 print(AWSIdentityManager.defaultIdentityManager().identityId)
         })
 
-        AWSIdentityManager.defaultIdentityManager().logoutWithCompletionHandler { (obj, error) in
-            print("LOGGING USER OUT!")
-        }
+//        AWSIdentityManager.defaultIdentityManager().logoutWithCompletionHandler { (obj, error) in
+//            print("LOGGING USER OUT!")
+//        }
         
         // Make the button round!
         userPhoto.clipsToBounds = true
@@ -66,11 +83,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         userPhoto.contentVerticalAlignment = UIControlContentVerticalAlignment.Fill
         userPhoto.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Fill
         
-        // Create a reference to firebase location
-        firebaseRootRef = FIRDatabase.database().reference()
         
-        // Log out of of firebase if already logged in
-        try! FIRAuth.auth()!.signOut()
+        //TODO: Log out just in case
         
         self.checkMark.hidden = true
         self.checkMarkFlipped.hidden = true
@@ -80,7 +94,30 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
         flipImageHorizontally(checkMarkFlippedCopy)
         
+        
+        
+        
+        print("*****TESTING*****")
+        let usaname = "sammyv"
+        print("Current user is: " , pool.currentUser()?.username)
+        
+        print ("Is he signed in?:", pool.getUser(usaname).signedIn)
+        
+        pool.getUser(usaname).getSession(usaname, password: "123456", validationData: nil, scopes: nil)
+        
+        
+     
+          print("DELAY")
+        
+        
+        print ("Is he signed in?:", self.pool.getUser(usaname).signedIn)
+        
+        print("Current user is: " , self.pool.currentUser()?.username)
 
+        
+
+        print("*****END TESTING*****")
+        
         
         // Empty previous email string
         prevEmailString = ""
@@ -90,7 +127,6 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         //TODO: INVESTIGATE UIImagePickerController class
         // The following initialization, for some reason, takes longer than usual. Doing this AFTER the view appears so that there's no obvious delay in any transitions.
         imagePicker = UIImagePickerController()
-//        userObject  = User()
     }
     
     override func didReceiveMemoryWarning() {
@@ -110,17 +146,6 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             print("result = \(result), error = \(error)")
         })
 
-    }
-    func handleLoginWithSignInProvide(signInProvider: AWSSignInProvider) {
-        AWSIdentityManager.defaultIdentityManager().loginWithSignInProvider(signInProvider, completionHandler: {(result: AnyObject?, error: NSError?) -> Void in
-            // If no error reported by SignInProvider, discard the sign-in view controller.
-            if error == nil {
-                dispatch_async(dispatch_get_main_queue(),{
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                })
-            }
-            print("result = \(result), error = \(error)")
-        })
     }
     
     // Functionality for adding in a user specific photograph
@@ -318,21 +343,21 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             return
         }
         
-        // Firebase restriction: Password must be at least 6 characters... (or it will throw an error)
+        // API restriction: Password must be at least 6 characters... (or it will throw an error)
         if (userPasswordString.characters.count < 6)
         {
             showAlert("Error signing up", message: "Please enter in a password that is more than 6 characters!", buttonTitle: "Try again", sender: self)
             return
         }
         
-        // Do not send request to server if user didn't change email input
-        if (userEmailString == self.prevEmailString)
-        {
-            print("I will not let you take advantage of me.")
-            showAlert("Error signing up", message: "The email you entered already exists! Please enter in a different email address.", buttonTitle: "Try again", sender: self)
-
-            return
-        }
+//        // Do not send request to server if user didn't change email input
+//        if (userEmailString == self.prevEmailString)
+//        {
+//            print("I will not let you take advantage of me.")
+//            showAlert("Error signing up", message: "The email you entered already exists! Please enter in a different email address.", buttonTitle: "Try again", sender: self)
+//
+//            return
+//        }
         
         /*********************************************************************
         * END ALERTS
@@ -350,179 +375,279 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             self.spinner.startAnimating()
             
                 
-            })
+        })
         
-            //Check is username already exists or not....
-            let firebaseUserRef = firebaseRootRef.child("Users/")
+        //Important!! Make userNameString all lowercase from now on (for storing unique keys in the database)
+        let lowerCaseUserNameString = userNameString.lowercaseString
+    
+        let email  = AWSCognitoIdentityUserAttributeType()
+            email.name = "email"
+            email.value = userEmailString
+    
+//        //This is a check if username already exists or not.
+//        print("LOWERCASE IS: ", lowerCaseUserNameString)
+//        pool.getUser(lowerCaseUserNameString).getDetails().continueWithBlock { (resultTask) -> AnyObject? in
+//            
+//            print("Result task is: ", resultTask)
+//            
+//            if (resultTask.error == nil)
+//            {
+//                print("Go ahead and sign up")
+//                
+//            }
+//            else
+//            {
+//                print("NO sign up plz")
+//                // If the below code gets executed, then the user already exists.
+//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                    showAlert("Error signing up.", message: "Sorry, we could not sign you up. The username is taken!", buttonTitle: "Try again", sender: self)
+//                    return
+//                })
+//            }
+//            return nil
+//        }
         
-            //Important!! Make userNameString all lowercase from now on (for storing unique keys in the database)
-            let lowerCaseUserNameString = userNameString.lowercaseString
-        
-            // This is a check if username already exists or not.
-            firebaseUserRef.observeSingleEventOfType(FIRDataEventType.Value, andPreviousSiblingKeyWithBlock: { (snapshot, str) -> Void in
+        // Remember, AWSTask is ASYNCHRONOUS.
+        pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email], validationData: nil).continueWithBlock { (resultTask) -> AnyObject? in
             
-                if snapshot.hasChild(lowerCaseUserNameString)
-                {
-                    userNameExists = true
-                    print("USERNAME IS TAKEN")
-                }
-                else
-                {
-                    userNameExists = false
-                    print("USERNAME IS FREE")
-                }
+            // If sign up performed successfully.
+            if (resultTask.error == nil)
+            {
+                print("Successful signup")
                 
-            
-            if (userNameExists)
-            {
-                self.spinner.stopAnimating()
-                showAlert("Sorry", message: "The username you entered already exists! Please try a different username.", buttonTitle: "Try again", sender: self)
-            }
-            else
-            {
-                FIRAuth.auth()?.createUserWithEmail(userEmailString, password: userPasswordString, completion: { (user, error1) in
+                // Cache the user name for future use!
+                let defaults = NSUserDefaults.standardUserDefaults()
+                defaults.setObject(lowerCaseUserNameString, forKey: "username")
 
-                    // If success sign up
-                    if (error1 == nil)
+                // Perform update on UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+
+                    // Stop showing activity indicator (spinner)
+                    self.checkMarkFlipped.hidden = false
+
+                    self.userPhoto.hidden = true
+                    self.spinner.stopAnimating()
+
+                    UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+
+                        self.checkMarkFlipped.hidden = false
+                        self.checkMarkFlipped.image = self.checkMark.image
+
+                        }, completion: nil)
+
+
+                    delay(1.5)
                     {
-                        // Log user in
-                        FIRAuth.auth()?.signInWithEmail(userEmailString, password: userPasswordString, completion: { (user, error) in
-                                // If success log in
-                                if (error == nil)
-                                {
-                                    let userId = user!.uid
-                                    
-                                    let currentTime = getTimestampAsInt()
-                                    
-                                    var base64String : String!
-                                    // If user did add a photo
-                                    if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
-                                    {
-                                        print ("B64 YES")
-                                        let userPhoto = self.userPhoto.currentImage!
-                                        
-                                        let targetSize = CGSize(width: 120, height: 120)
-                                        
-                                        // Only resize photo if necessary
-//                                        if ()
-//                                        {
-//                                            
-//                                            
-//                                        }
-                                        
-                                        let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
-                                        
-                                        
-                                        // Convert photo to base64
-                                        base64String = convertImageToBase64(newImage)
-                                    }
-                                    
-                                    let userInfo   = ["fullName" : "", "dateCreated": currentTime]
-                                    let linkedSocialMediaAccounts = ["twitter": "austinvaday", "facebook": "austinvaday", "instagram": "avtheman"]
-                                    let connections = ["aquaint" : currentTime]
-                                    
-                                    
-                                    print("User signed up and logged in: ", lowerCaseUserNameString)
-                                    
 
-                                    
-                                    // Store necessary information in JSON tree
-                                    self.firebaseRootRef.child("Users/" + lowerCaseUserNameString).setValue(userInfo)
-                                    
-                                    // If user did add a photo, store it on database
-                                    if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
-                                    {
-                                        self.firebaseRootRef.child("UserImages/" + lowerCaseUserNameString + "/profileImage").setValue(base64String)
-                                    }
-                                    
-                                    self.firebaseRootRef.child("LinkedSocialMediaAccounts/" + lowerCaseUserNameString).setValue(linkedSocialMediaAccounts)
-                                    self.firebaseRootRef.child("Connections/" + lowerCaseUserNameString).setValue(connections)
-                                    self.firebaseRootRef.child("UserIdToUserName/" + userId).setValue(lowerCaseUserNameString)
-                                    
-                                    
-                                    // Cache the user name for future use!
-                                    let defaults = NSUserDefaults.standardUserDefaults()
-                                    defaults.setObject(lowerCaseUserNameString, forKey: "username")
-                                    
-                                    // Perform update on UI on main thread
-                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                        
-                                        // Stop showing activity indicator (spinner)
-                                        self.checkMarkFlipped.hidden = false
-                                        
-                                        self.userPhoto.hidden = true
-                                        self.spinner.stopAnimating()
-                                        
-                                        UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
-                                            
-                                            self.checkMarkFlipped.hidden = false
-                                            self.checkMarkFlipped.image = self.checkMark.image
-                                            
-                                            }, completion: nil)
-                                        
-                                        
-                                        delay(1.5)
-                                            {
-                                                
-                                                self.performSegueWithIdentifier(self.segueDestination, sender: nil)
-                                                
-                                        }
-                                        
-                                        self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
-                                        
-                                    })
-                                    
-
-                                    
-                                }
-                                else // If not success log in
-                                {
-                                    // Perform update on UI on main thread
-                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                        
-                                        // Stop showing activity indicator (spinner)
-                                        self.spinner.stopAnimating()
-                                        
-                                        
-                                        // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
-                                        if (self.presentedViewController == nil)
-                                        {
-                                            
-                                            showAlert("Error logging in.", message: "Sorry, we've signed you up already but was unable to log you in! Please try again.", buttonTitle: "Try again", sender: self)
-                                        }
-                                        
-                                        print("Signup-login Error")
-                                        
-                                        self.prevEmailString = userEmailString
-                                        
-                                    })
-                                    
-                                }
-                                
-                        })
-
-                    }
-                    else // If user couldn't sign up
-                    {
-                        print("ERROR IS: ")
-                        print(error1.debugDescription) // LOG THIS
-                        // Perform update on UI on main thread
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.spinner.stopAnimating()
-                            self.prevEmailString = userEmailString
-
-                            print("COULDN'T SIGN UP")
-                            
-//                            showAlert("Sorry", message: "The email you entered already exists! Please try a different email address.", buttonTitle: "Try again", sender: self)
-                            showAlert("Sorry", message: "There was an error with your request. Please try again!", buttonTitle: "Try again", sender: self)
-                        })
+                        self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                        
                     }
                     
+                    self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
+                    
                 })
+
+                
+            }
+            else // If sign up failed
+            {
+                print("Fail signup")
+                
+                // Perform update on UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+
+                    // Stop showing activity indicator (spinner)
+                    self.spinner.stopAnimating()
+
+                    // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
+                    if (self.presentedViewController == nil)
+                    {
+
+                        showAlert("Error signing up.", message: "Sorry, your username is already taken. Please try again!", buttonTitle: "Try again", sender: self)
+                    }
+                    
+                    
+                    self.prevEmailString = userEmailString
+                })
+
+                
+
             }
             
-            
-        })
+            return nil
+        }
+
+
+        
+        
+//        print("SignUpTask:", signUpTask)
+//        print("EXCEPTION:", signUpTask.exception)
+//        print("ERROR:", signUpTask.error)
+//        print("RESULT:", signUpTask.result)
+//        print("FAULTED?:", signUpTask.faulted )
+//        
+//        // Check if unsuccesful signup
+//        if signUpTask.completed
+//        {
+//            print(signUpTask.error)
+//            
+//            self.spinner.stopAnimating()
+//            showAlert("Sorry", message: "The username you entered already exists! Please try a different username.", buttonTitle: "Try again", sender: self)
+//
+//            return
+//        
+//        }
+//        else
+//        {
+//            // Successful signup
+//            print("USERNAME IS FREE")
+//
+//
+////            showAlertFetchText("Confirmation Code", message: "Message blah blah", buttonTitle: "ButtonT", textFetch: "Code?", sender: self)
+////            print("CACHED VAL: ", NSUserDefaults.standardUserDefaults().stringForKey("textFetch"))
+//
+//            // Log in now
+//            // LOG IN LATER!
+////            let logInTask = pool.currentUser()?.getSession(lowerCaseUserNameString, password: userPasswordString, validationData: nil, scopes: nil)
+////            showAlert("Login Info:", message: logInTask!.error.debugDescription, buttonTitle: "Try again", sender: self)
+////
+////            
+////            
+////            // Check if unsuccessful login
+////            if (logInTask!.error != nil)
+////            {
+////                print(logInTask!.error)
+////
+////                
+////                // Perform update on UI on main thread
+////                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+////                    
+////                    // Stop showing activity indicator (spinner)
+////                    self.spinner.stopAnimating()
+////                    
+////                    // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
+////                    if (self.presentedViewController == nil)
+////                    {
+////                        
+////                        showAlert("Error logging in.", message: "Sorry, we've signed you up already but was unable to log you in! Please try again.", buttonTitle: "Try again", sender: self)
+////                    }
+////                    
+////                    
+////                    self.prevEmailString = userEmailString
+////                })
+////            }
+////            else
+////            {
+////                 // If successful login
+////                print("HEY! SUCCESSFUL LOGIN BRUH!")
+////                showAlert("Ok", message: "SUCCESSFUL LOGIN", buttonTitle: "", sender: self)
+////
+//////                let userId = user!.uid
+//////                
+//////                let currentTime = getTimestampAsInt()
+//////                
+//////                var base64String : String!
+//////                // If user did add a photo
+//////                if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
+//////                {
+//////                    print ("B64 YES")
+//////                    let userPhoto = self.userPhoto.currentImage!
+//////                    
+//////                    let targetSize = CGSize(width: 120, height: 120)
+//////                    
+//////                    // Only resize photo if necessary
+//////                    //                                        if ()
+//////                    //                                        {
+//////                    //
+//////                    //
+//////                    //                                        }
+//////                    
+//////                    let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
+//////                    
+//////                    
+//////                    // Convert photo to base64
+//////                    base64String = convertImageToBase64(newImage)
+//////                }
+//////                
+//////                let userInfo   = ["fullName" : "", "dateCreated": currentTime]
+//////                let linkedSocialMediaAccounts = ["twitter": "austinvaday", "facebook": "austinvaday", "instagram": "avtheman"]
+//////                let connections = ["aquaint" : currentTime]
+//////                
+//////                
+//////                print("User signed up and logged in: ", lowerCaseUserNameString)
+//////                
+//////                
+//////                
+//////                // Store necessary information in JSON tree
+//////                self.firebaseRootRef.child("Users/" + lowerCaseUserNameString).setValue(userInfo)
+//////                
+//////                // If user did add a photo, store it on database
+//////                if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
+//////                {
+//////                    self.firebaseRootRef.child("UserImages/" + lowerCaseUserNameString + "/profileImage").setValue(base64String)
+//////                }
+//////                
+//////                self.firebaseRootRef.child("LinkedSocialMediaAccounts/" + lowerCaseUserNameString).setValue(linkedSocialMediaAccounts)
+//////                self.firebaseRootRef.child("Connections/" + lowerCaseUserNameString).setValue(connections)
+//////                self.firebaseRootRef.child("UserIdToUserName/" + userId).setValue(lowerCaseUserNameString)
+//////                
+//////                
+//////                // Cache the user name for future use!
+//////                let defaults = NSUserDefaults.standardUserDefaults()
+//////                defaults.setObject(lowerCaseUserNameString, forKey: "username")
+//////                
+//////                // Perform update on UI on main thread
+//////                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//////                    
+//////                    // Stop showing activity indicator (spinner)
+//////                    self.checkMarkFlipped.hidden = false
+//////                    
+//////                    self.userPhoto.hidden = true
+//////                    self.spinner.stopAnimating()
+//////                    
+//////                    UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+//////                        
+//////                        self.checkMarkFlipped.hidden = false
+//////                        self.checkMarkFlipped.image = self.checkMark.image
+//////                        
+//////                        }, completion: nil)
+//////                    
+//////                    
+//////                    delay(1.5)
+//////                    {
+//////                        
+//////                        self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+//////                        
+//////                    }
+//////                    
+//////                    self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
+//////                    
+//////                })
+//////
+////                
+////            }
+//            
+//            
+//            
+//            
+//        }
+
+        
+
+        
+                                    
+
+//                        print("ERROR IS: ")
+//                        print(error1.debugDescription) // LOG THIS
+//                        // Perform update on UI on main thread
+//                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                            self.spinner.stopAnimating()
+//                            self.prevEmailString = userEmailString
+//
+//                            print("COULDN'T SIGN UP")
+//                            
+////                            showAlert("Sorry", message: "The email you entered already exists! Please try a different email address.", buttonTitle: "Try again", sender: self)
+//                            showAlert("Sorry", message: "There was an error with your request. Please try again!", buttonTitle: "Try again", sender: self)
         
         
         // Enable the log-in button again

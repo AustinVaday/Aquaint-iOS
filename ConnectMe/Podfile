@@ -27,8 +27,7 @@ pod 'AWSDynamoDB'
 pod 'AWSMobileAnalytics'
 pod 'AWSEC2'
 pod 'AWSSNS'
-pod 'AWSCognito'
-
+pod 'AWSCognitoIdentityProvider'
 pod 'GoogleSignIn'
 
 
