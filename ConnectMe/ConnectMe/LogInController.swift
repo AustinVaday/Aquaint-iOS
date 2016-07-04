@@ -11,6 +11,8 @@
 
 import UIKit
 import AWSCognitoIdentityProvider
+import AWSMobileHubHelper
+
 
 class LogInController: UIViewController {
         
@@ -35,6 +37,7 @@ class LogInController: UIViewController {
     
         // GET AWS IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
+        
         
         self.checkMark.hidden = true
         self.checkMarkFlipped.hidden = true

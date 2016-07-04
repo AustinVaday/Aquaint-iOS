@@ -22,6 +22,7 @@ class SignUpVerificationController: UIViewController {
     var pool : AWSCognitoIdentityUserPool!
     var checkMarkFlippedCopy: UIImageView!
     var userPassword: String!
+    var userImage: UIImage!
 
     let segueDestination = "toSignUpFetchMoreDataController"
     
@@ -168,6 +169,7 @@ class SignUpVerificationController: UIViewController {
             let nextViewController = segue.destinationViewController as! SignUpFetchMoreDataController
             
             nextViewController.userPassword = self.userPassword
+            nextViewController.userImage = self.userImage
             
         }
     }

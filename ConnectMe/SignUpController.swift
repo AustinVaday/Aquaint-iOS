@@ -8,9 +8,9 @@
 //  Code is owned by: Austin Vaday and Navid Sarvian
 
 import UIKit
-//import Firebase
 import AWSMobileHubHelper
 import AWSCognitoIdentityProvider
+import AWSS3
 
 
 class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -35,6 +35,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     var didSignInObserver: AnyObject!
     var pool: AWSCognitoIdentityUserPool!
     var credentialsProvider: AWSCognitoCredentialsProvider!
+    var uploadRequest: AWSS3TransferManagerUploadRequest!
+    var fileManager : AWSUserFileManager!
     
     var checkMarkFlippedCopy: UIImageView!
     var prevEmailString: String!                // Used to prevent user from spamming requests
@@ -50,7 +52,10 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         // Get the IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
         
-        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1_yyImSiaeD", identityProviderManager:pool)
+        // Set up fileManager for uploading prof pics
+        fileManager = AWSUserFileManager.defaultUserFileManager()
+        
+//        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e", identityProviderManager:pool)
         
         
 //        didSignInObserver =  NSNotificationCenter.defaultCenter().addObserverForName(AWSIdentityManagerDidSignInNotification,
@@ -380,11 +385,92 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             {
                 print("Successful signup")
                 
-                
-                
                 // Cache the user name for future use!
                 setCurrentUser(lowerCaseUserNameString)
 
+                
+                
+                // If user did add a photo
+                if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
+                {
+//                    // Fetch user photo
+//                    let userPhoto = self.userPhoto.currentImage!
+//                    
+//                    // Resize photo for cheaper storage
+//                    let targetSize = CGSize(width: 150, height: 150)
+//                    let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
+//                    
+//                    // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
+//                    let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
+//                    
+//                    // Force PNG format
+//                    let data = UIImagePNGRepresentation(newImage)
+//                    try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+//                    
+//                    
+//                    // Upload user's image to S3 bucket
+//                    let transferRequest = AWSS3TransferManagerUploadRequest()
+//                    transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989/public"
+//                    transferRequest.key = userNameString
+//                    transferRequest.body = imageFileURL
+//                    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+//                    
+//                    transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
+//                        { (resultTask) -> AnyObject? in
+//                            
+//                            // if sucessful file transfer
+//                            if resultTask.error == nil
+//                            {
+//                                print("SUCCESS FILE UPLOAD")
+//                            }
+//                            else // If fail file transfer
+//                            {
+//                                
+//                                print("ERROR FILE UPLOAD: ", resultTask.error)
+//                            }
+//                            
+//                            return nil
+//                    })
+
+
+                        
+
+                    
+                    
+//                        // Fetch user photo
+//                        let userPhoto = self.userPhoto.currentImage!
+//                        
+//                        // Resize photo for cheaper storage
+//                        let targetSize = CGSize(width: 150, height: 150)
+//                        let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
+//                        
+//                        // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
+//                        let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
+//                        
+//                        // Force PNG format
+//                        let data = UIImagePNGRepresentation(newImage)
+//                        try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+//                        
+//                        
+//                        // Upload user's image to S3 bucket
+//                        
+//                        let key = "public/" + lowerCaseUserNameString
+//                        self.fileManager.localContentWithData(data, key: key).uploadWithPinOnCompletion(false, progressBlock: {(content: AWSLocalContent?, progress: NSProgress?) -> Void in
+//                            
+//                            
+//                            }, completionHandler: {(content: AWSContent?, error: NSError?) -> Void in
+//                                
+//                                print("INSIDE COMPLETION HANDLER:", error)
+//                                
+//                        })
+                    
+                }
+                
+                
+                
+                
+                
+                
                 // Perform update on UI on main thread
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
 
@@ -632,6 +718,11 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             
             nextViewController.userPassword = userPassword.text
             
+            // Pass image only if user set an image
+            if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
+            {
+                nextViewController.userImage = userPhoto.currentImage!
+            }
         }
     }
 }

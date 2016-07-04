@@ -8,6 +8,7 @@
 
 import Foundation
 import AWSCognitoIdentityProvider
+import AWSS3
 
 // Set up AWS service config (default log-in/sign-up)
 func getAWSCognitoIdentityUserPool() -> AWSCognitoIdentityUserPool
@@ -17,3 +18,9 @@ func getAWSCognitoIdentityUserPool() -> AWSCognitoIdentityUserPool
     AWSCognitoIdentityUserPool.registerCognitoIdentityUserPoolWithConfiguration(serviceConfiguration, userPoolConfiguration: userPoolConfiguration, forKey: "UserPool")
     return AWSCognitoIdentityUserPool(forKey: "UserPool")
 }
+
+//func getAWSTransferManagerUploadRequest -> AWSS3TransferManagerUploadRequest
+//{
+//
+//    
+//}

@@ -8,6 +8,8 @@
 
 import UIKit
 import AWSCognitoIdentityProvider
+import AWSS3
+import AWSMobileHubHelper
 
 class SignUpFetchMoreDataController: UIViewController {
     
@@ -20,9 +22,13 @@ class SignUpFetchMoreDataController: UIViewController {
     @IBOutlet weak var checkMarkView: UIView!
     
     var pool : AWSCognitoIdentityUserPool!
+    var fileManager: AWSUserFileManager!
+    var uploadRequest: AWSS3TransferManagerUploadRequest!
+
+    
     var checkMarkFlippedCopy: UIImageView!
     var userPassword : String!
-    
+    var userImage: UIImage!
     let segueDestination = "toMainContainerViewController"
     
 
@@ -34,6 +40,9 @@ class SignUpFetchMoreDataController: UIViewController {
         // get the IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
 
+        // Set up fileManager for uploading prof pics
+        fileManager = AWSUserFileManager.defaultUserFileManager()
+        
         // Set up animation
         self.checkMark.hidden = true
         self.checkMarkFlipped.hidden = true
@@ -91,6 +100,101 @@ class SignUpFetchMoreDataController: UIViewController {
             // If success login
             if sessionResultTask.error == nil
             {
+                
+                
+                if (self.userImage != nil)
+                {
+                    // Fetch user photo
+                    let userPhoto = self.userImage
+                    
+                    // Resize photo for cheaper storage
+                    let targetSize = CGSize(width: 150, height: 150)
+                    let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
+                    
+                    // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
+                    let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
+                    
+                    // Force PNG format
+                    let data = UIImagePNGRepresentation(newImage)
+                    try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+                    
+                    
+                    // Upload user's image to S3 bucket
+//                    
+//                    let key = "public/" + currentUser
+//                    self.fileManager.localContentWithData(data, key: key).uploadWithPinOnCompletion(false, progressBlock: {(content: AWSLocalContent?, progress: NSProgress?) -> Void in
+//                        
+//                        
+//                        }, completionHandler: {(content: AWSContent?, error: NSError?) -> Void in
+//                            
+//                            print("INSIDE COMPLETION HANDLER:", error)
+//                        
+//                        })
+
+                    
+                    
+                    let transferRequest = AWSS3TransferManagerUploadRequest()
+                        transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
+                        transferRequest.key = "public/" + currentUser
+                        transferRequest.body = imageFileURL
+                        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+
+                        transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
+                            { (resultTask) -> AnyObject? in
+
+                                // if sucessful file transfer
+                                if resultTask.error == nil
+                                {
+                                    print("SUCCESS FILE UPLOAD")
+                                }
+                                else // If fail file transfer
+                                {
+                                    
+                                    print("ERROR FILE UPLOAD: ", resultTask.error)
+                                }
+                                
+                                return nil
+                        })
+
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+//                    let transferRequest = AWSS3TransferManagerUploadRequest()
+//                    transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989/public"
+//                    transferRequest.key = currentUser
+//                    transferRequest.body = imageFileURL
+//                    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+//                    
+//                    transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
+//                        { (resultTask) -> AnyObject? in
+//                            
+//                            // if sucessful file transfer
+//                            if resultTask.error == nil
+//                            {
+//                                print("SUCCESS FILE UPLOAD")
+//                            }
+//                            else // If fail file transfer
+//                            {
+//                                
+//                                print("ERROR FILE UPLOAD: ", resultTask.error)
+//                            }
+//                            
+//                            return nil
+//                    })
+                }
+                else
+                {
+                    print("Poop. no user image")
+                }
+
+                
+                
+                
+                
                 
                 // Now update the user's info
                 let name = AWSCognitoIdentityUserAttributeType()
