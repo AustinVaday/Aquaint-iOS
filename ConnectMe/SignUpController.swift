@@ -383,7 +383,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                 
                 
                 // Cache the user name for future use!
-                setCurrentUser(lowerCaseUserNameString, forKey: "username")
+                setCurrentUser(lowerCaseUserNameString)
 
                 // Perform update on UI on main thread
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in

@@ -10,23 +10,21 @@
 
 
 import UIKit
-import Firebase
+import AWSCognitoIdentityProvider
 
 class LogInController: UIViewController {
         
-    @IBOutlet weak var userEmail: UITextField!
+    @IBOutlet weak var userName: UITextField!
     @IBOutlet weak var userPassword: UITextField!
     @IBOutlet weak var checkMark: UIImageView!
     @IBOutlet weak var checkMarkView: UIView!
     @IBOutlet weak var checkMarkFlipped: UIImageView!
-    
     @IBOutlet weak var emblem: UIImageView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var logInButton: UIButton!
     
     var checkMarkFlippedCopy: UIImageView!
-    // Create a reference to firebase location
-    let firebaseRootRef = FIRDatabase.database().reference()
+    var pool : AWSCognitoIdentityUserPool!
     
     let segueDestination = "toMainContainerViewController"
     
@@ -34,9 +32,9 @@ class LogInController: UIViewController {
     /* var wrongLogInCount: Int = 0 */
     
     override func viewDidLoad() {
-        
-        // Log out of of firebase if already logged in
-//        try! FIRAuth.auth()!.signOut()
+    
+        // GET AWS IDENTITY POOL
+        pool = getAWSCognitoIdentityUserPool()
         
         self.checkMark.hidden = true
         self.checkMarkFlipped.hidden = true
@@ -47,25 +45,26 @@ class LogInController: UIViewController {
         flipImageHorizontally(checkMarkFlippedCopy)
     }
     
-    @IBAction func emailEditingDidEnd(sender: UITextField) {
-        let userEmailString:String = userEmail.text!
-        
-        if (userEmailString.isEmpty)
-        {
-            print("Empty email string")
-        }
-        else if(verifyEmailFormat(userEmailString))
-        {
-            print("PROPER EMAIL")
-        }
-        else
-        {
-            //TODO: make email field red.
-            print("IMPROPER EMAIL")
-        }
-        
-        
-    }
+    
+//    @IBAction func emailEditingDidEnd(sender: UITextField) {
+//        let userEmailString:String = userEmail.text!
+//        
+//        if (userEmailString.isEmpty)
+//        {
+//            print("Empty email string")
+//        }
+//        else if(verifyEmailFormat(userEmailString))
+//        {
+//            print("PROPER EMAIL")
+//        }
+//        else
+//        {
+//            //TODO: make email field red.
+//            print("IMPROPER EMAIL")
+//        }
+//        
+//        
+//    }
     
     @IBAction func passwordEditingDidEnd(sender: UITextField) {
         
@@ -87,7 +86,7 @@ class LogInController: UIViewController {
     }
 
     // When user clicks "Next" on keyboard
-    @IBAction func emailEditingDidEndOnExit(sender: UITextField) {
+    @IBAction func userNameEditingDidEndOnExit(sender: AnyObject) {
         userPassword.becomeFirstResponder()
     }
     
@@ -104,122 +103,86 @@ class LogInController: UIViewController {
         // Show activity indicator (spinner)
         spinner.startAnimating()
         
-        let userEmailString:String = userEmail.text!
+        let userNameString:String = userName.text!.lowercaseString
         let userPasswordString:String =  userPassword.text!
         
-        // Perform long-running operation on background thread
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+        
+        // Attempt to log user in
+        pool.getUser(userNameString).getSession(userNameString, password: userPasswordString, validationData: nil, scopes: nil).continueWithBlock({ (sessionResultTask) -> AnyObject? in
             
-                self.spinner.startAnimating()
-            
-            FIRAuth.auth()?.signInWithEmail(userEmailString, password: userPasswordString, completion: { (user, error) in
-                        // If success log in
-                        if (user != nil)
-                        {
-                            let userId = user!.uid
-                            var userName: String!
-                            print("User logged in: ", userId)
-   
-                            
-                            let firebaseUserIdToUserNameRef = self.firebaseRootRef.child("UserIdToUserName/" + userId)
+            // If success login
+            if sessionResultTask.error == nil
+            {
+                //let userId = ?
+        
+                //TODO: Map username to user ID?
                 
-                            // Fetch respective username from this id
-                            firebaseUserIdToUserNameRef.observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
-                                print ("prior to snapshot")
+                // Set cached current user
+                setCurrentUser(userNameString)
                 
-                                // Means we have an error, display error..
-                                if (snapshot.value!.isKindOfClass(NSNull))
-                                {
-                                    
-                                    // Obtain username and cache the user name for future use!
-                                    let defaults = NSUserDefaults.standardUserDefaults()
-                                    defaults.setObject("[error]:undefined_user_name", forKey: "username")
-     
-                                    // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the log-in button before it is disabled. This if statement prevents the display of multiple alerts).
-                                    if (self.presentedViewController == nil)
-                                    {
-                                        showAlert("Sorry", message: "We could not log you in at this time, please try again.", buttonTitle: "Try again", sender: self)
-                                    }
-
-                                    
-                                    self.spinner.stopAnimating()
-                                    
-                                    try! FIRAuth.auth()!.signOut()
-
-                                    return
-                                    
-                                    
-                                }
-                                else
-                                {
-                                    userName = snapshot.value as! String
+                
+                // Perform update on UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
-                                    print ("after snapshot")
-                                    
-                                    print("User logged in has username: ", userName)
-                                    
-                                    // Obtain username and cache the user name for future use!
-                                    let defaults = NSUserDefaults.standardUserDefaults()
-                                    defaults.setObject(userName, forKey: "username")
-                                }
-
-                                
-                            
-                            // Perform update on UI on main thread
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                
-                                // Stop showing activity indicator (spinner)
-                                self.checkMarkFlipped.hidden = false
-                                
-                                self.emblem.hidden = true
-                                self.spinner.stopAnimating()
-                                
-                                UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
-                                    
-                                    self.checkMarkFlipped.hidden = false
-                                    self.checkMarkFlipped.image = self.checkMark.image
-                                    
-                                    }, completion: nil)
-                                
-                                
-                                delay(1.5)
-                                {
-                                        
-                                        self.performSegueWithIdentifier(self.segueDestination, sender: nil)
-                                        
-                                }
-                                
-                                self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
-                                
-                            })
-                            
-                            })
-
-                        }
-                        else // If not success log in
-                        {
-                            // Perform update on UI on main thread
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                
-                                
-                                // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the log-in button before it is disabled. This if statement prevents the display of multiple alerts).
-                                if (self.presentedViewController == nil)
-                                {
-                                    showAlert("Please try again...", message: "The email and password do not match.", buttonTitle: "Try again", sender: self)
-                                    
-                                }
-                                
-                                // Stop showing activity indicator (spinner)
-                                self.spinner.stopAnimating()
-                                
-                                print("LogIn Error")
-                                
-                            })
-                            
-                        }
+                    // Stop showing activity indicator (spinner)
+                    self.checkMarkFlipped.hidden = false
+                    
+                    self.emblem.hidden = true
+                    self.spinner.stopAnimating()
+                    
+                    UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                        
+                        self.checkMarkFlipped.hidden = false
+                        self.checkMarkFlipped.image = self.checkMark.image
+                        
+                        }, completion: nil)
+                    
+                    
+                    delay(1.5)
+                    {
+                        
+                        self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                        
+                    }
+                    
+                    self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
                     
                 })
+
+            }
+            else // If failure to login
+            {
+//                // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the log-in button before it is disabled. This if statement prevents the display of multiple alerts).
+//                if (self.presentedViewController == nil)
+//                {
+//                    showAlert("Sorry", message: "We could not log you in at this time, please try again.", buttonTitle: "Try again", sender: self)
+//                }
+                
+                
+                // Sign out?
+                
+                // Perform update on UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    self.spinner.stopAnimating()
+
+                    // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the log-in button before it is disabled. This if statement prevents the display of multiple alerts).
+                    if (self.presentedViewController == nil)
+                    {
+                        showAlert("Please try again...", message: "The email and password do not match.", buttonTitle: "Try again", sender: self)
+                        
+                    }
+                    
+                    // Stop showing activity indicator (spinner)
+                    self.spinner.stopAnimating()
+                    
+                    print("LogIn Error")
+                    
+                })
+
+            }
             
+            return nil
         })
         
 

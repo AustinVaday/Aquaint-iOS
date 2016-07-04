@@ -25,6 +25,7 @@ class SignUpFetchMoreDataController: UIViewController {
     
     let segueDestination = "toMainContainerViewController"
     
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +33,7 @@ class SignUpFetchMoreDataController: UIViewController {
         
         // get the IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
-        
+
         // Set up animation
         self.checkMark.hidden = true
         self.checkMarkFlipped.hidden = true

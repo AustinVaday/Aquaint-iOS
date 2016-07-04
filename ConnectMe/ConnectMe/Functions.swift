@@ -269,10 +269,10 @@ func getCurrentUser() -> String!
     
 }
 
-func setCurrentUser(value: AnyObject, forKey: String)
+func setCurrentUser(username: String)
 {
     let defaults = NSUserDefaults.standardUserDefaults()
-    defaults.setObject(value, forKey: forKey)
+    defaults.setObject(username, forKey: "username")
 }
 
 
