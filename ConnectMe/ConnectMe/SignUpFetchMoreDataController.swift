@@ -121,14 +121,14 @@ class SignUpFetchMoreDataController: UIViewController {
                     
                     dynamoDBUser.realname = realNameString
                     dynamoDBUser.timestamp = getTimestampAsInt()
-                    
                     dynamoDBUser.userId = task.result as! String
                     dynamoDBUser.username = currentUser
-                    
-                    let accountData = NSMutableDictionary()
-                    accountData.setValue(["austinvaday", "austinswag"], forKey: "facebook")
-                    accountData.setValue(["austinvaday","avtheman"], forKey: "instagram")
-                    dynamoDBUser.accounts = accountData
+
+                    // No account data to store yet.
+//                    let accountData = NSMutableDictionary()
+//                    accountData.setValue(["austinvaday", "austinswag"], forKey: "facebook")
+//                    accountData.setValue(["austinvaday","avtheman"], forKey: "instagram")
+//                    dynamoDBUser.accounts = accountData
                     
                     self.dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
                         
@@ -154,13 +154,8 @@ class SignUpFetchMoreDataController: UIViewController {
                     
                     return nil
                 })
-                
-                
 
-                
-                
-                
-                
+
                 // Upload user image to S3
                 if (self.userImage != nil)
                 {
@@ -178,21 +173,7 @@ class SignUpFetchMoreDataController: UIViewController {
                     let data = UIImagePNGRepresentation(newImage)
                     try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
                     
-                    
-                    // Upload user's image to S3 bucket
-//                    
-//                    let key = "public/" + currentUser
-//                    self.fileManager.localContentWithData(data, key: key).uploadWithPinOnCompletion(false, progressBlock: {(content: AWSLocalContent?, progress: NSProgress?) -> Void in
-//                        
-//                        
-//                        }, completionHandler: {(content: AWSContent?, error: NSError?) -> Void in
-//                            
-//                            print("INSIDE COMPLETION HANDLER:", error)
-//                        
-//                        })
-
-                    
-                    
+                    // AWS TRANSFER REQUEST
                     let transferRequest = AWSS3TransferManagerUploadRequest()
                         transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
                         transferRequest.key = "public/" + currentUser
@@ -219,44 +200,14 @@ class SignUpFetchMoreDataController: UIViewController {
                     
                     
                     
-                    
-                    
-                    
-                    
-//                    let transferRequest = AWSS3TransferManagerUploadRequest()
-//                    transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989/public"
-//                    transferRequest.key = currentUser
-//                    transferRequest.body = imageFileURL
-//                    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-//                    
-//                    transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
-//                        { (resultTask) -> AnyObject? in
-//                            
-//                            // if sucessful file transfer
-//                            if resultTask.error == nil
-//                            {
-//                                print("SUCCESS FILE UPLOAD")
-//                            }
-//                            else // If fail file transfer
-//                            {
-//                                
-//                                print("ERROR FILE UPLOAD: ", resultTask.error)
-//                            }
-//                            
-//                            return nil
-//                    })
                 }
                 else
                 {
-                    print("Poop. no user image")
+                    print("No user image selected.")
                 }
 
                 
-                
-                
-                
-                
-                // Now update the user's info
+                // Now update the user's CognitoIdentity info
                 let name = AWSCognitoIdentityUserAttributeType()
                 name.name = "name"
                 name.value = realNameString
@@ -328,12 +279,6 @@ class SignUpFetchMoreDataController: UIViewController {
             return nil
         })
 
-        
-        
-        
-        
-        
-        
         
     }
     
