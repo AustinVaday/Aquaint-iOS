@@ -100,8 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
 
         
-        
-        
+                
         return AWSMobileClient.sharedInstance.didFinishLaunching(application, withOptions: launchOptions)
 
         

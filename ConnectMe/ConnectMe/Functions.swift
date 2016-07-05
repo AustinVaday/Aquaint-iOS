@@ -269,10 +269,24 @@ func getCurrentUser() -> String!
     
 }
 
+func getCurrentUserID() -> String!
+{
+    // Get the user defaults set previously in the program (username of user)
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
+    return defaults.stringForKey("userid")
+}
+
 func setCurrentUser(username: String)
 {
     let defaults = NSUserDefaults.standardUserDefaults()
     defaults.setObject(username, forKey: "username")
+}
+
+func setCurrentUserID(userId: String)
+{
+    let defaults = NSUserDefaults.standardUserDefaults()
+    defaults.setObject(userId, forKey: "userid")
 }
 
 

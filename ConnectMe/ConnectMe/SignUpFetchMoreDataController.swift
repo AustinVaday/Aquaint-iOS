@@ -10,6 +10,7 @@ import UIKit
 import AWSCognitoIdentityProvider
 import AWSS3
 import AWSMobileHubHelper
+import AWSDynamoDB
 
 class SignUpFetchMoreDataController: UIViewController {
     
@@ -25,6 +26,7 @@ class SignUpFetchMoreDataController: UIViewController {
     var fileManager: AWSUserFileManager!
     var uploadRequest: AWSS3TransferManagerUploadRequest!
 
+    var dynamoDBObjectMapper : AWSDynamoDBObjectMapper!
     
     var checkMarkFlippedCopy: UIImageView!
     var userPassword : String!
@@ -42,6 +44,9 @@ class SignUpFetchMoreDataController: UIViewController {
 
         // Set up fileManager for uploading prof pics
         fileManager = AWSUserFileManager.defaultUserFileManager()
+        
+        // Set up DB
+        dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
         
         // Set up animation
         self.checkMark.hidden = true
@@ -101,7 +106,62 @@ class SignUpFetchMoreDataController: UIViewController {
             if sessionResultTask.error == nil
             {
                 
+                // Print credentials provider
+                let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
                 
+                // Update new identity ID
+                credentialsProvider.getIdentityId().continueWithBlock({ (task) -> AnyObject? in
+                    print("^^^USER LOGGED IN:", task.result)
+                    
+                    setCurrentUserID(task.result as! String)
+                    
+                    
+                    // Upload user DATA to DynamoDB
+                    let dynamoDBUser = User()
+                    
+                    dynamoDBUser.realname = realNameString
+                    dynamoDBUser.timestamp = getTimestampAsInt()
+                    
+                    dynamoDBUser.userId = task.result as! String
+                    dynamoDBUser.username = currentUser
+                    
+                    let accountData = NSMutableDictionary()
+                    accountData.setValue(["austinvaday", "austinswag"], forKey: "facebook")
+                    accountData.setValue(["austinvaday","avtheman"], forKey: "instagram")
+                    dynamoDBUser.accounts = accountData
+                    
+                    self.dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+                        
+                        // If successful save
+                        if (resultTask.error == nil)
+                        {
+                            print ("DYNAMODB SUCCESS: ", resultTask.result)
+                        }
+                        
+                        if (resultTask.error != nil)
+                        {
+                            print ("DYNAMODB ERROR: ", resultTask.error)
+                        }
+                        
+                        if (resultTask.exception != nil)
+                        {
+                            print ("DYNAMODB EXCEPTION: ", resultTask.exception)
+                        }
+                        
+                        return nil
+                    })
+                    
+                    
+                    return nil
+                })
+                
+                
+
+                
+                
+                
+                
+                // Upload user image to S3
                 if (self.userImage != nil)
                 {
                     // Fetch user photo

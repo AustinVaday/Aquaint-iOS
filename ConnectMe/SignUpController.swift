@@ -12,6 +12,8 @@ import AWSMobileHubHelper
 import AWSCognitoIdentityProvider
 import AWSS3
 
+import AWSDynamoDB // TESTING
+
 
 class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -54,6 +56,59 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
         // Set up fileManager for uploading prof pics
         fileManager = AWSUserFileManager.defaultUserFileManager()
+        
+        
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        
+        // Upload user DATA to DynamoDB
+        let dynamoDBUser = User()
+        
+        dynamoDBUser.realname = "Austin Vaday"
+        dynamoDBUser.timestamp = getTimestampAsInt()
+        
+        dynamoDBUser.userId = "userID..."
+        dynamoDBUser.username = "avtheman"
+        
+        let accountData = NSMutableDictionary()
+        accountData.setValue(["austinvaday", "austinswag"], forKey: "facebook")
+        accountData.setValue(["austinvaday","avtheman"], forKey: "instagram")
+        dynamoDBUser.accounts = accountData
+        
+        dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+            
+            // If successful save
+            if (resultTask.error == nil)
+            {
+                print ("DYNAMODB SUCCESS: ", resultTask.result)
+            }
+            
+            if (resultTask.error != nil)
+            {
+                print ("DYNAMODB ERROR: ", resultTask.error)
+            }
+            
+            if (resultTask.exception != nil)
+            {
+                print ("DYNAMODB EXCEPTION: ", resultTask.exception)
+            }
+            
+            return nil
+        })
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
 //        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e", identityProviderManager:pool)
         

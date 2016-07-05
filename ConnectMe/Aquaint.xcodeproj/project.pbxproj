@@ -45,6 +45,7 @@
 		FF84201E1D299A5E002D2927 /* SignUpVerificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF84201D1D299A5E002D2927 /* SignUpVerificationController.swift */; };
 		FF8420201D299A9C002D2927 /* SignUpFetchMoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF84201F1D299A9C002D2927 /* SignUpFetchMoreDataController.swift */; };
 		FF8420221D29B59F002D2927 /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8420211D29B59F002D2927 /* BackendAPI.swift */; };
+		FF8420241D2B42A0002D2927 /* DynamoDBUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8420231D2B42A0002D2927 /* DynamoDBUser.swift */; };
 		FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C341C01AC63001B2634 /* AppDelegate.swift */; };
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
@@ -130,6 +131,7 @@
 		FF84201D1D299A5E002D2927 /* SignUpVerificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpVerificationController.swift; sourceTree = "<group>"; };
 		FF84201F1D299A9C002D2927 /* SignUpFetchMoreDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpFetchMoreDataController.swift; sourceTree = "<group>"; };
 		FF8420211D29B59F002D2927 /* BackendAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendAPI.swift; sourceTree = "<group>"; };
+		FF8420231D2B42A0002D2927 /* DynamoDBUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamoDBUser.swift; sourceTree = "<group>"; };
 		FF897C311C01AC63001B2634 /* Aquaint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aquaint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C341C01AC63001B2634 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FF897C361C01AC63001B2634 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 				FF84201D1D299A5E002D2927 /* SignUpVerificationController.swift */,
 				FF84201F1D299A9C002D2927 /* SignUpFetchMoreDataController.swift */,
 				FF7878601C3010E600354936 /* LogInController.swift */,
+				FF8420231D2B42A0002D2927 /* DynamoDBUser.swift */,
 			);
 			name = Login/Signup;
 			sourceTree = "<group>";
@@ -705,6 +708,7 @@
 				FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */,
 				FF8420201D299A9C002D2927 /* SignUpFetchMoreDataController.swift in Sources */,
 				FF7878611C3010E700354936 /* LogInController.swift in Sources */,
+				FF8420241D2B42A0002D2927 /* DynamoDBUser.swift in Sources */,
 				FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */,
 				FF83A4DF1CC59A3900AFB26B /* RBResizer.swift in Sources */,
 				FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */,
