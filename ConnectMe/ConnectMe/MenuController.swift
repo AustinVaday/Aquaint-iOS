@@ -79,39 +79,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        let menuOption = MenuData(rawValue: indexPath.row)!
-        
-        switch (menuOption)
-        {
-        case .YOUR_ACCOUNT:
-            
-            self.performSegueWithIdentifier("yourAccountSegue", sender: nil)
-            break;
-        case .LINKED_ACCOUNTS:
-            self.performSegueWithIdentifier("linkedAccountsSegue", sender: nil)
-            break;
-        case .NOTIFICATIONS:
-            self.performSegueWithIdentifier("notificationSegue", sender: nil)
-            break;
-        case .INVITE_FRIENDS:
-            self.performSegueWithIdentifier("inviteFriendsSegue", sender: nil)
-            break;
-        case .HELP:
-            self.performSegueWithIdentifier("helpSegue", sender: nil)
-            break;
-        case .TERMS:
-            self.performSegueWithIdentifier("termsSegue", sender: nil)
-            break;
-        case .CLEAR_HISTORY:
-            self.performSegueWithIdentifier("clearHistorySegue", sender: nil)
-            break;
-        case .LOG_OUT:
-            logUserOut()
-            break;
-//        default:
-//            break;
-        }
+    
+    
     }
     
     
