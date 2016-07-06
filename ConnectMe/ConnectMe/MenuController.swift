@@ -11,7 +11,7 @@
 import UIKit
 import AWSCognitoIdentityProvider
 
-class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     
     enum MenuData: Int {
         case YOUR_ACCOUNT
@@ -24,16 +24,102 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case LOG_OUT
     }
     
+    @IBOutlet weak var linkedAccountsCollectionView: UICollectionView!
+    @IBOutlet weak var realNameLabel: UILabel!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var numFollowersLabel: UILabel!
+    @IBOutlet weak var profileImageView: UIImageView!
+    
+    
+    var currentUserName : String!
+    var socialMediaImageDictionary: Dictionary<String, UIImage>!
+    var socialMediaUserNames: NSMutableDictionary!
+
+    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
+
+    
     override func viewDidLoad() {
         
+        // Make the profile photo round
+        profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
+        
+        
+        
+        // Fetch the user's username and real name
+        currentUserName = getCurrentUser()
+//        currentRealName = getCurrentRealUser()
+        
+        // Set the UI
+        realNameLabel.text = "Real name"
+        userNameLabel.text = currentUserName
+        numFollowersLabel.text = "120"
+        
+        // Set up dictionary for user's social media names
+        socialMediaUserNames = NSMutableDictionary()
+        
+        
+        
+        socialMediaUserNames.setValue("bobby", forKey: "facebook")
+        socialMediaUserNames.setValue("bobby", forKey: "linkedin")
+        socialMediaUserNames.setValue("bobby", forKey: "twitter")
+        socialMediaUserNames.setValue("bobby", forKey: "instagram")
+        socialMediaUserNames.setValue("bobby", forKey: "linkedin")
+        socialMediaUserNames.setValue("bobby", forKey: "linkedin")
+        socialMediaUserNames.setValue("bobby", forKey: "youtube")
+        
+        
+        // Fill the dictionary of all social media names (key) with an image (val).
+        // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
+        socialMediaImageDictionary = getAllPossibleSocialMediaImages(possibleSocialMediaNameList)
 
     }
     
+    
+    
+    /**************************************************************************
+     *    COLLECTION VIEW PROTOCOL
+     **************************************************************************/
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 15
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        print ("SELECTED")
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
+      let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accountsCollectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
+        
+//        //Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
+//        // an array so that we can easily get the social media mediums that the user has (i.e. facebook, twitter, etc).
+//        var userSocialMediaNames = socialMediaUserNames.allKeys as! Array<String>
+//        
+//        userSocialMediaNames = userSocialMediaNames.sort()
+//        
+//        let socialMediaName = userSocialMediaNames[indexPath.item % self.possibleSocialMediaNameList.count]
+//        
+        let socialMediaName = "facebook"
+        // Generate a UI image for the respective social media type
+        cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaName]
+        
+        cell.socialMediaName = socialMediaName
+        
+        // Make cell image circular
+        cell.layer.cornerRadius = cell.frame.width / 2
+        
+        return cell
+    }
+    
+    
+    
+    /**************************************************************************
+     *    TABLE VIEW PROTOCOL
+     **************************************************************************/
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 8
     }
 
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
