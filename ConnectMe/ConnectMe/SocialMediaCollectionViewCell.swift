@@ -13,7 +13,5 @@ class SocialMediaCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var emblemImage: UIImageView!
     var socialMediaName: String!
     
-
-    
 }
 
