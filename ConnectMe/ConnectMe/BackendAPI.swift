@@ -9,6 +9,7 @@
 import Foundation
 import AWSCognitoIdentityProvider
 import AWSS3
+import AWSDynamoDB
 
 // Set up AWS service config (default log-in/sign-up)
 func getAWSCognitoIdentityUserPool() -> AWSCognitoIdentityUserPool
@@ -19,9 +20,4 @@ func getAWSCognitoIdentityUserPool() -> AWSCognitoIdentityUserPool
     return AWSCognitoIdentityUserPool(forKey: "UserPool")
 }
 
-//func getAWSTransferManagerUploadRequest -> AWSS3TransferManagerUploadRequest
-//{
-//
-//    
-//}
 

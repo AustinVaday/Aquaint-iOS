@@ -382,9 +382,17 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                 print("Successful signup")
                 
                 // Cache the user name for future use!
-                setCurrentUser(lowerCaseUserNameString)
-
+                let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
                 
+                // Fetch new identity ID
+                credentialsProvider.getIdentityId().continueWithBlock({ (task) -> AnyObject? in
+                    print("^^^USER SIGNED UP:", task.result)
+        
+                    // Set cached current user
+                    setCurrentUserNameAndId(userNameString, userId: task.result as! String)
+                    
+                    return nil
+                })
                 
                 // If user did add a photo
                 if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))

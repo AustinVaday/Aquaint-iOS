@@ -10,6 +10,7 @@
 
 import UIKit
 import AWSCognitoIdentityProvider
+import AWSDynamoDB
 
 class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -24,6 +25,18 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case LOG_OUT
     }
     
+    // The dictionary we receive from AWS DynamoDB maps a string to an array.
+    // When we have a collection view, we need a way to propogate this 
+    // datastructure linearly, because we're given indices based on
+    // how many usernames we have. A solution to this is using  
+    // an array of structs to keep tabs on what social media type we have
+    // and what the respective username is.
+    struct KeyValSocialMediaPair
+    {
+        var socialMediaType : String!       // i.e. "Facebook"
+        var socialMediaUserName : String!   // i.e. "austinvaday"
+    }
+    
     @IBOutlet weak var linkedAccountsCollectionView: UICollectionView!
     @IBOutlet weak var realNameLabel: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
@@ -32,9 +45,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     
     var currentUserName : String!
+    var currentUserId: String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
-
+    var keyValSocialMediaPairList : Array<KeyValSocialMediaPair>!
+    var dynamoDBObjectMapper: AWSDynamoDBObjectMapper!
+    
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
 
     
@@ -42,12 +58,66 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // Make the profile photo round
         profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
-        
-        
-        
+
+//        setCurrentUserNameAndId("vadayaaa", userId: "us-east-1:045372ec-60b5-4d02-bd46-7cf3bcd7c962")
         // Fetch the user's username and real name
         currentUserName = getCurrentUser()
-//        currentRealName = getCurrentRealUser()
+        currentUserId = getCurrentUserID()
+//      currentRealName = getCurrentRealUser()
+        
+        // Initialize array so that collection view has something to check while we 
+        // fetch data from dynamo
+        
+        keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
+        // Set up DB
+        dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        
+        print("CUR USER ID: ", currentUserId)
+        dynamoDBObjectMapper.load(User.self, hashKey: currentUserId, rangeKey: nil).continueWithBlock(
+            { (resultTask) -> AnyObject? in
+                
+                if(resultTask.result == nil)
+                {
+                    print("DYNAMODB LOAD : USER NOT FOUND, result is nil")
+                }
+                else if (resultTask.error == nil && resultTask.exception == nil) // If successful save
+
+                {
+                    print ("DYNAMODB LOAD SUCCESS:", resultTask.result)
+                    
+                    let user = resultTask.result as! User
+                    
+                    
+                    // If user has added accounts/profiles, show them
+                    if(user.accounts != nil)
+                    {
+                        // Dictionary with key: string of social media types (i.e. "facebook"), 
+                        // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
+                        self.socialMediaUserNames = user.accounts as! NSMutableDictionary
+                        
+                        // Convert dictionary to key,val pairs. Redundancy allowed
+                        self.keyValSocialMediaPairList = self.convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                        
+                        // Propogate collection view with new data
+                        self.linkedAccountsCollectionView.reloadData()
+                        print("RELOADING COLLECTIONVIEW")
+                    }
+                    
+                    
+                }
+                
+                if (resultTask.error != nil)
+                {
+                    print ("DYNAMODB LOAD ERROR:", resultTask.error)
+                }
+                
+                if (resultTask.exception != nil)
+                {
+                    print ("DYNAMODB LOAD EXCEPTION:", resultTask.exception)
+                }
+                
+                return nil
+        })
         
         // Set the UI
         realNameLabel.text = "Real name"
@@ -55,18 +125,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         numFollowersLabel.text = "120"
         
         // Set up dictionary for user's social media names
-        socialMediaUserNames = NSMutableDictionary()
-        
-        
-        
-        socialMediaUserNames.setValue("bobby", forKey: "facebook")
-        socialMediaUserNames.setValue("bobby", forKey: "linkedin")
-        socialMediaUserNames.setValue("bobby", forKey: "twitter")
-        socialMediaUserNames.setValue("bobby", forKey: "instagram")
-        socialMediaUserNames.setValue("bobby", forKey: "linkedin")
-        socialMediaUserNames.setValue("bobby", forKey: "linkedin")
-        socialMediaUserNames.setValue("bobby", forKey: "youtube")
-        
+//        socialMediaUserNames = NSMutableDictionary()
         
         // Fill the dictionary of all social media names (key) with an image (val).
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
@@ -75,16 +134,36 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     
-    
     /**************************************************************************
      *    COLLECTION VIEW PROTOCOL
      **************************************************************************/
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 15
+        
+//        let allValues = self.socialMediaUserNames.allValues
+//        
+//        var size = 0
+//        
+//        // SocialMediaUserNames is a dictionary that maps a social media name (i.e. facebook) to every
+//        // single username that the user has for that social media type. We need to find how many
+//        // total there are
+//        for i in 0...allValues.count-1
+//        {
+//            size = size + allValues[i].count
+//        }
+        
+        if (keyValSocialMediaPairList.isEmpty)
+        {
+            return 0
+        }
+    
+        return keyValSocialMediaPairList.count
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        print ("SELECTED")
+        
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
+        
+        print ("SELECTED", cell.socialMediaName)
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -98,15 +177,21 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 //        userSocialMediaNames = userSocialMediaNames.sort()
 //        
 //        let socialMediaName = userSocialMediaNames[indexPath.item % self.possibleSocialMediaNameList.count]
-//        
-        let socialMediaName = "facebook"
-        // Generate a UI image for the respective social media type
-        cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaName]
-        
-        cell.socialMediaName = socialMediaName
-        
-        // Make cell image circular
-        cell.layer.cornerRadius = cell.frame.width / 2
+        if (!keyValSocialMediaPairList.isEmpty)
+        {
+            let socialMediaPair = keyValSocialMediaPairList[indexPath.item % keyValSocialMediaPairList.count]
+            let socialMediaName = socialMediaPair.socialMediaType
+            let socialMediaUserName = socialMediaPair.socialMediaUserName
+
+                
+            // Generate a UI image for the respective social media type
+            cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaName]
+            
+            cell.socialMediaName = socialMediaUserName
+            
+            // Make cell image circular
+            cell.layer.cornerRadius = cell.frame.width / 2
+        }
         
         return cell
     }
@@ -197,4 +282,38 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         self.showViewController(alert, sender: nil)
     }
+    
+    // Private helper functions
+    //---------------------------------------------------------------------------------------------------
+    private func convertDictionaryToSocialMediaKeyValPairList(dict: NSMutableDictionary,
+                                                              possibleSocialMediaNameList: Array<String>)
+                                                                -> Array<KeyValSocialMediaPair>!
+    {
+        
+        var pairList = Array<KeyValSocialMediaPair>()
+        
+        // dict is a dictionary that maps a social media name (i.e. facebook) to every
+        // single username that the user has for that social media type. We need to find how many
+        // total there are
+        for socialMediaName in possibleSocialMediaNameList
+        {
+            // need to check if user has respective social media type first
+            if (dict[socialMediaName] != nil)
+            {
+                // Get a list of usernames for just one social media type (i.e. all usernames for facebook)
+                let socialMediaUserNamesList = dict[socialMediaName] as! Array<String>
+                
+                for username in socialMediaUserNamesList
+                {
+                    let pair = KeyValSocialMediaPair(socialMediaType: socialMediaName, socialMediaUserName: username)
+                    pairList.append(pair)
+                }
+            }
+        }
+        
+        return pairList
+        
+    }
+    
+    
 }

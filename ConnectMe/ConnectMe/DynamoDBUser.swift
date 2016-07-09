@@ -19,7 +19,6 @@ class User : AWSDynamoDBObjectModel
     var accounts : NSDictionary!
     
     
-    
     class func dynamoDBTableName() -> String {
         
         return "aquaint-mobilehub-146546989-users"

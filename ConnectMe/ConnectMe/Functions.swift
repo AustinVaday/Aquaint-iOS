@@ -309,16 +309,12 @@ func getCurrentUserID() -> String!
     return defaults.stringForKey("userid")
 }
 
-func setCurrentUser(username: String)
+func setCurrentUserNameAndId(username: String, userId:String)
 {
     let defaults = NSUserDefaults.standardUserDefaults()
     defaults.setObject(username, forKey: "username")
-}
-
-func setCurrentUserID(userId: String)
-{
-    let defaults = NSUserDefaults.standardUserDefaults()
     defaults.setObject(userId, forKey: "userid")
+
 }
 
 

@@ -113,7 +113,7 @@ class SignUpFetchMoreDataController: UIViewController {
                 credentialsProvider.getIdentityId().continueWithBlock({ (task) -> AnyObject? in
                     print("^^^USER LOGGED IN:", task.result)
                     
-                    setCurrentUserID(task.result as! String)
+                    setCurrentUserNameAndId(currentUser, userId: task.result as! String)
                     
                     
                     // Upload user DATA to DynamoDB

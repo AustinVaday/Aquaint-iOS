@@ -120,9 +120,6 @@ class LogInController: UIViewController {
         
                 //TODO: Map username to user ID?
                 
-                // Set cached current user
-                setCurrentUser(userNameString)
-                
                 
                 // Perform update on UI on main thread
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -161,7 +158,9 @@ class LogInController: UIViewController {
                 credentialsProvider.getIdentityId().continueWithBlock({ (task) -> AnyObject? in
                     print("^^^USER LOGGED IN:", task.result)
 
-                    setCurrentUserID(task.result as! String)
+                    
+                    // Set cached current user
+                    setCurrentUserNameAndId(userNameString, userId: task.result as! String)
                     
                     return nil
                 })
