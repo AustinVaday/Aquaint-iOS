@@ -68,6 +68,8 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                     if (error == nil)
                     {
                         print("SUCCESS LOG IN!", result.debugDescription)
+                        
+                        // Below can be nil????
                         print(FBSDKAccessToken.currentAccessToken().userID)
                     }
                     else if (result.isCancelled)
@@ -197,5 +199,15 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
         
         return cell
     }
+    
+    // Use to go back to previous VC at east.
+    @IBAction func unwindBackVC(segue: UIStoryboardSegue)
+    {
+        print("CALLED UNWIND VC")
+    }
 
+    @IBAction func backButtonClicked(sender: AnyObject) {
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
 }
