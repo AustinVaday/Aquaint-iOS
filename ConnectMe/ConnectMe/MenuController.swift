@@ -53,13 +53,14 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
 
-    
+    // AWS credentials provider
+    let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
+
     override func viewDidLoad() {
         
         // Make the profile photo round
         profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
 
-//        setCurrentUserNameAndId("vadayaaa", userId: "us-east-1:045372ec-60b5-4d02-bd46-7cf3bcd7c962")
         // Fetch the user's username and real name
         currentUserName = getCurrentUser()
         currentUserId = getCurrentUserID()
@@ -73,6 +74,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
         
         print("CUR USER ID: ", currentUserId)
+        print("CUR USERNAME: ", currentUserName)
         dynamoDBObjectMapper.load(User.self, hashKey: currentUserId, rangeKey: nil).continueWithBlock(
             { (resultTask) -> AnyObject? in
                 
@@ -98,12 +100,16 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                         // Convert dictionary to key,val pairs. Redundancy allowed
                         self.keyValSocialMediaPairList = self.convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
                         
-                        // Propogate collection view with new data
-                        self.linkedAccountsCollectionView.reloadData()
-                        print("RELOADING COLLECTIONVIEW")
+                        
+                        
+                        // Perform update on UI on main thread
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            
+                            // Propogate collection view with new data
+                            self.linkedAccountsCollectionView.reloadData()
+                            print("RELOADING COLLECTIONVIEW")
+                        })
                     }
-                    
-                    
                 }
                 
                 if (resultTask.error != nil)
@@ -125,7 +131,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         numFollowersLabel.text = "120"
         
         // Set up dictionary for user's social media names
-//        socialMediaUserNames = NSMutableDictionary()
+//       socialMediaUserNames = NSMutableDictionary()
         
         // Fill the dictionary of all social media names (key) with an image (val).
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
@@ -138,18 +144,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
      *    COLLECTION VIEW PROTOCOL
      **************************************************************************/
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-//        let allValues = self.socialMediaUserNames.allValues
-//        
-//        var size = 0
-//        
-//        // SocialMediaUserNames is a dictionary that maps a social media name (i.e. facebook) to every
-//        // single username that the user has for that social media type. We need to find how many
-//        // total there are
-//        for i in 0...allValues.count-1
-//        {
-//            size = size + allValues[i].count
-//        }
         
         if (keyValSocialMediaPairList.isEmpty)
         {
@@ -164,30 +158,33 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
         
         print ("SELECTED", cell.socialMediaName)
+        
+        let socialMediaUserName = cell.socialMediaName
+        let socialMediaType = cell.socialMediaType
+        
+        let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
+
+        // Perform the request, go to external application and let the user do whatever they want!
+        UIApplication.sharedApplication().openURL(socialMediaURL)
+        
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
       let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accountsCollectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
         
-//        //Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
-//        // an array so that we can easily get the social media mediums that the user has (i.e. facebook, twitter, etc).
-//        var userSocialMediaNames = socialMediaUserNames.allKeys as! Array<String>
-//        
-//        userSocialMediaNames = userSocialMediaNames.sort()
-//        
-//        let socialMediaName = userSocialMediaNames[indexPath.item % self.possibleSocialMediaNameList.count]
         if (!keyValSocialMediaPairList.isEmpty)
         {
             let socialMediaPair = keyValSocialMediaPairList[indexPath.item % keyValSocialMediaPairList.count]
-            let socialMediaName = socialMediaPair.socialMediaType
+            let socialMediaType = socialMediaPair.socialMediaType
             let socialMediaUserName = socialMediaPair.socialMediaUserName
 
                 
             // Generate a UI image for the respective social media type
-            cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaName]
+            cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
             
-            cell.socialMediaName = socialMediaUserName
+            cell.socialMediaName = socialMediaUserName // username
+            cell.socialMediaType = socialMediaType // facebook, snapchat, etc
             
             // Make cell image circular
             cell.layer.cornerRadius = cell.frame.width / 2
@@ -315,5 +312,43 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
+    @IBAction func onLogoutButtonClicked(sender: UIButton) {
+        
+        // Ask user if they really want to log out...
+        let alert = UIAlertController(title: nil, message: "Are you really sure you want to log out?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let logOutAction = UIAlertAction(title: "Log out", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
+            
+            // present the log in home page
+            
+            //TODO: Add spinner functionality
+            self.performSegueWithIdentifier("logOut", sender: nil)
+            
+            /* Does not work. So keep track of identity oursevles instead
+            // Log out AWS
+            self.credentialsProvider.clearKeychain()
+ 
+            // Update new identity ID
+            self.credentialsProvider.getIdentityId().continueWithBlock { (resultTask) -> AnyObject? in
+              
+                print("LOGOUT, identity id is:", resultTask.result)
+                
+                return nil
+            }
+            */
+            
+            // Clear local cache and user identity
+            clearUserDefaults()
+            
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil)
+        
+        alert.addAction(logOutAction)
+        alert.addAction(cancelAction)
+        
+        self.showViewController(alert, sender: nil)
+        
+    }
     
 }

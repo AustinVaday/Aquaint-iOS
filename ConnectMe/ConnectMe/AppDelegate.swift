@@ -73,13 +73,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        
 //        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = defaultServiceConfiguration
 
-
-        // Get the firebase ref so that we can logout on firebase
-        let firebaseRootRef = FIRDatabase.database().reference()
-
-
-        if (FIRAuth.auth()!.currentUser != nil)
+        // Get credentials provider
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
+        
+        
+        // If cached users, then they are logged in already
+        // Note we do not use credentialsProvider for login persistance, as we are unable
+        // to properly log users out using credentialsProvider.clearKeychain()
+        let userName = getCurrentUser()
+        let userId = getCurrentUserID()
+        
+        if (userName != nil && userId != nil)
         {
+            print("User already logged in!")
+            print (getCurrentUser())
+            print (getCurrentUserID())
+            
             let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
             let viewControllerIdentifier = "MainContainerViewController"
             // Go to home page, as if user was logged in already!
@@ -87,15 +96,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("user already logged in")
 
         }
-        else
-        {
-            print("no user logged in yet!")
-        }
+
         
+//        credentialsProvider.getIdentityId().continueWithBlock { (resultTask) -> AnyObject? in
+//            if resultTask.error != nil
+//            {
+//                print("Appdelegate: error with credentials provider", resultTask.error)
+//            }
+//            else if resultTask.exception != nil
+//            {
+//                print("Appdelegate: exception with credentials provider", resultTask.error)
+//            }
+//            else if resultTask.result == nil
+//            {
+//                print("Appdelegate: no result with credentials provider")
+//            }
+//            else
+//            {
+//                print("User already logged in!", resultTask.result)
+//                print (getCurrentUser())
+//                print (getCurrentUserID())
+//                
+//                let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+//                let viewControllerIdentifier = "MainContainerViewController"
+//                // Go to home page, as if user was logged in already!
+//                self.window?.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
+//                print("user already logged in")
+//                
+//            }
+//            return nil
+//        }
         
-        
-        // Initialize Amazon Cognito Credentials Provider
-        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
+//        // Initialize Amazon Cognito Credentials Provider
+//        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
         let configuration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: credentialsProvider)
         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
 

@@ -11,7 +11,8 @@ import UIKit
 class SocialMediaCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var emblemImage: UIImageView!
-    var socialMediaName: String!
+    var socialMediaName: String! // I.e. Facebook, IG, Snapchat...
+    var socialMediaType: String! // I.e. austinvaday, samsung, etc...
     
 }
 

@@ -24,8 +24,91 @@ struct CellExpansion {
     let expandedRowHeight:CGFloat = 120
 }
 
+// Necessary for fetching username URLs
+func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: String!, sender: AnyObject) -> NSURL!
+{
+    var urlString = ""
+    var altString = ""
+    
+    switch (socialMediaTypeName)
+    {
+    case "facebook":
+        urlString = "fb://requests/" + socialMediaUserName
+        altString = "http://www.facebook.com/" + socialMediaUserName
+        break;
+    case "snapchat":
+        
+        urlString = "snapchat://add/" + socialMediaUserName
+        altString = "http://www.snapchat.com/add/" + socialMediaUserName
+        break;
+    case "instagram":
+        urlString = "instagram://user?username=" + socialMediaUserName
+        altString = "http://www.instagram.com/" + socialMediaUserName
+        break;
+    case "twitter":
+        urlString = "twitter:///user?screen_name=" + socialMediaUserName
+        altString = "http://www.twitter.com/" + socialMediaUserName
+        break;
+    case "linkedin":
+        urlString = "linkedin://profile/" + socialMediaUserName
+        altString = "http://www.linkedin.com/in/" + socialMediaUserName
+        
+        break;
+    case "youtube":
+        urlString = "youtube:www.youtube.com/user/" + socialMediaUserName
+        altString = "http://www.youtube.com/" + socialMediaUserName
+        break;
+    case "phone":
+        print ("COMING SOON")
+        
+        //                contact.familyName = "Vaday"
+        //                contact.givenName  = "Austin"
+        //
+        //                let phoneNum  = CNPhoneNumber(stringValue: "9493758223")
+        //                let cellPhone = CNLabeledValue(label: CNLabelPhoneNumberiPhone, value: phoneNum)
+        //
+        //                contact.phoneNumbers.append(cellPhone)
+        //
+        //                //TODO: Check if contact already exists in phone
+        //                let saveRequest = CNSaveRequest()
+        //                saveRequest.addContact(contact, toContainerWithIdentifier: nil)
+        //
+        
+        //                return
+        
+        break;
+    default:
+        break;
+    }
+    
+    var socialMediaURL = NSURL(string: urlString)
+    
+    // If user doesn't have social media app installed, open using default browser instead (use altString)
+    if (!UIApplication.sharedApplication().canOpenURL(socialMediaURL!))
+    {
+        if (altString != "")
+        {
+            socialMediaURL = NSURL(string: altString)
+        }
+        else
+        {
+            if (socialMediaTypeName == "snapchat")
+            {
+                showAlert("Sorry", message: "You need to have the Snapchat app! Please download it and try again!", buttonTitle: "Ok", sender: sender)
+            }
+            else
+            {
+                showAlert("Hold on!", message: "Feature coming soon...", buttonTitle: "Ok", sender: sender)
+            }
+            return nil
+        }
+    }
+    
+    return socialMediaURL
+}
 
-// Implements a delay. 
+
+// Implements a delay.
 // Usage: delay([num_sec]){ [Code after delay] }
 func delay(delay:Double, closure:()->()) {
     dispatch_after(
@@ -289,7 +372,10 @@ func showAlertFetchText(title: String, message: String, buttonTitle: String, tex
     
 }
 
-
+func clearUserDefaults()
+{
+    NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
+}
 
 // Get the current user that is signed into the app
 func getCurrentUser() -> String!
@@ -297,7 +383,15 @@ func getCurrentUser() -> String!
     // Get the user defaults set previously in the program (username of user)
     let defaults = NSUserDefaults.standardUserDefaults()
     
-    return defaults.stringForKey("username")
+    let currentUser = defaults.stringForKey("username")
+    
+    if currentUser == nil
+    {
+        print("Uh oh, no cached username available.")
+        return nil
+    }
+    
+    return currentUser
     
 }
 
@@ -306,7 +400,15 @@ func getCurrentUserID() -> String!
     // Get the user defaults set previously in the program (username of user)
     let defaults = NSUserDefaults.standardUserDefaults()
     
-    return defaults.stringForKey("userid")
+    let currentUserId = defaults.stringForKey("userid")
+    
+    if currentUserId == nil
+    {
+        print("Uh oh, no cached userid available.")
+        return nil
+    }
+    
+    return currentUserId
 }
 
 func setCurrentUserNameAndId(username: String, userId:String)
