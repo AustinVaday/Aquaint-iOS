@@ -139,6 +139,10 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     }
     
+    @IBAction func onAddSocialMediaClicked(sender: AnyObject) {
+        
+        print("YO MAN YOU CLICKED IT.")
+    }
     
     /**************************************************************************
      *    COLLECTION VIEW PROTOCOL
