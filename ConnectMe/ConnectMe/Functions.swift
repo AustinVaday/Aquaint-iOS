@@ -294,6 +294,13 @@ func verifyEmailFormat(emailString:String) -> Bool
     
 }
 
+// Check if phone number is proper
+func verifyPhoneFormat(phoneString: String) -> Bool
+{
+    // User that length of phone is 
+    return true
+}
+
 // Check if password format is proper
 func verifyPasswordFormat(passwordString:String) -> Bool
 {

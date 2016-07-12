@@ -15,13 +15,18 @@ import AWSDynamoDB
 class SignUpFetchMoreDataController: UIViewController {
     
 
-    @IBOutlet weak var realNameField: UITextField!
-    @IBOutlet weak var realNameButton: UIButton!
+//    @IBOutlet weak var realNameField: UITextField!
+//    @IBOutlet weak var realNameButton: UIButton!
+    
+    @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var checkMarkFlipped: UIImageView!
     @IBOutlet weak var checkMark: UIImageView!
     @IBOutlet weak var checkMarkView: UIView!
+    @IBOutlet weak var buttonToFlip: UIButton!
     
+    @IBOutlet weak var userPassword: UITextField!
+    @IBOutlet weak var userName: UITextField!
     var pool : AWSCognitoIdentityUserPool!
     var fileManager: AWSUserFileManager!
     var uploadRequest: AWSS3TransferManagerUploadRequest!
@@ -29,10 +34,12 @@ class SignUpFetchMoreDataController: UIViewController {
     var dynamoDBObjectMapper : AWSDynamoDBObjectMapper!
     
     var checkMarkFlippedCopy: UIImageView!
-    var userPassword : String!
-    var userImage: UIImage!
-    let segueDestination = "toMainContainerViewController"
     
+    var userPhone : String!
+    var userEmail : String!
+    var userFullName : String!
+    var userImage: UIImage!
+    let segueDestination = "toSignUpVerificationController"
 
     
     override func viewDidLoad() {
@@ -42,244 +49,182 @@ class SignUpFetchMoreDataController: UIViewController {
         // get the IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
 
-        // Set up fileManager for uploading prof pics
-        fileManager = AWSUserFileManager.defaultUserFileManager()
-        
-        // Set up DB
-        dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        
         // Set up animation
         self.checkMark.hidden = true
         self.checkMarkFlipped.hidden = true
+        self.buttonToFlip.hidden = false
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
         flipImageHorizontally(checkMarkFlippedCopy)
         
     }
     
-    
-    // // When user clicks "Go" on keyboard
-    @IBAction func onTextFieldDidEndOnExit(sender: AnyObject) {
-        // Mimic the "Sign Up" button being pressed
-        self.onFinishButtonClicked(realNameButton.self)
+    // When user clicks "next" on keyboard
+    @IBAction func onUserNameEditingDidEndOnExit(sender: AnyObject) {
+        userPassword.becomeFirstResponder()
     }
     
-    @IBAction func onFinishButtonClicked(sender: UIButton) {
+    // When user clicks "Go" on keyboard
+    @IBAction func onPasswordEditingDidEndOnExit(sender: AnyObject) {
+        // Mimic the "Sign Up" button being pressed
+        self.onFinishButtonClicked(nextButton.self)
         
-        let realNameString:String = realNameField.text!
+    }
+
+    @IBAction func onFinishButtonClicked(sender: UIButton) {
+    
+        let userNameString:String = userName.text!
+        let userPasswordString:String = userPassword.text!
         
         /*********************************************************************
          * ALERTS - send alert and leave if user enters in improper input
          **********************************************************************/
-        if (realNameString.isEmpty)
+        if (!verifyUserNameLength(userNameString))
         {
-            showAlert("Empty field", message: "Please enter in your name!", buttonTitle: "Try again", sender: self)
+            showAlert("Improper username format", message: "Please create a username between 6 and 20 characters long!", buttonTitle: "Try again", sender: self)
             return
         }
         
-        if (!verifyRealNameLength(realNameString))
+        if (!verifyUserNameFormat(userNameString))
         {
-            showAlert("Name too long", message: "Please try a shorter name!", buttonTitle: "Try again", sender: self)
+            showAlert("Improper username format", message: "Please use a proper username format: no spaces and no special characters!", buttonTitle: "Try again", sender: self)
             return
         }
         
-//        if (!verifyRealNameFormat(realNameString))
-//        {
-//            showAlert("Improper name format", message: "The name format you entered is invalid. Please try again.", buttonTitle: "Try again", sender: self)
-//            return
-//        }
+        if (userPasswordString.isEmpty)
+        {
+            showAlert("Error signing up", message: "Please enter in a password!", buttonTitle: "Try again", sender: self)
+            return
+        }
         
-        // Disable button so that user can only send one request at a time
-        //        verifyButton.enabled = false
+        // API restriction: Password must be at least 6 characters... (or it will throw an error)
+        if (userPasswordString.characters.count < 6)
+        {
+            showAlert("Error signing up", message: "Please enter in a password that is more than 6 characters!", buttonTitle: "Try again", sender: self)
+            return
+        }
+        
         
         // Show activity indicator (spinner)
         spinner.startAnimating()
         
-        let currentUser = getCurrentUser()
-        print("Current user signed in: ", currentUser)
-        print("And password is: ", userPassword)
+//        let currentUser = getCurrentUser()
+//        
+//        print("Current user to sign up: ", currentUser)
+//        print("And password is: ", userPassword)
         
         
-        // Attempt to log user in
-        pool.getUser(currentUser).getSession(currentUser, password: self.userPassword, validationData: nil, scopes: nil).continueWithBlock({ (sessionResultTask) -> AnyObject? in
-            
-            // If success login
-            if sessionResultTask.error == nil
+        //Important!! Make userNameString all lowercase from now on (for storing unique keys in the database)
+        // What if userNameString is nil?
+        let lowerCaseUserNameString = userNameString.lowercaseString
+
+        let email  = AWSCognitoIdentityUserAttributeType()
+            email.name = "email"
+            email.value = userEmail
+        
+        let phone = AWSCognitoIdentityUserAttributeType()
+            phone.name = "phone_number"
+            phone.value = userPhone
+
+
+        // Remember, AWSTask is ASYNCHRONOUS.
+        pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email, phone], validationData: nil).continueWithBlock { (resultTask) -> AnyObject? in
+
+            // If sign up performed successfully.
+            if (resultTask.error == nil)
             {
-                
-                // Print credentials provider
-                let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
-                
-                // Update new identity ID
-                credentialsProvider.getIdentityId().continueWithBlock({ (task) -> AnyObject? in
-                    print("^^^USER LOGGED IN:", task.result)
-                    
-                    setCurrentUserNameAndId(currentUser, userId: task.result as! String)
-                    
-                    
-                    // Upload user DATA to DynamoDB
-                    let dynamoDBUser = User()
-                    
-                    dynamoDBUser.realname = realNameString
-                    dynamoDBUser.timestamp = getTimestampAsInt()
-                    dynamoDBUser.userId = task.result as! String
-                    dynamoDBUser.username = currentUser
+                print("Successful signup")
 
-                    // No account data to store yet.
-//                    let accountData = NSMutableDictionary()
-//                    accountData.setValue(["austinvaday", "austinswag"], forKey: "facebook")
-//                    accountData.setValue(["austinvaday","avtheman"], forKey: "instagram")
-//                    dynamoDBUser.accounts = accountData
-                    
-                    self.dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
-                        
-                        // If successful save
-                        if (resultTask.error == nil)
-                        {
-                            print ("DYNAMODB SUCCESS: ", resultTask.result)
-                        }
-                        
-                        if (resultTask.error != nil)
-                        {
-                            print ("DYNAMODB ERROR: ", resultTask.error)
-                        }
-                        
-                        if (resultTask.exception != nil)
-                        {
-                            print ("DYNAMODB EXCEPTION: ", resultTask.exception)
-                        }
-                        
-                        return nil
-                    })
-                    
-                    
-                    return nil
-                })
+                // Cache the user name for future use!
+//                let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
+//
+//                // Fetch new identity ID
+//                credentialsProvider.getIdentityId().continueWithBlock({ (task) -> AnyObject? in
+//                    print("^^^USER SIGNED UP:", task.result)
+//
+//                    // Set cached current user
+//                    setCurrentUserNameAndId(userNameString, userId: task.result as! String)
+//
+//                    return nil
+//                })
 
 
-                // Upload user image to S3
-                if (self.userImage != nil)
-                {
-                    // Fetch user photo
-                    let userPhoto = self.userImage
-                    
-                    // Resize photo for cheaper storage
-                    let targetSize = CGSize(width: 150, height: 150)
-                    let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
-                    
-                    // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
-                    let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
-                    
-                    // Force PNG format
-                    let data = UIImagePNGRepresentation(newImage)
-                    try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
-                    
-                    // AWS TRANSFER REQUEST
-                    let transferRequest = AWSS3TransferManagerUploadRequest()
-                        transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
-                        transferRequest.key = "public/" + currentUser
-                        transferRequest.body = imageFileURL
-                        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-
-                        transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
-                            { (resultTask) -> AnyObject? in
-
-                                // if sucessful file transfer
-                                if resultTask.error == nil
-                                {
-                                    print("SUCCESS FILE UPLOAD")
-                                }
-                                else // If fail file transfer
-                                {
-                                    
-                                    print("ERROR FILE UPLOAD: ", resultTask.error)
-                                }
-                                
-                                return nil
-                        })
-
-                    
-                    
-                    
-                }
-                else
-                {
-                    print("No user image selected.")
-                }
-
-                
-                // Now update the user's CognitoIdentity info
-                let name = AWSCognitoIdentityUserAttributeType()
-                name.name = "name"
-                name.value = realNameString
-                
-                self.pool.getUser(currentUser).updateAttributes([name]).continueWithBlock { (resultTask) -> AnyObject? in
-                    
-                    print("RESULT TASK UPDATE: ", resultTask)
-                    print("RESULT TASK ERROR: ", resultTask.error)
-                    
-                    // If success code
-                    if resultTask.error == nil
-                    {
-                        print("NAME UPDATE SUCCESSFUL")
-                        
-                        // Perform update on UI on main thread
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            
-                            // Stop showing activity indicator (spinner)
-                            self.spinner.stopAnimating()
-                            self.checkMarkFlipped.hidden = false
-                            
-                            UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
-                                
-                                self.checkMarkFlipped.hidden = false
-                                self.checkMarkFlipped.image = self.checkMark.image
-                                
-                                }, completion: nil)
-                            
-                            
-                            delay(1.5)
-                            {
-                                
-                                self.performSegueWithIdentifier(self.segueDestination, sender: nil)
-                                
-                            }
-                            
-                            self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
-                        })
-
-                        
-                    }
-                    else // If fail code
-                    {
-                        
-                        // Perform update on UI on main thread
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            
-                            self.spinner.stopAnimating()
-                            
-                            showAlert("Error", message: "Could not update your name. Please contact admin@aquaint.io for further assistance.", buttonTitle: "Try again", sender: self)
-                        })
-                        
-                    }
-                    
-                    return nil
-                }
-            }
-            else // If fail login
-            {
                 // Perform update on UI on main thread
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    
+
+                    // Stop showing activity indicator (spinner)
+                    self.checkMarkFlipped.hidden = false
+
+                    self.buttonToFlip.hidden = true
                     self.spinner.stopAnimating()
-                    
-                    showAlert("Error", message: "Name update successful, but could not log you in at this time. Please try again.", buttonTitle: "Try again", sender: self)
+
+                    UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+
+                        self.checkMarkFlipped.hidden = false
+                        self.checkMarkFlipped.image = self.checkMark.image
+
+                        }, completion: nil)
+
+
+                    delay(1.5)
+                    {
+
+                        self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+
+                    }
+
+                    self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
+
                 })
+
+
+            }
+            else // If sign up failed
+            {
+                print("Fail signup")
+                
+                // Perform update on UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+
+                    // Stop showing activity indicator (spinner)
+                    self.spinner.stopAnimating()
+
+                    // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
+                    if (self.presentedViewController == nil)
+                    {
+
+                        showAlert("Error signing up.", message: "Sorry, your username is already taken. Please try again!", buttonTitle: "Try again", sender: self)
+                    }
+                    
+                })
+
             }
             
             return nil
-        })
-
+        }
         
     }
+    
+    // Used to pass password to next view controller
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+
+        // Pass the password to next view controller so we can log user in there
+        if(segue.identifier == segueDestination)
+        {
+            let nextViewController = segue.destinationViewController as! SignUpVerificationController
+
+            nextViewController.userFullName = self.userFullName
+            nextViewController.userPassword = self.userPassword.text
+            nextViewController.userName = self.userName.text
+            nextViewController.userImage = self.userImage
+            nextViewController.userPhone = self.userPhone
+            // Need phone to display it on next screen
+            // Don't need to pass email.
+            // Remember, email & phone stored on AWS User Pools, not DynamoDB users.
+            
+        
+        }
+        
+    }
+
     
 }

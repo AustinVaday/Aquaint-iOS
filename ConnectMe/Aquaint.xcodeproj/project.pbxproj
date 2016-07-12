@@ -248,8 +248,8 @@
 			isa = PBXGroup;
 			children = (
 				FF65D3211C1EA3D60015C99F /* SignUpController.swift */,
-				FF84201D1D299A5E002D2927 /* SignUpVerificationController.swift */,
 				FF84201F1D299A9C002D2927 /* SignUpFetchMoreDataController.swift */,
+				FF84201D1D299A5E002D2927 /* SignUpVerificationController.swift */,
 				FF7878601C3010E600354936 /* LogInController.swift */,
 				FF8420231D2B42A0002D2927 /* DynamoDBUser.swift */,
 			);

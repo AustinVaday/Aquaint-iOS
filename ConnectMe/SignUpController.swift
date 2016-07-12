@@ -11,13 +11,14 @@ import UIKit
 import AWSMobileHubHelper
 import AWSCognitoIdentityProvider
 import AWSS3
+import PhoneNumberKit
 
 class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // UI variable data types
-    @IBOutlet weak var userName: UITextField!
     @IBOutlet weak var userEmail: UITextField!
-    @IBOutlet weak var userPassword: UITextField!
+    @IBOutlet weak var userPhone: UITextField!
+    @IBOutlet weak var userFullName: UITextField!
     @IBOutlet weak var userPhoto: UIButton!
     @IBOutlet weak var checkMark: UIImageView!
     @IBOutlet weak var checkMarkFlipped: UIImageView!
@@ -41,12 +42,16 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     var prevEmailString: String!                // Used to prevent user from spamming requests
     var imagePicker:UIImagePickerController!    // Used for selecting image from user's device
 
-    let segueDestination = "toSignUpVerificationController"
+    let segueDestination = "toSignUpFetchMoreDataController"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         print("VIEW JUST LOADED!")
+        
+        let userPhone = PhoneNumberTextField()
+        print("USER PHONE:", userPhone.currentRegion)
+        print("USER PHONE:", userPhone.defaultRegion)
         
         // Get the IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
@@ -143,68 +148,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
     }
     
-
-    // Ensure username is proper
-    @IBAction func nameEditingDidChange(sender: UITextField) {
-        // Prevent upper-case characters
-        // Prevent spaces
-        // Prevent special characters
-        
-        
-        var inputString = userName.text!
-        
-//        // Make the input field lowercase while we're at it.
-//        userName.text = inputString.lowercaseString
-        
-        if (!inputString.isEmpty)
-        {
-            // Get range of all characters in the string that are not digits
-            let notAcceptableRange = inputString.rangeOfCharacterFromSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
-            
-            // If range of characters in given string has any non-digit characters
-            // Then we must remove them
-            if (notAcceptableRange != nil)
-            {
-                // Remove all non-digits
-                inputString.removeRange(notAcceptableRange!)
-                
-                // Enforce this on user, set text field to no digits (and make it lowercase too while we're at it!
-                userName.text = inputString
-            }
-        }
-        
-
-
-    }
-    
-    
-    // EditingDidEnd functionality will be used for error checking user input
-    @IBAction func nameEditingDidEnd(sender: UITextField) {
-        
-//        // Store the text inside the field. Make sure it's unwrapped by using a '!'.
-//        let userNameString:String =  userName.text!
-//        
-//        print(userNameString)
-//        
-//        // Check if text field is empty
-//        if userNameString.isEmpty
-//        {
-////            userNameLabel.textColor = UIColor.redColor()
-//            print("Empy username string")
-//        }
-//        else
-//        {
-//            print("PROPER username string")
-//
-////            userNameLabel.textColor = UIColor.whiteColor()
-//        }
-        
-        // Call this method one last time to ensure username is proper
-        self.nameEditingDidChange(sender)
-
-    }
-    
-    @IBAction func emailEditingDidEnd(sender: AnyObject) {
+    // Ensure email is proper
+    @IBAction func emailEditingDidEnd(sender: UITextField) {
         
         let userEmailString:String = userEmail.text!
         
@@ -224,72 +169,67 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
     }
     
-    @IBAction func passwordEditingDidEnd(sender: AnyObject) {
-        
-        let userPasswordString:String = userPassword.text!
-        
-        if (userPasswordString.isEmpty)
-        {
-            print("Empty password string")
-        }
-        else if (verifyPasswordFormat(userPasswordString))
-        {
-            print("PROPER PASSWORD")
-        }
-        else
-        {
-            //TODO: make password field red
-            print("Please have at least 4 characters")
-        }
+    // Ensure phone is proper
+    @IBAction func phoneEditingDidEnd(sender: UITextField) {
+        // Do this later if you want dynamic checking
     }
     
-    // When user clicks "Next" on keyboard
-    @IBAction func nameEditingDidEndOnExit(sender: UITextField) {
-        // Give control to next field
-        userEmail.becomeFirstResponder()
+    // Ensure full name is proper
+    @IBAction func fullNameEditingDidEnd(sender: UITextField) {
+        // Do this later if you want dynamic checking
+
     }
+    
+    // Actively edit phone number
+    @IBAction func onPhoneEditingDidChange(sender: UITextField) {
+        
+        let phoneString = userPhone.text
+        
+        
+        
+        
+    }
+    
     
     // When user clicks "Next" on keyboard
     @IBAction func emailEditingDidEndOnExit(sender: UITextField) {
         // Give control to next field
-        userPassword.becomeFirstResponder()
+        userPhone.becomeFirstResponder()
     }
     
-    // When user clicks "Go" on keyboard
-    @IBAction func passwordEditingDidEndOnExit(sender: UITextField) {
+    // When user clicks "Next" on keyboard
+    @IBAction func phoneEditingDidEndOnExit(sender: UITextField) {
+        // Give control to next field
+        userFullName.becomeFirstResponder()
+    }
+    
+    @IBAction func fullNameEditingDidEndOnExit(sender: UITextField) {
         // Mimic the "Sign Up" button being pressed
         self.signUpButtonClicked(signUpButton.self)
     }
-   
-    // Actions to perform when "Sign Up" is clicked
+    
+     // Actions to perform when "Next" (Sign up) button is clicked
     @IBAction func signUpButtonClicked(sender: AnyObject) {
         
-        let userNameString:String = userName.text!
         let userEmailString:String = userEmail.text!
-        let userPasswordString:String =  userPassword.text!
-        var userNameExists = false
+        let userPhoneString:String = userPhone.text!
+        let userFullNameString:String =  userFullName.text!
+//        var userNameExists = false
         
         /*********************************************************************
         * ALERTS - send alert and leave if user enters in improper input
         **********************************************************************/
-        if (userNameString.isEmpty)
+        if (userFullNameString.isEmpty)
         {
-            showAlert("Error signing up", message: "Please enter in a username!", buttonTitle: "Try again", sender: self)
+            showAlert("Error signing up", message: "Please enter in a proper full name!", buttonTitle: "Try again", sender: self)
             return
         }
         
-        if (!verifyUserNameLength(userNameString))
+        if (!verifyRealNameLength(userFullNameString))
         {
-            showAlert("Improper username format", message: "Please create a username between 6 and 20 characters long!", buttonTitle: "Try again", sender: self)
+            showAlert("Improper full name format", message: "Please create a full name that is less than 30 characters long!", buttonTitle: "Try again", sender: self)
             return
         }
-        
-        if (!verifyUserNameFormat(userNameString))
-        {
-            showAlert("Improper username format", message: "Please use a proper username format: no spaces and no special characters!", buttonTitle: "Try again", sender: self)
-            return
-        }
-        
         
         if (userEmailString.isEmpty)
         {
@@ -302,28 +242,19 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             showAlert("Improper email address", message: "Please enter in a proper email address!", buttonTitle: "Try again", sender: self)
             return
         }
-        
-        if (userPasswordString.isEmpty)
+
+        if (userPhoneString.isEmpty)
         {
-            showAlert("Error signing up", message: "Please enter in a password!", buttonTitle: "Try again", sender: self)
+            showAlert("Error signing up", message: "Please enter in a phone number!", buttonTitle: "Try again", sender: self)
             return
         }
         
-        // API restriction: Password must be at least 6 characters... (or it will throw an error)
-        if (userPasswordString.characters.count < 6)
+        if (!verifyPhoneFormat(userPhoneString))
         {
-            showAlert("Error signing up", message: "Please enter in a password that is more than 6 characters!", buttonTitle: "Try again", sender: self)
+            showAlert("Error signing up", message: "Please enter in a proper phone number!", buttonTitle: "Try again", sender: self)
             return
         }
         
-//        // Do not send request to server if user didn't change email input
-//        if (userEmailString == self.prevEmailString)
-//        {
-//            print("I will not let you take advantage of me.")
-//            showAlert("Error signing up", message: "The email you entered already exists! Please enter in a different email address.", buttonTitle: "Try again", sender: self)
-//
-//            return
-//        }
         
         /*********************************************************************
         * END ALERTS
@@ -335,378 +266,30 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         // Show activity indicator (spinner)
         spinner.startAnimating()
         
-        // Perform long-running operation on background thread
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-            
-            self.spinner.startAnimating()
-            
-                
-        })
+        // Stop showing activity indicator (spinner)
+        self.checkMarkFlipped.hidden = false
         
-        //Important!! Make userNameString all lowercase from now on (for storing unique keys in the database)
-        let lowerCaseUserNameString = userNameString.lowercaseString
-    
-        let email  = AWSCognitoIdentityUserAttributeType()
-            email.name = "email"
-            email.value = userEmailString
-    
-//        //This is a check if username already exists or not.
-//        print("LOWERCASE IS: ", lowerCaseUserNameString)
-//        pool.getUser(lowerCaseUserNameString).getDetails().continueWithBlock { (resultTask) -> AnyObject? in
-//            
-//            print("Result task is: ", resultTask)
-//            
-//            if (resultTask.error == nil)
-//            {
-//                print("Go ahead and sign up")
-//                
-//            }
-//            else
-//            {
-//                print("NO sign up plz")
-//                // If the below code gets executed, then the user already exists.
-//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                    showAlert("Error signing up.", message: "Sorry, we could not sign you up. The username is taken!", buttonTitle: "Try again", sender: self)
-//                    return
-//                })
-//            }
-//            return nil
-//        }
+        self.userPhoto.hidden = true
+        self.spinner.stopAnimating()
         
-        // Remember, AWSTask is ASYNCHRONOUS.
-        pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email], validationData: nil).continueWithBlock { (resultTask) -> AnyObject? in
+        UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
             
-            // If sign up performed successfully.
-            if (resultTask.error == nil)
-            {
-                print("Successful signup")
-                
-                // Cache the user name for future use!
-                let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
-                
-                // Fetch new identity ID
-                credentialsProvider.getIdentityId().continueWithBlock({ (task) -> AnyObject? in
-                    print("^^^USER SIGNED UP:", task.result)
+            self.checkMarkFlipped.hidden = false
+            self.checkMarkFlipped.image = self.checkMark.image
+            
+            }, completion: nil)
         
-                    // Set cached current user
-                    setCurrentUserNameAndId(userNameString, userId: task.result as! String)
-                    
-                    return nil
-                })
-                
-                // If user did add a photo
-                if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
-                {
-//                    // Fetch user photo
-//                    let userPhoto = self.userPhoto.currentImage!
-//                    
-//                    // Resize photo for cheaper storage
-//                    let targetSize = CGSize(width: 150, height: 150)
-//                    let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
-//                    
-//                    // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
-//                    let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
-//                    
-//                    // Force PNG format
-//                    let data = UIImagePNGRepresentation(newImage)
-//                    try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
-//                    
-//                    
-//                    // Upload user's image to S3 bucket
-//                    let transferRequest = AWSS3TransferManagerUploadRequest()
-//                    transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989/public"
-//                    transferRequest.key = userNameString
-//                    transferRequest.body = imageFileURL
-//                    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-//                    
-//                    transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
-//                        { (resultTask) -> AnyObject? in
-//                            
-//                            // if sucessful file transfer
-//                            if resultTask.error == nil
-//                            {
-//                                print("SUCCESS FILE UPLOAD")
-//                            }
-//                            else // If fail file transfer
-//                            {
-//                                
-//                                print("ERROR FILE UPLOAD: ", resultTask.error)
-//                            }
-//                            
-//                            return nil
-//                    })
-
-
-                        
-
-                    
-                    
-//                        // Fetch user photo
-//                        let userPhoto = self.userPhoto.currentImage!
-//                        
-//                        // Resize photo for cheaper storage
-//                        let targetSize = CGSize(width: 150, height: 150)
-//                        let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
-//                        
-//                        // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
-//                        let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
-//                        
-//                        // Force PNG format
-//                        let data = UIImagePNGRepresentation(newImage)
-//                        try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
-//                        
-//                        
-//                        // Upload user's image to S3 bucket
-//                        
-//                        let key = "public/" + lowerCaseUserNameString
-//                        self.fileManager.localContentWithData(data, key: key).uploadWithPinOnCompletion(false, progressBlock: {(content: AWSLocalContent?, progress: NSProgress?) -> Void in
-//                            
-//                            
-//                            }, completionHandler: {(content: AWSContent?, error: NSError?) -> Void in
-//                                
-//                                print("INSIDE COMPLETION HANDLER:", error)
-//                                
-//                        })
-                    
-                }
-                
-                
-                
-                
-                
-                
-                // Perform update on UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-
-                    // Stop showing activity indicator (spinner)
-                    self.checkMarkFlipped.hidden = false
-
-                    self.userPhoto.hidden = true
-                    self.spinner.stopAnimating()
-
-                    UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
-
-                        self.checkMarkFlipped.hidden = false
-                        self.checkMarkFlipped.image = self.checkMark.image
-
-                        }, completion: nil)
-
-
-                    delay(1.5)
-                    {
-
-                        self.performSegueWithIdentifier(self.segueDestination, sender: nil)
-                        
-                    }
-                    
-                    self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
-                    
-                })
-
-                
-            }
-            else // If sign up failed
-            {
-                print("Fail signup")
-                
-                // Perform update on UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-
-                    // Stop showing activity indicator (spinner)
-                    self.spinner.stopAnimating()
-
-                    // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
-                    if (self.presentedViewController == nil)
-                    {
-
-                        showAlert("Error signing up.", message: "Sorry, your username is already taken. Please try again!", buttonTitle: "Try again", sender: self)
-                    }
-                    
-                    
-                    self.prevEmailString = userEmailString
-                })
-
-                
-
-            }
+        
+        delay(1.5)
+        {
             
-            return nil
+            self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+            
         }
-
-
         
+        self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
         
-//        print("SignUpTask:", signUpTask)
-//        print("EXCEPTION:", signUpTask.exception)
-//        print("ERROR:", signUpTask.error)
-//        print("RESULT:", signUpTask.result)
-//        print("FAULTED?:", signUpTask.faulted )
-//        
-//        // Check if unsuccesful signup
-//        if signUpTask.completed
-//        {
-//            print(signUpTask.error)
-//            
-//            self.spinner.stopAnimating()
-//            showAlert("Sorry", message: "The username you entered already exists! Please try a different username.", buttonTitle: "Try again", sender: self)
-//
-//            return
-//        
-//        }
-//        else
-//        {
-//            // Successful signup
-//            print("USERNAME IS FREE")
-//
-//
-////            showAlertFetchText("Confirmation Code", message: "Message blah blah", buttonTitle: "ButtonT", textFetch: "Code?", sender: self)
-////            print("CACHED VAL: ", NSUserDefaults.standardUserDefaults().stringForKey("textFetch"))
-//
-//            // Log in now
-//            // LOG IN LATER!
-////            let logInTask = pool.currentUser()?.getSession(lowerCaseUserNameString, password: userPasswordString, validationData: nil, scopes: nil)
-////            showAlert("Login Info:", message: logInTask!.error.debugDescription, buttonTitle: "Try again", sender: self)
-////
-////            
-////            
-////            // Check if unsuccessful login
-////            if (logInTask!.error != nil)
-////            {
-////                print(logInTask!.error)
-////
-////                
-////                // Perform update on UI on main thread
-////                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-////                    
-////                    // Stop showing activity indicator (spinner)
-////                    self.spinner.stopAnimating()
-////                    
-////                    // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
-////                    if (self.presentedViewController == nil)
-////                    {
-////                        
-////                        showAlert("Error logging in.", message: "Sorry, we've signed you up already but was unable to log you in! Please try again.", buttonTitle: "Try again", sender: self)
-////                    }
-////                    
-////                    
-////                    self.prevEmailString = userEmailString
-////                })
-////            }
-////            else
-////            {
-////                 // If successful login
-////                print("HEY! SUCCESSFUL LOGIN BRUH!")
-////                showAlert("Ok", message: "SUCCESSFUL LOGIN", buttonTitle: "", sender: self)
-////
-//////                let userId = user!.uid
-//////                
-//////                let currentTime = getTimestampAsInt()
-//////                
-//////                var base64String : String!
-//////                // If user did add a photo
-//////                if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
-//////                {
-//////                    print ("B64 YES")
-//////                    let userPhoto = self.userPhoto.currentImage!
-//////                    
-//////                    let targetSize = CGSize(width: 120, height: 120)
-//////                    
-//////                    // Only resize photo if necessary
-//////                    //                                        if ()
-//////                    //                                        {
-//////                    //
-//////                    //
-//////                    //                                        }
-//////                    
-//////                    let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
-//////                    
-//////                    
-//////                    // Convert photo to base64
-//////                    base64String = convertImageToBase64(newImage)
-//////                }
-//////                
-//////                let userInfo   = ["fullName" : "", "dateCreated": currentTime]
-//////                let linkedSocialMediaAccounts = ["twitter": "austinvaday", "facebook": "austinvaday", "instagram": "avtheman"]
-//////                let connections = ["aquaint" : currentTime]
-//////                
-//////                
-//////                print("User signed up and logged in: ", lowerCaseUserNameString)
-//////                
-//////                
-//////                
-//////                // Store necessary information in JSON tree
-//////                self.firebaseRootRef.child("Users/" + lowerCaseUserNameString).setValue(userInfo)
-//////                
-//////                // If user did add a photo, store it on database
-//////                if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
-//////                {
-//////                    self.firebaseRootRef.child("UserImages/" + lowerCaseUserNameString + "/profileImage").setValue(base64String)
-//////                }
-//////                
-//////                self.firebaseRootRef.child("LinkedSocialMediaAccounts/" + lowerCaseUserNameString).setValue(linkedSocialMediaAccounts)
-//////                self.firebaseRootRef.child("Connections/" + lowerCaseUserNameString).setValue(connections)
-//////                self.firebaseRootRef.child("UserIdToUserName/" + userId).setValue(lowerCaseUserNameString)
-//////                
-//////                
-//////                // Cache the user name for future use!
-//////                let defaults = NSUserDefaults.standardUserDefaults()
-//////                defaults.setObject(lowerCaseUserNameString, forKey: "username")
-//////                
-//////                // Perform update on UI on main thread
-//////                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//////                    
-//////                    // Stop showing activity indicator (spinner)
-//////                    self.checkMarkFlipped.hidden = false
-//////                    
-//////                    self.userPhoto.hidden = true
-//////                    self.spinner.stopAnimating()
-//////                    
-//////                    UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
-//////                        
-//////                        self.checkMarkFlipped.hidden = false
-//////                        self.checkMarkFlipped.image = self.checkMark.image
-//////                        
-//////                        }, completion: nil)
-//////                    
-//////                    
-//////                    delay(1.5)
-//////                    {
-//////                        
-//////                        self.performSegueWithIdentifier(self.segueDestination, sender: nil)
-//////                        
-//////                    }
-//////                    
-//////                    self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
-//////                    
-//////                })
-//////
-////                
-////            }
-//            
-//            
-//            
-//            
-//        }
-
-        
-
-        
-                                    
-
-//                        print("ERROR IS: ")
-//                        print(error1.debugDescription) // LOG THIS
-//                        // Perform update on UI on main thread
-//                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                            self.spinner.stopAnimating()
-//                            self.prevEmailString = userEmailString
-//
-//                            print("COULDN'T SIGN UP")
-//                            
-////                            showAlert("Sorry", message: "The email you entered already exists! Please try a different email address.", buttonTitle: "Try again", sender: self)
-//                            showAlert("Sorry", message: "There was an error with your request. Please try again!", buttonTitle: "Try again", sender: self)
-        
-        
-        // Enable the log-in button again
+        // Enable the sign-up button again
         signUpButton.enabled = true
 
     }
@@ -718,9 +301,11 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         // Pass the password to next view controller so we can log user in there
         if(segue.identifier == segueDestination)
         {
-            let nextViewController = segue.destinationViewController as! SignUpVerificationController
+            let nextViewController = segue.destinationViewController as! SignUpFetchMoreDataController
             
-            nextViewController.userPassword = userPassword.text
+            nextViewController.userEmail = userEmail.text
+            nextViewController.userPhone = userPhone.text
+            nextViewController.userFullName = userFullName.text
             
             // Pass image only if user set an image
             if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
