@@ -33,7 +33,7 @@ class YouNotificationsViewController: UIViewController, UITableViewDelegate, UIT
     override func viewDidLoad() {
         
         // Fetch the user's username
-        currentUserName = getCurrentUser()
+        currentUserName = getCurrentCachedUser()
         
         // Firebase root, our data is stored here
         firebaseRootRef = FIRDatabase.database().reference()

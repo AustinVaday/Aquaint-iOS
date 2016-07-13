@@ -80,14 +80,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If cached users, then they are logged in already
         // Note we do not use credentialsProvider for login persistance, as we are unable
         // to properly log users out using credentialsProvider.clearKeychain()
-        let userName = getCurrentUser()
-        let userId = getCurrentUserID()
+        let userName = getCurrentCachedUser()
         
-        if (userName != nil && userId != nil)
+        if (userName != nil)
         {
             print("User already logged in!")
-            print (getCurrentUser())
-            print (getCurrentUserID())
+            print (getCurrentCachedUser())
             
             let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
             let viewControllerIdentifier = "MainContainerViewController"

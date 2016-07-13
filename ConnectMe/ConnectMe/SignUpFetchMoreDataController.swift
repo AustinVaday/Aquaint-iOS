@@ -227,7 +227,7 @@ class SignUpFetchMoreDataController: UIViewController {
     }
     
     // Use to go back to previous VC at ease.
-    @IBAction func unwindBackVC(segue: UIStoryboardSegue)
+    @IBAction func unwindBackSignUpInfoVC(segue: UIStoryboardSegue)
     {
         print("CALLED UNWIND VC")
     }

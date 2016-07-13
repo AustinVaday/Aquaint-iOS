@@ -67,7 +67,7 @@ class SearchTableViewCell: UITableViewCell {
     @IBAction func onAddConnectionButtonClicked(sender: UIButton) {
         
         // Fetch current user from NSUserDefaults
-        let currentUser = getCurrentUser()
+        let currentUser = getCurrentCachedUser()
         
         // If currentUser is not trying to add themselves
         if (currentUser != cellUserName.text)
@@ -97,7 +97,7 @@ class SearchTableViewCell: UITableViewCell {
         print("PENDING CLICKED")
         
         // Fetch current user from NSUserDefaults
-        let currentUser = getCurrentUser()
+        let currentUser = getCurrentCachedUser()
         
         // If currentUser is not trying to add themselves
         if (currentUser != cellUserName.text)
@@ -122,7 +122,7 @@ class SearchTableViewCell: UITableViewCell {
         print("REMOVE CLICKED")
         
         // Fetch current user from NSUserDefaults
-        let currentUser = getCurrentUser()
+        let currentUser = getCurrentCachedUser()
         
         // If currentUser is not trying to add themselves
         if (currentUser != cellUserName.text)

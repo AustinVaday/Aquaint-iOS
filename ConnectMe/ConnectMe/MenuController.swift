@@ -11,6 +11,7 @@
 import UIKit
 import AWSCognitoIdentityProvider
 import AWSDynamoDB
+import AWSS3
 
 class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -45,7 +46,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     
     var currentUserName : String!
-    var currentUserId: String!
+//    var currentUserId: String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
     var keyValSocialMediaPairList : Array<KeyValSocialMediaPair>!
@@ -62,8 +63,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
 
         // Fetch the user's username and real name
-        currentUserName = getCurrentUser()
-        currentUserId = getCurrentUserID()
+        currentUserName = getCurrentCachedUser()
+//        currentUserId = getCurrentUserID()
 //      currentRealName = getCurrentRealUser()
         
         // Initialize array so that collection view has something to check while we 
@@ -73,14 +74,14 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Set up DB
         dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
         
-        print("CUR USER ID: ", currentUserId)
+//        print("CUR USER ID: ", currentUserId)
         print("CUR USERNAME: ", currentUserName)
-        dynamoDBObjectMapper.load(User.self, hashKey: currentUserId, rangeKey: nil).continueWithBlock(
+        dynamoDBObjectMapper.load(User.self, hashKey: currentUserName, rangeKey: nil).continueWithBlock(
             { (resultTask) -> AnyObject? in
                 
                 if(resultTask.result == nil)
                 {
-                    print("DYNAMODB LOAD : USER NOT FOUND, result is nil")
+                    print("DYNAMODB LOAD : USER", self.currentUserName ,"NOT FOUND, result is nil")
                 }
                 else if (resultTask.error == nil && resultTask.exception == nil) // If successful save
 
@@ -88,6 +89,45 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                     print ("DYNAMODB LOAD SUCCESS:", resultTask.result)
                     
                     let user = resultTask.result as! User
+                    
+                    // Set user attributes on the view
+                    self.realNameLabel.text = user.realname
+                    
+                    /***************************************
+                    * If user image not cached, get from S3
+                    ***************************************/
+                    // if user image not cached, then..
+                    // AWS TRANSFER REQUEST
+                    
+                    let downloadingFilePath = NSTemporaryDirectory().stringByAppendingString("temp")
+                    let downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath)
+                    let downloadRequest = AWSS3TransferManagerDownloadRequest()
+                    downloadRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
+                    downloadRequest.key = "public/" + self.currentUserName
+                    downloadRequest.downloadingFileURL = downloadingFileURL
+                    
+                    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+                    
+                    transferManager.download(downloadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: { (resultTask) -> AnyObject? in
+                        
+                        // if sucessful file transfer
+                        if resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil
+                        {
+                            print("SUCCESS FILE DOWNLOAD")
+                            
+                            self.profileImageView.image = UIImage(contentsOfFile: downloadingFileURL.absoluteString)
+                            
+                        }
+                        else // If fail file transfer
+                        {
+                            
+                            print("ERROR FILE DOWNLOAD: ", resultTask.error)
+                        }
+                        
+                        return nil
+                        
+                    })
+ 
                     
                     
                     // If user has added accounts/profiles, show them
@@ -101,7 +141,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                         self.keyValSocialMediaPairList = self.convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
                         
                         
-                        
                         // Perform update on UI on main thread
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             
@@ -110,6 +149,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                             print("RELOADING COLLECTIONVIEW")
                         })
                     }
+                    
+                    
                 }
                 
                 if (resultTask.error != nil)
@@ -329,22 +370,33 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             self.performSegueWithIdentifier("logOut", sender: nil)
             
             // Log out AWS
+            self.credentialsProvider.clearCredentials()
+            self.credentialsProvider.invalidateCachedTemporaryCredentials()
             self.credentialsProvider.clearKeychain()
  
             // get the IDENTITY POOL to log out AWS Cognito
             let pool = getAWSCognitoIdentityUserPool()
+            
+            print("*** MenuController *** currentUser 1", pool.currentUser()?.username)
             pool.currentUser()?.signOut()
+            
+            print("*** MenuController *** currentUser 2", pool.currentUser()?.username)
+            pool.getUser(self.currentUserName).signOut()
+            
             
             // Update new identity ID
             self.credentialsProvider.getIdentityId().continueWithBlock { (resultTask) -> AnyObject? in
               
                 print("LOGOUT, identity id is:", resultTask.result)
-                
+                print("LOG2, ", self.credentialsProvider.identityId)
                 return nil
             }
             
+
+            
             // Clear local cache and user identity
             clearUserDefaults()
+            
             
         }
         
@@ -355,6 +407,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         self.showViewController(alert, sender: nil)
         
+    }
+    
+    // Use to go back to previous VC at ease.
+    @IBAction func unwindBackMenuVC(segue: UIStoryboardSegue)
+    {
+        print("CALLED UNWIND MENUCONTROLLER VC")
     }
     
 }

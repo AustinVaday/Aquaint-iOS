@@ -385,7 +385,7 @@ func clearUserDefaults()
 }
 
 // Get the current user that is signed into the app
-func getCurrentUser() -> String!
+func getCurrentCachedUser() -> String!
 {
     // Get the user defaults set previously in the program (username of user)
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -402,28 +402,34 @@ func getCurrentUser() -> String!
     
 }
 
-func getCurrentUserID() -> String!
-{
-    // Get the user defaults set previously in the program (username of user)
-    let defaults = NSUserDefaults.standardUserDefaults()
-    
-    let currentUserId = defaults.stringForKey("userid")
-    
-    if currentUserId == nil
-    {
-        print("Uh oh, no cached userid available.")
-        return nil
-    }
-    
-    return currentUserId
-}
+//func getCurrentUserID() -> String!
+//{
+//    // Get the user defaults set previously in the program (username of user)
+//    let defaults = NSUserDefaults.standardUserDefaults()
+//    
+//    let currentUserId = defaults.stringForKey("userid")
+//    
+//    if currentUserId == nil
+//    {
+//        print("Uh oh, no cached userid available.")
+//        return nil
+//    }
+//    
+//    return currentUserId
+//}
 
-func setCurrentUserNameAndId(username: String, userId:String)
+//func setCurrentUserNameAndId(username: String, userId:String)
+//{
+//    let defaults = NSUserDefaults.standardUserDefaults()
+//    defaults.setObject(username, forKey: "username")
+//    defaults.setObject(userId, forKey: "userid")
+//
+//}
+
+func setCurrentCachedUserName(username: String)
 {
     let defaults = NSUserDefaults.standardUserDefaults()
     defaults.setObject(username, forKey: "username")
-    defaults.setObject(userId, forKey: "userid")
-
 }
 
 

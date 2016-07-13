@@ -34,7 +34,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
 
         // Fetch the user's username
-        currentUserName = getCurrentUser()
+        currentUserName = getCurrentCachedUser()
         
         // Set up dictionary for user's social media names
         socialMediaUserNames = NSMutableDictionary()

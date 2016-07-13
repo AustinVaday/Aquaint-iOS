@@ -25,7 +25,7 @@ class RequestsTableViewCell: UITableViewCell {
     @IBAction func onAddButtonClicked(sender: UIButton) {
         
         // Get your user name. Get your connection's user name
-        let currentUser = getCurrentUser()
+        let currentUser = getCurrentCachedUser()
         let connectedUserToAdd = cellUserName.text!
         
         firebaseRootRef = FIRDatabase.database().reference()
@@ -72,7 +72,7 @@ class RequestsTableViewCell: UITableViewCell {
         
         
         // Get your user name. Get your connection's user name
-        let currentUser = getCurrentUser()
+        let currentUser = getCurrentCachedUser()
         let connectedUserToAdd = cellUserName.text!
         
         

@@ -21,12 +21,12 @@ class User : AWSDynamoDBObjectModel
     
     class func dynamoDBTableName() -> String {
         
-        return "aquaint-mobilehub-146546989-users"
+        return "aquaint-users"
     }
     
     class func hashKeyAttribute() -> String {
         
-        return "userId"
+        return "username"
     }
     
 }

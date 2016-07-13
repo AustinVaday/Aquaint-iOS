@@ -76,7 +76,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
 //        }
         
         // Get current user from NSUserDefaults
-        userName = getCurrentUser()
+        userName = getCurrentCachedUser()
         
 //        if (userName != nil)
 //        {

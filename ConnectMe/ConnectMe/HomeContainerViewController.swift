@@ -62,7 +62,7 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         firebaseRootRef = FIRDatabase.database().reference()
         
         // Get current user from NSUserDefaults
-        userName = getCurrentUser()
+        userName = getCurrentCachedUser()
         
         connectionRequestList = Array<String>()
         

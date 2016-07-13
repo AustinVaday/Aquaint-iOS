@@ -146,11 +146,13 @@ class SignUpVerificationController: UIViewController {
                         // Print credentials provider
                         let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
                         
+                        
                         // Update new identity ID
                         credentialsProvider.getIdentityId().continueWithBlock({ (task) -> AnyObject? in
-                            print("^^^USER LOGGED IN:", task.result)
+                            print("^^^USER LOGGGGGED IN with credentials:", task.result)
                             
-                            setCurrentUserNameAndId(self.userName, userId: task.result as! String)
+                            setCurrentCachedUserName(self.userName)
+//                            setCurrentUserNameAndId(self.userName, userId: task.result as! String)
                             
                             /*********************
                             *  UPLOAD PHOTO TO S3
@@ -206,7 +208,7 @@ class SignUpVerificationController: UIViewController {
                             
                             dynamoDBUser.realname = self.userFullName
                             dynamoDBUser.timestamp = getTimestampAsInt()
-                            dynamoDBUser.userId = task.result as! String
+                           // dynamoDBUser.userId = task.result as! String
                             dynamoDBUser.username = self.userName
                             
                             // No account data to store yet.

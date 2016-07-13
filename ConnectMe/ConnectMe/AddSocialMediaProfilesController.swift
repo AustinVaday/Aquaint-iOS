@@ -70,7 +70,11 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                         print("SUCCESS LOG IN!", result.debugDescription)
                         
                         // Below can be nil????
-                        print(FBSDKAccessToken.currentAccessToken().userID)
+                        if (FBSDKAccessToken.currentAccessToken() != nil)
+                        {
+                            print(FBSDKAccessToken.currentAccessToken().userID)                            
+                        }
+
                     }
                     else if (result.isCancelled)
                     {
@@ -198,12 +202,6 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
         cell.layer.cornerRadius = cell.frame.width / 2
         
         return cell
-    }
-    
-    // Use to go back to previous VC at ease.
-    @IBAction func unwindBackVC(segue: UIStoryboardSegue)
-    {
-        print("CALLED UNWIND VC")
     }
 
     @IBAction func backButtonClicked(sender: AnyObject) {

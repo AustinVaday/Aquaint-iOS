@@ -28,7 +28,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         allUsersConnections = NSDictionary()
         
         
-        userName = getCurrentUser()
+        userName = getCurrentCachedUser()
         
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
 
