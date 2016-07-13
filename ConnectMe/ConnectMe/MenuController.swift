@@ -328,10 +328,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             //TODO: Add spinner functionality
             self.performSegueWithIdentifier("logOut", sender: nil)
             
-            /* Does not work. So keep track of identity oursevles instead
             // Log out AWS
             self.credentialsProvider.clearKeychain()
  
+            // get the IDENTITY POOL to log out AWS Cognito
+            let pool = getAWSCognitoIdentityUserPool()
+            pool.currentUser()?.signOut()
+            
             // Update new identity ID
             self.credentialsProvider.getIdentityId().continueWithBlock { (resultTask) -> AnyObject? in
               
@@ -339,7 +342,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 
                 return nil
             }
-            */
             
             // Clear local cache and user identity
             clearUserDefaults()

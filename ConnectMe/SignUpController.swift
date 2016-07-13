@@ -314,4 +314,11 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             }
         }
     }
+    
+    // Use to go back to previous VC at ease.
+    @IBAction func unwindBackVC(segue: UIStoryboardSegue)
+    {
+        print("CALLED UNWIND VC")
+    }
+
 }

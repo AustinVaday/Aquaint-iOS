@@ -200,7 +200,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
         return cell
     }
     
-    // Use to go back to previous VC at east.
+    // Use to go back to previous VC at ease.
     @IBAction func unwindBackVC(segue: UIStoryboardSegue)
     {
         print("CALLED UNWIND VC")
