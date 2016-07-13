@@ -207,15 +207,15 @@ class SignUpVerificationController: UIViewController {
                             let dynamoDBUser = User()
                             
                             dynamoDBUser.realname = self.userFullName
-                            dynamoDBUser.timestamp = getTimestampAsInt()
+                           // dynamoDBUser.timestamp = getTimestampAsInt()
                            // dynamoDBUser.userId = task.result as! String
                             dynamoDBUser.username = self.userName
                             
                             // No account data to store yet.
-                            //                    let accountData = NSMutableDictionary()
-                            //                    accountData.setValue(["austinvaday", "austinswag"], forKey: "facebook")
-                            //                    accountData.setValue(["austinvaday","avtheman"], forKey: "instagram")
-                            //                    dynamoDBUser.accounts = accountData
+                            let accountData = NSMutableDictionary()
+                            accountData.setValue(["austinvaday", "austinswag"], forKey: "facebook")
+                            accountData.setValue(["austinvaday","avtheman"], forKey: "instagram")
+                            dynamoDBUser.accounts = accountData
                             
                             self.dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
                                 
@@ -269,63 +269,6 @@ class SignUpVerificationController: UIViewController {
                         })
                         
                         
-//                        // Now update the user's CognitoIdentity info
-//                        let name = AWSCognitoIdentityUserAttributeType()
-//                        name.name = "name"
-//                        name.value = realNameString
-//                        
-//                        self.pool.getUser(currentUser).updateAttributes([name]).continueWithBlock { (resultTask) -> AnyObject? in
-//                            
-//                            print("RESULT TASK UPDATE: ", resultTask)
-//                            print("RESULT TASK ERROR: ", resultTask.error)
-//                            
-//                            // If success code
-//                            if resultTask.error == nil
-//                            {
-//                                print("NAME UPDATE SUCCESSFUL")
-//                                
-//                                // Perform update on UI on main thread
-//                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                                    
-//                                    // Stop showing activity indicator (spinner)
-//                                    self.spinner.stopAnimating()
-//                                    self.checkMarkFlipped.hidden = false
-//                                    
-//                                    UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
-//                                        
-//                                        self.checkMarkFlipped.hidden = false
-//                                        self.checkMarkFlipped.image = self.checkMark.image
-//                                        
-//                                        }, completion: nil)
-//                                    
-//                                    
-//                                    delay(1.5)
-//                                    {
-//                                        
-//                                        self.performSegueWithIdentifier(self.segueDestination, sender: nil)
-//                                        
-//                                    }
-//                                    
-//                                    self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
-//                                })
-//                                
-//                                
-//                            }
-//                            else // If fail code
-//                            {
-//                                
-//                                // Perform update on UI on main thread
-//                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                                    
-//                                    self.spinner.stopAnimating()
-//                                    
-//                                    showAlert("Error", message: "Could not update your name. Please contact admin@aquaint.io for further assistance.", buttonTitle: "Try again", sender: self)
-//                                })
-//                                
-//                            }
-//                            
-//                            return nil
-//                        }
                     }
                     else // If fail login
                     {
@@ -362,12 +305,5 @@ class SignUpVerificationController: UIViewController {
         
         
     }
-    
-//    // Use to go back to previous VC at ease.
-//    @IBAction func unwindBackVC(segue: UIStoryboardSegue)
-//    {
-//        print("CALLED UNWIND VC")
-//    }
-
 
 }

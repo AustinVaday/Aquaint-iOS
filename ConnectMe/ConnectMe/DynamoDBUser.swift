@@ -15,7 +15,7 @@ class User : AWSDynamoDBObjectModel
     var userId : String!
     var username : String!
     var realname : String!
-    var timestamp : NSNumber!
+//    var timestamp : NSNumber!
     var accounts : NSDictionary!
     
     

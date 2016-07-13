@@ -100,7 +100,6 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         // Get current user from NSUserDefaults
         userName = getCurrentCachedUser()
         
-        
         connectionRequestList = Array<String>()
         
         // Set up Firebase listener for listening for new friend requests

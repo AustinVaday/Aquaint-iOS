@@ -64,13 +64,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
         // Fetch the user's username and real name
         currentUserName = getCurrentCachedUser()
-//        currentUserId = getCurrentUserID()
-//      currentRealName = getCurrentRealUser()
-        
+
         // Initialize array so that collection view has something to check while we 
         // fetch data from dynamo
-        
         keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
+        
         // Set up DB
         dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
         
@@ -115,7 +113,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                         {
                             print("SUCCESS FILE DOWNLOAD")
                             
-                            self.profileImageView.image = UIImage(contentsOfFile: downloadingFileURL.absoluteString)
+                            let data = NSData(contentsOfURL: downloadingFileURL)
+                            self.profileImageView.image = UIImage(data: data!)
                             
                         }
                         else // If fail file transfer
@@ -167,7 +166,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         })
         
         // Set the UI
-        realNameLabel.text = "Real name"
         userNameLabel.text = currentUserName
         numFollowersLabel.text = "120"
         
