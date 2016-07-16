@@ -158,26 +158,16 @@ class LogInController: UIViewController {
                 // Fetch new identity ID
                 credentialsProvider.getIdentityId().continueWithBlock({ (task) -> AnyObject? in
                     print("^^^USER LOGGED IN:", task.result)
-
-                    
-                    // Set cached current user
-                    setCurrentCachedUserName(userNameString)
+  
+                    // Cache username, user full name, user image, and user accounts
+                    setCachedUserFromAWS(userNameString)
                     
                     return nil
                 })
-                
-
-                
 
             }
             else // If failure to login
             {
-//                // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the log-in button before it is disabled. This if statement prevents the display of multiple alerts).
-//                if (self.presentedViewController == nil)
-//                {
-//                    showAlert("Sorry", message: "We could not log you in at this time, please try again.", buttonTitle: "Try again", sender: self)
-//                }
-                
                 
                 // Sign out?
                 

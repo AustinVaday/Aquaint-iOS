@@ -124,9 +124,6 @@ class SignUpVerificationController: UIViewController {
         
         // Show activity indicator (spinner)
         spinner.startAnimating()
-
-//        let currentUser = getCurrentUser()
-//        print("Current user signed in: ", currentUser)
         
         pool.getUser(userName).confirmSignUp(verificationString).continueWithBlock { (resultTask) -> AnyObject? in
             
@@ -153,8 +150,7 @@ class SignUpVerificationController: UIViewController {
                             
                             setCurrentCachedUserName(self.userName)
                             setCurrentCachedFullName(self.userFullName)
-                            setCurrentCachedUserImage(self.userImage)
-//                            setCurrentCachedProfiles(user's profiles')
+//                            setCurrentCachedProfiles(user's profiles' as dictionary)
 
                             
                             /*********************
@@ -191,6 +187,9 @@ class SignUpVerificationController: UIViewController {
                                         if resultTask.error == nil
                                         {
                                             print("SUCCESS FILE UPLOAD")
+                                            // Also cache it.. only if file successfully uploadsd
+                                            setCurrentCachedUserImage(self.userImage)
+
                                         }
                                         else // If fail file transfer
                                         {

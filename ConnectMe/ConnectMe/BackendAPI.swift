@@ -20,4 +20,74 @@ func getAWSCognitoIdentityUserPool() -> AWSCognitoIdentityUserPool
     return AWSCognitoIdentityUserPool(forKey: "UserPool")
 }
 
+func setCachedUserFromAWS(userName: String!)
+{
+    /*******************************************
+    * username, accounts, full name from DYNAMODB
+    ********************************************/
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+    
+    dynamoDBObjectMapper.load(User.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
+        
+        
+        if (resultTask.error == nil)
+        {
+            print("Error caching user from dynamoDB: ", resultTask.error)
+        }
+        else if (resultTask.exception == nil)
+        {
+            print("Exception caching user from dynamoDB: ", resultTask.exception)
+        }
+        else if (resultTask.result == nil)
+        {
+            print("Error caching user from dynamoDB: nil result")
+        }
+        else
+        {
+            let user = resultTask.result as! User
+            
+            setCurrentCachedUserName(userName)
+            setCurrentCachedFullName(user.realname)
+            setCurrentCachedUserProfiles(user.accounts as! NSMutableDictionary)
+        }
+        
+        return nil
+    }
+    
+    /*******************************************
+     * user image from S3
+     ********************************************/
+    // AWS TRANSFER REQUEST
+    let downloadingFilePath = NSTemporaryDirectory().stringByAppendingString("temp")
+    let downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath)
+    let downloadRequest = AWSS3TransferManagerDownloadRequest()
+    downloadRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
+    downloadRequest.key = "public/" + userName
+    downloadRequest.downloadingFileURL = downloadingFileURL
+    
+    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+    
+    transferManager.download(downloadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: { (resultTask) -> AnyObject? in
+        
+        // if sucessful file transfer
+        if resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil
+        {
+            print("CACHE: SUCCESS FILE DOWNLOAD")
+            
+            let data = NSData(contentsOfURL: downloadingFileURL)
+            setCurrentCachedUserImage(UIImage(data: data!)!)
+            
+        }
+        else // If fail file transfer
+        {
+            
+            print("CACHE: ERROR FILE DOWNLOAD: ", resultTask.error)
+        }
+        
+        return nil
+        
+    })
+
+    
+}
 

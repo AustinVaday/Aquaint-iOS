@@ -481,7 +481,6 @@ func getCurrentCachedUserProfiles() -> NSMutableDictionary!
     
 }
 
-
 // Get timestamp as integer value
 func getTimestampAsInt() -> Int!
 {
