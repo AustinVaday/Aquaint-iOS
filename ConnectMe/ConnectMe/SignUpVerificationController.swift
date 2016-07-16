@@ -152,7 +152,10 @@ class SignUpVerificationController: UIViewController {
                             print("^^^USER LOGGGGGED IN with credentials:", task.result)
                             
                             setCurrentCachedUserName(self.userName)
-//                            setCurrentUserNameAndId(self.userName, userId: task.result as! String)
+                            setCurrentCachedFullName(self.userFullName)
+                            setCurrentCachedUserImage(self.userImage)
+//                            setCurrentCachedProfiles(user's profiles')
+
                             
                             /*********************
                             *  UPLOAD PHOTO TO S3

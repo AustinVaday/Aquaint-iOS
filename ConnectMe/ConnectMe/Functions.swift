@@ -384,6 +384,32 @@ func clearUserDefaults()
     NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
 }
 
+
+func setCurrentCachedUserName(username: String)
+{
+    let defaults = NSUserDefaults.standardUserDefaults()
+    defaults.setObject(username, forKey: "username")
+}
+
+func setCurrentCachedFullName(userFullName: String)
+{
+    let defaults = NSUserDefaults.standardUserDefaults()
+    defaults.setObject(userFullName, forKey: "userfullname")
+}
+
+
+func setCurrentCachedUserImage(userImage: UIImage)
+{
+    let defaults = NSUserDefaults.standardUserDefaults()
+    defaults.setObject(userImage, forKey: "userimage")
+}
+
+func setCurrentCachedUserProfiles(userProfiles: NSMutableDictionary)
+{
+    let defaults = NSUserDefaults.standardUserDefaults()
+    defaults.setObject(userProfiles, forKey: "userprofiles")
+}
+
 // Get the current user that is signed into the app
 func getCurrentCachedUser() -> String!
 {
@@ -402,34 +428,57 @@ func getCurrentCachedUser() -> String!
     
 }
 
-//func getCurrentUserID() -> String!
-//{
-//    // Get the user defaults set previously in the program (username of user)
-//    let defaults = NSUserDefaults.standardUserDefaults()
-//    
-//    let currentUserId = defaults.stringForKey("userid")
-//    
-//    if currentUserId == nil
-//    {
-//        print("Uh oh, no cached userid available.")
-//        return nil
-//    }
-//    
-//    return currentUserId
-//}
 
-//func setCurrentUserNameAndId(username: String, userId:String)
-//{
-//    let defaults = NSUserDefaults.standardUserDefaults()
-//    defaults.setObject(username, forKey: "username")
-//    defaults.setObject(userId, forKey: "userid")
-//
-//}
-
-func setCurrentCachedUserName(username: String)
+// Get the current user full name that is signed into the app
+func getCurrentCachedFullName() -> String!
 {
+    // Get the user defaults set previously in the program (username of user)
     let defaults = NSUserDefaults.standardUserDefaults()
-    defaults.setObject(username, forKey: "username")
+    
+    let currentUserFullName = defaults.stringForKey("userfullname")
+    
+    if currentUserFullName == nil
+    {
+        print("Uh oh, no cached full name available.")
+        return nil
+    }
+    
+    return currentUserFullName
+    
+}
+// Get the current user image that is signed into the app
+func getCurrentCachedUserImage() -> UIImage!
+{
+    // Get the user defaults set previously in the program (username of user)
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
+    let currentUserImage = defaults.valueForKey("userimage") as! UIImage!
+    
+    if currentUserImage == nil
+    {
+        print("Uh oh, no cached userImage available.")
+        return nil
+    }
+    
+    return currentUserImage
+    
+}
+// Get the current user that is signed into the app
+func getCurrentCachedUserProfiles() -> NSMutableDictionary!
+{
+    // Get the user defaults set previously in the program (username of user)
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
+    let currentUserProfiles = defaults.valueForKey("userprofiles") as! NSMutableDictionary!
+    
+    if currentUserProfiles == nil
+    {
+        print("Uh oh, no cached userProfiles available.")
+        return nil
+    }
+    
+    return currentUserProfiles
+    
 }
 
 

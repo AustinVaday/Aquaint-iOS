@@ -10,6 +10,7 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import SimpleAuth
+import AWSDynamoDB
 
 class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -22,8 +23,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
        
         // Set up dictionary for user's social media names
         socialMediaUserNames = NSMutableDictionary()
-        
-        
+            
         // Fill the dictionary of all social media names (key) with an image (val).
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
         socialMediaImageDictionary = getAllPossibleSocialMediaImages(possibleSocialMediaNameList)
@@ -45,6 +45,9 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
         print ("SELECTED:", cell.socialMediaType)
         
         let socialMediaType = cell.socialMediaType
+        
+        // This will store the username that will be uploaded to Dynamo
+        var socialMediaName: String!
         
         switch (socialMediaType)
         {
@@ -116,9 +119,10 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                     //    ...
                     // }
                     
-                    let twitterUserName = jsonResult["info"]!["nickname"]!
-                    print("Twitter username returned is: ", twitterUserName)
+                    socialMediaName = jsonResult["info"]!["nickname"]! as String!
+                    print("Twitter username returned is: ", socialMediaName)
                     
+                    self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
                     
                 }
                 else
@@ -221,5 +225,54 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
     @IBAction func backButtonClicked(sender: AnyObject) {
         
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
+    private func updateProfilesDynamoDB(socialMediaType: String!, socialMediaName: String!)
+    {
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        let currentUser = getCurrentCachedUser()
+        
+        // update only if user requests to
+        if (socialMediaName != nil)
+        {
+            // Upload to Dynamo
+            /********************************
+             *  UPLOAD USER DATA TO DYNAMODB
+             ********************************/
+            // Upload user DATA to DynamoDB
+            let dynamoDBUser = User()
+            
+            dynamoDBUser.username = currentUser
+            
+            // Update account data
+            let accountData = NSMutableDictionary()
+            accountData.setValue(["jiminjim"], forKey: "facebook")
+            accountData.setValue([socialMediaName], forKey: socialMediaType)
+            dynamoDBUser.accounts = accountData
+            
+            
+            dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+                
+                // If successful save
+                if (resultTask.error == nil)
+                {
+                    print ("DYNAMODB ADD PROFILE SUCCESS: ", resultTask.result)
+                }
+                
+                if (resultTask.error != nil)
+                {
+                    print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
+                }
+                
+                if (resultTask.exception != nil)
+                {
+                    print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
+                }
+                
+                return nil
+            })
+        }
+
     }
 }
