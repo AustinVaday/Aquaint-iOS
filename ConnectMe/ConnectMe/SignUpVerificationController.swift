@@ -150,8 +150,6 @@ class SignUpVerificationController: UIViewController {
                             
                             setCurrentCachedUserName(self.userName)
                             setCurrentCachedFullName(self.userFullName)
-//                            setCurrentCachedProfiles(user's profiles' as dictionary)
-
                             
                             /*********************
                             *  UPLOAD PHOTO TO S3
@@ -225,6 +223,8 @@ class SignUpVerificationController: UIViewController {
                                 if (resultTask.error == nil)
                                 {
                                     print ("DYNAMODB SUCCESS: ", resultTask.result)
+                                    
+                                    setCurrentCachedUserProfiles(accountData)
                                     
                                     // Perform update on UI on main thread
                                     dispatch_async(dispatch_get_main_queue(), { () -> Void in

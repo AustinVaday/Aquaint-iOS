@@ -28,11 +28,11 @@ func setCachedUserFromAWS(userName: String!)
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
     
     dynamoDBObjectMapper.load(User.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
-        if (resultTask.error == nil)
+        if (resultTask.error != nil)
         {
             print("Error caching user from dynamoDB: ", resultTask.error)
         }
-        else if (resultTask.exception == nil)
+        else if (resultTask.exception != nil)
         {
             print("Exception caching user from dynamoDB: ", resultTask.exception)
         }
