@@ -46,11 +46,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     
     var currentUserName : String!
-//    var currentUserId: String!
+    var currentRealName : String!
+    var currentUserAccounts : NSMutableDictionary!
+    var currentUserImage: UIImage!
+    
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
     var keyValSocialMediaPairList : Array<KeyValSocialMediaPair>!
-    var dynamoDBObjectMapper: AWSDynamoDBObjectMapper!
     
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
 
@@ -64,117 +66,65 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
         // Fetch the user's username and real name
         currentUserName = getCurrentCachedUser()
-
-        // Initialize array so that collection view has something to check while we 
+        currentRealName = getCurrentCachedFullName()
+        currentUserImage = getCurrentCachedUserImage()
+        currentUserAccounts = getCurrentCachedUserProfiles()
+        
+        
+        
+        // Initialize array so that collection view has something to check while we
         // fetch data from dynamo
         keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
         
-        // Set up DB
-        dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        
-//        print("CUR USER ID: ", currentUserId)
         print("CUR USERNAME: ", currentUserName)
-        dynamoDBObjectMapper.load(User.self, hashKey: currentUserName, rangeKey: nil).continueWithBlock(
-            { (resultTask) -> AnyObject? in
-                
-                if(resultTask.result == nil)
-                {
-                    print("DYNAMODB LOAD : USER", self.currentUserName ,"NOT FOUND, result is nil")
-                }
-                else if (resultTask.error == nil && resultTask.exception == nil) // If successful save
-
-                {
-                    print ("DYNAMODB LOAD SUCCESS:", resultTask.result)
-                    
-                    let user = resultTask.result as! User
-                    
-                    // Set user attributes on the view
-                    self.realNameLabel.text = user.realname
-                    
-                    /***************************************
-                    * If user image not cached, get from S3
-                    ***************************************/
-                    // if user image not cached, then..
-                    // AWS TRANSFER REQUEST
-                    
-                    let downloadingFilePath = NSTemporaryDirectory().stringByAppendingString("temp")
-                    let downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath)
-                    let downloadRequest = AWSS3TransferManagerDownloadRequest()
-                    downloadRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
-                    downloadRequest.key = "public/" + self.currentUserName
-                    downloadRequest.downloadingFileURL = downloadingFileURL
-                    
-                    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-                    
-                    transferManager.download(downloadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: { (resultTask) -> AnyObject? in
-                        
-                        // if sucessful file transfer
-                        if resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil
-                        {
-                            print("SUCCESS FILE DOWNLOAD")
-                            
-                            let data = NSData(contentsOfURL: downloadingFileURL)
-                            self.profileImageView.image = UIImage(data: data!)
-                            
-                        }
-                        else // If fail file transfer
-                        {
-                            
-                            print("ERROR FILE DOWNLOAD: ", resultTask.error)
-                        }
-                        
-                        return nil
-                        
-                    })
- 
-                    
-                    
-                    // If user has added accounts/profiles, show them
-                    if(user.accounts != nil)
-                    {
-                        // Dictionary with key: string of social media types (i.e. "facebook"), 
-                        // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
-                        self.socialMediaUserNames = user.accounts as! NSMutableDictionary
-                        
-                        // Convert dictionary to key,val pairs. Redundancy allowed
-                        self.keyValSocialMediaPairList = self.convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
-                        
-                        
-                        // Perform update on UI on main thread
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            
-                            // Propogate collection view with new data
-                            self.linkedAccountsCollectionView.reloadData()
-                            print("RELOADING COLLECTIONVIEW")
-                        })
-                    }
-                    
-                    
-                }
-                
-                if (resultTask.error != nil)
-                {
-                    print ("DYNAMODB LOAD ERROR:", resultTask.error)
-                }
-                
-                if (resultTask.exception != nil)
-                {
-                    print ("DYNAMODB LOAD EXCEPTION:", resultTask.exception)
-                }
-                
-                return nil
-        })
         
+        
+        // If any values are nil, we need to re-cache
+        if (currentRealName == nil ||
+            currentUserImage == nil ||
+            currentUserAccounts == nil)
+        {
+            setCachedUserFromAWS(currentUserName)
+            
+            //re-set attributes
+//            currentUserName = getCurrentCachedUser()
+            currentRealName = getCurrentCachedFullName()
+            currentUserImage = getCurrentCachedUserImage()
+            currentUserAccounts = getCurrentCachedUserProfiles()
+        }
+            
         // Set the UI
         userNameLabel.text = currentUserName
-        numFollowersLabel.text = "120"
+        realNameLabel.text = currentRealName
+        profileImageView.image = currentUserImage
+        numFollowersLabel.text = "200"
         
         // Set up dictionary for user's social media names
-//       socialMediaUserNames = NSMutableDictionary()
+        socialMediaUserNames = currentUserAccounts
         
         // Fill the dictionary of all social media names (key) with an image (val).
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
         socialMediaImageDictionary = getAllPossibleSocialMediaImages(possibleSocialMediaNameList)
+        
+        // If user has added accounts/profiles, show them
+        if(currentUserAccounts != nil)
+        {
+            // Dictionary with key: string of social media types (i.e. "facebook"),
+            // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
+            self.socialMediaUserNames = currentUserAccounts
+            
+            // Convert dictionary to key,val pairs. Redundancy allowed
+            self.keyValSocialMediaPairList = self.convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+            
+            
+            // Perform update on UI on main thread
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
+                // Propogate collection view with new data
+                self.linkedAccountsCollectionView.reloadData()
+                print("RELOADING COLLECTIONVIEW")
+            })
+        }
 
     }
     
@@ -407,10 +357,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
-    // Use to go back to previous VC at ease.
-    @IBAction func unwindBackMenuVC(segue: UIStoryboardSegue)
+    
+    @IBAction func unwindBackToMenuVC(segue:UIStoryboardSegue)
     {
-        print("CALLED UNWIND MENUCONTROLLER VC")
+        print("Success unwind to menu VC")
     }
+    
     
 }

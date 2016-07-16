@@ -160,6 +160,7 @@ class LogInController: UIViewController {
                     print("^^^USER LOGGED IN:", task.result)
   
                     // Cache username, user full name, user image, and user accounts
+                    setCurrentCachedUserName(userNameString)
                     setCachedUserFromAWS(userNameString)
                     
                     return nil

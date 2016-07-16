@@ -389,19 +389,34 @@ func setCurrentCachedUserName(username: String)
 {
     let defaults = NSUserDefaults.standardUserDefaults()
     defaults.setObject(username, forKey: "username")
+    print("Cache username success: ", username)
+
 }
 
 func setCurrentCachedFullName(userFullName: String)
 {
     let defaults = NSUserDefaults.standardUserDefaults()
     defaults.setObject(userFullName, forKey: "userfullname")
+    print("Cache userfullname success: ", userFullName)
+
 }
 
 
-func setCurrentCachedUserImage(userImage: UIImage)
+func setCurrentCachedUserImage(userImage: UIImage!)
 {
     let defaults = NSUserDefaults.standardUserDefaults()
-    defaults.setObject(userImage, forKey: "userimage")
+    
+    // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
+    let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
+    
+    // Force PNG format
+    let data = UIImagePNGRepresentation(userImage)
+    
+    // Write image data to the created url
+    try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+    
+    
+    defaults.setURL(imageFileURL, forKey: "userimage")
 }
 
 func setCurrentCachedUserProfiles(userProfiles: NSMutableDictionary)
@@ -452,13 +467,19 @@ func getCurrentCachedUserImage() -> UIImage!
     // Get the user defaults set previously in the program (username of user)
     let defaults = NSUserDefaults.standardUserDefaults()
     
-    let currentUserImage = defaults.valueForKey("userimage") as! UIImage!
+    // Fetch cached image URL
+    let imageURL = defaults.URLForKey("userimage")
     
-    if currentUserImage == nil
+    if (imageURL == nil)
     {
         print("Uh oh, no cached userImage available.")
         return nil
     }
+    // Get data of image
+    let data = NSData(contentsOfURL: imageURL!)
+    
+    // Generate image from data
+    let currentUserImage = UIImage(data: data!)
     
     return currentUserImage
     
