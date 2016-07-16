@@ -106,6 +106,20 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                 else if (error == nil)
                 {
                     print ("RESULT IS: ", result)
+                    
+                    let jsonResult = result as! NSDictionary
+                    
+                    // Get user's nickname from JSON object returned. I.e:
+                    // info
+                    // {
+                    //    nickname = "AustinVaday";
+                    //    ...
+                    // }
+                    
+                    let twitterUserName = jsonResult["info"]!["nickname"]!
+                    print("Twitter username returned is: ", twitterUserName)
+                    
+                    
                 }
                 else
                 {
