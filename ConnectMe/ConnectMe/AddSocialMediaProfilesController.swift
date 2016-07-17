@@ -170,6 +170,32 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                 else if (error == nil)
                 {
                     print ("RESULT IS: ", result)
+                    
+                    let jsonResult = result as! NSDictionary
+                    
+                    // Get user's LinkedIn screenname from JSON object returned. I.e:
+                    // extra
+                    // {
+                    //    raw_info
+                    //    {
+                    //       screen_name = ....
+                    //    }
+                    //    ...
+                    // }
+                    
+//                    socialMediaName = jsonResult["extra"]!["raw_info"]!["screen_name"]! as String!
+//                    
+//                    if (socialMediaName != nil)
+//                    {
+//                        print("Twitter username returned is: ", socialMediaName)
+//                    
+//                        self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+//                    }
+//                    else
+//                    {
+//                        print("LINKEDIN USERNAME IS NIL.")
+//                    }
+
                 }
                 else
                 {
