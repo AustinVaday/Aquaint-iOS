@@ -16,7 +16,7 @@ class User : AWSDynamoDBObjectModel
     var username : String!
     var realname : String!
 //    var timestamp : NSNumber!
-    var accounts : NSDictionary!
+    var accounts : NSMutableDictionary!
     
     
     class func dynamoDBTableName() -> String {

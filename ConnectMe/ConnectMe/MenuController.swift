@@ -128,6 +128,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     }
     
+    
     @IBAction func onAddSocialMediaClicked(sender: AnyObject) {
         
         print("YO MAN YOU CLICKED IT.")
@@ -361,6 +362,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBAction func unwindBackToMenuVC(segue:UIStoryboardSegue)
     {
         print("Success unwind to menu VC")
+        print("REFRESH COLLECTION VIEW")
+        viewDidLoad()
     }
     
     

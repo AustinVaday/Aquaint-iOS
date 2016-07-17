@@ -223,8 +223,12 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
     }
 
     @IBAction func backButtonClicked(sender: AnyObject) {
+
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        // It's good to dismiss it, but in this case we want to 
+        // refresh the collection view on the previous page
+        // when we go back. So instead, we will use an unwind action.
+//        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     
@@ -232,6 +236,8 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
     {
         let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
         let currentUser = getCurrentCachedUser()
+        let currentRealName = getCurrentCachedFullName()
+        let currentAccounts = getCurrentCachedUserProfiles() as NSMutableDictionary
         
         // update only if user requests to
         if (socialMediaName != nil)
@@ -240,25 +246,41 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
             /********************************
              *  UPLOAD USER DATA TO DYNAMODB
              ********************************/
+            
+            
+            // Update account data
+            
+            // If user does not have a particular social media type,
+            // we need to create a list
+            print("Accounts data was: ", currentAccounts)
+            
+            if (currentAccounts.valueForKey(socialMediaType) == nil)
+            {
+                currentAccounts.setValue([ socialMediaName ], forKey: socialMediaType)
+                
+                
+            } // If it already exists, append value to end of list
+            else
+            {
+                
+                var list = currentAccounts.valueForKey(socialMediaType) as! Array<String>
+                list.append(socialMediaName)
+                
+                currentAccounts.setValue(list, forKey: socialMediaType)
+                
+            }
+            
+            print("Accounts data is now: ", currentAccounts)
+            
+            
             // Upload user DATA to DynamoDB
             let dynamoDBUser = User()
             
             dynamoDBUser.username = currentUser
-            
-            // Update account data
-            let accountData = NSMutableDictionary()
-            accountData.setValue(["jiminjim"], forKey: "facebook")
-            accountData.setValue([socialMediaName], forKey: socialMediaType)
-            dynamoDBUser.accounts = accountData
-            
+            dynamoDBUser.realname = currentRealName
+            dynamoDBUser.accounts = currentAccounts
             
             dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
-                
-                // If successful save
-                if (resultTask.error == nil)
-                {
-                    print ("DYNAMODB ADD PROFILE SUCCESS: ", resultTask.result)
-                }
                 
                 if (resultTask.error != nil)
                 {
@@ -269,6 +291,23 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                 {
                     print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
                 }
+                
+                if (resultTask.result == nil)
+                {
+                    print ("DYNAMODB ADD PROFILE result is nil....: ")
+
+                }
+                // If successful save
+                else if (resultTask.error == nil)
+                {
+                    print ("DYNAMODB ADD PROFILE SUCCESS: ", resultTask.result)
+                    
+                    // Also cache accounts data
+                    setCurrentCachedUserProfiles(currentAccounts)
+                    
+                    // Refresh something...
+                }
+            
                 
                 return nil
             })

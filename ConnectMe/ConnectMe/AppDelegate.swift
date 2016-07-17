@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
         
         SimpleAuth.configuration()["instagram"] = [
-            "client_id" : "08e0622dff7846d2850a506dfbc723a3",
+            "client_id" : "5de275b3cf674c97b51a767e9ecdea66",
             SimpleAuthRedirectURIKey : "aquaint://"
         ]
                 

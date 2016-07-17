@@ -490,7 +490,7 @@ func getCurrentCachedUserProfiles() -> NSMutableDictionary!
     // Get the user defaults set previously in the program (username of user)
     let defaults = NSUserDefaults.standardUserDefaults()
     
-    let currentUserProfiles = defaults.valueForKey("userprofiles") as! NSMutableDictionary!
+    let currentUserProfiles = defaults.valueForKey("userprofiles") as! NSDictionary!
     
     if currentUserProfiles == nil
     {
@@ -498,7 +498,8 @@ func getCurrentCachedUserProfiles() -> NSMutableDictionary!
         return nil
     }
     
-    return currentUserProfiles
+    let mutableCopy = NSMutableDictionary(dictionary: currentUserProfiles)
+    return mutableCopy
     
 }
 
