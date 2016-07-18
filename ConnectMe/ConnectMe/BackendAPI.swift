@@ -89,3 +89,51 @@ func setCachedUserFromAWS(userName: String!)
     
 }
 
+
+func getUserS3Image(userName: String!, completion: (result: UIImage?, error: NSError?)->())
+{
+    
+    /*******************************************
+     * user image from S3
+     ********************************************/
+    // AWS TRANSFER REQUEST
+    let downloadingFilePath = NSTemporaryDirectory().stringByAppendingString("temp")
+    let downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath)
+    let downloadRequest = AWSS3TransferManagerDownloadRequest()
+    downloadRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
+    downloadRequest.key = "public/" + userName
+    downloadRequest.downloadingFileURL = downloadingFileURL
+    
+    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+    
+    transferManager.download(downloadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: { (resultTask) -> AnyObject? in
+        
+        // if sucessful file transfer
+        if resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil
+        {
+            print("fetch s3 user image: SUCCESS FILE DOWNLOAD")
+            
+            let data = NSData(contentsOfURL: downloadingFileURL)
+            let image = UIImage(data: data!)!
+            
+            completion(result: image, error: nil)
+            
+        }
+        else // If fail file transfer
+        {
+            
+            print("fetch s3 user image: ERROR FILE DOWNLOAD: ", resultTask.error)
+            
+            completion(result: nil, error: resultTask.error)
+        }
+        
+        return nil
+        
+    })
+
+    
+    
+    
+    
+}
+

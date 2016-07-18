@@ -7,29 +7,54 @@
 //
 
 import UIKit
+import AWSDynamoDB
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SearchViewController: UISearchController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var searchTableView: UITableView!
     
     var userName : String!
     var userId   : String!
-
-    var allUsers: Array<Connection>!
-    var allUsersSentARequest : NSDictionary!
-    var allUsersConnections : NSDictionary!
-    
+    var allUsers: Array<User>!
     var defaultImage : UIImage!
 
     override func viewDidLoad(){
         
-        allUsersSentARequest = NSDictionary()
-        allUsersConnections = NSDictionary()
         
-        
+        allUsers = Array<User>()
         userName = getCurrentCachedUser()
-        
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
+        
+        
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        let scanExpression = AWSDynamoDBScanExpression()
+        scanExpression.limit = 100
+        
+        dynamoDBObjectMapper.scan(User.self, expression: scanExpression) { (paginatedOutput, error) in
+            
+            if (error != nil)
+            {
+                print ("ERROR getting all users in search controller, ", error)
+            }
+            else
+            {
+                // Store all users locally
+                for object in (paginatedOutput?.items)!
+                {
+                    let someUser = object as! User
+                    
+                    self.allUsers.append(someUser)
+                    
+                }
+                
+                // Update UI on main thread
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.searchTableView.reloadData()
+                })
+
+            
+            }
+        }
 
         
 //        firebaseRootRef = FIRDatabase.database().reference()
@@ -124,9 +149,27 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         let cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! SearchTableViewCell
         
-        let userFullName = allUsers[indexPath.item].userFullName
-        let userName     = allUsers[indexPath.item].userName
-        let userImage    = allUsers[indexPath.item].userImage
+        let userFullName = allUsers[indexPath.item].realname
+        let userName     = allUsers[indexPath.item].username
+        var userImage: UIImage!
+        
+        getUserS3Image(userName, completion: { (result, error) in
+                
+            // If no image, use default image
+            if (error != nil)
+            {
+                userImage = self.defaultImage
+
+            }
+            else if (result != nil)
+            {
+                userImage = result
+            }
+            
+            cell.cellImage.image = userImage
+
+            
+        })
         
         
         // Do not let user add him/herself
@@ -139,26 +182,25 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         {
             cell.unHideAllButtons()
             
-            // If already sent a request, display pending symbol
-            if ((allUsersSentARequest[userName]) != nil && (allUsersConnections[userName]) == nil)
-            {
-                cell.activatePendingButton()
-            }
-            // If already friends, display delete button
-            else if ((allUsersConnections[userName]) != nil)
-            {
-                cell.activateDeleteButton()
-            }
-            // If no relationship, show add button
-            else
-            {
-                cell.activateAddButton()
-            }
+//            // If already sent a request, display pending symbol
+//            if ((allUsersSentARequest[userName]) != nil && (allUsersConnections[userName]) == nil)
+//            {
+//                cell.activatePendingButton()
+//            }
+//            // If already friends, display delete button
+//            else if ((allUsersConnections[userName]) != nil)
+//            {
+//                cell.activateDeleteButton()
+//            }
+//            // If no relationship, show add button
+//            else
+//            {
+//                cell.activateAddButton()
+//            }
             
         }
         cell.cellName.text = userFullName
         cell.cellUserName.text = userName
-        cell.cellImage.image = userImage
         
         
         // Ensure that internal cellImage is circular
