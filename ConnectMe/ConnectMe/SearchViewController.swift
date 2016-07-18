@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Firebase
 
 class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -15,7 +14,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     var userName : String!
     var userId   : String!
-    var firebaseRootRef : FIRDatabaseReference!
+
     var allUsers: Array<Connection>!
     var allUsersSentARequest : NSDictionary!
     var allUsersConnections : NSDictionary!
@@ -33,86 +32,86 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
 
         
-        firebaseRootRef = FIRDatabase.database().reference()
-        
-        let firebaseUsersRef = firebaseRootRef.child("Users/")
-        let firebaseUserImagesRef = firebaseRootRef.child("UserImages/")
-        let firebaseSentRequestsRef = firebaseRootRef.child("SentRequests/" + userName)
-        let firebaseConnectionsRef = firebaseRootRef.child("Connections/" + userName)
-        
-        allUsers = Array<Connection>()
-        
-        
-        // Used to determine pending buttons
-        firebaseSentRequestsRef.observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
-            
-                //Store a listing of all users that current user sent a connection request to. Used
-                //to determine which kind of button to display to user (add button, delete button, pending button)
-                if !(snapshot.value is NSNull)
-                {
-                    self.allUsersSentARequest = snapshot.value as! NSDictionary
-                }
-            
-                print("DETERMINES PENDING BUTTON")
-                self.searchTableView.reloadData()
-            
-            })
-        
-        // Used to determine delete buttons
-        firebaseConnectionsRef.observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
-            
-                if !(snapshot.value is NSNull)
-                {
-                    self.allUsersConnections = snapshot.value as! NSDictionary
-                }
-                self.searchTableView.reloadData()
-            
-            })
-        
-        firebaseUsersRef.observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
-            
-            let user = Connection()
-            
-            // Store respective user info (key is the username)
-            user.userName = snapshot.key
-            
-            
-            // Retrieve user's info (except image)
-            firebaseUsersRef.child(user.userName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
-                
-                user.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
-                
-            })
-            
-            
-            // Store the user's image
-            firebaseUserImagesRef.child(user.userName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
-                
-                // Get base 64 string image
-                
-                // If user has an image, display it in table. Else, display default image
-                if (snapshot.exists())
-                {
-                    let userImageBase64String = snapshot.childSnapshotForPath("/profileImage").value as! String
-                    user.userImage = convertBase64ToImage(userImageBase64String)
-                }
-                else
-                {
-                    user.userImage = self.defaultImage
-                }
-                
-                self.searchTableView.reloadData()
-                
-            })
-            
-            
-            self.allUsers.append(user)
-            self.searchTableView.reloadData()
-
-            
-            
-        })
-
+//        firebaseRootRef = FIRDatabase.database().reference()
+//        
+//        let firebaseUsersRef = firebaseRootRef.child("Users/")
+//        let firebaseUserImagesRef = firebaseRootRef.child("UserImages/")
+//        let firebaseSentRequestsRef = firebaseRootRef.child("SentRequests/" + userName)
+//        let firebaseConnectionsRef = firebaseRootRef.child("Connections/" + userName)
+//        
+//        allUsers = Array<Connection>()
+//        
+//        
+//        // Used to determine pending buttons
+//        firebaseSentRequestsRef.observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
+//            
+//                //Store a listing of all users that current user sent a connection request to. Used
+//                //to determine which kind of button to display to user (add button, delete button, pending button)
+//                if !(snapshot.value is NSNull)
+//                {
+//                    self.allUsersSentARequest = snapshot.value as! NSDictionary
+//                }
+//            
+//                print("DETERMINES PENDING BUTTON")
+//                self.searchTableView.reloadData()
+//            
+//            })
+//        
+//        // Used to determine delete buttons
+//        firebaseConnectionsRef.observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
+//            
+//                if !(snapshot.value is NSNull)
+//                {
+//                    self.allUsersConnections = snapshot.value as! NSDictionary
+//                }
+//                self.searchTableView.reloadData()
+//            
+//            })
+//        
+//        firebaseUsersRef.observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
+//            
+//            let user = Connection()
+//            
+//            // Store respective user info (key is the username)
+//            user.userName = snapshot.key
+//            
+//            
+//            // Retrieve user's info (except image)
+//            firebaseUsersRef.child(user.userName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
+//                
+//                user.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
+//                
+//            })
+//            
+//            
+//            // Store the user's image
+//            firebaseUserImagesRef.child(user.userName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
+//                
+//                // Get base 64 string image
+//                
+//                // If user has an image, display it in table. Else, display default image
+//                if (snapshot.exists())
+//                {
+//                    let userImageBase64String = snapshot.childSnapshotForPath("/profileImage").value as! String
+//                    user.userImage = convertBase64ToImage(userImageBase64String)
+//                }
+//                else
+//                {
+//                    user.userImage = self.defaultImage
+//                }
+//                
+//                self.searchTableView.reloadData()
+//                
+//            })
+//            
+//            
+//            self.allUsers.append(user)
+//            self.searchTableView.reloadData()
+//
+//            
+//            
+//        })
+//
         
         
 
