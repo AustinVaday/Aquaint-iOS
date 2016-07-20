@@ -9,23 +9,25 @@
 import UIKit
 import AWSDynamoDB
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UISearchBarDelegate {
 
     @IBOutlet weak var searchTableView: UITableView!
+    
+    var searchController: UISearchController!
     
     var userName : String!
     var userId   : String!
     var allUsers: Array<User>!
     var filteredUsers: Array<User>!
-    var shouldShowSearchResults
+    var shouldShowSearchResults = false
     var defaultImage : UIImage!
 
     override func viewDidLoad(){
         
+        configureSearchController()
         
         allUsers = Array<User>()
         filteredUsers = Array<User>()
-        shouldShowSearchResults = false
         
         
         userName = getCurrentCachedUser()
@@ -149,15 +151,79 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
+    // **** SEARCHBAR PROTOCOLS *****
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        
+        // Use filtered array
+        shouldShowSearchResults = true
+        searchTableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        
+        // Use default array
+        shouldShowSearchResults = false
+        searchTableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        
+        // If not already showing results, begin showing them now
+        if (!shouldShowSearchResults)
+        {
+            shouldShowSearchResults = true
+            searchTableView.reloadData()
+        }
+        
+        searchController.becomeFirstResponder()
+    }
+    
+    // *** SEARCH RESULTS UPDATING PROTOCOL ****
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        
+        let searchString = searchController.searchBar.text!
+        
+        
+        filteredUsers = allUsers.filter({ (someUser) -> Bool in
+        
+            let userName = someUser.username as NSString
+            let realName = someUser.realname as NSString
+            
+            // Check if we have a user with a corresponding exact substring (case insensitive)
+            let userNameMatch = userName.rangeOfString(searchString, options: .CaseInsensitiveSearch).location != NSNotFound
+            let realNameMatch = realName.rangeOfString(searchString, options: .CaseInsensitiveSearch).location != NSNotFound
+
+            // If we have either a user name or real name match, add the user to the filtered array!
+            return userNameMatch || realNameMatch
+        })
+    }
+    
+    
+    
     // **** SEARCH TABLE VIEW *****
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! SearchTableViewCell
         
-        let userFullName = allUsers[indexPath.item].realname
-        let userName     = allUsers[indexPath.item].username
-        var userImage: UIImage!
+        
+        var userFullName : String!
+        var userName : String!
+        var userImage : UIImage!
+        
+        // Get applicable user from applicable array
+        if (shouldShowSearchResults)
+        {
+            userFullName = filteredUsers[indexPath.item].realname
+            userName     = filteredUsers[indexPath.item].username
+        }
+        else
+        {
+            userFullName = allUsers[indexPath.item].realname
+            userName     = allUsers[indexPath.item].username
+        }
+        
+
         
         getUserS3Image(userName, completion: { (result, error) in
                 
@@ -235,5 +301,22 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
 
+    
+    private func configureSearchController()
+    {
+        
+        //When the nil value is passed as an argument, 
+        // the search controller knows that the view controller that exists to
+        // is also going to handle and display the search results.
+        searchController = UISearchController(searchResultsController: nil)
+        
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Search here"
+        searchController.searchBar.delegate = self
+        searchController.searchBar.sizeToFit()
+        searchTableView.tableHeaderView = searchController.searchBar
+        
+        
+    }
 
 }
