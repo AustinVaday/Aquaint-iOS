@@ -14,20 +14,22 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var searchTableView: UITableView!
     
     var searchController: UISearchController!
-    
+    var customSearchController: CustomSearchController!
     var userName : String!
     var userId   : String!
     var allUsers: Array<User>!
     var filteredUsers: Array<User>!
     var shouldShowSearchResults = false
     var defaultImage : UIImage!
+    
 
     override func viewDidLoad(){
         
         allUsers = Array<User>()
         filteredUsers = Array<User>()
         
-        configureSearchController()
+//        configureSearchController()
+        configureCustomSearchController()
         
         userName = getCurrentCachedUser()
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
@@ -320,6 +322,19 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         searchTableView.tableHeaderView = searchController.searchBar
         
         
+    }
+    
+    private func configureCustomSearchController()
+    {
+        let frame =  CGRectMake(0.0, 0.0, searchTableView.frame.size.width, 50.0)
+        let font = UIFont(name: "Avenir", size: 14.0)!
+        let textColor = UIColor.blueColor()
+        let tintColor = UIColor.blackColor()
+        
+        customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: frame, searchBarFont: font, searchBarTextColor: textColor, searchBarTintColor: tintColor)
+        
+        customSearchController.customSearchBar.placeholder = "Search in this awesome bar..."
+        searchTableView.tableHeaderView = customSearchController.customSearchBar
     }
 
 }

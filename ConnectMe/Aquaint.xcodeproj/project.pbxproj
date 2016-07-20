@@ -51,6 +51,8 @@
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
 		FF90CFF61CD08DE8003DEA18 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */; };
+		FF9BFCD31D3F308A00987D78 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9BFCD21D3F308A00987D78 /* CustomSearchBar.swift */; };
+		FF9BFCD51D3F389500987D78 /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9BFCD41D3F389500987D78 /* CustomSearchController.swift */; };
 		FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */; };
 		FFB860281C4C38A800CFB621 /* AquaintTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */; };
 		FFB8602A1C4C38D300CFB621 /* AquaintUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB860291C4C38D300CFB621 /* AquaintUITestCase.swift */; };
@@ -142,6 +144,8 @@
 		FF897C451C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C501C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		FF9BFCD21D3F308A00987D78 /* CustomSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
+		FF9BFCD41D3F389500987D78 /* CustomSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
 		FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintTestCase.swift; sourceTree = "<group>"; };
 		FFB860291C4C38D300CFB621 /* AquaintUITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintUITestCase.swift; sourceTree = "<group>"; };
@@ -319,6 +323,7 @@
 				FF7C0A4A1D13A2A800C1502D /* HelperFunctions */,
 				FFBDD75B1CD59A390007A188 /* Newsfeed */,
 				FF7C0A481D13A24200C1502D /* Login/Signup */,
+				FF9BFCD61D3F3C3000987D78 /* Custom Search Bars */,
 				FF7C0A471D13A20700C1502D /* TableViewCells */,
 				FF897C361C01AC63001B2634 /* ViewController.swift */,
 				FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */,
@@ -330,6 +335,15 @@
 			);
 			name = Aquaint;
 			path = ConnectMe;
+			sourceTree = "<group>";
+		};
+		FF9BFCD61D3F3C3000987D78 /* Custom Search Bars */ = {
+			isa = PBXGroup;
+			children = (
+				FF9BFCD21D3F308A00987D78 /* CustomSearchBar.swift */,
+				FF9BFCD41D3F389500987D78 /* CustomSearchController.swift */,
+			);
+			name = "Custom Search Bars";
 			sourceTree = "<group>";
 		};
 		FFB8602C1C4C38F800CFB621 /* AquaintUITestCases */ = {
@@ -694,6 +708,7 @@
 				FF7878401C26A0A900354936 /* MenuController.swift in Sources */,
 				FF0BF0251CB6DCB3005188DA /* SearchViewController.swift in Sources */,
 				FF84201E1D299A5E002D2927 /* SignUpVerificationController.swift in Sources */,
+				FF9BFCD31D3F308A00987D78 /* CustomSearchBar.swift in Sources */,
 				FF7878461C281A2500354936 /* FriendRequestsController.swift in Sources */,
 				FF7878771C34EC4A00354936 /* RecentConnections.swift in Sources */,
 				FF0BF0231CB6DC78005188DA /* ProfileViewController.swift in Sources */,
@@ -710,6 +725,7 @@
 				FFBDD7611CD5B6190007A188 /* NewsfeedTableViewCell.swift in Sources */,
 				FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */,
 				FF8420201D299A9C002D2927 /* SignUpFetchMoreDataController.swift in Sources */,
+				FF9BFCD51D3F389500987D78 /* CustomSearchController.swift in Sources */,
 				FF7878611C3010E700354936 /* LogInController.swift in Sources */,
 				FF8420241D2B42A0002D2927 /* DynamoDBUser.swift in Sources */,
 				FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */,
