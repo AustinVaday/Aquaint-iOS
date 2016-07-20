@@ -9,19 +9,25 @@
 import UIKit
 import AWSDynamoDB
 
-class SearchViewController: UISearchController, UITableViewDataSource, UITableViewDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var searchTableView: UITableView!
     
     var userName : String!
     var userId   : String!
     var allUsers: Array<User>!
+    var filteredUsers: Array<User>!
+    var shouldShowSearchResults
     var defaultImage : UIImage!
 
     override func viewDidLoad(){
         
         
         allUsers = Array<User>()
+        filteredUsers = Array<User>()
+        shouldShowSearchResults = false
+        
+        
         userName = getCurrentCachedUser()
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
         
@@ -216,7 +222,16 @@ class SearchViewController: UISearchController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return allUsers.count
+        if (shouldShowSearchResults)
+        {
+            // If user is searching, show applicable search results
+            return filteredUsers.count
+        }
+        else
+        {
+            // If user is not searching, show all users
+            return allUsers.count
+        }
         
     }
 
