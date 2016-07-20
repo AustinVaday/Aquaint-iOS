@@ -24,11 +24,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewDidLoad(){
         
-        configureSearchController()
-        
         allUsers = Array<User>()
         filteredUsers = Array<User>()
         
+        configureSearchController()
         
         userName = getCurrentCachedUser()
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
@@ -196,6 +195,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             // If we have either a user name or real name match, add the user to the filtered array!
             return userNameMatch || realNameMatch
         })
+        
+        
+        // Reload table view with new results
+        searchTableView.reloadData()
     }
     
     
@@ -309,7 +312,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         // the search controller knows that the view controller that exists to
         // is also going to handle and display the search results.
         searchController = UISearchController(searchResultsController: nil)
-        
+        searchController.dimsBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = "Search here"
         searchController.searchBar.delegate = self
