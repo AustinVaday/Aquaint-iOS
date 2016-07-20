@@ -9,7 +9,7 @@
 import UIKit
 import AWSDynamoDB
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchResultsUpdating, CustomSearchControllerDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate {
 
     @IBOutlet weak var searchTableView: UITableView!
     
@@ -172,9 +172,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             shouldShowSearchResults = true
             searchTableView.reloadData()
         }
-        
-        searchController.becomeFirstResponder()
-
     }
     
     func didChangeSearchText(searchText: String) {
@@ -199,58 +196,58 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     
-    // **** SEARCHBAR PROTOCOLS (DEFAULT SEARCH BAR) ***** 
-    // **** NOT CURRENTLY USED ****
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        
-        // Use filtered array
-        shouldShowSearchResults = true
-        searchTableView.reloadData()
-    }
-    
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        
-        // Use default array
-        shouldShowSearchResults = false
-        searchTableView.reloadData()
-    }
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        
-        // If not already showing results, begin showing them now
-        if (!shouldShowSearchResults)
-        {
-            shouldShowSearchResults = true
-            searchTableView.reloadData()
-        }
-        
-        searchController.becomeFirstResponder()
-    }
-    
-    // *** SEARCH RESULTS UPDATING PROTOCOL ****
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
-        
-        let searchString = searchController.searchBar.text!
-        
-        
-        filteredUsers = allUsers.filter({ (someUser) -> Bool in
-        
-            let userName = someUser.username as NSString
-            let realName = someUser.realname as NSString
-            
-            // Check if we have a user with a corresponding exact substring (case insensitive)
-            let userNameMatch = userName.rangeOfString(searchString, options: .CaseInsensitiveSearch).location != NSNotFound
-            let realNameMatch = realName.rangeOfString(searchString, options: .CaseInsensitiveSearch).location != NSNotFound
-
-            // If we have either a user name or real name match, add the user to the filtered array!
-            return userNameMatch || realNameMatch
-        })
-        
-        
-        // Reload table view with new results
-        searchTableView.reloadData()
-    }
-    
+//    // **** SEARCHBAR PROTOCOLS (DEFAULT SEARCH BAR) ***** 
+//    // **** NOT CURRENTLY USED ****
+//    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+//        
+//        // Use filtered array
+//        shouldShowSearchResults = true
+//        searchTableView.reloadData()
+//    }
+//    
+//    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+//        
+//        // Use default array
+//        shouldShowSearchResults = false
+//        searchTableView.reloadData()
+//    }
+//    
+//    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+//        
+//        // If not already showing results, begin showing them now
+//        if (!shouldShowSearchResults)
+//        {
+//            shouldShowSearchResults = true
+//            searchTableView.reloadData()
+//        }
+//        
+//        searchController.becomeFirstResponder()
+//    }
+//    
+//    // *** SEARCH RESULTS UPDATING PROTOCOL ****
+//    func updateSearchResultsForSearchController(searchController: UISearchController) {
+//        
+//        let searchString = searchController.searchBar.text!
+//        
+//        
+//        filteredUsers = allUsers.filter({ (someUser) -> Bool in
+//        
+//            let userName = someUser.username as NSString
+//            let realName = someUser.realname as NSString
+//            
+//            // Check if we have a user with a corresponding exact substring (case insensitive)
+//            let userNameMatch = userName.rangeOfString(searchString, options: .CaseInsensitiveSearch).location != NSNotFound
+//            let realNameMatch = realName.rangeOfString(searchString, options: .CaseInsensitiveSearch).location != NSNotFound
+//
+//            // If we have either a user name or real name match, add the user to the filtered array!
+//            return userNameMatch || realNameMatch
+//        })
+//        
+//        
+//        // Reload table view with new results
+//        searchTableView.reloadData()
+//    }
+//    
     
     
     // **** SEARCH TABLE VIEW *****
@@ -362,13 +359,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         //When the nil value is passed as an argument, 
         // the search controller knows that the view controller that exists to
         // is also going to handle and display the search results.
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.placeholder = "Search here"
-        searchController.searchBar.delegate = self
-        searchController.searchBar.sizeToFit()
-        searchTableView.tableHeaderView = searchController.searchBar
+//        searchController = UISearchController(searchResultsController: nil)
+//        searchController.dimsBackgroundDuringPresentation = false
+//        searchController.searchResultsUpdater = self
+//        searchController.searchBar.placeholder = "Search here"
+//        searchController.searchBar.delegate = self
+//        searchController.searchBar.sizeToFit()
+//        searchTableView.tableHeaderView = searchController.searchBar
         
         
     }
@@ -377,14 +374,18 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     // If you want custom (beautiful) Aquaint search bar
     private func configureCustomSearchController()
     {
-        let frame =  CGRectMake(0.0, 0.0, searchTableView.frame.size.width, 50.0)
+        let frame =  CGRectMake(0.0, 0.0, searchTableView.frame.size.width, 46.0)
         let font = UIFont(name: "Avenir", size: 14.0)!
-        let textColor = UIColor.blueColor()
-        let tintColor = UIColor.blackColor()
         
+        // UI Color for #12BBD5 (www.uicolor.xyz)
+        let textColor = UIColor(red:0.07, green:0.73, blue:0.84, alpha:1.0)
+        
+        // UI Color for #0F7A9D (www.uicolor.xyz)
+//        let tintColor = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
+        let tintColor = UIColor.blackColor()
         customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: frame, searchBarFont: font, searchBarTextColor: textColor, searchBarTintColor: tintColor)
         
-        customSearchController.customSearchBar.placeholder = "Search for your friends!"
+        customSearchController.customSearchBar.placeholder = "Search for friends"
         customSearchController.customDelegate = self
         
         searchTableView.tableHeaderView = customSearchController.customSearchBar

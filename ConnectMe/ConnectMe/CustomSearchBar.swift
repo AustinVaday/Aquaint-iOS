@@ -49,7 +49,7 @@ class CustomSearchBar: UISearchBar {
             
             // Set its frame.
             searchField.frame = CGRectMake(5.0, 5.0, frame.size.width - 10.0, frame.size.height - 10.0)
-            
+
             // Set the font and text color of the search field.
             searchField.font = preferredFont
             searchField.textColor = preferredTextColor
@@ -59,13 +59,13 @@ class CustomSearchBar: UISearchBar {
         }
         
         // Add line to bottom of search field
-        var startPoint = CGPointMake(0.0, frame.size.height)
-        var endPoint = CGPointMake(frame.size.width, frame.size.height)
-        var path = UIBezierPath()
+        let startPoint = CGPointMake(0.0, frame.size.height)
+        let endPoint = CGPointMake(frame.size.width, frame.size.height)
+        let path = UIBezierPath()
         path.moveToPoint(startPoint)
         path.addLineToPoint(endPoint)
         
-        var shapeLayer = CAShapeLayer()
+        let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.CGPath
         shapeLayer.strokeColor = preferredTextColor.CGColor
         shapeLayer.lineWidth = 2.5
