@@ -9,7 +9,7 @@
 import UIKit
 import AWSDynamoDB
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UISearchBarDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchResultsUpdating, CustomSearchControllerDelegate {
 
     @IBOutlet weak var searchTableView: UITableView!
     
@@ -152,7 +152,55 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
-    // **** SEARCHBAR PROTOCOLS *****
+    // **** SEARCHBAR PROTOCOLS (CUSTOM SEARCH BAR) *****
+    func didStartSearching() {
+        // Use filtered array
+        shouldShowSearchResults = true
+        searchTableView.reloadData()
+    }
+    
+    func didTapOnCancelButton() {
+        // Use default array
+        shouldShowSearchResults = false
+        searchTableView.reloadData()
+    }
+    
+    func didTapOnSearchButton() {
+        // If not already showing results, begin showing them now
+        if (!shouldShowSearchResults)
+        {
+            shouldShowSearchResults = true
+            searchTableView.reloadData()
+        }
+        
+        searchController.becomeFirstResponder()
+
+    }
+    
+    func didChangeSearchText(searchText: String) {
+        
+        filteredUsers = allUsers.filter({ (someUser) -> Bool in
+            
+            let userName = someUser.username as NSString
+            let realName = someUser.realname as NSString
+            
+            // Check if we have a user with a corresponding exact substring (case insensitive)
+            let userNameMatch = userName.rangeOfString(searchText, options: .CaseInsensitiveSearch).location != NSNotFound
+            let realNameMatch = realName.rangeOfString(searchText, options: .CaseInsensitiveSearch).location != NSNotFound
+            
+            // If we have either a user name or real name match, add the user to the filtered array!
+            return userNameMatch || realNameMatch
+        })
+        
+        
+        // Reload table view with new results
+        searchTableView.reloadData()
+
+    }
+    
+    
+    // **** SEARCHBAR PROTOCOLS (DEFAULT SEARCH BAR) ***** 
+    // **** NOT CURRENTLY USED ****
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         
         // Use filtered array
@@ -307,6 +355,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
 
     
+    // If you want default (ugly) iOS search bar
     private func configureSearchController()
     {
         
@@ -324,6 +373,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
+    
+    // If you want custom (beautiful) Aquaint search bar
     private func configureCustomSearchController()
     {
         let frame =  CGRectMake(0.0, 0.0, searchTableView.frame.size.width, 50.0)
@@ -333,7 +384,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: frame, searchBarFont: font, searchBarTextColor: textColor, searchBarTintColor: tintColor)
         
-        customSearchController.customSearchBar.placeholder = "Search in this awesome bar..."
+        customSearchController.customSearchBar.placeholder = "Search for your friends!"
+        customSearchController.customDelegate = self
+        
         searchTableView.tableHeaderView = customSearchController.customSearchBar
     }
 

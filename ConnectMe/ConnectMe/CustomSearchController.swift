@@ -8,9 +8,23 @@
 
 import UIKit
 
-class CustomSearchController: UISearchController {
+// Custom protocol required to use this custom search controller!!
+protocol CustomSearchControllerDelegate
+{
+    func didStartSearching()
+    
+    func didTapOnSearchButton()
+    
+    func didTapOnCancelButton()
+    
+    func didChangeSearchText(searchText: String)
+}
+
+
+class CustomSearchController: UISearchController, UISearchBarDelegate {
 
     var customSearchBar: CustomSearchBar!
+    var customDelegate : CustomSearchControllerDelegate!
 
     // Custom initializer
     init(searchResultsController: UIViewController!, searchBarFrame: CGRect, searchBarFont: UIFont, searchBarTextColor: UIColor, searchBarTintColor: UIColor)
@@ -32,9 +46,30 @@ class CustomSearchController: UISearchController {
     }
     
     
+    // **** REQUIRED PROTOCOLS FOR SEARCH BAR DELEGATE ****
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar)
+    {
+        customDelegate.didStartSearching()
+    }
     
+    func searchBarSearchButtonClicked(searchBar: UISearchBar)
+    {
+        customSearchBar.resignFirstResponder()
+        customDelegate.didTapOnSearchButton()
+    }
     
+    func searchBarCancelButtonClicked(searchBar: UISearchBar)
+    {
+        customSearchBar.resignFirstResponder()
+        customDelegate.didTapOnCancelButton()
+    }
     
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String)
+    {
+        customDelegate.didChangeSearchText(searchText)
+    }
+    
+    // Helper functions
     private func configureSearchBar(frame: CGRect, font: UIFont, textColor: UIColor, bgColor: UIColor)
     {
         // Initializes an instance of our own created custom search bar!
@@ -44,6 +79,7 @@ class CustomSearchController: UISearchController {
         customSearchBar.tintColor = textColor
         customSearchBar.showsBookmarkButton = false
         customSearchBar.showsCancelButton = true
+        customSearchBar.delegate = self
     }
     
     
