@@ -260,6 +260,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
+        cell.sponsoredProfileImageView.layer.cornerRadius = cell.sponsoredProfileImageView.frame.size.width / 2
         
         // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
         cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
@@ -277,18 +278,31 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             let textString = connectedUser.userFullName +  " added a Snapchat account, check it out!"
 
             cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [connectedUser.userFullName.characters.count])
+            
+            // show the new account that was added
+            cell.sponsoredProfileImageView.hidden = false
+            cell.sponsoredProfileImageView.image = socialMediaImageDictionary["snapchat"]
+
         }
         else if (indexPath.row == 5 )
         {
             let textString = connectedUser.userFullName +  " added a Twitter account, check it out!"
             
             cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [connectedUser.userFullName.characters.count])
+            
+            // show the new account that was added
+            cell.sponsoredProfileImageView.hidden = false
+            cell.sponsoredProfileImageView.image = socialMediaImageDictionary["twitter"]
         }
         else if (indexPath.row == 9)
         {
             let textString = connectedUser.userFullName +  " added a Instagram account, check it out!"
             
             cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [connectedUser.userFullName.characters.count])
+            
+            // show the new account that was added
+            cell.sponsoredProfileImageView.hidden = false
+            cell.sponsoredProfileImageView.image = socialMediaImageDictionary["instagram"]
         }
         else
         {
@@ -349,7 +363,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Update UI with animation
         tableView.beginUpdates()
         tableView.endUpdates()
-        
+
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
