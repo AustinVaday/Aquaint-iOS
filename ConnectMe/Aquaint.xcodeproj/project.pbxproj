@@ -63,8 +63,8 @@
 		FFBDD7541CD58F910007A188 /* HomeContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7531CD58F910007A188 /* HomeContainerViewController.swift */; };
 		FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7551CD599690007A188 /* HomePageViewController.swift */; };
 		FFBDD7581CD59A0B0007A188 /* NewsfeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7571CD59A0B0007A188 /* NewsfeedViewController.swift */; };
-		FFBDD75A1CD59A2D0007A188 /* YouNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7591CD59A2D0007A188 /* YouNotificationsViewController.swift */; };
-		FFBDD75F1CD5B5FA0007A188 /* YouNotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD75E1CD5B5FA0007A188 /* YouNotificationsTableViewCell.swift */; };
+		FFBDD75A1CD59A2D0007A188 /* WorldNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7591CD59A2D0007A188 /* WorldNotificationsViewController.swift */; };
+		FFBDD75F1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD75E1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift */; };
 		FFBDD7611CD5B6190007A188 /* NewsfeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7601CD5B6190007A188 /* NewsfeedTableViewCell.swift */; };
 		FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */; };
 		FFF2A3501CA891E200C08E38 /* ServerFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */; };
@@ -157,8 +157,8 @@
 		FFBDD7531CD58F910007A188 /* HomeContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeContainerViewController.swift; sourceTree = "<group>"; };
 		FFBDD7551CD599690007A188 /* HomePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
 		FFBDD7571CD59A0B0007A188 /* NewsfeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsfeedViewController.swift; sourceTree = "<group>"; };
-		FFBDD7591CD59A2D0007A188 /* YouNotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouNotificationsViewController.swift; sourceTree = "<group>"; };
-		FFBDD75E1CD5B5FA0007A188 /* YouNotificationsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouNotificationsTableViewCell.swift; sourceTree = "<group>"; };
+		FFBDD7591CD59A2D0007A188 /* WorldNotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorldNotificationsViewController.swift; sourceTree = "<group>"; };
+		FFBDD75E1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorldNotificationsTableViewCell.swift; sourceTree = "<group>"; };
 		FFBDD7601CD5B6190007A188 /* NewsfeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsfeedTableViewCell.swift; sourceTree = "<group>"; };
 		FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionClass.swift; sourceTree = "<group>"; };
 		FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Aquaint-Bridging-Header.h"; path = "ConnectMe/Aquaint-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -241,7 +241,7 @@
 			children = (
 				FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */,
 				FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */,
-				FFBDD75E1CD5B5FA0007A188 /* YouNotificationsTableViewCell.swift */,
+				FFBDD75E1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift */,
 				FFBDD7601CD5B6190007A188 /* NewsfeedTableViewCell.swift */,
 				FF7878781C352D0400354936 /* TableViewCell.swift */,
 				FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */,
@@ -417,7 +417,7 @@
 		FFBDD75B1CD59A390007A188 /* Newsfeed */ = {
 			isa = PBXGroup;
 			children = (
-				FFBDD7591CD59A2D0007A188 /* YouNotificationsViewController.swift */,
+				FFBDD7591CD59A2D0007A188 /* WorldNotificationsViewController.swift */,
 				FFBDD7571CD59A0B0007A188 /* NewsfeedViewController.swift */,
 				FFBDD7531CD58F910007A188 /* HomeContainerViewController.swift */,
 			);
@@ -722,7 +722,7 @@
 				FF8420221D29B59F002D2927 /* BackendAPI.swift in Sources */,
 				FF7878791C352D0400354936 /* TableViewCell.swift in Sources */,
 				FF1001ED1C80374A00B53F8B /* MainPageViewController.swift in Sources */,
-				FFBDD75F1CD5B5FA0007A188 /* YouNotificationsTableViewCell.swift in Sources */,
+				FFBDD75F1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift in Sources */,
 				FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */,
 				FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */,
 				FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */,
@@ -735,7 +735,7 @@
 				FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */,
 				FF83A4DF1CC59A3900AFB26B /* RBResizer.swift in Sources */,
 				FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */,
-				FFBDD75A1CD59A2D0007A188 /* YouNotificationsViewController.swift in Sources */,
+				FFBDD75A1CD59A2D0007A188 /* WorldNotificationsViewController.swift in Sources */,
 				FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */,
 				FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */,
 				FF8420261D30A138002D2927 /* AddSocialMediaProfilesController.swift in Sources */,

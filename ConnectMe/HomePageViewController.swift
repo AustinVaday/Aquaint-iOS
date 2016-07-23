@@ -48,7 +48,7 @@ class HomePageViewController: UIPageViewController, UIPageViewControllerDataSour
             return arrayOfViewControllers[YOU_NOTIFICATIONS]
         }
         
-        if viewController.isKindOfClass(YouNotificationsViewController)
+        if viewController.isKindOfClass(WorldNotificationsViewController)
         {
             return nil
         }
@@ -64,7 +64,7 @@ class HomePageViewController: UIPageViewController, UIPageViewControllerDataSour
             return nil
         }
         
-        if viewController.isKindOfClass(YouNotificationsViewController)
+        if viewController.isKindOfClass(WorldNotificationsViewController)
         {
             return arrayOfViewControllers[AQUAINTS_NOTIFICATIONS]
         }
@@ -83,7 +83,7 @@ class HomePageViewController: UIPageViewController, UIPageViewControllerDataSour
             currentPageIndex = AQUAINTS_NOTIFICATIONS
         }
         
-        if currentViewController.isKindOfClass(YouNotificationsViewController)
+        if currentViewController.isKindOfClass(WorldNotificationsViewController)
         {
             currentPageIndex = YOU_NOTIFICATIONS
         }

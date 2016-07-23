@@ -8,7 +8,7 @@
 
 import UIKit
 
-class YouNotificationsTableViewCell: UITableViewCell {
+class WorldNotificationsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var cellMessage: UILabel!

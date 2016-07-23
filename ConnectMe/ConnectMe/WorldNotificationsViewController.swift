@@ -1,5 +1,5 @@
 //
-//  YouNotificationsViewController.swift
+//  WorldNotificationsViewController.swift
 //  Aquaint
 //
 //  Created by Austin Vaday on 4/30/16.
@@ -9,11 +9,11 @@
 import UIKit
 import Firebase
 
-class YouNotificationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
+class WorldNotificationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
     let cellIdentifier = "connectionCell"
     
-    @IBOutlet weak var youConnectionsTableView: UITableView!
+    @IBOutlet weak var worldConnectionsTableView: UITableView!
     
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube")
     
@@ -222,8 +222,8 @@ class YouNotificationsViewController: UIViewController, UITableViewDelegate, UIT
         refreshControl = UIRefreshControl()
         //        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         // When user pulls, this function will be called
-        refreshControl.addTarget(self, action: #selector(YouNotificationsViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        youConnectionsTableView.addSubview(refreshControl)
+        refreshControl.addTarget(self, action: #selector(WorldNotificationsViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        worldConnectionsTableView.addSubview(refreshControl)
         
         
         
@@ -232,7 +232,7 @@ class YouNotificationsViewController: UIViewController, UITableViewDelegate, UIT
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
-        youConnectionsTableView.reloadData()
+        worldConnectionsTableView.reloadData()
         
         // Need to end refreshing
         delay(0.5)
@@ -255,7 +255,7 @@ class YouNotificationsViewController: UIViewController, UITableViewDelegate, UIT
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! YouNotificationsTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! WorldNotificationsTableViewCell
         
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
