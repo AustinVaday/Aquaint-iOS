@@ -12,18 +12,6 @@
 import Foundation
 import UIKit
 
-// Struct used to encapsulate cell necessary expansion/collapse variables
-struct CellExpansion {
-    
-    var selectedRowIndex:Int = -1
-    var expandedRow:Int = -1
-    var isARowExpanded:Bool = false
-    
-    let NO_ROW = -1
-    let defaultRowHeight:CGFloat = 60
-    let expandedRowHeight:CGFloat = 120
-}
-
 // Necessary for fetching username URLs
 func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: String!, sender: AnyObject) -> NSURL!
 {

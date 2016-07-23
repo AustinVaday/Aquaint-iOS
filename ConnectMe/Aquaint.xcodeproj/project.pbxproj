@@ -13,6 +13,7 @@
 		FF0BF0231CB6DC78005188DA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */; };
 		FF0BF0251CB6DCB3005188DA /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */; };
 		FF1001ED1C80374A00B53F8B /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */; };
+		FF1660071D4323F400900686 /* DropDownTableViewFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */; };
 		FF29BB1D9643BB46054B3871 /* Pods_Aquaint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D1CC9F354D9EF78F36FCC8C /* Pods_Aquaint.framework */; };
 		FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */; };
 		FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */; };
@@ -103,6 +104,7 @@
 		FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = ../ProfileViewController.swift; sourceTree = "<group>"; };
 		FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
+		FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownTableViewFunctions.swift; sourceTree = "<group>"; };
 		FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsTableViewCell.swift; sourceTree = "<group>"; };
 		FF6331671D286BAB00967266 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -278,6 +280,7 @@
 				FFF442351C4B2244007651DE /* Functions.swift */,
 				FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */,
 				FF8420211D29B59F002D2927 /* BackendAPI.swift */,
+				FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */,
 			);
 			name = HelperFunctions;
 			sourceTree = "<group>";
@@ -703,6 +706,7 @@
 			files = (
 				FFBDD7581CD59A0B0007A188 /* NewsfeedViewController.swift in Sources */,
 				FFBDD7541CD58F910007A188 /* HomeContainerViewController.swift in Sources */,
+				FF1660071D4323F400900686 /* DropDownTableViewFunctions.swift in Sources */,
 				FFF2A3501CA891E200C08E38 /* ServerFunctions.swift in Sources */,
 				FF7878421C26A0CC00354936 /* CameraController.swift in Sources */,
 				FF7878401C26A0A900354936 /* MenuController.swift in Sources */,

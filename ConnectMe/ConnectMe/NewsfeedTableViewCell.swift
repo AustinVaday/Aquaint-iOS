@@ -14,7 +14,6 @@ class NewsfeedTableViewCell: UITableViewCell {
     @IBOutlet weak var cellMessage: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var cellUserName: UILabel!
-    @IBOutlet weak var cellTimeConnected: UILabel!
-    
+    @IBOutlet weak var cellTimeConnected: UILabel!    
 
 }

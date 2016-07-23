@@ -20,6 +20,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var expansionObj:CellExpansion!
+    
     var firebaseRootRef : FIRDatabaseReference!
     var firebaseUsersRef: FIRDatabaseReference!
     var firebaseLinkedAccountsRef: FIRDatabaseReference!
@@ -28,6 +29,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     var refreshControl : UIRefreshControl!
     var connectionList : Array<Connection>!
     var defaultImage : UIImage!
+    
+    
     
     override func viewDidLoad() {
         
@@ -218,7 +221,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Set up refresh control for when user drags for a refresh.
         refreshControl = UIRefreshControl()
-        //        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        
         // When user pulls, this function will be called
         refreshControl.addTarget(self, action: #selector(NewsfeedViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
         newsfeedTableView.addSubview(refreshControl)
@@ -340,17 +343,14 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        // Set the new selectedRowIndex
-        expansionObj.selectedRowIndex = indexPath.row
+        // Updates the index of the currently expanded row
+        updateCurrentlyExpandedRow(&expansionObj, currentRow: indexPath.row)
         
         // Update UI with animation
         tableView.beginUpdates()
         tableView.endUpdates()
+                
         
-        
-        //        let cell = tableView.dequeueReusableCellWithIdentifier("recentConnCell", forIndexPath: indexPath) as! TableViewCell
-        //
-        //        cell.collectionView.reloadData()
         
     }
     
@@ -358,49 +358,14 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         let currentRow = indexPath.row
         
-        // If a row is selected, we want to expand the cells
-        if (currentRow == expansionObj.selectedRowIndex)
-        {
-            // Collapse if it is already expanded
-            if (expansionObj.isARowExpanded && expansionObj.expandedRow == currentRow)
-            {
-                expansionObj.isARowExpanded = false
-                expansionObj.expandedRow = expansionObj.NO_ROW
-                return expansionObj.defaultRowHeight
-            }
-            else
-            {
-                expansionObj.isARowExpanded = true
-                expansionObj.expandedRow = currentRow
-                return expansionObj.expandedRowHeight
-            }
-        }
-        else
-        {
-            return expansionObj.defaultRowHeight
-        }
+        // Return height computed by our special function
+        return getTableRowHeightForDropdownCell(&expansionObj, currentRow: currentRow)
+        
         
     }
     
     // COLLECTION VIEW
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        //        print("------------------------------------")
-        //        for (var i = 0; i < connectionList.count; i++)
-        //        {
-        //            print("username:", connectionList[i].userName)
-        //            print("social media accounts", connectionList[i].socialMediaUserNames)
-        //
-        //        }
-        //        print("------------------------------------")
-        
-        
-        //        print("TAG IS:", collectionView.tag)
-        //
-        //        print(connectionList[collectionView.tag].userName)
-        //        print(connectionList[collectionView.tag].socialMediaUserNames.count)
-        
-        print("88888", connectionList[collectionView.tag].socialMediaUserNames.count)
         
         // Use the tag to know which tableView row we're at
         return connectionList[collectionView.tag].socialMediaUserNames.count
