@@ -20,7 +20,6 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     var currentUserName : String!
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
-    var expansionObj:CellExpansion!
     var firebaseRootRef : FIRDatabaseReference!
     var firebaseUsersRef: FIRDatabaseReference!
     var firebaseLinkedAccountsRef: FIRDatabaseReference!
@@ -29,6 +28,9 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     var refreshControl : UIRefreshControl!
     var connectionList : Array<Connection>!
     var defaultImage : UIImage!
+    
+    
+    var expansionObj:CellExpansion!
     
     override func viewDidLoad() {
         
@@ -285,7 +287,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         // Set the new selectedRowIndex
-        expansionObj.selectedRowIndex = indexPath.row
+        updateCurrentlyExpandedRow(&expansionObj, currentRow: indexPath.row)
         
         // Update UI with animation
         tableView.beginUpdates()
@@ -302,28 +304,8 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         
         let currentRow = indexPath.row
         
-        // If a row is selected, we want to expand the cells
-        if (currentRow == expansionObj.selectedRowIndex)
-        {
-            // Collapse if it is already expanded
-            if (expansionObj.isARowExpanded && expansionObj.expandedRow == currentRow)
-            {
-                expansionObj.isARowExpanded = false
-                expansionObj.expandedRow = expansionObj.NO_ROW
-                return expansionObj.defaultRowHeight
-            }
-            else
-            {
-                expansionObj.isARowExpanded = true
-                expansionObj.expandedRow = currentRow
-                return expansionObj.expandedRowHeight
-            }
-        }
-        else
-        {
-            return expansionObj.defaultRowHeight
-        }
-        
+        // Return height computed by our special function
+        return getTableRowHeightForDropdownCell(&expansionObj, currentRow: currentRow)
     }
     
     // COLLECTION VIEW

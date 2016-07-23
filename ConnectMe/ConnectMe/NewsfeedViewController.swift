@@ -17,9 +17,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube")
     
     var currentUserName : String!
-    
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
-    var expansionObj:CellExpansion!
     
     var firebaseRootRef : FIRDatabaseReference!
     var firebaseUsersRef: FIRDatabaseReference!
@@ -31,7 +29,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     var defaultImage : UIImage!
     
     
-    
+    var expansionObj:CellExpansion!
+
     override func viewDidLoad() {
         
         // Fetch the user's username
@@ -43,9 +42,10 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         firebaseUserImagesRef = firebaseRootRef.child("UserImages/")
         firebaseLinkedAccountsRef = firebaseRootRef.child("LinkedSocialMediaAccounts/")
         firebaseConnectionsRef = firebaseRootRef.child("Connections/" + currentUserName)
+
         connectionList = Array<Connection>()
         expansionObj = CellExpansion()
-        
+
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
         
         //TEMP : USED TO MAKE WEBSITE IMAGES
@@ -349,17 +349,13 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Update UI with animation
         tableView.beginUpdates()
         tableView.endUpdates()
-                
-        
         
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        let currentRow = indexPath.row
-        
         // Return height computed by our special function
-        return getTableRowHeightForDropdownCell(&expansionObj, currentRow: currentRow)
+        return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
         
         
     }
