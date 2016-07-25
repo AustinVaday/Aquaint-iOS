@@ -382,10 +382,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         // UI Color for #0F7A9D (www.uicolor.xyz)
 //        let tintColor = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
-        let tintColor = UIColor.blackColor()
+        
+        // UI Color for #E6E6E6 (www.uicolor.xyz)
+        let tintColor = UIColor(red:0.90, green:0.90, blue:0.90, alpha:1.0)
         customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: frame, searchBarFont: font, searchBarTextColor: textColor, searchBarTintColor: tintColor)
         
         customSearchController.customSearchBar.placeholder = "Search for friends"
+        
+        
         customSearchController.customDelegate = self
         
         searchTableView.tableHeaderView = customSearchController.customSearchBar

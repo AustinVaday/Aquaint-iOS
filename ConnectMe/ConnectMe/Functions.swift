@@ -285,8 +285,14 @@ func verifyEmailFormat(emailString:String) -> Bool
 // Check if phone number is proper
 func verifyPhoneFormat(phoneString: String) -> Bool
 {
-    // User that length of phone is 
-    return true
+
+    // Create a regular expression with acceptable phone number
+    let phoneRegex = "[0-9]{10}"
+    
+    // Create NSPredicate object to define logical constraints for our search in
+    let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
+
+    return phoneTest.evaluateWithObject(phoneString)
 }
 
 // Check if password format is proper

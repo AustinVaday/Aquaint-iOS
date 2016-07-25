@@ -48,10 +48,11 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         super.viewDidLoad()
         
         print("VIEW JUST LOADED!")
-        
-        let userPhone = PhoneNumberTextField()
-        print("USER PHONE:", userPhone.currentRegion)
-        print("USER PHONE:", userPhone.defaultRegion)
+
+//        // Not needed at the moment, we verify only US numbers
+//        let userPhone = PhoneNumberTextField()
+//        print("USER PHONE:", userPhone.currentRegion)
+//        print("USER PHONE:", userPhone.defaultRegion)
         
         // Get the IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
@@ -251,7 +252,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
         if (!verifyPhoneFormat(userPhoneString))
         {
-            showAlert("Error signing up", message: "Please enter in a proper phone number!", buttonTitle: "Try again", sender: self)
+            showAlert("Error signing up", message: "Please enter in a proper U.S. phone number.", buttonTitle: "Try again", sender: self)
             return
         }
         

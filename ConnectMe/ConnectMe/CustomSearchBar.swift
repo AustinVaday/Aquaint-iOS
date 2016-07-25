@@ -54,6 +54,11 @@ class CustomSearchBar: UISearchBar {
             searchField.font = preferredFont
             searchField.textColor = preferredTextColor
             
+//            // Change placeholder color. Warning: This may violate Swift public APIs and the app may be
+//            // rejected from submition into the app store
+//            let placeHolderLabel = searchField.valueForKey("placeholderLabel") as! UILabel
+//            placeHolderLabel.textColor = UIColor.whiteColor()
+            
             // Set the background color of the search field.
             searchField.backgroundColor = barTintColor
         }
