@@ -19,7 +19,6 @@ pod 'SimpleAuth'
 # Pod for phone kit parsing
 # -------------
 source 'https://github.com/CocoaPods/Specs.git'
-pod 'PhoneNumberKit', '~> 0.8'
 
 # AWS Pods
 # -------------
