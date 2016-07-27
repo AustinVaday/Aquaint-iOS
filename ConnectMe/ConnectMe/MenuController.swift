@@ -39,7 +39,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @IBOutlet weak var settingsTableView: UITableView!
-    @IBOutlet weak var linkedAccountsCollectionView: UICollectionView!
     @IBOutlet weak var realNameTextFieldLabel: UITextField!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var numFollowersLabel: UILabel!
@@ -127,7 +126,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 
                 // Propogate collection view with new data
-                self.linkedAccountsCollectionView.reloadData()
+                self.settingsTableView.reloadData()
+                
                 print("RELOADING COLLECTIONVIEW")
             })
         }
@@ -228,10 +228,21 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Configure which cell to display
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
-        
     
+        // For Linked Profiles, we need to display the profiles cell
+        if (indexPath.section == 0)
+        {
+            let cell = tableView.dequeueReusableCellWithIdentifier("menuProfilesCell") as! MenuProfilesCell!
+            return cell
+        }
+
+        //else return regular cell
+        let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
         return cell
+
+        
+
+    
         
     }
     
