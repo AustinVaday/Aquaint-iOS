@@ -38,8 +38,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         var socialMediaUserName : String!   // i.e. "austinvaday"
     }
     
+    @IBOutlet weak var settingsTableView: UITableView!
     @IBOutlet weak var linkedAccountsCollectionView: UICollectionView!
-    @IBOutlet weak var realNameLabel: UILabel!
+    @IBOutlet weak var realNameTextFieldLabel: UITextField!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var numFollowersLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
@@ -53,6 +54,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
     var keyValSocialMediaPairList : Array<KeyValSocialMediaPair>!
+    
+    var tableViewSectionsDictionary : NSMutableDictionary!
     
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
 
@@ -70,7 +73,10 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         currentUserImage = getCurrentCachedUserImage()
         currentUserAccounts = getCurrentCachedUserProfiles()
         
-        
+        // Set up the data for the table views section. 
+        tableViewSectionsDictionary = [ "Linked Profiles" : 1,
+                                        "My Information" : 3,
+                                      ]
         
         // Initialize array so that collection view has something to check while we
         // fetch data from dynamo
@@ -95,7 +101,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
         // Set the UI
         userNameLabel.text = currentUserName
-        realNameLabel.text = currentRealName
+        realNameTextFieldLabel.text  = currentRealName
         profileImageView.image = currentUserImage
         numFollowersLabel.text = "200"
         
@@ -192,52 +198,53 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     /**************************************************************************
      *    TABLE VIEW PROTOCOL
      **************************************************************************/
+    // Specify number of sections in our table
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        
+        // Return number of sections
+        return tableViewSectionsDictionary.count
+    }
+    
+    // Specify height of header
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        return (tableViewSectionsDictionary.allKeys)[section] as? String
+    }
+    
+    
+    // Return the number of rows in each given section
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 8
+        
+        let sectionTitle = (tableViewSectionsDictionary.allKeys)[section]
+        let sectionCount = tableViewSectionsDictionary.objectForKey(sectionTitle) as! Int
+        
+        return sectionCount
     }
 
+    // Configure which cell to display
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
         
-        let menuOption = MenuData(rawValue: indexPath.row)!
-        
-        switch (menuOption)
-        {
-        case .YOUR_ACCOUNT:
-            cell.cellName.text = "Your Account"
-            break;
-        case .LINKED_ACCOUNTS:
-            cell.cellName.text = "Linked Social Media Accounts"
-            break;
-        case .NOTIFICATIONS:
-            cell.cellName.text = "Notification Settings"
-            break;
-        case .INVITE_FRIENDS:
-            cell.cellName.text = "Invite Friends"
-            break;
-        case .HELP:
-            cell.cellName.text = "Help & About Us"
-            break;
-        case .TERMS:
-            cell.cellName.text = "Terms of Service"
-            break;
-        case .CLEAR_HISTORY:
-            cell.cellName.text = "Clear Search History"
-            break;
-        case .LOG_OUT:
-            cell.cellName.text = "Log Out"
-            break;
     
-//        default:
-//            cell.cellName.text = "Error"
-//            break;
-        }
-        
-
-        
         return cell
         
+    }
+    
+    // Configure/customize each table header view
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let sectionTitle = (tableViewSectionsDictionary.allKeys)[section] as! String
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("sectionHeaderCell") as! SectionHeaderCell!
+        
+        cell.sectionTitle.text = sectionTitle
+        
+        return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

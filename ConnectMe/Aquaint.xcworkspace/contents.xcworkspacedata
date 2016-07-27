@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:ConnectMe/SectionHeaderCell.swift">
+   </FileRef>
+   <FileRef
       location = "group:SignUpFetchMoreDataController.swift">
    </FileRef>
    <FileRef
