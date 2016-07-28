@@ -67,9 +67,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     // AWS credentials provider
     let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
     
-    var userPoolData : UserPoolData!
-
-    
 
     override func viewDidLoad() {
         
@@ -90,7 +87,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "My Information", sectionCount: 3))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Notification Settings", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 1))
-        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Actions", sectionCount: 2))
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Actions", sectionCount: 1))
         
         
         // Initialize array so that collection view has something to check while we
@@ -234,11 +231,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         return tableViewSectionsList[section].sectionTitle
     }
-    
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        
-//    }
-//    
+
     // Return the number of rows in each given section
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -256,12 +249,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             return cell
         }
 
-        //else return regular cell
-        let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
         
         // For My Information, add the corresponding data fields
         if (indexPath.section == MenuData.MY_INFORMATION.rawValue)
         {
+            //else return regular cell
+            let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
+            
             switch (indexPath.item)
             {
             case 0: //User full name
@@ -283,20 +277,32 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 
             }
             
-            
-            
+            return cell
         }
         
-        
-        
-        
-        return cell
-        
-        
+        // For My Information, add the corresponding data fields
+        if (indexPath.section == MenuData.ACTIONS.rawValue)
+        {
+            // return regular button cell
+            let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
+            
+            switch (indexPath.item)
+            {
+            case 0: //Log out button
+                cell.menuButtonLabel.text = "Log Out"
+                break;
 
-        
-
+            default: //Default
+                    cell.menuButtonLabel.text = ""
+                
+            }
+            
+            return cell
+        }
     
+        // Default cell return..
+        let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
+        return cell
         
     }
     
@@ -313,7 +319,17 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    
+        
+        
+        if (indexPath.section == MenuData.ACTIONS.rawValue)
+        {
+            
+            // Log out button
+            if (indexPath.item == 0)
+            {
+                logUserOut()
+            }
+        }
     
     }
     
@@ -332,8 +348,32 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             self.performSegueWithIdentifier("logOut", sender: nil)
             
             // Log out AWS
+            self.credentialsProvider.clearCredentials()
+            self.credentialsProvider.invalidateCachedTemporaryCredentials()
+            self.credentialsProvider.clearKeychain()
+            
+            // get the IDENTITY POOL to log out AWS Cognito
+            let pool = getAWSCognitoIdentityUserPool()
+            
+            print("*** MenuController *** currentUser 1", pool.currentUser()?.username)
+            pool.currentUser()?.signOut()
+            
+            print("*** MenuController *** currentUser 2", pool.currentUser()?.username)
+            pool.getUser(self.currentUserName).signOut()
             
             
+            // Update new identity ID
+            self.credentialsProvider.getIdentityId().continueWithBlock { (resultTask) -> AnyObject? in
+                
+                print("LOGOUT, identity id is:", resultTask.result)
+                print("LOG2, ", self.credentialsProvider.identityId)
+                return nil
+            }
+            
+            
+            
+            // Clear local cache and user identity
+            clearUserDefaults()
             
             
         }
@@ -344,6 +384,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         alert.addAction(cancelAction)
         
         self.showViewController(alert, sender: nil)
+   
     }
     
     // Private helper functions
@@ -375,58 +416,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         return pairList
-        
-    }
-    
-    @IBAction func onLogoutButtonClicked(sender: UIButton) {
-        
-        // Ask user if they really want to log out...
-        let alert = UIAlertController(title: nil, message: "Are you really sure you want to log out?", preferredStyle: UIAlertControllerStyle.Alert)
-        
-        let logOutAction = UIAlertAction(title: "Log out", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
-            
-            // present the log in home page
-            
-            //TODO: Add spinner functionality
-            self.performSegueWithIdentifier("logOut", sender: nil)
-            
-            // Log out AWS
-            self.credentialsProvider.clearCredentials()
-            self.credentialsProvider.invalidateCachedTemporaryCredentials()
-            self.credentialsProvider.clearKeychain()
- 
-            // get the IDENTITY POOL to log out AWS Cognito
-            let pool = getAWSCognitoIdentityUserPool()
-            
-            print("*** MenuController *** currentUser 1", pool.currentUser()?.username)
-            pool.currentUser()?.signOut()
-            
-            print("*** MenuController *** currentUser 2", pool.currentUser()?.username)
-            pool.getUser(self.currentUserName).signOut()
-            
-            
-            // Update new identity ID
-            self.credentialsProvider.getIdentityId().continueWithBlock { (resultTask) -> AnyObject? in
-              
-                print("LOGOUT, identity id is:", resultTask.result)
-                print("LOG2, ", self.credentialsProvider.identityId)
-                return nil
-            }
-            
-
-            
-            // Clear local cache and user identity
-            clearUserDefaults()
-            
-            
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil)
-        
-        alert.addAction(logOutAction)
-        alert.addAction(cancelAction)
-        
-        self.showViewController(alert, sender: nil)
         
     }
     
