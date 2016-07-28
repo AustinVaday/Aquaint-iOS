@@ -137,3 +137,85 @@ func getUserS3Image(userName: String!, completion: (result: UIImage?, error: NSE
     
 }
 
+
+struct UserPoolData
+{
+    var emailVerified : Bool?
+    var phoneNumberVerified : Bool?
+    var email : String?
+    var phoneNumber : String?
+    
+}
+
+func getUserPoolData(userName: String!, completion: (result: UserPoolData?, error: NSError?)->()) -> UserPoolData
+{
+    var userData = UserPoolData()
+    // Get AWS UserPool
+    let pool:AWSCognitoIdentityUserPool = getAWSCognitoIdentityUserPool()
+    
+    //Fetch UserPool Data
+    pool.getUser(userName).getDetails().continueWithBlock { (resultTask) -> AnyObject? in
+        
+        if resultTask.error != nil
+        {
+            print("User Pool fetch data in Settings Error:", resultTask.error)
+            completion(result: nil, error: resultTask.error)
+        }
+        else if resultTask.result == nil
+        {
+            print("User Pool fetch data in Settings IS NIL...")
+            completion(result: nil, error: nil)
+
+        }
+        else
+        {
+            print("User Pool fetch data in Settings SUCCESS:", resultTask.result)
+            
+            let response:AWSCognitoIdentityUserGetDetailsResponse = resultTask.result as! AWSCognitoIdentityUserGetDetailsResponse
+            
+            print("USAH ATTRIBUTEZ", response.userAttributes)
+            print("USAH ATTRIBUTEZ0", response.userAttributes![0]) // email_verified
+            print("USAH ATTRIBUTEZ1", response.userAttributes![1]) // phone_number_verified
+            print("USAH ATTRIBUTEZ2", response.userAttributes![2]) // phone_number
+            print("USAH ATTRIBUTEZ3", response.userAttributes![3]) // email
+            
+            
+            
+            let emailVerifiedString = response.userAttributes![0].value
+            let phoneVerifiedString = response.userAttributes![1].value
+            
+            if (emailVerifiedString == "true")
+            {
+                userData.emailVerified = true
+            }
+            else
+            {
+                userData.emailVerified = false
+            }
+            
+            if (phoneVerifiedString == "true")
+            {
+                userData.phoneNumberVerified = true
+            }
+            else
+            {
+                userData.phoneNumberVerified = false
+            }
+            
+            userData.email = response.userAttributes![2].value
+            userData.phoneNumber = response.userAttributes![3].value
+            
+            
+            completion(result: userData, error: nil)
+
+            
+        }
+        
+        return nil
+    }
+
+    
+    
+}
+
+

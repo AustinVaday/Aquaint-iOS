@@ -13,6 +13,7 @@ import AWSCognitoIdentityProvider
 import AWSDynamoDB
 import AWSS3
 
+
 class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     
     enum MenuData: Int {
@@ -63,6 +64,10 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     // AWS credentials provider
     let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
+    
+    var userPoolData : UserPoolData!
+
+    
 
     override func viewDidLoad() {
         
@@ -83,6 +88,22 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Actions", sectionCount: 2))
 
+        userPoolData = UserPoolData()
+        //Fetch UserPool Data
+        getUserPoolData(currentUserName) { (result, error) in
+            
+            if (error != nil)
+            {
+                
+            }
+            
+            if (result != nil)
+            {
+                self.userPoolData = result
+            }
+            
+        }
+        
         
         // Initialize array so that collection view has something to check while we
         // fetch data from dynamo
