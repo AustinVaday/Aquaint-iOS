@@ -38,6 +38,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         var socialMediaUserName : String!   // i.e. "austinvaday"
     }
     
+    struct SectionTitleAndCountPair
+    {
+        var sectionTitle : String!
+        var sectionCount : Int!
+    }
+    
     @IBOutlet weak var settingsTableView: UITableView!
     @IBOutlet weak var realNameTextFieldLabel: UITextField!
     @IBOutlet weak var userNameLabel: UILabel!
@@ -54,7 +60,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var socialMediaUserNames: NSMutableDictionary!
     var keyValSocialMediaPairList : Array<KeyValSocialMediaPair>!
     
-    var tableViewSectionsDictionary : NSMutableDictionary!
+    var tableViewSectionsList : Array<SectionTitleAndCountPair>!
     
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
 
@@ -72,10 +78,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         currentUserImage = getCurrentCachedUserImage()
         currentUserAccounts = getCurrentCachedUserProfiles()
         
-        // Set up the data for the table views section. 
-        tableViewSectionsDictionary = [ "Linked Profiles" : 1,
-                                        "My Information" : 3,
-                                      ]
+        // Set up the data for the table views section. Note: Dictionary does not work for this list as we need a sense of ordering.        
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Linked Profiles", sectionCount: 1))
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "My Information", sectionCount: 3))
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Notification Settings", sectionCount: 1))
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 1))
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Actions", sectionCount: 2))
+
         
         // Initialize array so that collection view has something to check while we
         // fetch data from dynamo
@@ -202,7 +211,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         
         // Return number of sections
-        return tableViewSectionsDictionary.count
+        return tableViewSectionsList.count
     }
     
     // Specify height of header
@@ -212,17 +221,14 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return (tableViewSectionsDictionary.allKeys)[section] as? String
+        return tableViewSectionsList[section].sectionTitle
     }
     
     
     // Return the number of rows in each given section
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        let sectionTitle = (tableViewSectionsDictionary.allKeys)[section]
-        let sectionCount = tableViewSectionsDictionary.objectForKey(sectionTitle) as! Int
-        
-        return sectionCount
+        return tableViewSectionsList[section].sectionCount
     }
 
     // Configure which cell to display
@@ -249,7 +255,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Configure/customize each table header view
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let sectionTitle = (tableViewSectionsDictionary.allKeys)[section] as! String
+        let sectionTitle = tableViewSectionsList[section].sectionTitle
         
         let cell = tableView.dequeueReusableCellWithIdentifier("sectionHeaderCell") as! SectionHeaderCell!
         
