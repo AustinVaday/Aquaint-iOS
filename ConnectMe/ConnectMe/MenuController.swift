@@ -56,6 +56,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var currentUserEmail : String!
     var currentUserPhone : String!
     
+    var enableEditing = false // Whether or not to enable editing of fields.
+    
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
     var keyValSocialMediaPairList : Array<KeyValSocialMediaPair>!
@@ -73,6 +75,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Make the profile photo round
         profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
 
+        // Disable editing
+        enableEditing = false
+        
         // Fetch the user's username and real name
         currentUserName = getCurrentCachedUser()
         currentRealName = getCurrentCachedFullName()
@@ -152,11 +157,16 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     
-    @IBAction func onAddSocialMediaClicked(sender: AnyObject) {
+    
+    
+    @IBAction func onEditInformationButtonClicked(sender: AnyObject) {
         
-        print("YO MAN YOU CLICKED IT.")
+        // Reload data with editing enabled
+        enableEditing = true;
+        settingsTableView.reloadData()
     }
     
+
     /**************************************************************************
      *    COLLECTION VIEW PROTOCOL
      **************************************************************************/
@@ -275,6 +285,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                      cell.menuTitle.text = ""
                      cell.menuValue.text = ""
                 
+            }
+            
+            // Set text field editable and display the cool line underneath
+            if (enableEditing)
+            {
+                cell.menuLineSeperator.hidden = false
+                cell.menuValue.enabled = true
             }
             
             return cell
