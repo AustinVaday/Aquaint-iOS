@@ -214,7 +214,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // Specify height of header
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return 40
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -222,10 +222,10 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         return tableViewSectionsList[section].sectionTitle
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
-    }
-    
+//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        
+//    }
+//    
     // Return the number of rows in each given section
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -237,7 +237,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
     
         // For Linked Profiles, we need to display the profiles cell
-        if (indexPath.section == LINKED_PROFILES)
+        if (indexPath.section == MenuData.LINKED_PROFILES.rawValue)
         {
             let cell = tableView.dequeueReusableCellWithIdentifier("menuProfilesCell") as! MenuProfilesCell!
             return cell
@@ -245,7 +245,41 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
         //else return regular cell
         let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
+        
+        // For My Information, add the corresponding data fields
+        if (indexPath.section == MenuData.MY_INFORMATION.rawValue)
+        {
+            switch (indexPath.item)
+            {
+            case 0: //User full name
+                    cell.menuTitle.text = "Full Name"
+                    cell.menuValue.text = getCurrentCachedFullName()
+                break;
+            case 1: //User email
+                    cell.menuTitle.text = "Email"
+                    //cell.menuValue.text =
+                
+                break;
+            case 2: //User phone
+                    cell.menuTitle.text = "Phone"
+                break;
+                
+            default: //Default
+                     cell.menuTitle.text = ""
+                     cell.menuValue.text = ""
+                
+            }
+            
+            
+            
+        }
+        
+        
+        
+        
         return cell
+        
+        
 
         
 
