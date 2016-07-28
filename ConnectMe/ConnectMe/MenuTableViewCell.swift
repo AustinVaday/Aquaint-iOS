@@ -10,4 +10,7 @@ import UIKit
 
 class MenuTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var menuImageView: UIImageView!
+    @IBOutlet weak var menuTitle: UILabel!
+    @IBOutlet weak var menuValue: UITextField!
 }

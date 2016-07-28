@@ -16,14 +16,11 @@ import AWSS3
 class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     
     enum MenuData: Int {
-        case YOUR_ACCOUNT
-        case LINKED_ACCOUNTS
-        case NOTIFICATIONS
-        case INVITE_FRIENDS
-        case HELP
-        case TERMS
-        case CLEAR_HISTORY
-        case LOG_OUT
+        case LINKED_PROFILES
+        case MY_INFORMATION
+        case NOTIFICATION_SETTINGS
+        case PRIVACY_SETTINGS
+        case ACTIONS
     }
     
     // The dictionary we receive from AWS DynamoDB maps a string to an array.
@@ -78,7 +75,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         currentUserImage = getCurrentCachedUserImage()
         currentUserAccounts = getCurrentCachedUserProfiles()
         
-        // Set up the data for the table views section. Note: Dictionary does not work for this list as we need a sense of ordering.        
+        // Set up the data for the table views section. Note: Dictionary does not work for this list as we need a sense of ordering.   
+        tableViewSectionsList = Array<SectionTitleAndCountPair>()
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Linked Profiles", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "My Information", sectionCount: 3))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Notification Settings", sectionCount: 1))
@@ -224,6 +222,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         return tableViewSectionsList[section].sectionTitle
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+    }
     
     // Return the number of rows in each given section
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -236,7 +237,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
     
         // For Linked Profiles, we need to display the profiles cell
-        if (indexPath.section == 0)
+        if (indexPath.section == LINKED_PROFILES)
         {
             let cell = tableView.dequeueReusableCellWithIdentifier("menuProfilesCell") as! MenuProfilesCell!
             return cell
