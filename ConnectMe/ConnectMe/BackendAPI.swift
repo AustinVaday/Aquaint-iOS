@@ -85,6 +85,26 @@ func setCachedUserFromAWS(userName: String!)
         return nil
         
     })
+    
+    // Get UserPool Data too (email, phone info)
+    getUserPoolData(userName) { (result, error) in
+        
+        if (error != nil)
+        {
+            print("CACHE: COULD NOT GET USER POOLS")
+
+        }
+        
+        if (result != nil)
+        {
+            let userPoolData = result
+            setCurrentCachedUserEmail(userPoolData!.email!)
+            setCurrentCachedUserPhone(userPoolData!.phoneNumber!)
+        
+        }
+        
+    }
+
 
     
 }
@@ -147,7 +167,7 @@ struct UserPoolData
     
 }
 
-func getUserPoolData(userName: String!, completion: (result: UserPoolData?, error: NSError?)->()) -> UserPoolData
+func getUserPoolData(userName: String!, completion: (result: UserPoolData?, error: NSError?)->())
 {
     var userData = UserPoolData()
     // Get AWS UserPool
@@ -202,8 +222,8 @@ func getUserPoolData(userName: String!, completion: (result: UserPoolData?, erro
                 userData.phoneNumberVerified = false
             }
             
-            userData.email = response.userAttributes![2].value
-            userData.phoneNumber = response.userAttributes![3].value
+            userData.phoneNumber = response.userAttributes![2].value
+            userData.email = response.userAttributes![3].value
             
             
             completion(result: userData, error: nil)

@@ -395,6 +395,20 @@ func setCurrentCachedFullName(userFullName: String)
 
 }
 
+func setCurrentCachedUserEmail(email: String)
+{
+    let defaults = NSUserDefaults.standardUserDefaults()
+    defaults.setObject(email, forKey: "useremail")
+    print("Cache useremail success: ", email)
+}
+
+func setCurrentCachedUserPhone(phone: String)
+{
+    let defaults = NSUserDefaults.standardUserDefaults()
+    defaults.setObject(phone, forKey: "userphone")
+    print("Cache userphone success: ", phone)
+
+}
 
 func setCurrentCachedUserImage(userImage: UIImage!)
 {
@@ -453,6 +467,42 @@ func getCurrentCachedFullName() -> String!
     }
     
     return currentUserFullName
+    
+}
+
+// Get the current user email that is signed into the app
+func getCurrentCachedEmail() -> String!
+{
+    // Get the user defaults set previously in the program (username of user)
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
+    let currentUserEmail = defaults.stringForKey("useremail")
+    
+    if currentUserEmail == nil
+    {
+        print("Uh oh, no cached email  available.")
+        return nil
+    }
+    
+    return currentUserEmail
+    
+}
+
+// Get the current user full name that is signed into the app
+func getCurrentCachedPhone() -> String!
+{
+    // Get the user defaults set previously in the program (username of user)
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
+    let currentUserPhone = defaults.stringForKey("userphone")
+    
+    if currentUserPhone == nil
+    {
+        print("Uh oh, no cached user phone available.")
+        return nil
+    }
+    
+    return currentUserPhone
     
 }
 // Get the current user image that is signed into the app

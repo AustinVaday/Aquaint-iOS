@@ -53,6 +53,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var currentRealName : String!
     var currentUserAccounts : NSMutableDictionary!
     var currentUserImage: UIImage!
+    var currentUserEmail : String!
+    var currentUserPhone : String!
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
@@ -79,6 +81,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         currentRealName = getCurrentCachedFullName()
         currentUserImage = getCurrentCachedUserImage()
         currentUserAccounts = getCurrentCachedUserProfiles()
+        currentUserEmail = getCurrentCachedEmail()
+        currentUserPhone = getCurrentCachedPhone()
         
         // Set up the data for the table views section. Note: Dictionary does not work for this list as we need a sense of ordering.   
         tableViewSectionsList = Array<SectionTitleAndCountPair>()
@@ -87,22 +91,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Notification Settings", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Actions", sectionCount: 2))
-
-        userPoolData = UserPoolData()
-        //Fetch UserPool Data
-        getUserPoolData(currentUserName) { (result, error) in
-            
-            if (error != nil)
-            {
-                
-            }
-            
-            if (result != nil)
-            {
-                self.userPoolData = result
-            }
-            
-        }
         
         
         // Initialize array so that collection view has something to check while we
@@ -115,7 +103,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // If any values are nil, we need to re-cache
         if (currentRealName == nil ||
             currentUserImage == nil ||
-            currentUserAccounts == nil)
+            currentUserAccounts == nil ||
+            currentUserEmail == nil ||
+            currentUserPhone == nil)
         {
             setCachedUserFromAWS(currentUserName)
             
@@ -124,6 +114,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             currentRealName = getCurrentCachedFullName()
             currentUserImage = getCurrentCachedUserImage()
             currentUserAccounts = getCurrentCachedUserProfiles()
+            currentUserEmail = getCurrentCachedEmail()
+            currentUserPhone = getCurrentCachedPhone()
         }
             
         // Set the UI
@@ -274,15 +266,15 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             {
             case 0: //User full name
                     cell.menuTitle.text = "Full Name"
-                    cell.menuValue.text = getCurrentCachedFullName()
+                    cell.menuValue.text = currentRealName
                 break;
             case 1: //User email
                     cell.menuTitle.text = "Email"
-                    //cell.menuValue.text =
-                
+                    cell.menuValue.text = currentUserEmail
                 break;
             case 2: //User phone
                     cell.menuTitle.text = "Phone"
+                    cell.menuValue.text = currentUserPhone
                 break;
                 
             default: //Default
