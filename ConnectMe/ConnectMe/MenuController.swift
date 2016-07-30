@@ -48,6 +48,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var numFollowersLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     
+    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
     
     var currentUserName : String!
     var currentRealName : String!
@@ -164,6 +167,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Reload data with editing enabled
         enableEditing = true;
         settingsTableView.reloadData()
+        
+        // Show the buttons in edit view
+        editButton.hidden = true
+        cancelButton.hidden = false
+        saveButton.hidden = false
+        
     }
     
 
