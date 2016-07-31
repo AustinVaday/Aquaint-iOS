@@ -374,17 +374,22 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     // If you want custom (beautiful) Aquaint search bar
     private func configureCustomSearchController()
     {
-        let frame =  CGRectMake(0.0, 0.0, searchTableView.frame.size.width, 46.0)
+        let frame =  CGRectMake(0.0, 0.0, searchTableView.frame.size.width, 48.0)
         let font = UIFont(name: "Avenir", size: 14.0)!
         
         // UI Color for #12BBD5 (www.uicolor.xyz)
-        let textColor = UIColor(red:0.07, green:0.73, blue:0.84, alpha:1.0)
+//        let textColor = UIColor(red:0.07, green:0.73, blue:0.84, alpha:1.0)
+
+        let textColor = UIColor.whiteColor()
         
         // UI Color for #0F7A9D (www.uicolor.xyz)
-//        let tintColor = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
+        let tintColor = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
         
         // UI Color for #E6E6E6 (www.uicolor.xyz)
-        let tintColor = UIColor(red:0.90, green:0.90, blue:0.90, alpha:1.0)
+//        let tintColor = UIColor(red:0.90, green:0.90, blue:0.90, alpha:1.0)
+        
+        
+        
         customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: frame, searchBarFont: font, searchBarTextColor: textColor, searchBarTintColor: tintColor)
         
         customSearchController.customSearchBar.placeholder = "Search for friends"

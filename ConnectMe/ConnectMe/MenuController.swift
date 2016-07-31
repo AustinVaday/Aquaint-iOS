@@ -59,7 +59,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var currentUserEmail : String!
     var currentUserPhone : String!
     
-    var enableEditing = false // Whether or not to enable editing of fields.
+    var enableEditing = false // Whether or not to enable editing of text fields.
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!

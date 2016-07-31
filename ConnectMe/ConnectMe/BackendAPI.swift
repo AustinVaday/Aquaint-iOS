@@ -46,7 +46,7 @@ func setCachedUserFromAWS(userName: String!)
             
             setCurrentCachedUserName(userName)
             setCurrentCachedFullName(user.realname)
-            setCurrentCachedUserProfiles(user.accounts as! NSMutableDictionary)
+            setCurrentCachedUserProfiles(user.accounts as NSMutableDictionary)
         }
         
         return nil
@@ -199,10 +199,36 @@ func getUserPoolData(userName: String!, completion: (result: UserPoolData?, erro
             print("USAH ATTRIBUTEZ2", response.userAttributes![2]) // phone_number
             print("USAH ATTRIBUTEZ3", response.userAttributes![3]) // email
             
+            var emailVerifiedString : String!
+            var phoneVerifiedString : String!
             
+            for userAttribute in response.userAttributes!
+            {
+                
+                switch userAttribute.name!
+                {
+                case "email_verified":
+                    emailVerifiedString = userAttribute.value
+                    break;
+                case "phone_number_verified":
+                    phoneVerifiedString = userAttribute.value
+                    break;
+                case "phone_number":
+                    userData.phoneNumber = userAttribute.value
+                    break;
+                case "email":
+                    userData.email = userAttribute.value
+                    break;
+                    
+                default:
+                    completion(result: nil, error: nil)
+
+                    
+                }
+                
+                
+            }
             
-            let emailVerifiedString = response.userAttributes![0].value
-            let phoneVerifiedString = response.userAttributes![1].value
             
             if (emailVerifiedString == "true")
             {
@@ -222,8 +248,6 @@ func getUserPoolData(userName: String!, completion: (result: UserPoolData?, erro
                 userData.phoneNumberVerified = false
             }
             
-            userData.phoneNumber = response.userAttributes![2].value
-            userData.email = response.userAttributes![3].value
             
             
             completion(result: userData, error: nil)
