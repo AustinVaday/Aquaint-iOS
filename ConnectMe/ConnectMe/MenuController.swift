@@ -78,7 +78,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Make the profile photo round
         profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
 
-        // Disable editing
+        // Disable editing by default
         enableEditing = false
         
         // Fetch the user's username and real name
@@ -173,6 +173,33 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         cancelButton.hidden = false
         saveButton.hidden = false
         
+        // Set first input field as first responder
+//        realNameTextFieldLabel.becomeFirstResponder()
+        
+    }
+    
+    @IBAction func onCancelButtonClicked(sender: AnyObject) {
+        
+        enableEditing = false;
+        settingsTableView.reloadData()
+        
+        // Show the edit button again
+        editButton.hidden = false
+        cancelButton.hidden = true
+        saveButton.hidden = true
+        
+    }
+    
+    @IBAction func onSaveButtonClicked(sender: AnyObject) {
+        
+        enableEditing = false;
+        settingsTableView.reloadData()
+        
+        // Show the edit button again
+        editButton.hidden = false
+        cancelButton.hidden = true
+        saveButton.hidden = true
+        
     }
     
 
@@ -222,8 +249,20 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             cell.socialMediaName = socialMediaUserName // username
             cell.socialMediaType = socialMediaType // facebook, snapchat, etc
             
+            print("enableEditing is: ", enableEditing)
+            // Show the delete buttons if in editing mode!
+            if (enableEditing)
+            {
+                cell.deleteSocialMediaButton.hidden = false
+            }
+            else
+            {
+                cell.deleteSocialMediaButton.hidden = true
+            }
+            
             // Make cell image circular
-            cell.layer.cornerRadius = cell.frame.width / 2
+//            cell.layer.cornerRadius = cell.frame.width / 2
+            cell.emblemImage.layer.cornerRadius = cell.emblemImage.frame.width / 2
         }
         
         return cell
@@ -243,7 +282,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // Specify height of header
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 50
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -299,10 +338,14 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             // Set text field editable and display the cool line underneath
             if (enableEditing)
             {
-                cell.menuLineSeperator.hidden = false
+                cell.menuLineSeparator.hidden = false
                 cell.menuValue.enabled = true
             }
-            
+            else
+            {
+                cell.menuLineSeparator.hidden = true
+                cell.menuValue.enabled = false
+            }
             return cell
         }
         
