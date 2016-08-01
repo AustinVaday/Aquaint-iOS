@@ -9,7 +9,8 @@
 import UIKit
 import Firebase
 
-class MainContainerViewController: UIViewController, MainPageViewControllerDelegate, UIPageViewControllerDelegate {
+
+class MainContainerViewController: UIViewController, UIPageViewControllerDelegate, MainPageSectionUnderLineViewDelegate {
     
     @IBOutlet weak var sectionUnderlineView0: UIView!
     @IBOutlet weak var sectionUnderlineView1: UIView!
@@ -34,7 +35,6 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
     var mainPageViewController: MainPageViewController!
     
     
-    
     // Self-added protocol for MainPageViewControllerDelegate
     func didTransitionPage(sender: MainPageViewController) {
 
@@ -57,13 +57,10 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
     override func viewDidLoad() {
         
         
-        
         // Get the mainPageViewController, this holds all our pages!
         mainPageViewController = self.childViewControllers.last as! MainPageViewController
         
         mainPageViewController.delegate = self
-        
-        print("YOLO", mainPageViewController.delegate)
         
         // SET UP NOTIFICATIONS
         // ----------------------------------------------
@@ -84,92 +81,7 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         // Show only the bar for the home icon
         sectionUnderlineView0.hidden = false
         
-        // Set up Firebase
-        firebaseRootRef = FIRDatabase.database().reference()
-        
-        //*** NOTE: This is an extra check for top-notch security. It is not necessary.
-        // If we're not logged in, immediately go back to beginning page.
-//        FIRAuth.auth()!.addAuthStateDidChangeListener() { (auth, user) in
-//            if let user = user {
-//                print("User is signed in with uid:", user.uid)
-//            } else {
-//                print("Error in HomeController. authData is somehow nil!")
-//            }
-//        }
-        
-        // Get current user from NSUserDefaults
-        userName = getCurrentCachedUser()
-        
-        connectionRequestList = Array<String>()
-        
-        // Set up Firebase listener for listening for new friend requests
-        let firebaseReceivedRequestsRef = firebaseRootRef.child("ReceivedRequests")
-        
-        // WATCH FOR NEW NOTIFICATIONS
-        firebaseReceivedRequestsRef.child(userName).observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
-            
-            
-            print("childAdded:", snapshot.key)
-            
-            self.connectionRequestList.append(snapshot.key as String)
-            
-            // If there are connection requests, show the notification view and how many requests.
-            if (self.connectionRequestList.count > 0)
-            {
-                self.notificationView.hidden = false
-                self.notificationViewLabel.text = String(self.connectionRequestList.count)
-            }
-            else
-            {
-                self.notificationView.hidden = true
-            }
-            
-        })
-        
-        // DELETE NOTIFICATIONS
-        firebaseReceivedRequestsRef.child(userName).observeEventType(FIRDataEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
-            
-            print("childRemoved:", snapshot.key)
-            
-            
-            // If there are connection requests, show the notification view and how many requests.
-            if (self.connectionRequestList.count > 0)
-            {
-                
-                // Find person in list, remove that person from list
-                for i in 0...self.connectionRequestList.count - 1
-                {
-                    if (self.connectionRequestList[i] == snapshot.key as String)
-                    {
-                        self.connectionRequestList.removeAtIndex(i)
-                    }
-                    
-                }
-                
-                let numConnections = self.connectionRequestList.count
-                
-                if (numConnections == 0)
-                {
-                    self.notificationView.hidden = true
-                }
-                else
-                {
-                    self.notificationView.hidden = false
-                    
-                }
-                self.notificationViewLabel.text = String(self.connectionRequestList.count)
-            }
-            else
-            {
-                self.notificationView.hidden = true
-            }
-            
-        })
-        
-        
-        
     }
-    
     // BUTTONS TO CHANGE THE PAGE
     
     @IBAction func goToPage0(sender: UIButton) {
@@ -204,14 +116,33 @@ class MainContainerViewController: UIViewController, MainPageViewControllerDeleg
         sectionUnderlineView3.hidden = false
     }
     
-//    @IBAction func goToRecentConnectionsPage(sender: UIButton) {
-//        
-//        mainPageViewController.changePage(4)
-//        
-//        hideAllSectionUnderlineViews()
-//        sectionUnderlineView4.hidden = false
-//    }
+    func updateSectionUnderLineView(newViewNum: Int) {
+        hideAllSectionUnderlineViews()
+        
+        print("DELEGATE showApprop.... WAS CALLED")
+        
+        switch newViewNum
+        {
+        case 0: sectionUnderlineView0.hidden = false
+        break;
+        case 1: sectionUnderlineView1.hidden = false
+        break;
+        case 2: sectionUnderlineView2.hidden = false
+        break;
+        case 3: sectionUnderlineView3.hidden = false
+        break;
+        default: sectionUnderlineView0.hidden = false
+        }
+
+    }
     
-    
+    // Prepare for segues and set up delegates so we can get information back
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        let controller = segue.destinationViewController as! MainPageViewController
+        
+        // IMPORTANT!!!! If we don't have this we can't get data back.
+        controller.sectionDelegate = self
+    }
     
 }

@@ -8,14 +8,12 @@
 
 import UIKit
 
-
-// CREATE PROTOCOL TO Communicate easily with MainPageViewController
-protocol MainPageViewControllerDelegate : class {
-    func didTransitionPage(sender: MainPageViewController)
-    
+protocol MainPageSectionUnderLineViewDelegate
+{
+    func updateSectionUnderLineView(newViewNum: Int)
 }
 
-class MainPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class MainPageViewController: UIPageViewController, UIPageViewControllerDataSource {
     
     let HOME = 0
     let SEARCH = 1
@@ -25,21 +23,17 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     var arrayOfViewControllers: Array<UIViewController>!
     var currentPageIndex = 0 //UPDATED in changePage and didFinishAnimating methods
     // Delegating properties
-    weak var pageDelegate:MainPageViewControllerDelegate?
+//    weak var pageDelegate:MainPageViewControllerDelegate?
+    // Protocol properties
 
 
-    
+    var sectionDelegate : MainPageSectionUnderLineViewDelegate?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-
         dataSource = self
-//        delegate = self
-        
-        print("YOLO2", self.delegate)
-
 
         arrayOfViewControllers = Array<UIViewController>()
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeContainerViewController"))!)
@@ -53,24 +47,24 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         setViewControllers([firstViewController], direction: .Forward, animated: true, completion: nil)
         
     }
-
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         
-        
-        print ("HEY")
         if viewController.isKindOfClass(HomeContainerViewController)
         {
+            sectionDelegate?.updateSectionUnderLineView(1)
             return arrayOfViewControllers[SEARCH]
         }
         
         if viewController.isKindOfClass(SearchViewController)
         {
+            sectionDelegate?.updateSectionUnderLineView(2)
             return arrayOfViewControllers[CONNECTIONS]
         }
         
         if viewController.isKindOfClass(RecentConnections)
         {
+            sectionDelegate?.updateSectionUnderLineView(3)
             return arrayOfViewControllers[MENU]
         }
         
@@ -93,16 +87,19 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         if viewController.isKindOfClass(SearchViewController)
         {
+            sectionDelegate?.updateSectionUnderLineView(0)
             return arrayOfViewControllers[HOME]
         }
         
         if viewController.isKindOfClass(RecentConnections)
         {
+            sectionDelegate?.updateSectionUnderLineView(1)
             return arrayOfViewControllers[SEARCH]
         }
         
         if viewController.isKindOfClass(MenuController)
         {
+            sectionDelegate?.updateSectionUnderLineView(2)
             return arrayOfViewControllers[CONNECTIONS]
         }
                 
@@ -114,8 +111,6 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         // Get current page index
         let currentViewController = (pageViewController.viewControllers?.last)!
-        
-//        showAlert(String("DID FINISH ANIMATING"), message: "", buttonTitle: "", sender: self)
         
         if currentViewController.isKindOfClass(MenuController)
         {
@@ -144,12 +139,10 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     func changePage (pageIndex: Int)
     {
         
-        print("YOLO3", self.delegate)
-
         // We have 5 possible page indices (0 -> 5)
         if (pageIndex >= 0 && pageIndex <= 4)
         {
-        
+
             let destinationViewController = arrayOfViewControllers[pageIndex]
         
             var direction : UIPageViewControllerNavigationDirection!
@@ -170,7 +163,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             // Update the currentPageIndex
             currentPageIndex = pageIndex
             
-            pageDelegate?.didTransitionPage(self)
+//            pageDelegate?.didTransitionPage(self)
 
         }
         else
