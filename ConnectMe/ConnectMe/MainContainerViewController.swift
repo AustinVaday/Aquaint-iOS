@@ -33,15 +33,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     
     // This is our child (container) view controller that holds all our pages
     var mainPageViewController: MainPageViewController!
-    
-    
-    // Self-added protocol for MainPageViewControllerDelegate
-    func didTransitionPage(sender: MainPageViewController) {
 
-        print("YUUUUUUUUUS")
-        showAlert("DELEGATE IMPLEMENTATION SUCCESS", message: "", buttonTitle: "OK", sender: self)
-        
-    }
     
     // Hides all the section bars for the section underline view/bars under the footer icons
     func hideAllSectionUnderlineViews()
@@ -59,8 +51,8 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         
         // Get the mainPageViewController, this holds all our pages!
         mainPageViewController = self.childViewControllers.last as! MainPageViewController
-        
-        mainPageViewController.delegate = self
+//
+//        mainPageViewController.delegate = self
         
         // SET UP NOTIFICATIONS
         // ----------------------------------------------
@@ -143,6 +135,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         
         // IMPORTANT!!!! If we don't have this we can't get data back.
         controller.sectionDelegate = self
+
     }
     
 }

@@ -13,7 +13,7 @@ protocol MainPageSectionUnderLineViewDelegate
     func updateSectionUnderLineView(newViewNum: Int)
 }
 
-class MainPageViewController: UIPageViewController, UIPageViewControllerDataSource {
+class MainPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     let HOME = 0
     let SEARCH = 1
@@ -34,7 +34,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         super.viewDidLoad()
         
         dataSource = self
-
+        delegate = self
         arrayOfViewControllers = Array<UIViewController>()
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeContainerViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("SearchViewController"))!)
@@ -52,19 +52,16 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         if viewController.isKindOfClass(HomeContainerViewController)
         {
-            sectionDelegate?.updateSectionUnderLineView(1)
             return arrayOfViewControllers[SEARCH]
         }
         
         if viewController.isKindOfClass(SearchViewController)
         {
-            sectionDelegate?.updateSectionUnderLineView(2)
             return arrayOfViewControllers[CONNECTIONS]
         }
         
         if viewController.isKindOfClass(RecentConnections)
         {
-            sectionDelegate?.updateSectionUnderLineView(3)
             return arrayOfViewControllers[MENU]
         }
         
@@ -87,51 +84,80 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         if viewController.isKindOfClass(SearchViewController)
         {
-            sectionDelegate?.updateSectionUnderLineView(0)
             return arrayOfViewControllers[HOME]
         }
         
         if viewController.isKindOfClass(RecentConnections)
         {
-            sectionDelegate?.updateSectionUnderLineView(1)
             return arrayOfViewControllers[SEARCH]
         }
         
         if viewController.isKindOfClass(MenuController)
         {
-            sectionDelegate?.updateSectionUnderLineView(2)
             return arrayOfViewControllers[CONNECTIONS]
         }
                 
         return nil
     }
     
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
         
+        print("PENDIN VCs", pendingViewControllers)
+        let nextViewController = (pendingViewControllers.first)!
         
-        // Get current page index
-        let currentViewController = (pageViewController.viewControllers?.last)!
-        
-        if currentViewController.isKindOfClass(MenuController)
+        if nextViewController.isKindOfClass(MenuController)
         {
             currentPageIndex = MENU
         }
-        
-        if currentViewController.isKindOfClass(ProfileViewController)
+
+        else if nextViewController.isKindOfClass(RecentConnections)
         {
             currentPageIndex = CONNECTIONS
         }
         
-        if currentViewController.isKindOfClass(HomeViewController)
+        else if nextViewController.isKindOfClass(HomeContainerViewController)
         {
             currentPageIndex = HOME
         }
         
-        if currentViewController.isKindOfClass(SearchViewController)
+        else if nextViewController.isKindOfClass(SearchViewController)
         {
             currentPageIndex = SEARCH
         }
         
+        print(currentPageIndex)
+        sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
+    
+    }
+    
+    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        
+//        
+//        // Get current page index
+//        let currentViewController = (pageViewController.viewControllers?.last)!
+//        
+//        if currentViewController.isKindOfClass(MenuController)
+//        {
+//            currentPageIndex = MENU
+//        }
+//        
+//        if currentViewController.isKindOfClass(ProfileViewController)
+//        {
+//            currentPageIndex = CONNECTIONS
+//        }
+//        
+//        if currentViewController.isKindOfClass(HomeViewController)
+//        {
+//            currentPageIndex = HOME
+//        }
+//        
+//        if currentViewController.isKindOfClass(SearchViewController)
+//        {
+//            currentPageIndex = SEARCH
+//        }
+//        
+//        print(currentPageIndex)
+//        sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
     }
     
 
