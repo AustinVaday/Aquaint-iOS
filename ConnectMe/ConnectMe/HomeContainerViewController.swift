@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class HomeContainerViewController: UIViewController, UIPageViewControllerDelegate {
+class HomeContainerViewController: UIViewController, UIPageViewControllerDelegate, HomePageSectionUnderLineViewDelegate {
     
     
     @IBOutlet weak var userNameLabel: UILabel!
@@ -48,9 +48,7 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         
         // Get the mainPageViewController, this holds all our pages!
         homePageViewController = self.childViewControllers.last as! HomePageViewController
-        
-        homePageViewController.delegate = self
-        
+                
         // SET UP CONTROL BAR (ON TOP)
         // ----------------------------------------------
         hideAllSectionUnderlineViews()
@@ -69,72 +67,7 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         // Set username label 
         userNameLabel.text = userName
         
-        // Set up Firebase listener for listening for new friend requests
-//        let firebaseReceivedRequestsRef = firebaseRootRef.child("ReceivedRequests") 
-        
-//        // WATCH FOR NEW NOTIFICATIONS
-//        firebaseReceivedRequestsRef.child(userName).observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
-//            
-//            
-//            print("childAdded:", snapshot.key)
-//            
-//            self.connectionRequestList.append(snapshot.key as String)
-//            
-//            // If there are connection requests, show the notification view and how many requests.
-//            if (self.connectionRequestList.count > 0)
-//            {
-//                self.notificationView.hidden = false
-//                self.notificationViewLabel.text = String(self.connectionRequestList.count)
-//            }
-//            else
-//            {
-//                self.notificationView.hidden = true
-//            }
-//            
-//        })
-//        
-//        // DELETE NOTIFICATIONS
-//        firebaseReceivedRequestsRef.child(userName).observeEventType(FIRDataEventType.ChildRemoved, withBlock: { (snapshot) -> Void in
-//            
-//            print("childRemoved:", snapshot.key)
-//            
-//            
-//            // If there are connection requests, show the notification view and how many requests.
-//            if (self.connectionRequestList.count > 0)
-//            {
-//                
-//                // Find person in list, remove that person from list
-//                for (var i = 0; i < self.connectionRequestList.count; i++)
-//                {
-//                    if (self.connectionRequestList[i] == snapshot.key as String)
-//                    {
-//                        self.connectionRequestList.removeAtIndex(i)
-//                    }
-//                    
-//                }
-//                
-//                let numConnections = self.connectionRequestList.count
-//                
-//                if (numConnections == 0)
-//                {
-//                    self.notificationView.hidden = true
-//                }
-//                else
-//                {
-//                    self.notificationView.hidden = false
-//                    
-//                }
-//                self.notificationViewLabel.text = String(self.connectionRequestList.count)
-//            }
-//            else
-//            {
-//                self.notificationView.hidden = true
-//            }
-//            
-//        })
-//        
-//        
-//        
+
     }
     
     // BUTTONS TO CHANGE THE PAGE
@@ -155,6 +88,27 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         
         hideAllSectionUnderlineViews()
         sectionUnderlineView1.hidden = false
+    }
+    
+    func updateSectionUnderLineView(newViewNum: Int) {
+        
+        hideAllSectionUnderlineViews()
+        
+        switch(newViewNum)
+        {
+        case 0: sectionUnderlineView0.hidden = false
+            break;
+        case 1: sectionUnderlineView1.hidden = false
+            break;
+        default: sectionUnderlineView0.hidden = false
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        let controller = segue.destinationViewController as! HomePageViewController
+        
+        controller.sectionDelegate = self
     }
 
 }

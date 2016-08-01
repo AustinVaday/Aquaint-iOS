@@ -102,7 +102,6 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     
     func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
         
-        print("PENDIN VCs", pendingViewControllers)
         let nextViewController = (pendingViewControllers.first)!
         
         if nextViewController.isKindOfClass(MenuController)
@@ -129,37 +128,6 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
     
     }
-    
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        
-//        
-//        // Get current page index
-//        let currentViewController = (pageViewController.viewControllers?.last)!
-//        
-//        if currentViewController.isKindOfClass(MenuController)
-//        {
-//            currentPageIndex = MENU
-//        }
-//        
-//        if currentViewController.isKindOfClass(ProfileViewController)
-//        {
-//            currentPageIndex = CONNECTIONS
-//        }
-//        
-//        if currentViewController.isKindOfClass(HomeViewController)
-//        {
-//            currentPageIndex = HOME
-//        }
-//        
-//        if currentViewController.isKindOfClass(SearchViewController)
-//        {
-//            currentPageIndex = SEARCH
-//        }
-//        
-//        print(currentPageIndex)
-//        sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
-    }
-    
 
     // Used so that we can use buttons to change the page!
     func changePage (pageIndex: Int)
