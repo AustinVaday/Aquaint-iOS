@@ -14,9 +14,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     @IBOutlet weak var recentConnTableView: UITableView!
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube")
-    
     var currentUserName : String!
-    
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var refreshControl : UIRefreshControl!
     var connectionList : Array<Connection>!
@@ -51,6 +49,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         {
             con.userFullName = "User" + String(i)
             con.userName = "username" + String(i)
+            con.userImage = UIImage(imageLiteral: "Person Icon Black")
+            con.timestampGMT = getTimestampAsInt()
             con.socialMediaUserNames = ["facebook" : "AVTheMan", "snapchat": "yolo", "twitter": "tweet"]
             
             connectionList.append(con)
