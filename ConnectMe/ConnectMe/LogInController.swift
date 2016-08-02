@@ -25,6 +25,7 @@ class LogInController: UIViewController {
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var logInButton: UIButton!
     @IBOutlet weak var logInButtonBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     var buttonOriginalFrame : CGRect!
     var checkMarkFlippedCopy: UIImageView!
@@ -88,13 +89,27 @@ class LogInController: UIViewController {
         
         UIView.animateWithDuration(0.5) {
             
-            // offset is needed because of autolayout constraints. We want to get rid of unecessary space
-            // between the view and the keyboard
-            let offset = CGFloat(70.0)
+            
+            // FOR THE UIBUTTON
             var frame = self.logInButton.frame
-            frame.origin.y = self.buttonOriginalFrame.origin.y - keyboardSize.height + offset
+            
+            // Take the entire height of the view, subtract by keyboard height, subtract by height of button.
+            // This allows for the button to lay right on top of keyboard!
+            // Remember: Subtracting causes view to move up.
+            frame.origin.y = self.view.frame.height - keyboardSize.height - self.logInButton.frame.height
             self.logInButton.frame = frame
-                        
+            
+            
+            // FOR THE SCROLL VIEW
+            let adjustmentHeight = keyboardSize.height
+            
+            // Prevent abuse. If too much content inset, do not do anything
+            if self.scrollView.contentInset.bottom < adjustmentHeight
+            {
+                self.scrollView.contentInset.bottom += adjustmentHeight
+                self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
+            }
+            
         }
         
         
@@ -105,8 +120,9 @@ class LogInController: UIViewController {
         
         UIView.animateWithDuration(0.5) {
             
+            print("KEYBOARD WILL BE HIDDEN")
+            // Set origin back to default
             self.logInButton.frame = self.buttonOriginalFrame
-            
         }
     }
     
