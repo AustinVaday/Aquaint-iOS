@@ -24,7 +24,9 @@ class LogInController: UIViewController {
     @IBOutlet weak var emblem: UIImageView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var logInButton: UIButton!
+    @IBOutlet weak var logInButtonBottomConstraint: NSLayoutConstraint!
     
+    var buttonOriginalFrame : CGRect!
     var checkMarkFlippedCopy: UIImageView!
     var pool : AWSCognitoIdentityUserPool!
     
@@ -47,6 +49,67 @@ class LogInController: UIViewController {
         
         flipImageHorizontally(checkMarkFlippedCopy)
     }
+    
+    // Add and Remove NSNotifications!
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        registerForKeyboardNotifications()
+        
+        // Store the original center of the button view which will be moved when keyboard appears
+        buttonOriginalFrame = logInButton.frame
+        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        deregisterForKeyboardNotifications()
+    }
+    
+    // KEYBOARD shift-up buttons functionality
+    func registerForKeyboardNotifications()
+    {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        
+    }
+    
+    func deregisterForKeyboardNotifications()
+    {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWasShown(notification: NSNotification)
+    {
+        let userInfo = notification.userInfo!
+        let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
+        
+        UIView.animateWithDuration(0.5) {
+//            
+//            // offset is needed because of autolayout constraints. We want to get rid of unecessary space
+//            // between the view and the keyboard
+//            let offset = CGFloat(75.0)
+            var frame = self.logInButton.frame
+            frame.origin.y = self.buttonOriginalFrame.origin.y - keyboardSize.height + self.logInButton.frame.height
+            self.logInButton.frame = frame
+                        
+        }
+        
+        
+    }
+    
+    func keyboardWillBeHidden(notification: NSNotification)
+    {
+        
+        UIView.animateWithDuration(0.5) {
+            
+            self.logInButton.frame = self.buttonOriginalFrame
+            
+        }
+    }
+    
     
     
 //    @IBAction func emailEditingDidEnd(sender: UITextField) {

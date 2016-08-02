@@ -199,11 +199,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         let userInfo = notification.userInfo!
         let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
         
-        UIView.animateWithDuration(0.1) {
+        UIView.animateWithDuration(0.5) {
 
             // offset is needed because of autolayout constraints. We want to get rid of unecessary space
             // between the view and the keyboard
-            let offset = CGFloat(50.0)
+            let offset = CGFloat(75.0)
             var frame = self.buttonView.frame
             frame.origin.y = self.buttonViewOriginalFrame.origin.y - keyboardSize.height + offset
             self.buttonView.frame = frame
@@ -216,13 +216,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     func keyboardWillBeHidden(notification: NSNotification)
     {
         
-        UIView.animateWithDuration(0.1) {
+        UIView.animateWithDuration(0.5) {
 
             self.buttonView.frame = self.buttonViewOriginalFrame
         
         }
-
-
     }
     
     @IBAction func onEditInformationButtonClicked(sender: AnyObject) {
