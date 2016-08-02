@@ -87,12 +87,12 @@ class LogInController: UIViewController {
         let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
         
         UIView.animateWithDuration(0.5) {
-//            
-//            // offset is needed because of autolayout constraints. We want to get rid of unecessary space
-//            // between the view and the keyboard
-//            let offset = CGFloat(75.0)
+            
+            // offset is needed because of autolayout constraints. We want to get rid of unecessary space
+            // between the view and the keyboard
+            let offset = CGFloat(70.0)
             var frame = self.logInButton.frame
-            frame.origin.y = self.buttonOriginalFrame.origin.y - keyboardSize.height + self.logInButton.frame.height
+            frame.origin.y = self.buttonOriginalFrame.origin.y - keyboardSize.height + offset
             self.logInButton.frame = frame
                         
         }
