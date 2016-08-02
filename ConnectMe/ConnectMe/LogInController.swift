@@ -28,6 +28,8 @@ class LogInController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     
     var buttonOriginalFrame : CGRect!
+    var isKeyboardShown = false
+    
     var checkMarkFlippedCopy: UIImageView!
     var pool : AWSCognitoIdentityUserPool!
     
@@ -37,7 +39,7 @@ class LogInController: UIViewController {
     /* var wrongLogInCount: Int = 0 */
     
     override func viewDidLoad() {
-    
+        
         // GET AWS IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
         
@@ -84,32 +86,40 @@ class LogInController: UIViewController {
     
     func keyboardWasShown(notification: NSNotification)
     {
-        let userInfo = notification.userInfo!
-        let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
-        
-        UIView.animateWithDuration(0.5) {
+        // It is important to have these checks because in some cases
+        // a keyboard may be shown, then another one may be shown right after 
+        // (without dismissing the first one). 
+        if !isKeyboardShown
+        {
+            let userInfo = notification.userInfo!
+            let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
             
-            
-            // FOR THE UIBUTTON
-            var frame = self.logInButton.frame
-            
-            // Take the entire height of the view, subtract by keyboard height, subtract by height of button.
-            // This allows for the button to lay right on top of keyboard!
-            // Remember: Subtracting causes view to move up.
-            frame.origin.y = self.view.frame.height - keyboardSize.height - self.logInButton.frame.height
-            self.logInButton.frame = frame
-            
-            
-            // FOR THE SCROLL VIEW
-            let adjustmentHeight = keyboardSize.height
-            
-            // Prevent abuse. If too much content inset, do not do anything
-            if self.scrollView.contentInset.bottom < adjustmentHeight
-            {
-                self.scrollView.contentInset.bottom += adjustmentHeight
-                self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
+            UIView.animateWithDuration(0.5) {
+                
+                print("KEYBOARD SHOWN")
+
+                // FOR THE UIBUTTON
+                var frame = self.logInButton.frame
+                
+                // Take the entire height of the view, subtract by keyboard height, subtract by height of button.
+                // This allows for the button to lay right on top of keyboard!
+                // Remember: Subtracting causes view to move up.
+                frame.origin.y = self.view.frame.height - keyboardSize.height - self.logInButton.frame.height
+                self.logInButton.frame = frame
+                
+                
+                // FOR THE SCROLL VIEW
+                let adjustmentHeight = keyboardSize.height
+                
+                // Prevent abuse. If too much content inset, do not do anything
+                if self.scrollView.contentInset.bottom < adjustmentHeight
+                {
+                    self.scrollView.contentInset.bottom += adjustmentHeight
+                    self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
+                }
             }
-            
+
+            isKeyboardShown = true
         }
         
         
@@ -118,11 +128,16 @@ class LogInController: UIViewController {
     func keyboardWillBeHidden(notification: NSNotification)
     {
         
-        UIView.animateWithDuration(0.5) {
-            
-            print("KEYBOARD WILL BE HIDDEN")
-            // Set origin back to default
-            self.logInButton.frame = self.buttonOriginalFrame
+        if isKeyboardShown
+        {
+            UIView.animateWithDuration(0.5) {
+                
+                print("KEYBOARD HIDDEN")
+                // Set origin back to default
+                self.logInButton.frame = self.buttonOriginalFrame
+            }
+
+            isKeyboardShown = false
         }
     }
     
