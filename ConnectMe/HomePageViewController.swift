@@ -76,6 +76,22 @@ class HomePageViewController: UIPageViewController, UIPageViewControllerDataSour
         return nil
     }
     
+    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        let currentViewController = previousViewControllers.last!
+        
+        if currentViewController.isKindOfClass(NewsfeedViewController)
+        {
+            currentPageIndex = AQUAINTS_NOTIFICATIONS
+        }
+        
+        if currentViewController.isKindOfClass(WorldNotificationsViewController)
+        {
+            currentPageIndex = WORLD_NOTIFICATIONS
+        }
+        
+        sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
+    }
+    
     func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
         // Get current page index
         let currentViewController = (pendingViewControllers.first)!

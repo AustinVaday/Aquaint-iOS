@@ -51,6 +51,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var buttonView: UIView!
     
     var currentUserName : String!
     var currentRealName : String!
@@ -60,6 +61,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var currentUserPhone : String!
     
     var enableEditing = false // Whether or not to enable editing of text fields.
+    var buttonViewOriginalFrame : CGRect!
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
@@ -80,6 +82,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
         // Disable editing by default
         enableEditing = false
+        
+ 
         
         // Fetch the user's username and real name
         currentUserName = getCurrentCachedUser()
@@ -159,8 +163,67 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     }
     
+    // Add and Remove NSNotifications!
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        registerForKeyboardNotifications()
+        
+        // Store the original center of the button view which will be moved when keyboard appears
+        buttonViewOriginalFrame = buttonView.frame
+        
+    }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        deregisterForKeyboardNotifications()
+    }
     
+    // KEYBOARD shift-up buttons functionality
+    func registerForKeyboardNotifications()
+    {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        
+    }
+    
+    func deregisterForKeyboardNotifications()
+    {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWasShown(notification: NSNotification)
+    {
+        let userInfo = notification.userInfo!
+        let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
+        
+        UIView.animateWithDuration(0.1) {
+
+            // offset is needed because of autolayout constraints. We want to get rid of unecessary space
+            // between the view and the keyboard
+            let offset = CGFloat(50.0)
+            var frame = self.buttonView.frame
+            frame.origin.y = self.buttonViewOriginalFrame.origin.y - keyboardSize.height + offset
+            self.buttonView.frame = frame
+
+        }
+        
+        
+    }
+    
+    func keyboardWillBeHidden(notification: NSNotification)
+    {
+        
+        UIView.animateWithDuration(0.1) {
+
+            self.buttonView.frame = self.buttonViewOriginalFrame
+        
+        }
+
+
+    }
     
     @IBAction func onEditInformationButtonClicked(sender: AnyObject) {
         
@@ -175,6 +238,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // Set first input field as first responder
 //        realNameTextFieldLabel.becomeFirstResponder()
+        realNameTextFieldLabel.performSelector(#selector(becomeFirstResponder))
         
     }
     
@@ -489,6 +553,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     
+
+    
+    
+    
+    // UNWIND SEGUES
     @IBAction func unwindBackToMenuVC(segue:UIStoryboardSegue)
     {
         print("Success unwind to menu VC")
