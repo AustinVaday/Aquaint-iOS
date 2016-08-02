@@ -84,18 +84,18 @@ class LogInController: UIViewController {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
     
-    func keyboardWasShown(notification: NSNotification)
+    func keyboardWasShown(notification: NSNotification!)
     {
         // It is important to have these checks because in some cases
         // a keyboard may be shown, then another one may be shown right after 
-        // (without dismissing the first one). 
-        if !isKeyboardShown
-        {
+        // (without dismissing the first one).
+        print("Location of Button:", self.logInButton.frame)
+        
             let userInfo = notification.userInfo!
             let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
             
-            UIView.animateWithDuration(0.5) {
-                
+//            UIView.animateWithDuration(0.5) {
+        
                 print("KEYBOARD SHOWN")
 
                 // FOR THE UIBUTTON
@@ -117,28 +117,20 @@ class LogInController: UIViewController {
                     self.scrollView.contentInset.bottom += adjustmentHeight
                     self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
                 }
-            }
+//            }
 
-            isKeyboardShown = true
-        }
         
         
     }
     
-    func keyboardWillBeHidden(notification: NSNotification)
+    func keyboardWillBeHidden(notification: NSNotification!)
     {
         
-        if isKeyboardShown
-        {
-            UIView.animateWithDuration(0.5) {
-                
                 print("KEYBOARD HIDDEN")
                 // Set origin back to default
                 self.logInButton.frame = self.buttonOriginalFrame
-            }
+        
 
-            isKeyboardShown = false
-        }
     }
     
     
@@ -180,11 +172,17 @@ class LogInController: UIViewController {
             //TODO: make password field red
             print("Please have at least 4 characters")
         }
+        
     }
 
     // When user clicks "Next" on keyboard
     @IBAction func userNameEditingDidEndOnExit(sender: AnyObject) {
-        userPassword.becomeFirstResponder()
+        userName.resignFirstResponder()
+        
+        delay(0.1)
+        {
+        self.userPassword.becomeFirstResponder()
+        }
     }
     
     // When user clicks "Go" on keyboard
