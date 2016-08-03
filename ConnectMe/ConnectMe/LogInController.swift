@@ -91,33 +91,36 @@ class LogInController: UIViewController {
         // (without dismissing the first one).
         print("Location of Button:", self.logInButton.frame)
         
-            let userInfo = notification.userInfo!
-            let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
-            
-//            UIView.animateWithDuration(0.5) {
+        // If keyboard shown already, no need to perform this method
+        if isKeyboardShown
+        {
+            return
+        }
         
-                print("KEYBOARD SHOWN")
+        self.isKeyboardShown = true
 
-                // FOR THE UIBUTTON
-                var frame = self.logInButton.frame
-                
-                // Take the entire height of the view, subtract by keyboard height, subtract by height of button.
-                // This allows for the button to lay right on top of keyboard!
-                // Remember: Subtracting causes view to move up.
-                frame.origin.y = self.view.frame.height - keyboardSize.height - self.logInButton.frame.height
-                self.logInButton.frame = frame
-                
-                
-                // FOR THE SCROLL VIEW
-                let adjustmentHeight = keyboardSize.height
-                
-                // Prevent abuse. If too much content inset, do not do anything
-                if self.scrollView.contentInset.bottom < adjustmentHeight
-                {
-                    self.scrollView.contentInset.bottom += adjustmentHeight
-                    self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
-                }
-//            }
+        
+        let userInfo = notification.userInfo!
+        let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
+        
+        UIView.animateWithDuration(0.5) {
+    
+            print("KEYBOARD SHOWN")
+
+            self.logInButtonBottomConstraint.constant = -keyboardSize.height
+            self.view.layoutIfNeeded()
+
+            // FOR THE SCROLL VIEW
+            let adjustmentHeight = keyboardSize.height
+            
+            // Prevent abuse. If too much content inset, do not do anything
+            if self.scrollView.contentInset.bottom < adjustmentHeight
+            {
+                self.scrollView.contentInset.bottom += adjustmentHeight
+                self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
+            }
+            
+        }
 
         
         
@@ -125,11 +128,13 @@ class LogInController: UIViewController {
     
     func keyboardWillBeHidden(notification: NSNotification!)
     {
-        
-                print("KEYBOARD HIDDEN")
-                // Set origin back to default
-                self.logInButton.frame = self.buttonOriginalFrame
-        
+        isKeyboardShown = false
+
+        print("KEYBOARD HIDDEN")
+        // Set origin back to default
+//        self.logInButton.frame = self.buttonOriginalFrame
+        self.logInButtonBottomConstraint.constant = 0
+        self.view.layoutIfNeeded()
 
     }
     
@@ -157,6 +162,9 @@ class LogInController: UIViewController {
     
     @IBAction func passwordEditingDidEnd(sender: UITextField) {
         
+//        // Needed for keyboard button animation
+//        userPassword.resignFirstResponder()
+        
         let userPasswordString:String = userPassword.text!
         
         if (userPasswordString.isEmpty)
@@ -175,13 +183,33 @@ class LogInController: UIViewController {
         
     }
 
+    @IBAction func userNameEditingDidEnd(sender: AnyObject) {
+        // Needed for keyboard button animation
+//        userName.resignFirstResponder()
+    }
+    
+//    @IBAction func userPasswordEditingDidBegin(sender: AnyObject) {
+//        delay(0.01)
+//        {
+//            self.userPassword.becomeFirstResponder()
+//        }
+//    }
+//    
+//    @IBAction func userNameEditingDidBegin(sender: AnyObject) {
+//        delay(0.01)
+//        {
+//            self.userName.becomeFirstResponder()
+//        }
+//    }
+    
+  
     // When user clicks "Next" on keyboard
     @IBAction func userNameEditingDidEndOnExit(sender: AnyObject) {
+       
         userName.resignFirstResponder()
-        
-        delay(0.1)
+        delay(0.01)
         {
-        self.userPassword.becomeFirstResponder()
+            self.userPassword.becomeFirstResponder()
         }
     }
     
