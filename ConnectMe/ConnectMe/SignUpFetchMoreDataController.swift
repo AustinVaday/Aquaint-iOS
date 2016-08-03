@@ -113,7 +113,7 @@ class SignUpFetchMoreDataController: UIViewController {
             self.view.layoutIfNeeded()
             
             // FOR THE SCROLL VIEW
-            let adjustmentHeight = keyboardSize.height
+            let adjustmentHeight = CGFloat(20)
             
             // Prevent abuse. If too much content inset, do not do anything
             if self.scrollView.contentInset.bottom < adjustmentHeight

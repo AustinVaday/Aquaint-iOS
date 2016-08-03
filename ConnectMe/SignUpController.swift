@@ -155,7 +155,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             self.view.layoutIfNeeded()
             
             // FOR THE SCROLL VIEW
-            let adjustmentHeight = keyboardSize.height
+            let adjustmentHeight = CGFloat(20)
             
             // Prevent abuse. If too much content inset, do not do anything
             if self.scrollView.contentInset.bottom < adjustmentHeight
@@ -386,7 +386,9 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             let nextViewController = segue.destinationViewController as! SignUpFetchMoreDataController
             
             nextViewController.userEmail = userEmail.text
-            nextViewController.userPhone = userPhone.text
+            
+            // Ensure that you pass the country code as well. Default: US
+            nextViewController.userPhone = "+1" + userPhone.text!
             nextViewController.userFullName = userFullName.text
             
             // Pass image only if user set an image
