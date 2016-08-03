@@ -52,6 +52,9 @@ class LogInController: UIViewController {
         flipImageHorizontally(checkMarkFlippedCopy)
     }
     
+    /*=======================================================
+     * BEGIN : Keyboard/Button Animations
+     =======================================================*/
     // Add and Remove NSNotifications!
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
@@ -88,7 +91,6 @@ class LogInController: UIViewController {
         }
         
         self.isKeyboardShown = true
-
         
         let userInfo = notification.userInfo!
         let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
@@ -111,9 +113,6 @@ class LogInController: UIViewController {
             }
             
         }
-
-        
-        
     }
     
     func keyboardWillBeHidden(notification: NSNotification!)
@@ -128,6 +127,9 @@ class LogInController: UIViewController {
 
     }
     
+    /*=======================================================
+     * END : Keyboard/Button Animations
+     =======================================================*/
     
     
 //    @IBAction func emailEditingDidEnd(sender: UITextField) {

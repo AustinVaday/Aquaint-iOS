@@ -24,9 +24,12 @@ class SignUpFetchMoreDataController: UIViewController {
     @IBOutlet weak var checkMark: UIImageView!
     @IBOutlet weak var checkMarkView: UIView!
     @IBOutlet weak var buttonToFlip: UIButton!
-    
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var userPassword: UITextField!
     @IBOutlet weak var userName: UITextField!
+    @IBOutlet weak var buttonBottomConstraint: NSLayoutConstraint!
+    
+    var isKeyboardShown = false
     var pool : AWSCognitoIdentityUserPool!
     var fileManager: AWSUserFileManager!
     var uploadRequest: AWSS3TransferManagerUploadRequest!
@@ -57,6 +60,86 @@ class SignUpFetchMoreDataController: UIViewController {
         flipImageHorizontally(checkMarkFlippedCopy)
         
     }
+    
+    /*=======================================================
+     * BEGIN : Keyboard/Button Animations
+     =======================================================*/
+    
+    // Add and Remove NSNotifications!
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        registerForKeyboardNotifications()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        deregisterForKeyboardNotifications()
+    }
+    
+    // KEYBOARD shift-up buttons functionality
+    func registerForKeyboardNotifications()
+    {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        
+    }
+    
+    func deregisterForKeyboardNotifications()
+    {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWasShown(notification: NSNotification!)
+    {
+        // If keyboard shown already, no need to perform this method
+        if isKeyboardShown
+        {
+            return
+        }
+        
+        self.isKeyboardShown = true
+        
+        let userInfo = notification.userInfo!
+        let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
+        
+        UIView.animateWithDuration(0.5) {
+            
+            print("KEYBOARD SHOWN")
+            
+            self.buttonBottomConstraint.constant = keyboardSize.height
+            self.view.layoutIfNeeded()
+            
+            // FOR THE SCROLL VIEW
+            let adjustmentHeight = keyboardSize.height
+            
+            // Prevent abuse. If too much content inset, do not do anything
+            if self.scrollView.contentInset.bottom < adjustmentHeight
+            {
+                self.scrollView.contentInset.bottom += adjustmentHeight
+                self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
+            }
+            
+        }
+    }
+    
+    func keyboardWillBeHidden(notification: NSNotification!)
+    {
+        isKeyboardShown = false
+        
+        print("KEYBOARD HIDDEN")
+        
+        // Set constraint back to default
+        self.buttonBottomConstraint.constant = 0
+        self.view.layoutIfNeeded()
+        
+    }
+    
+    /*=======================================================
+     * END : Keyboard/Button Animations
+     =======================================================*/
     
     // When user clicks "next" on keyboard
     @IBAction func onUserNameEditingDidEndOnExit(sender: AnyObject) {
