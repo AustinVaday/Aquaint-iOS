@@ -27,7 +27,6 @@ class LogInController: UIViewController {
     @IBOutlet weak var logInButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollView: UIScrollView!
     
-    var buttonOriginalFrame : CGRect!
     var isKeyboardShown = false
     
     var checkMarkFlippedCopy: UIImageView!
@@ -58,10 +57,6 @@ class LogInController: UIViewController {
         super.viewWillAppear(true)
         
         registerForKeyboardNotifications()
-        
-        // Store the original center of the button view which will be moved when keyboard appears
-        buttonOriginalFrame = logInButton.frame
-        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -86,11 +81,6 @@ class LogInController: UIViewController {
     
     func keyboardWasShown(notification: NSNotification!)
     {
-        // It is important to have these checks because in some cases
-        // a keyboard may be shown, then another one may be shown right after 
-        // (without dismissing the first one).
-        print("Location of Button:", self.logInButton.frame)
-        
         // If keyboard shown already, no need to perform this method
         if isKeyboardShown
         {
@@ -131,8 +121,8 @@ class LogInController: UIViewController {
         isKeyboardShown = false
 
         print("KEYBOARD HIDDEN")
-        // Set origin back to default
-//        self.logInButton.frame = self.buttonOriginalFrame
+        
+        // Set constraint back to default
         self.logInButtonBottomConstraint.constant = 0
         self.view.layoutIfNeeded()
 
@@ -161,10 +151,7 @@ class LogInController: UIViewController {
 //    }
     
     @IBAction func passwordEditingDidEnd(sender: UITextField) {
-        
-//        // Needed for keyboard button animation
-//        userPassword.resignFirstResponder()
-        
+
         let userPasswordString:String = userPassword.text!
         
         if (userPasswordString.isEmpty)
@@ -184,33 +171,11 @@ class LogInController: UIViewController {
     }
 
     @IBAction func userNameEditingDidEnd(sender: AnyObject) {
-        // Needed for keyboard button animation
-//        userName.resignFirstResponder()
     }
-    
-//    @IBAction func userPasswordEditingDidBegin(sender: AnyObject) {
-//        delay(0.01)
-//        {
-//            self.userPassword.becomeFirstResponder()
-//        }
-//    }
-//    
-//    @IBAction func userNameEditingDidBegin(sender: AnyObject) {
-//        delay(0.01)
-//        {
-//            self.userName.becomeFirstResponder()
-//        }
-//    }
-    
   
     // When user clicks "Next" on keyboard
     @IBAction func userNameEditingDidEndOnExit(sender: AnyObject) {
-       
-        userName.resignFirstResponder()
-        delay(0.01)
-        {
-            self.userPassword.becomeFirstResponder()
-        }
+        userPassword.becomeFirstResponder()
     }
     
     // When user clicks "Go" on keyboard
