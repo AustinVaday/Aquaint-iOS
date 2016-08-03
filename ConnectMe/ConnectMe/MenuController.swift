@@ -52,6 +52,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var buttonView: UIView!
+    @IBOutlet weak var buttonBottomConstraint: NSLayoutConstraint!
     
     var currentUserName : String!
     var currentRealName : String!
@@ -60,6 +61,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var currentUserEmail : String!
     var currentUserPhone : String!
     
+    var isKeyboardShown = false
     var enableEditing = false // Whether or not to enable editing of text fields.
     var buttonViewOriginalFrame : CGRect!
     
@@ -74,6 +76,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     // AWS credentials provider
     let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
     
+    let footerHeight = CGFloat(65)
 
     override func viewDidLoad() {
         
@@ -163,15 +166,15 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     }
     
+    /*=======================================================
+     * BEGIN : Keyboard/Button Animations
+     =======================================================*/
+    
     // Add and Remove NSNotifications!
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
         registerForKeyboardNotifications()
-        
-        // Store the original center of the button view which will be moved when keyboard appears
-        buttonViewOriginalFrame = buttonView.frame
-        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -194,35 +197,42 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
     
-    func keyboardWasShown(notification: NSNotification)
+    func keyboardWasShown(notification: NSNotification!)
     {
+        // If keyboard shown already, no need to perform this method
+        if isKeyboardShown
+        {
+            return
+        }
+        
+        self.isKeyboardShown = true
+        
         let userInfo = notification.userInfo!
         let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
         
         UIView.animateWithDuration(0.5) {
-
-            // offset is needed because of autolayout constraints. We want to get rid of unecessary space
-            // between the view and the keyboard
-            let offset = CGFloat(75.0)
-            var frame = self.buttonView.frame
-            frame.origin.y = self.buttonViewOriginalFrame.origin.y - keyboardSize.height + offset
-            self.buttonView.frame = frame
-
+            
+            print("KEYBOARD SHOWN")
+            
+            self.buttonBottomConstraint.constant = keyboardSize.height - self.footerHeight
+            self.view.layoutIfNeeded()
         }
-        
-        
     }
     
-    func keyboardWillBeHidden(notification: NSNotification)
+    func keyboardWillBeHidden(notification: NSNotification!)
     {
+        isKeyboardShown = false
         
-        UIView.animateWithDuration(0.5) {
-
-            self.buttonView.frame = self.buttonViewOriginalFrame
+        print("KEYBOARD HIDDEN")
         
-        }
+        // Set constraint back to default
+        self.buttonBottomConstraint.constant = 0
+        self.view.layoutIfNeeded()
+        
     }
-    
+    /*=======================================================
+     * END : Keyboard/Button Animations
+     =======================================================*/
     @IBAction func onEditInformationButtonClicked(sender: AnyObject) {
         
         // Reload data with editing enabled
