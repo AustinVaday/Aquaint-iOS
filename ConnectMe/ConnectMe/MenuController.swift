@@ -77,6 +77,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
     
     let footerHeight = CGFloat(65)
+    let defaultTableViewCellHeight = CGFloat(60)
 
     override func viewDidLoad() {
         
@@ -354,14 +355,42 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // Specify height of header
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return 48
     }
+
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         return tableViewSectionsList[section].sectionTitle
     }
 
+    // Specify height of table view cells
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        var returnHeight : CGFloat!
+        
+        switch indexPath.section
+        {
+        case MenuData.LINKED_PROFILES.rawValue:
+            returnHeight = defaultTableViewCellHeight
+            break;
+        case MenuData.MY_INFORMATION.rawValue:
+            returnHeight = defaultTableViewCellHeight
+            break;
+        case MenuData.NOTIFICATION_SETTINGS.rawValue:
+            returnHeight = CGFloat(50)
+            break;
+        case MenuData.PRIVACY_SETTINGS.rawValue:
+            returnHeight = CGFloat(50)
+            break;
+            
+        default:
+            returnHeight = defaultTableViewCellHeight
+        }
+        
+        return returnHeight
+    }
+    
     // Return the number of rows in each given section
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -372,38 +401,34 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
     
-        // For Linked Profiles, we need to display the profiles cell
-        if (indexPath.section == MenuData.LINKED_PROFILES.rawValue)
+        switch indexPath.section
         {
+        case MenuData.LINKED_PROFILES.rawValue:
             let cell = tableView.dequeueReusableCellWithIdentifier("menuProfilesCell") as! MenuProfilesCell!
             return cell
-        }
-
-        
-        // For My Information, add the corresponding data fields
-        if (indexPath.section == MenuData.MY_INFORMATION.rawValue)
-        {
+            break;
+        case MenuData.MY_INFORMATION.rawValue:
             //else return regular cell
             let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
             
             switch (indexPath.item)
             {
             case 0: //User full name
-                    cell.menuTitle.text = "Full Name"
-                    cell.menuValue.text = currentRealName
+                cell.menuTitle.text = "Full Name"
+                cell.menuValue.text = currentRealName
                 break;
             case 1: //User email
-                    cell.menuTitle.text = "Email"
-                    cell.menuValue.text = currentUserEmail
+                cell.menuTitle.text = "Email"
+                cell.menuValue.text = currentUserEmail
                 break;
             case 2: //User phone
-                    cell.menuTitle.text = "Phone"
-                    cell.menuValue.text = currentUserPhone
+                cell.menuTitle.text = "Phone"
+                cell.menuValue.text = currentUserPhone
                 break;
                 
             default: //Default
-                     cell.menuTitle.text = ""
-                     cell.menuValue.text = ""
+                cell.menuTitle.text = ""
+                cell.menuValue.text = ""
                 
             }
             
@@ -419,11 +444,44 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 cell.menuValue.enabled = false
             }
             return cell
-        }
-        
-        // For My Information, add the corresponding data fields
-        if (indexPath.section == MenuData.ACTIONS.rawValue)
-        {
+            break;
+        case MenuData.NOTIFICATION_SETTINGS.rawValue:
+            // return regular button cell
+            let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
+            
+            switch (indexPath.item)
+            {
+            case 0: //Log out button
+                cell.menuButtonLabel.text = "Coming Soon!"
+                break;
+                
+            default: //Default
+                cell.menuButtonLabel.text = ""
+                
+            }
+            
+            return cell
+
+            break;
+        case MenuData.PRIVACY_SETTINGS.rawValue:
+            // return regular button cell
+            let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
+            
+            switch (indexPath.item)
+            {
+            case 0: //Log out button
+                cell.menuButtonLabel.text = "Coming Soon!"
+                break;
+                
+            default: //Default
+                cell.menuButtonLabel.text = ""
+                
+            }
+            
+            return cell
+
+            break;
+        case MenuData.ACTIONS.rawValue:
             // return regular button cell
             let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
             
@@ -432,19 +490,21 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             case 0: //Log out button
                 cell.menuButtonLabel.text = "Log Out"
                 break;
-
+                
             default: //Default
-                    cell.menuButtonLabel.text = ""
+                cell.menuButtonLabel.text = ""
                 
             }
             
             return cell
+            break;
+        default:
+            // Default cell return..
+            let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
+            return cell
+            
+            
         }
-    
-        // Default cell return..
-        let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
-        return cell
-        
     }
     
     // Configure/customize each table header view
