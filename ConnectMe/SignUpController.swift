@@ -11,7 +11,6 @@ import UIKit
 import AWSMobileHubHelper
 import AWSCognitoIdentityProvider
 import AWSS3
-import PhoneNumberKit
 
 class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
