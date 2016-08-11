@@ -63,6 +63,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var isKeyboardShown = false
     var enableEditing = false // Whether or not to enable editing of text fields.
+    
     var buttonViewOriginalFrame : CGRect!
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
@@ -237,7 +238,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBAction func onEditInformationButtonClicked(sender: AnyObject) {
         
         // Reload data with editing enabled
-        enableEditing = true;
+        enableEditing = true
         settingsTableView.reloadData()
         
         // Show the buttons in edit view
@@ -253,7 +254,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @IBAction func onCancelButtonClicked(sender: AnyObject) {
         
-        enableEditing = false;
+        enableEditing = false
         settingsTableView.reloadData()
         
         // Show the edit button again
@@ -265,13 +266,30 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @IBAction func onSaveButtonClicked(sender: AnyObject) {
         
-        enableEditing = false;
-        settingsTableView.reloadData()
+        let fullNameIndexPath = NSIndexPath(forRow: 0, inSection: MenuData.MY_INFORMATION.rawValue)
+        let emailIndexPath = NSIndexPath(forRow: 1, inSection: MenuData.MY_INFORMATION.rawValue)
+        let phoneIndexPath = NSIndexPath(forRow: 2, inSection: MenuData.MY_INFORMATION.rawValue)
+
+        
+        let fullNameCell = settingsTableView.cellForRowAtIndexPath(fullNameIndexPath) as! MenuTableViewCell
+        let emailCell = settingsTableView.cellForRowAtIndexPath(emailIndexPath) as! MenuTableViewCell
+        let phoneCell = settingsTableView.cellForRowAtIndexPath(phoneIndexPath) as! MenuTableViewCell
+
+        delay(3)
+        {
+        print("full name data is:", fullNameCell.menuValue.text)
+        print("email data is:", emailCell.menuValue.text)
+        print("phone data is:", phoneCell.menuValue.text)
+        
+        
+        self.enableEditing = false
+        self.settingsTableView.reloadData()
         
         // Show the edit button again
-        editButton.hidden = false
-        cancelButton.hidden = true
-        saveButton.hidden = true
+        self.editButton.hidden = false
+        self.cancelButton.hidden = true
+        self.saveButton.hidden = true
+        }
         
     }
     
@@ -399,8 +417,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     // Configure which cell to display
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-    
+
         switch indexPath.section
         {
         case MenuData.LINKED_PROFILES.rawValue:

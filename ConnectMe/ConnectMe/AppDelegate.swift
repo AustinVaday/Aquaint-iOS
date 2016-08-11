@@ -13,8 +13,7 @@ import FBSDKLoginKit
 import SimpleAuth
 import AWSCore
 import AWSCognito
-
-
+import AWSLambda
 
 
 // Begin using Firebase framework
@@ -76,6 +75,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Get credentials provider
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
+ 
+        
+        
         
         
         // If cached users, then they are logged in already
@@ -131,6 +133,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let configuration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: credentialsProvider)
         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
 
+        
         
                 
         return AWSMobileClient.sharedInstance.didFinishLaunching(application, withOptions: launchOptions)

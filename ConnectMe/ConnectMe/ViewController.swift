@@ -13,11 +13,50 @@ import Parse
 
 import FBSDKCoreKit
 import FBSDKLoginKit
+import AWSLambda
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let parameters = NSMutableDictionary()
+        
+        parameters.setValue("IT WORKED!!", forKey: "action")
+        
+        
+        lambdaInvoker.invokeFunction("aquaint", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            if resultTask.error != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+            }
+            else if resultTask.exception != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+            }
+            else if resultTask.result != nil
+            {
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                
+            }
+            else
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+            }
+            
+            return nil
+            
+        }
+
+        
+        
+        
+        
 //
 //        let testObject = PFObject(className: "Friend")
 //        testObject["swagggggg"] = "SWAGGG"
