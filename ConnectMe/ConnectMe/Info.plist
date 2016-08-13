@@ -97,9 +97,13 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.aquaint</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb544667035683597</string>
+				<string>aquaint</string>
 			</array>
 		</dict>
 	</array>

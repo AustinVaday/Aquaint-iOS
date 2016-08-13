@@ -25,10 +25,13 @@ class ViewController: UIViewController {
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
         let parameters = NSMutableDictionary()
         
-        parameters.setValue("IT WORKED!!", forKey: "action")
+        parameters.setValue("IT WORKED1!!", forKey: "action1")
+        parameters.setValue("IT WORKED2!!", forKey: "action2")
+        parameters.setValue("IT WORKED3!!", forKey: "action3")
+
         
         
-        lambdaInvoker.invokeFunction("aquaint", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
             if resultTask.error != nil
             {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)

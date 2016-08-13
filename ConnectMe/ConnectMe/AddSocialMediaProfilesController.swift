@@ -55,44 +55,77 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
             /*************************************************************************
              * FACEBOOK DATA FETCH
              **************************************************************************/
-            
-            // If no user currently logged in with access token, get one
-            if (FBSDKAccessToken.currentAccessToken() == nil)
-            {
-                let login = FBSDKLoginManager.init()
+            SimpleAuth.authorize("facebook-web") { (result, error) in
                 
-                // Open in app instead of web browser!
-                login.loginBehavior = FBSDKLoginBehavior.Native
-                
-                // Request basic profile permissions just to get user ID
-                login.logInWithReadPermissions(["public_profile"], fromViewController: self) { (result, error) in
-                    
-                    // If no error, store facebook user ID
-                    if (error == nil)
-                    {
-                        print("SUCCESS LOG IN!", result.debugDescription)
-                        
-                        // Below can be nil????
-                        if (FBSDKAccessToken.currentAccessToken() != nil)
-                        {
-                            print(FBSDKAccessToken.currentAccessToken().userID)                            
-                        }
-
-                    }
-                    else if (result.isCancelled)
-                    {
-                        print ("LOG IN CANCELLED")
-                    }
-                    else
-                    {
-                        print("FAIL LOG IN")
-                    }
+                if (result == nil)
+                {
+                    print("CANCELLED REQUEST")
                 }
+                else if (error == nil)
+                {
+                    print ("RESULT IS: ", result)
+                    
+                    let jsonResult = result as! NSDictionary
+                    
+                    // Get user's nickname from JSON object returned. I.e:
+                    // info
+                    // {
+                    //    nickname = "AustinVaday";
+                    //    ...
+                    // }
+                    
+                    socialMediaName = jsonResult["info"]!["nickname"]! as String!
+                    print("Twitter username returned is: ", socialMediaName)
+                    
+                    self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+                    
+                }
+                else
+                {
+                    print ("FAILED TO PROCESS REQUEST")
+                }
+                
             }
-            else
-            {
-                showAlert("Error", message: "You have already linked this facebook account.", buttonTitle: "Undo?", sender: self)
-            }
+
+            
+            
+//            // If no user currently logged in with access token, get one
+//            if (FBSDKAccessToken.currentAccessToken() == nil)
+//            {
+//                let login = FBSDKLoginManager.init()
+//                
+//                // Open in app instead of web browser!
+//                login.loginBehavior = FBSDKLoginBehavior.Native
+//                
+//                // Request basic profile permissions just to get user ID
+//                login.logInWithReadPermissions(["public_profile"], fromViewController: self) { (result, error) in
+//                    
+//                    // If no error, store facebook user ID
+//                    if (error == nil)
+//                    {
+//                        print("SUCCESS LOG IN!", result.debugDescription)
+//                        
+//                        // Below can be nil????
+//                        if (FBSDKAccessToken.currentAccessToken() != nil)
+//                        {
+//                            print(FBSDKAccessToken.currentAccessToken().userID)                            
+//                        }
+//
+//                    }
+//                    else if (result.isCancelled)
+//                    {
+//                        print ("LOG IN CANCELLED")
+//                    }
+//                    else
+//                    {
+//                        print("FAIL LOG IN")
+//                    }
+//                }
+//            }
+//            else
+//            {
+//                showAlert("Error", message: "You have already linked this facebook account.", buttonTitle: "Undo?", sender: self)
+//            }
 
             
             break
