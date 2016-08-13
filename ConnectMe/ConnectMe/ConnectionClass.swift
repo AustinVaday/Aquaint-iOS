@@ -28,6 +28,7 @@ class Connection
     var userFullName         = String()
     var timestampGMT         = Int()
     var socialMediaUserNames = NSDictionary()
+    var keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
 
     
     // Computes time difference to display from GMT (now) to timestampGMT

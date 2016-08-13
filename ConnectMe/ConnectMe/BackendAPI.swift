@@ -109,6 +109,44 @@ func setCachedUserFromAWS(userName: String!)
     
 }
 
+func getUserDynamoData(userName: String!, completion: (result: User?, error: NSError?)->())
+{
+    
+    /*******************************************
+     * username, accounts, full name from DYNAMODB
+     ********************************************/
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+    
+    dynamoDBObjectMapper.load(User.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
+        if (resultTask.error != nil)
+        {
+            print("Error getting user from dynamoDB: ", resultTask.error)
+            completion(result: nil, error: resultTask.error)
+
+        }
+        else if (resultTask.exception != nil)
+        {
+            print("Exception getting user from dynamoDB: ", resultTask.exception)
+            completion(result: nil, error: nil)
+
+        }
+        else if (resultTask.result == nil)
+        {
+            print("Error getting user from dynamoDB: nil result")
+            completion(result: nil, error: nil)
+
+        }
+        else
+        {
+            let user = resultTask.result as! User
+            
+            completion(result: user, error: nil)
+        }
+        
+        return nil
+    }
+
+}
 
 func getUserS3Image(userName: String!, completion: (result: UIImage?, error: NSError?)->())
 {

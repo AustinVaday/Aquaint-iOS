@@ -12,7 +12,7 @@ import UIKit
 import AWSCognitoIdentityProvider
 import AWSDynamoDB
 import AWSS3
-
+import AWSLambda
 
 class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -22,18 +22,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case NOTIFICATION_SETTINGS
         case PRIVACY_SETTINGS
         case ACTIONS
-    }
-    
-    // The dictionary we receive from AWS DynamoDB maps a string to an array.
-    // When we have a collection view, we need a way to propogate this 
-    // datastructure linearly, because we're given indices based on
-    // how many usernames we have. A solution to this is using  
-    // an array of structs to keep tabs on what social media type we have
-    // and what the respective username is.
-    struct KeyValSocialMediaPair
-    {
-        var socialMediaType : String!       // i.e. "Facebook"
-        var socialMediaUserName : String!   // i.e. "austinvaday"
     }
     
     struct SectionTitleAndCountPair
@@ -153,7 +141,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             self.socialMediaUserNames = currentUserAccounts
             
             // Convert dictionary to key,val pairs. Redundancy allowed
-            self.keyValSocialMediaPairList = self.convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+            self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
             
             
             // Perform update on UI on main thread
@@ -165,6 +153,43 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 print("RELOADING COLLECTIONVIEW")
             })
         }
+        
+        // Fetch num followers from lambda
+        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let parameters = ["action":"getNumFollowers", "target": currentUserName]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            if resultTask.error != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+            }
+            else if resultTask.exception != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+            }
+            else if resultTask.result != nil
+            {
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+
+                // Update UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    self.numFollowersLabel.text = resultTask.result as? String
+
+                    })
+                
+                
+            }
+            else
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+            }
+            
+            return nil
+            
+        }
+
 
     }
     
@@ -607,40 +632,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // Private helper functions
     //---------------------------------------------------------------------------------------------------
-    private func convertDictionaryToSocialMediaKeyValPairList(dict: NSMutableDictionary,
-                                                              possibleSocialMediaNameList: Array<String>)
-                                                                -> Array<KeyValSocialMediaPair>!
-    {
-        
-        var pairList = Array<KeyValSocialMediaPair>()
-        
-        // dict is a dictionary that maps a social media name (i.e. facebook) to every
-        // single username that the user has for that social media type. We need to find how many
-        // total there are
-        for socialMediaName in possibleSocialMediaNameList
-        {
-            // need to check if user has respective social media type first
-            if (dict[socialMediaName] != nil)
-            {
-                // Get a list of usernames for just one social media type (i.e. all usernames for facebook)
-                let socialMediaUserNamesList = dict[socialMediaName] as! Array<String>
-                
-                for username in socialMediaUserNamesList
-                {
-                    let pair = KeyValSocialMediaPair(socialMediaType: socialMediaName, socialMediaUserName: username)
-                    pairList.append(pair)
-                }
-            }
-        }
-        
-        return pairList
-        
-    }
-    
-    
 
-    
-    
     
     // UNWIND SEGUES
     @IBAction func unwindBackToMenuVC(segue:UIStoryboardSegue)

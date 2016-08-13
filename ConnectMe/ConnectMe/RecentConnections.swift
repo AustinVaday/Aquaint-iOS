@@ -8,7 +8,7 @@
 //  Code is owned by: Austin Vaday and Navid Sarvian
 
 import UIKit
-
+import AWSLambda
 
 class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -41,20 +41,88 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         refreshControl.addTarget(self, action: #selector(RecentConnections.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
         recentConnTableView.addSubview(refreshControl)
         
-        
-        // Fill out temporary connections list...
-        let con = Connection()
-        
-        for i in 0...10
-        {
-            con.userFullName = "User" + String(i)
-            con.userName = "username" + String(i)
-            con.userImage = UIImage(imageLiteral: "Person Icon Black")
-            con.timestampGMT = getTimestampAsInt()
-            con.socialMediaUserNames = ["facebook" : "AVTheMan", "snapchat": "yolo", "twitter": "tweet"]
+        // Get array of connections from Lambda -- RDS
+        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let parameters = ["action":"getFollowers", "target": currentUserName]
+
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            if resultTask.error != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+            }
+            else if resultTask.exception != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+            }
+            else if resultTask.result != nil
+            {
+                
+                
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                
+                let connectionsFetchedArray = convertJSONStringToArray(resultTask.result!)
+
+                for userName in connectionsFetchedArray
+                {
+                    let con = Connection()
+
+                    con.userName = userName
+                    
+                    getUserDynamoData(userName, completion: { (result, error) in
+                        if error == nil
+                        {
+                            if result != nil
+                            {
+                                let resultUser = result! as User
+                                con.userFullName = resultUser.realname
+                                
+                                con.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                                
+                                
+                                getUserS3Image(userName, completion: { (result, error) in
+                                    if error == nil
+                                    {
+                                        if result != nil
+                                        {
+                                            con.userImage = result! as UIImage
+                                        }
+                                    }
+                                })
+                                
+                                self.connectionList.append(con)
+                            }
+                        }
+                    })
+                }
+                
+                self.recentConnTableView.reloadData()
+                
+            }
+            else
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+            }
             
-            connectionList.append(con)
+            return nil
+            
         }
+
+        
+//        // Fill out temporary connections list...
+//        let con = Connection()
+//        
+//        for i in 0...10
+//        {
+//            con.userFullName = "User" + String(i)
+//            con.userName = "username" + String(i)
+//            con.userImage = UIImage(imageLiteral: "Person Icon Black")
+//            con.timestampGMT = getTimestampAsInt()
+//            con.socialMediaUserNames = ["facebook" : "AVTheMan", "snapchat": "yolo", "twitter": "tweet"]
+//            
+//            connectionList.append(con)
+//        }
         
     }
     
@@ -127,7 +195,14 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
          
         // Use the tag to know which tableView row we're at
-        return connectionList[collectionView.tag].socialMediaUserNames.count
+//        let list = connectionList[collectionView.tag].keyValSocialMediaPairList
+//        
+//        if list.isEmpty
+//        {
+//            return 0
+//        }
+    
+        return connectionList[collectionView.tag].keyValSocialMediaPairList.count
         
     }
     
@@ -135,26 +210,35 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
         
+        
         // Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
         // an array so that we can easily get the social media mediums that the user has (i.e. facebook, twitter, etc).
-        var userSocialMediaTypes = connectionList[collectionView.tag].socialMediaUserNames.allKeys as! Array<String>
-        userSocialMediaTypes = userSocialMediaTypes.sort()
+        let keyValSocialMediaPairList = connectionList[collectionView.tag].keyValSocialMediaPairList
         
-        print(indexPath.item)
-        let socialMediaType = userSocialMediaTypes[indexPath.item % self.possibleSocialMediaNameList.count]
-        
-        print(socialMediaType)
-        
-        // We will delay the image assignment to prevent buggy race conditions
-        // (Check to see what happens when the delay is not set... then you'll understand)
-        // Probable cause: tableView.beginUpdates() and tableView.endUpdates() in tableView(didSelectIndexPath) method
-        delay(0) { () -> () in
+        if (!keyValSocialMediaPairList.isEmpty)
+        {
+            let socialMediaPair = keyValSocialMediaPairList[indexPath.item % keyValSocialMediaPairList.count]
+            let socialMediaType = socialMediaPair.socialMediaType
+            let socialMediaUserName = socialMediaPair.socialMediaUserName
             
             // Generate a UI image for the respective social media type
             cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
             
-            cell.socialMediaType = socialMediaType //i.e. facebook, twitter, ..
+            cell.socialMediaName = socialMediaUserName // username
+            cell.socialMediaType = socialMediaType // facebook, snapchat, etc
 
+            // We will delay the image assignment to prevent buggy race conditions
+            // (Check to see what happens when the delay is not set... then you'll understand)
+            // Probable cause: tableView.beginUpdates() and tableView.endUpdates() in tableView(didSelectIndexPath) method
+            delay(0) { () -> () in
+                
+                // Generate a UI image for the respective social media type
+                cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
+                
+                cell.socialMediaType = socialMediaType //i.e. facebook, twitter, ..
+                cell.socialMediaName = socialMediaUserName //i.e. austinvaday, avtheman, ..
+            }
+            
         }
 
         // Make cell image circular
@@ -177,8 +261,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         UIApplication.sharedApplication().openURL(socialMediaURL)
         
     }
-
-    
 
 
 }

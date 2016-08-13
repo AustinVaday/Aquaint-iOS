@@ -12,6 +12,48 @@
 import Foundation
 import UIKit
 
+// The dictionary we receive from AWS DynamoDB maps a string to an array.
+// When we have a collection view, we need a way to propogate this
+// datastructure linearly, because we're given indices based on
+// how many usernames we have. A solution to this is using
+// an array of structs to keep tabs on what social media type we have
+// and what the respective username is.
+struct KeyValSocialMediaPair
+{
+    var socialMediaType : String!       // i.e. "Facebook"
+    var socialMediaUserName : String!   // i.e. "austinvaday"
+}
+
+func convertDictionaryToSocialMediaKeyValPairList(dict: NSMutableDictionary,
+                                                  possibleSocialMediaNameList: Array<String>)
+    -> Array<KeyValSocialMediaPair>!
+{
+    
+    var pairList = Array<KeyValSocialMediaPair>()
+    
+    // dict is a dictionary that maps a social media name (i.e. facebook) to every
+    // single username that the user has for that social media type. We need to find how many
+    // total there are
+    for socialMediaName in possibleSocialMediaNameList
+    {
+        // need to check if user has respective social media type first
+        if (dict[socialMediaName] != nil)
+        {
+            // Get a list of usernames for just one social media type (i.e. all usernames for facebook)
+            let socialMediaUserNamesList = dict[socialMediaName] as! Array<String>
+            
+            for username in socialMediaUserNamesList
+            {
+                let pair = KeyValSocialMediaPair(socialMediaType: socialMediaName, socialMediaUserName: username)
+                pairList.append(pair)
+            }
+        }
+    }
+    
+    return pairList
+    
+}
+
 // Necessary for fetching username URLs
 func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: String!, sender: AnyObject) -> NSURL!
 {
@@ -553,3 +595,24 @@ func getTimestampAsInt() -> Int!
     let date = NSDate()
     return Int(date.timeIntervalSince1970)
 }
+
+// For parsing return data (example use case: lambda)
+func convertJSONStringToArray(jsonString: AnyObject) -> [String]
+{
+    let string = jsonString as! String
+    
+    let data = string.dataUsingEncoding(NSUTF8StringEncoding)
+    var result : [String]!
+    
+    do
+    {
+        result = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String]
+    }
+    catch let error as NSError
+    {
+        print(error)
+    }
+    
+    return result
+}
+
