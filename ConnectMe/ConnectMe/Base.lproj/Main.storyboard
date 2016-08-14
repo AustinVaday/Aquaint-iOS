@@ -406,7 +406,7 @@
                                                                             <constraint firstAttribute="width" constant="32" id="axc-1J-FVI"/>
                                                                             <constraint firstAttribute="height" constant="32" id="gsE-h6-B6g"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="611B6358-729B-496E-945E-BA053735817A"/>
+                                                                        <state key="normal" image="254BF774-8697-4880-B923-E3D23AE33076"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="Ic7-R2-B0B">
                                                                         <rect key="frame" x="-1" y="5" width="46" height="46"/>
@@ -850,7 +850,7 @@
                                                         <constraint firstAttribute="width" constant="32" id="7GG-eg-BfU"/>
                                                         <constraint firstAttribute="height" constant="32" id="9JA-gD-gqy"/>
                                                     </constraints>
-                                                    <state key="normal" image="C1FBF9B6-243C-41E3-A3C1-CB967928BE20"/>
+                                                    <state key="normal" image="457091F9-CC9A-4029-AFF4-07EF4B049EC3"/>
                                                 </button>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="n1l-EC-6IF">
                                                     <rect key="frame" x="-1" y="0.0" width="46" height="46"/>
@@ -1031,7 +1031,7 @@
                                                                             <constraint firstAttribute="height" constant="32" id="Xbr-eP-9TI"/>
                                                                             <constraint firstAttribute="width" constant="32" id="bvk-df-pA2"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="1B9085EA-5067-449D-8676-6481427DF83A"/>
+                                                                        <state key="normal" image="8F24C2FA-C457-4300-B77F-CB908C3FBBBF"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="kZH-lF-N2N">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -1592,7 +1592,7 @@
                                                                             <constraint firstAttribute="height" constant="32" id="DPh-tj-1Q7"/>
                                                                             <constraint firstAttribute="width" constant="32" id="GBX-Ja-AXt"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="9E0A4986-EAFA-44FC-81C1-ABB57B354121"/>
+                                                                        <state key="normal" image="78FD6D4D-2C65-4A08-9C39-1C4E78EA2C06"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="JcZ-aN-92g">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -2899,7 +2899,7 @@
                                                                             <constraint firstAttribute="width" constant="32" id="RxB-Up-7aY"/>
                                                                             <constraint firstAttribute="height" constant="32" id="yvG-qF-CcJ"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="681DED09-4822-4ABF-9AFB-E89C949681C1"/>
+                                                                        <state key="normal" image="BF4B7BF6-3114-44EE-89F8-EF6FFDA5B309"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="i9W-9n-gLz">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -3541,7 +3541,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="1B9085EA-5067-449D-8676-6481427DF83A" width="32" height="32">
+        <image name="254BF774-8697-4880-B923-E3D23AE33076" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3660,7 +3660,7 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
-        <image name="611B6358-729B-496E-945E-BA053735817A" width="32" height="32">
+        <image name="457091F9-CC9A-4029-AFF4-07EF4B049EC3" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3779,7 +3779,7 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
-        <image name="681DED09-4822-4ABF-9AFB-E89C949681C1" width="32" height="32">
+        <image name="78FD6D4D-2C65-4A08-9C39-1C4E78EA2C06" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3898,7 +3898,7 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
-        <image name="9E0A4986-EAFA-44FC-81C1-ABB57B354121" width="32" height="32">
+        <image name="8F24C2FA-C457-4300-B77F-CB908C3FBBBF" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -4021,8 +4021,7 @@ Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
         <image name="Add People Pending" width="60" height="57"/>
         <image name="Add People Success" width="60" height="57"/>
         <image name="Add Photo Color" width="120" height="120"/>
-        <image name="Back Arrow" width="50" height="50"/>
-        <image name="C1FBF9B6-243C-41E3-A3C1-CB967928BE20" width="32" height="32">
+        <image name="BF4B7BF6-3114-44EE-89F8-EF6FFDA5B309" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -4141,6 +4140,7 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
+        <image name="Back Arrow" width="50" height="50"/>
         <image name="Check Mark" width="350" height="271"/>
         <image name="Check Mark Flipped" width="349" height="270"/>
         <image name="Contacts Icon" width="50" height="50"/>

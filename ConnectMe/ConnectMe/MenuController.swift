@@ -103,7 +103,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "My Information", sectionCount: 3))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Notification Settings", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 1))
-        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Actions", sectionCount: 1))
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Actions", sectionCount: 2))
         
         
         // Initialize array so that collection view has something to check while we
@@ -359,41 +359,98 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         let phoneCell = settingsTableView.cellForRowAtIndexPath(phoneIndexPath) as! MenuTableViewCell
 
         // If modified data, adjust accordingly!
-        if editedRealName != nil
+        if editedRealName != nil && !editedRealName.isEmpty
         {
+            if (!verifyRealNameLength(editedRealName!))
+            {
+                showAlert("Improper full name format", message: "Please create a full name that is less than 30 characters long!", buttonTitle: "Try again", sender: self)
+                return
+            }
+
             fullNameCell.menuValue.text = editedRealName
             currentRealName = editedRealName
             setCurrentCachedFullName(currentRealName)
+            
+            // Change name at top of page, too
+            realNameTextFieldLabel.text = currentRealName
+            
+            
+            // ADD CHANGE TO DYNAMO
+            
+            
+            
         }
         
-        if editedUserEmail != nil
+        if editedUserEmail != nil && !editedUserEmail.isEmpty
         {
+            if (!verifyEmailFormat(editedUserEmail!))
+            {
+                showAlert("Improper email address", message: "Please enter in a proper email address!", buttonTitle: "Try again", sender: self)
+                return
+            }
+            
+            
             emailCell.menuValue.text = editedUserEmail
             currentUserEmail = editedUserEmail
             setCurrentCachedUserEmail(currentUserEmail)
         }
         
         
-        if editedUserPhone != nil
+        if editedUserPhone != nil && !editedUserPhone.isEmpty
         {
+//            if (!verifyPhoneFormat(editedUserPhone!))
+//            {
+//                showAlert("Improper phone number", message: "Please enter in a proper U.S. phone number.", buttonTitle: "Try again", sender: self)
+//                return
+//            }
+            
             phoneCell.menuValue.text = editedUserPhone
             currentUserPhone = editedUserPhone
             setCurrentCachedUserPhone(currentUserPhone)
         }
         
-
-        delay(3)
+        // Check if we need to update user pools
+        if editedUserEmail != nil || editedUserPhone != nil
         {
-        print("full name data is:", fullNameCell.menuValue.text)
-        print("email data is:", emailCell.menuValue.text)
-        print("phone data is:", phoneCell.menuValue.text)
-        
-        
-
-        
+            print ("UPDATING USER POOLS")
+            // ADD CHANGE TO USERPOOLS (email/phone only)
+            let userPool = getAWSCognitoIdentityUserPool()
+            let email = AWSCognitoIdentityUserAttributeType()
+            let phone = AWSCognitoIdentityUserAttributeType()
+            
+            email.name = "email"
+            email.value = currentUserEmail
+            phone.name = "phone_number"
+            phone.value = currentUserPhone
+            
+            
+            userPool.getUser(currentUserName).updateAttributes([email, phone]).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+                print("successful user pools update!")
+                return nil
+            }
 
         }
         
+        // Check if we need to update dynamo
+        if editedRealName != nil
+        {
+            print ("UPDATING DYNAMO")
+            
+            
+            
+            
+            
+        }
+        
+        // Clear the edited results
+        editedRealName = nil
+        editedUserEmail = nil
+        editedUserPhone = nil
+        
+
+        print("full name modified is:", fullNameCell.menuValue.text)
+        print("email data modified is:", emailCell.menuValue.text)
+        print("phone data modified is:", phoneCell.menuValue.text)
     }
     
  
@@ -526,6 +583,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case MenuData.PRIVACY_SETTINGS.rawValue:
             returnHeight = CGFloat(50)
             break;
+        case MenuData.ACTIONS.rawValue:
+            returnHeight = CGFloat(50)
+            break;
             
         default:
             returnHeight = defaultTableViewCellHeight
@@ -601,7 +661,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             switch (indexPath.item)
             {
-            case 0: //Log out button
+            case 0: // button
                 cell.menuButtonLabel.text = "Coming Soon!"
                 break;
                 
@@ -637,10 +697,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             switch (indexPath.item)
             {
-            case 0: //Log out button
+            case 0:
+                cell.menuButtonLabel.text = "Reset Password"
+                break;
+            case 1: //Log out button
                 cell.menuButtonLabel.text = "Log Out"
                 break;
-                
             default: //Default
                 cell.menuButtonLabel.text = ""
                 
@@ -674,9 +736,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         if (indexPath.section == MenuData.ACTIONS.rawValue)
         {
+            if (indexPath.item == 0)
+            {
+                print ("COMING SOON")
+            }
             
             // Log out button
-            if (indexPath.item == 0)
+            if (indexPath.item == 1)
             {
                 logUserOut()
             }
