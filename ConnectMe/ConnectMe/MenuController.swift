@@ -24,6 +24,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case ACTIONS
     }
     
+    enum MyInformationData: Int {
+        case FULL_NAME
+        case EMAIL
+        case PHONE
+    }
+    
     struct SectionTitleAndCountPair
     {
         var sectionTitle : String!
@@ -49,6 +55,10 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var currentUserImage: UIImage!
     var currentUserEmail : String!
     var currentUserPhone : String!
+    var editedRealName : String!
+    var editedUserEmail : String!
+    var editedUserPhone : String!
+    
     var isKeyboardShown = false
     var enableEditing = false // Whether or not to enable editing of text fields.
     var buttonViewOriginalFrame : CGRect!
@@ -110,6 +120,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             currentUserEmail == nil ||
             currentUserPhone == nil)
         {
+            
+            print("RE-caching user...")
             setCachedUserFromAWS(currentUserName)
             
             //re-set attributes
@@ -330,15 +342,45 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @IBAction func onSaveButtonClicked(sender: AnyObject) {
+        self.enableEditing = false
+        self.settingsTableView.reloadData()
         
-        let fullNameIndexPath = NSIndexPath(forRow: 0, inSection: MenuData.MY_INFORMATION.rawValue)
-        let emailIndexPath = NSIndexPath(forRow: 1, inSection: MenuData.MY_INFORMATION.rawValue)
-        let phoneIndexPath = NSIndexPath(forRow: 2, inSection: MenuData.MY_INFORMATION.rawValue)
+        // Show the edit button again
+        self.editButton.hidden = false
+        self.cancelButton.hidden = true
+        self.saveButton.hidden = true
+        
+        let fullNameIndexPath = NSIndexPath(forRow: MyInformationData.FULL_NAME.rawValue , inSection: MenuData.MY_INFORMATION.rawValue)
+        let emailIndexPath = NSIndexPath(forRow: MyInformationData.EMAIL.rawValue, inSection: MenuData.MY_INFORMATION.rawValue)
+        let phoneIndexPath = NSIndexPath(forRow: MyInformationData.PHONE.rawValue, inSection: MenuData.MY_INFORMATION.rawValue)
 
-        
         let fullNameCell = settingsTableView.cellForRowAtIndexPath(fullNameIndexPath) as! MenuTableViewCell
         let emailCell = settingsTableView.cellForRowAtIndexPath(emailIndexPath) as! MenuTableViewCell
         let phoneCell = settingsTableView.cellForRowAtIndexPath(phoneIndexPath) as! MenuTableViewCell
+
+        // If modified data, adjust accordingly!
+        if editedRealName != nil
+        {
+            fullNameCell.menuValue.text = editedRealName
+            currentRealName = editedRealName
+            setCurrentCachedFullName(currentRealName)
+        }
+        
+        if editedUserEmail != nil
+        {
+            emailCell.menuValue.text = editedUserEmail
+            currentUserEmail = editedUserEmail
+            setCurrentCachedUserEmail(currentUserEmail)
+        }
+        
+        
+        if editedUserPhone != nil
+        {
+            phoneCell.menuValue.text = editedUserPhone
+            currentUserPhone = editedUserPhone
+            setCurrentCachedUserPhone(currentUserPhone)
+        }
+        
 
         delay(3)
         {
@@ -347,17 +389,35 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         print("phone data is:", phoneCell.menuValue.text)
         
         
-        self.enableEditing = false
-        self.settingsTableView.reloadData()
+
         
-        // Show the edit button again
-        self.editButton.hidden = false
-        self.cancelButton.hidden = true
-        self.saveButton.hidden = true
+
         }
         
     }
     
+ 
+    @IBAction func textFieldEditingDidEnd(sender: UITextField) {
+        
+        switch (sender.tag)
+        {
+        case MyInformationData.FULL_NAME.rawValue:
+            editedRealName = sender.text!
+            break;
+        case MyInformationData.EMAIL.rawValue:
+            editedUserEmail = sender.text!
+            break;
+        case MyInformationData.PHONE.rawValue:
+            editedUserPhone = sender.text!
+            break;
+        default:
+            break;
+        }
+        
+    
+        
+        print("TEXT FIELD EDITING ENDED: ", sender.text)
+    }
 
     /**************************************************************************
      *    COLLECTION VIEW PROTOCOL
@@ -495,17 +555,25 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             switch (indexPath.item)
             {
-            case 0: //User full name
+            case MyInformationData.FULL_NAME.rawValue: //User full name
                 cell.menuTitle.text = "Full Name"
                 cell.menuValue.text = currentRealName
+                // Tag is needed so we can detect which text field is being modified later on
+                cell.menuValue.tag  = MyInformationData.FULL_NAME.rawValue
                 break;
-            case 1: //User email
+            case MyInformationData.EMAIL.rawValue: //User email
                 cell.menuTitle.text = "Email"
                 cell.menuValue.text = currentUserEmail
+                // Tag is needed so we can detect which text field is being modified later on
+                cell.menuValue.tag  = MyInformationData.EMAIL.rawValue
+
                 break;
-            case 2: //User phone
+            case MyInformationData.PHONE.rawValue: //User phone
                 cell.menuTitle.text = "Phone"
                 cell.menuValue.text = currentUserPhone
+                // Tag is needed so we can detect which text field is being modified later on
+                cell.menuValue.tag  = MyInformationData.PHONE.rawValue
+
                 break;
                 
             default: //Default
