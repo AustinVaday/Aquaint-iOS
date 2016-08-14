@@ -49,17 +49,15 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var currentUserImage: UIImage!
     var currentUserEmail : String!
     var currentUserPhone : String!
-    
     var isKeyboardShown = false
     var enableEditing = false // Whether or not to enable editing of text fields.
-    
     var buttonViewOriginalFrame : CGRect!
-    
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
     var keyValSocialMediaPairList : Array<KeyValSocialMediaPair>!
-    
     var tableViewSectionsList : Array<SectionTitleAndCountPair>!
+    var refreshControl : UIRefreshControl!
+
     
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
 
@@ -70,6 +68,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     let defaultTableViewCellHeight = CGFloat(60)
 
     override func viewDidLoad() {
+
         
         // Make the profile photo round
         profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
@@ -222,6 +221,14 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             return nil
             
         }
+        
+        // Set up refresh control for when user drags for a refresh.
+        refreshControl = UIRefreshControl()
+        
+        // When user pulls, this function will be called
+        refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        settingsTableView.addSubview(refreshControl)
+
 
 
     }
@@ -663,9 +670,20 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
    
     }
     
-    // Private helper functions
+    // Helper functions
     //---------------------------------------------------------------------------------------------------
+    // Function that is called when user drags/pulls table with intention of refreshing it
+    func refreshTable(sender:AnyObject)
+    {
+        self.settingsTableView.reloadData()
+        print ("Reloading Data...")
 
+        // Need to end refreshing
+        delay(0.5)
+        {
+            self.refreshControl.endRefreshing()
+        }
+    }
     
     // UNWIND SEGUES
     @IBAction func unwindBackToMenuVC(segue:UIStoryboardSegue)

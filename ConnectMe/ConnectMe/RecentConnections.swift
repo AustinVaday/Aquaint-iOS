@@ -18,7 +18,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var refreshControl : UIRefreshControl!
     var connectionList : Array<Connection>!
-    
     var expansionObj:CellExpansion!
     var defaultImage : UIImage!
 
