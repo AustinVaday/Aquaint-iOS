@@ -8,24 +8,23 @@
 //  Code is owned by: Austin Vaday and Navid Sarvian
 
 import UIKit
-import Firebase
+import AWSLambda
 
 class SearchTableViewCell: UITableViewCell {
     
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var cellName: UILabel!
     @IBOutlet weak var cellAddButton: UIButton!
-    @IBOutlet weak var cellAddPendingButton: UIButton!
+//    @IBOutlet weak var cellAddPendingButton: UIButton!
     @IBOutlet weak var cellDeleteButton: UIButton!
     @IBOutlet weak var cellUserName: UILabel!
-    let firebaseRootRef = FIRDatabase.database().reference()
 
     func hideAllButtons()
     {
         // Deactivate the pending button
         cellAddButton.hidden  = true
         cellDeleteButton.hidden  = true
-        cellAddPendingButton.hidden = true
+//        cellAddPendingButton.hidden = true
     }
     
     func unHideAllButtons()
@@ -33,7 +32,7 @@ class SearchTableViewCell: UITableViewCell {
         // Deactivate the pending button
         cellAddButton.hidden  = false
         cellDeleteButton.hidden  = false
-        cellAddPendingButton.hidden = false
+//        cellAddPendingButton.hidden = false
     }
     
     func activateAddButton()
@@ -57,87 +56,129 @@ class SearchTableViewCell: UITableViewCell {
 
     }
     
-    func activatePendingButton()
-    {
-        // Activate the pending button
-        cellAddPendingButton.superview?.bringSubviewToFront(cellAddPendingButton)
-
-    }
+//    func activatePendingButton()
+//    {
+//        // Activate the pending button
+//        cellAddPendingButton.superview?.bringSubviewToFront(cellAddPendingButton)
+//
+//    }
 
     @IBAction func onAddConnectionButtonClicked(sender: UIButton) {
         
         // Fetch current user from NSUserDefaults
-        let currentUser = getCurrentCachedUser()
+        let currentUserName = getCurrentCachedUser()
         
         // If currentUser is not trying to add themselves
-        if (currentUser != cellUserName.text)
+        if (currentUserName != cellUserName.text!)
         {
-            let firebaseSentRequestsRef = firebaseRootRef.child("SentRequests/")
-            let firebaseReceivedRequests = firebaseRootRef.child("ReceivedRequests/")
-
-            let connectionUserToAdd = cellUserName.text!
+            // Call lambda to store user connectons in database!
+            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+            let parameters = ["action": "follow", "target": cellUserName.text!, "me": currentUserName]
             
-            // Get time of connection
-            let connectionTime = getTimestampAsInt()
+            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
+                
+                if resultTask.error != nil
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+                }
+                else if resultTask.exception != nil
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                    
+                }
+                else if resultTask.result != nil
+                {
+                    // Perform update on UI on main thread
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.activateDeleteButton()
+                    })
 
-            // User sends connection request to connectionUserToAdd. Storing relationship on server.
-            firebaseSentRequestsRef.child(currentUser + "/" + connectionUserToAdd).setValue(connectionTime)
-            firebaseReceivedRequests.child(connectionUserToAdd + "/" + currentUser).setValue(connectionTime)
+                }
+                else
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                    
+                }
+                
+                return nil
+
+            })
             
-            activatePendingButton()
-
         }
         
-        print("You connected", currentUser ,"and", cellName.text)
+        print("You connected", currentUserName ,"and", cellName.text)
     }
     
-    // Undo friend add request
-    @IBAction func onAddPendingButtonClicked(sender: UIButton) {
-        
-        print("PENDING CLICKED")
-        
-        // Fetch current user from NSUserDefaults
-        let currentUser = getCurrentCachedUser()
-        
-        // If currentUser is not trying to add themselves
-        if (currentUser != cellUserName.text)
-        {
-            let firebaseSentRequestsRef = firebaseRootRef.child("SentRequests/")
-            let firebaseReceivedRequests = firebaseRootRef.child("ReceivedRequests/")
-            
-            let connectionUserToRemove = cellUserName.text!
-            
-            // User sends connection request to connectionUserToAdd. Storing relationship on server.
-            firebaseSentRequestsRef.child(currentUser + "/" + connectionUserToRemove).removeValue()
-            firebaseReceivedRequests.child(connectionUserToRemove + "/" + currentUser).removeValue()
-            
-            activateAddButton()
-        }
-        
-        
-    }
-    
+//    // Undo friend add request
+//    @IBAction func onAddPendingButtonClicked(sender: UIButton) {
+//        
+//        print("PENDING CLICKED")
+//        
+//        // Fetch current user from NSUserDefaults
+//        let currentUser = getCurrentCachedUser()
+//        
+//        // If currentUser is not trying to add themselves
+//        if (currentUser != cellUserName.text)
+//        {
+//            let firebaseSentRequestsRef = firebaseRootRef.child("SentRequests/")
+//            let firebaseReceivedRequests = firebaseRootRef.child("ReceivedRequests/")
+//            
+//            let connectionUserToRemove = cellUserName.text!
+//            
+//            // User sends connection request to connectionUserToAdd. Storing relationship on server.
+//            firebaseSentRequestsRef.child(currentUser + "/" + connectionUserToRemove).removeValue()
+//            firebaseReceivedRequests.child(connectionUserToRemove + "/" + currentUser).removeValue()
+//            
+//            activateAddButton()
+//        }
+//        
+//        
+//    }
+
     @IBAction func onRemoveButtonClicked(sender: UIButton) {
         
-        print("REMOVE CLICKED")
-        
         // Fetch current user from NSUserDefaults
-        let currentUser = getCurrentCachedUser()
+        let currentUserName = getCurrentCachedUser()
         
         // If currentUser is not trying to add themselves
-        if (currentUser != cellUserName.text)
+        if (currentUserName != cellUserName.text!)
         {
+            // Call lambda to store user connectons in database!
+            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+            let parameters = ["action": "unfollow", "target": cellUserName.text!, "me": currentUserName]
             
-            let connectionUserToRemove = cellUserName.text!
+            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
+                
+                if resultTask.error != nil
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+                }
+                else if resultTask.exception != nil
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                    
+                }
+                else if resultTask.result != nil
+                {
+                    // Perform update on UI on main thread
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.activateAddButton()
+                    })
+                    
+                }
+                else
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                    
+                }
+                
+                return nil
+                
+            })
             
-            let firebaseConnectionsRef = firebaseRootRef.child("Connections/")
-            
-            // Deletes friendship
-            firebaseConnectionsRef.child(connectionUserToRemove + "/" + currentUser).removeValue()
-            firebaseConnectionsRef.child(currentUser + "/" + connectionUserToRemove).removeValue()
-            
-            activateAddButton()
         }
+        
+        print("You connected", currentUserName ,"and", cellName.text)
 
     }
     

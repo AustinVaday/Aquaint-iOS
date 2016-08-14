@@ -8,6 +8,7 @@
 
 import UIKit
 import AWSDynamoDB
+import AWSLambda
 
 class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate {
 
@@ -21,18 +22,56 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var filteredUsers: Array<User>!
     var shouldShowSearchResults = false
     var defaultImage : UIImage!
+    var followeesMapping : [String: Int]!
     
 
     override func viewDidLoad(){
         
         allUsers = Array<User>()
         filteredUsers = Array<User>()
+        followeesMapping = [String: Int]()
         
 //        configureSearchController()
         configureCustomSearchController()
         
         userName = getCurrentCachedUser()
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
+        
+        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let parameters = ["action":"getFollowees", "target": userName]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            if resultTask.error != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+            }
+            else if resultTask.exception != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+            }
+            else if resultTask.result != nil
+            {
+                
+                
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                
+                self.followeesMapping = resultTask.result! as! [String: Int]
+                
+                // Update UI on main thread
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.searchTableView.reloadData()
+                })
+            }
+            else
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+            }
+            
+            return nil
+            
+        }
+
         
         
         let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
@@ -65,91 +104,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             }
         }
 
-        
-//        firebaseRootRef = FIRDatabase.database().reference()
-//        
-//        let firebaseUsersRef = firebaseRootRef.child("Users/")
-//        let firebaseUserImagesRef = firebaseRootRef.child("UserImages/")
-//        let firebaseSentRequestsRef = firebaseRootRef.child("SentRequests/" + userName)
-//        let firebaseConnectionsRef = firebaseRootRef.child("Connections/" + userName)
-//        
-//        allUsers = Array<Connection>()
-//        
-//        
-//        // Used to determine pending buttons
-//        firebaseSentRequestsRef.observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
-//            
-//                //Store a listing of all users that current user sent a connection request to. Used
-//                //to determine which kind of button to display to user (add button, delete button, pending button)
-//                if !(snapshot.value is NSNull)
-//                {
-//                    self.allUsersSentARequest = snapshot.value as! NSDictionary
-//                }
-//            
-//                print("DETERMINES PENDING BUTTON")
-//                self.searchTableView.reloadData()
-//            
-//            })
-//        
-//        // Used to determine delete buttons
-//        firebaseConnectionsRef.observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
-//            
-//                if !(snapshot.value is NSNull)
-//                {
-//                    self.allUsersConnections = snapshot.value as! NSDictionary
-//                }
-//                self.searchTableView.reloadData()
-//            
-//            })
-//        
-//        firebaseUsersRef.observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
-//            
-//            let user = Connection()
-//            
-//            // Store respective user info (key is the username)
-//            user.userName = snapshot.key
-//            
-//            
-//            // Retrieve user's info (except image)
-//            firebaseUsersRef.child(user.userName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
-//                
-//                user.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
-//                
-//            })
-//            
-//            
-//            // Store the user's image
-//            firebaseUserImagesRef.child(user.userName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
-//                
-//                // Get base 64 string image
-//                
-//                // If user has an image, display it in table. Else, display default image
-//                if (snapshot.exists())
-//                {
-//                    let userImageBase64String = snapshot.childSnapshotForPath("/profileImage").value as! String
-//                    user.userImage = convertBase64ToImage(userImageBase64String)
-//                }
-//                else
-//                {
-//                    user.userImage = self.defaultImage
-//                }
-//                
-//                self.searchTableView.reloadData()
-//                
-//            })
-//            
-//            
-//            self.allUsers.append(user)
-//            self.searchTableView.reloadData()
-//
-//            
-//            
-//        })
-//
-        
-        
-
-        
     }
     
     // **** SEARCHBAR PROTOCOLS (CUSTOM SEARCH BAR) *****
@@ -304,21 +258,16 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         {
             cell.unHideAllButtons()
             
-//            // If already sent a request, display pending symbol
-//            if ((allUsersSentARequest[userName]) != nil && (allUsersConnections[userName]) == nil)
-//            {
-//                cell.activatePendingButton()
-//            }
-//            // If already friends, display delete button
-//            else if ((allUsersConnections[userName]) != nil)
-//            {
-//                cell.activateDeleteButton()
-//            }
-//            // If no relationship, show add button
-//            else
-//            {
-//                cell.activateAddButton()
-//            }
+            // If already follow someone, display delete button
+            if (followeesMapping[userName] != nil)
+            {
+                cell.activateDeleteButton()
+            }
+            // If no relationship, show add button
+            else
+            {
+                cell.activateAddButton()
+            }
             
         }
         cell.cellName.text = userFullName
