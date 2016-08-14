@@ -77,7 +77,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Disable editing by default
         enableEditing = false
         
- 
+        // Ensure that the button view is always visible -- in front of the table view
+        buttonView.layer.zPosition = 1
         
         // Fetch the user's username and real name
         currentUserName = getCurrentCachedUser()
@@ -174,7 +175,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
                 // Update UI on main thread
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.numFollowersLabel.text = resultTask.result as? String
+                    let number = resultTask.result as? Int
+                    self.numFollowersLabel.text = String(number!)
                 })
                 
             }
@@ -206,7 +208,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 
                 // Update UI on main thread
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.numFollowsLabel.text = resultTask.result as? String
+                    let number = resultTask.result as? Int
+                    self.numFollowsLabel.text = String(number!)
                 })
                 
             }

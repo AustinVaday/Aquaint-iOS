@@ -66,13 +66,16 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 
                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
                 
-                let connectionsFetchedArray = convertJSONStringToArray(resultTask.result!)
+                let connectionsFetchedDictionary = resultTask.result! as! [String: Int]
+                
+//                let connectionsFetchedArray = convertJSONStringToArray(resultTask.result!)
 
-                for userName in connectionsFetchedArray
+                for userName in connectionsFetchedDictionary.keys
                 {
                     let con = Connection()
 
                     con.userName = userName
+                    con.timestampGMT = connectionsFetchedDictionary[userName]!
                     
                     getUserDynamoData(userName, completion: { (result, error) in
                         if error == nil
