@@ -20,6 +20,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var connectionList : Array<Connection>!
     
     var expansionObj:CellExpansion!
+    var defaultImage : UIImage!
+
 
     override func viewDidLoad() {
         
@@ -28,6 +30,9 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         connectionList = Array<Connection>()
         expansionObj = CellExpansion()
+
+        defaultImage = UIImage(imageLiteral: "Person Icon Black")
+
         
         // Fill the dictionary of all social media names (key) with an image (val).
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
@@ -88,15 +93,26 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                                             con.userImage = result! as UIImage
                                         }
                                     }
+                                    else
+                                    {
+                                        con.userImage = self.defaultImage
+                                    }
+                                    
+                                    
+                                    self.connectionList.append(con)
+                                    
+                                    // Update UI on main thread
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        self.recentConnTableView.reloadData()
+                                    })
                                 })
                                 
-                                self.connectionList.append(con)
+
                             }
                         }
                     })
                 }
                 
-                self.recentConnTableView.reloadData()
                 
             }
             else
