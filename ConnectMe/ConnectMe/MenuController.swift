@@ -34,6 +34,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var realNameTextFieldLabel: UITextField!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var numFollowersLabel: UILabel!
+    @IBOutlet weak var numFollowsLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     
     @IBOutlet weak var editButton: UIButton!
@@ -124,7 +125,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         userNameLabel.text = currentUserName
         realNameTextFieldLabel.text  = currentRealName
         profileImageView.image = currentUserImage
-        numFollowersLabel.text = "200"
+
         
         // Set up dictionary for user's social media names
         socialMediaUserNames = currentUserAccounts
@@ -156,7 +157,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // Fetch num followers from lambda
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action":"getNumFollowers", "target": currentUserName]
+        var parameters = ["action":"getNumFollowers", "target": currentUserName]
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
             if resultTask.error != nil
             {
@@ -173,11 +174,40 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
                 // Update UI on main thread
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    
                     self.numFollowersLabel.text = resultTask.result as? String
-
-                    })
+                })
                 
+            }
+            else
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+            }
+            
+            return nil
+            
+        }
+        
+        // Fetch num followees from lambda
+        parameters = ["action":"getNumFollowees", "target": currentUserName]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            if resultTask.error != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+            }
+            else if resultTask.exception != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+            }
+            else if resultTask.result != nil
+            {
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                
+                // Update UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.numFollowsLabel.text = resultTask.result as? String
+                })
                 
             }
             else
