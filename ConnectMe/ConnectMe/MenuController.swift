@@ -436,9 +436,38 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         {
             print ("UPDATING DYNAMO")
             
+            /********************************
+             *  UPLOAD USER DATA TO DYNAMODB
+             ********************************/
+            // Upload user DATA to DynamoDB
+            let dynamoDBUser = User()
             
+            dynamoDBUser.realname = currentRealName
+            dynamoDBUser.username = currentUserName
+            dynamoDBUser.accounts = currentUserAccounts
             
+            let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
             
+            dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+                
+                // If successful save
+                if (resultTask.error == nil && resultTask.result != nil)
+                {
+                    print ("DYNAMODB SUCCESSFUL SAVE: ", resultTask.result)
+                }
+                
+                if (resultTask.error != nil)
+                {
+                    print ("DYNAMODB ERROR: ", resultTask.error)
+                }
+                
+                if (resultTask.exception != nil)
+                {
+                    print ("DYNAMODB EXCEPTION: ", resultTask.exception)
+                }
+                
+                return nil
+            })
             
         }
         
