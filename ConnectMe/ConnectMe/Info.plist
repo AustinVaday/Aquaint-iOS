@@ -104,6 +104,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>aquaint</string>
+				<string>fb544667035683597</string>
 			</array>
 		</dict>
 	</array>

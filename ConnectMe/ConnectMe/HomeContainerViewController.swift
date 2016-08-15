@@ -96,11 +96,12 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         
         switch(newViewNum)
         {
-        case 0: sectionUnderlineView0.hidden = false
+        case 0: sectionUnderlineView1.hidden = false
             break;
-        case 1: sectionUnderlineView1.hidden = false
+        case 1: sectionUnderlineView0.hidden = false
             break;
-        default: sectionUnderlineView0.hidden = false
+        default:
+            break;
         }
     }
     

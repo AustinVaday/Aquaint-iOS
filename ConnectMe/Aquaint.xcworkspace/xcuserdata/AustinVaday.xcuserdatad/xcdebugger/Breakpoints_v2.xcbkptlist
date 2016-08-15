@@ -216,11 +216,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/AddSocialMediaProfilesController.swift"
-            timestampString = "492590735.05909"
+            timestampString = "492907997.141205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
             landmarkName = "collectionView(_:didSelectItemAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -232,11 +232,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/AddSocialMediaProfilesController.swift"
-            timestampString = "492590735.05909"
+            timestampString = "492907997.141205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
             landmarkName = "collectionView(_:didSelectItemAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -248,11 +248,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/AddSocialMediaProfilesController.swift"
-            timestampString = "492590735.05909"
+            timestampString = "492907997.141205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "316"
-            endingLineNumber = "316"
+            startingLineNumber = "312"
+            endingLineNumber = "312"
             landmarkName = "updateProfilesDynamoDB(_:socialMediaName:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -264,11 +264,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/AddSocialMediaProfilesController.swift"
-            timestampString = "492590735.05909"
+            timestampString = "492907997.141205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "325"
-            endingLineNumber = "325"
+            startingLineNumber = "321"
+            endingLineNumber = "321"
             landmarkName = "updateProfilesDynamoDB(_:socialMediaName:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -280,11 +280,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/AddSocialMediaProfilesController.swift"
-            timestampString = "492590735.05909"
+            timestampString = "492907997.141205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "326"
-            endingLineNumber = "326"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
             landmarkName = "updateProfilesDynamoDB(_:socialMediaName:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -296,11 +296,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/AddSocialMediaProfilesController.swift"
-            timestampString = "492590735.05909"
+            timestampString = "492907997.141205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "328"
-            endingLineNumber = "328"
+            startingLineNumber = "324"
+            endingLineNumber = "324"
             landmarkName = "updateProfilesDynamoDB(_:socialMediaName:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -312,11 +312,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/AddSocialMediaProfilesController.swift"
-            timestampString = "492590735.05909"
+            timestampString = "492907997.141205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "319"
-            endingLineNumber = "319"
+            startingLineNumber = "315"
+            endingLineNumber = "315"
             landmarkName = "updateProfilesDynamoDB(_:socialMediaName:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -328,11 +328,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/AddSocialMediaProfilesController.swift"
-            timestampString = "492590735.05909"
+            timestampString = "492907997.141205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "318"
-            endingLineNumber = "318"
+            startingLineNumber = "314"
+            endingLineNumber = "314"
             landmarkName = "updateProfilesDynamoDB(_:socialMediaName:)"
             landmarkType = "5">
          </BreakpointContent>

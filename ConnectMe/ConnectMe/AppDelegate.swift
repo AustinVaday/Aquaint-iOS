@@ -60,7 +60,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         SimpleAuth.configuration()["instagram"] = [
             "client_id" : "5de275b3cf674c97b51a767e9ecdea66",
-            SimpleAuthRedirectURIKey : "aquaint://"
+//            SimpleAuthRedirectURIKey : "aquaint://"
+            "redirect_uri" : "aquaint://"
+        ]
+        
+        SimpleAuth.configuration()["tumblr"] = [
+            "consumer_key": "",
+            "consumer_secret": ""
         ]
                 
         

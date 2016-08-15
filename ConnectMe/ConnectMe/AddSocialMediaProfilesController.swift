@@ -74,10 +74,10 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                     //    ...
                     // }
                     
-                    socialMediaName = jsonResult["info"]!["nickname"]! as String!
-                    print("Twitter username returned is: ", socialMediaName)
-                    
-                    self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+//                    socialMediaName = jsonResult["info"]!["nickname"]! as String!
+//                    print("Twitter username returned is: ", socialMediaName)
+//                    
+//                    self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
                     
                 }
                 else
@@ -89,9 +89,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
 
             
             
-//            // If no user currently logged in with access token, get one
-//            if (FBSDKAccessToken.currentAccessToken() == nil)
-//            {
+
 //                let login = FBSDKLoginManager.init()
 //                
 //                // Open in app instead of web browser!
@@ -104,29 +102,27 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
 //                    if (error == nil)
 //                    {
 //                        print("SUCCESS LOG IN!", result.debugDescription)
+//                        print(result.description)
 //                        
-//                        // Below can be nil????
-//                        if (FBSDKAccessToken.currentAccessToken() != nil)
-//                        {
-//                            print(FBSDKAccessToken.currentAccessToken().userID)                            
-//                        }
+////                        // Below can be nil????
+////                        if (FBSDKAccessToken.currentAccessToken() != nil)
+////                        {
+////                            print(FBSDKAccessToken.currentAccessToken().userID)    
+//                        FBSDKAccessToken.currentAccessToken().userID
+////                        }
 //
 //                    }
-//                    else if (result.isCancelled)
+//                    else if (result == nil)
 //                    {
-//                        print ("LOG IN CANCELLED")
+//                        print ("RESULT IS NIL")
 //                    }
 //                    else
 //                    {
 //                        print("FAIL LOG IN")
 //                    }
 //                }
-//            }
-//            else
-//            {
-//                showAlert("Error", message: "You have already linked this facebook account.", buttonTitle: "Undo?", sender: self)
-//            }
-
+            
+        
             
             break
         case "twitter" :

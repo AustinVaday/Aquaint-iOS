@@ -846,6 +846,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         {
             self.refreshControl.endRefreshing()
         }
+
     }
     
     // UNWIND SEGUES
