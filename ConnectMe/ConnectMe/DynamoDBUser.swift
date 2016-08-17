@@ -46,18 +46,18 @@ class NewsfeedObjectModel : AWSDynamoDBObjectModel
     var newsfeedList : NSMutableArray! // Really: Array<NSMutableDictionary>!
     var username : String!
     
-    override init()
-    {
-        super.init()
-        
-        newsfeedList = NSMutableArray()
-        
-    }
-    
-    required init!(coder: NSCoder!) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+//    override init()
+//    {
+//        super.init()
+//        
+//        newsfeedList = NSMutableArray()
+//        
+//    }
+//    
+//    required init!(coder: NSCoder!) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//    
     class func dynamoDBTableName() -> String {
         
         return "aquaint-newsfeed"
@@ -70,6 +70,11 @@ class NewsfeedObjectModel : AWSDynamoDBObjectModel
     
     func addNewsfeedObject(object: NSMutableDictionary)
     {
+        // Initialize if not already done so
+        if newsfeedList == nil
+        {
+            newsfeedList = NSMutableArray()
+        }
         
         let numParameters = 3
         let maxSize = 10 // Denotes how much data to store for one user's newsfeed

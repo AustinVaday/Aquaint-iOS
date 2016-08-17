@@ -112,16 +112,49 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     // When the view disappears, upload action data to Dynamo (used for newsfeed)
     override func viewDidDisappear(animated: Bool) {
         
-        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        let newsfeedObjectMapper = NewsfeedObjectModel()
-        newsfeedObjectMapper.username = "myUserNameA"
-        let newsfeedObject = NSMutableDictionary(dictionary: ["event": "eventA", "otheruser": "otheruserA", "timestamp" : getTimestampAsInt()] )
-        newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
-        
-        dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
-            print("DynamoObjectMapper sucessful save for newsfeedObject")
+        // Only update dynamo if there are changes to account for.
+        if !recentUsernameAdds.isEmpty
+        {
+            // Here's what we'll do: When the user leaves this page, we will take the recent additions (100 max)
+            // and store them in dynamo. This information will be used for the newsfeed.
+            let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+
             
-            return nil
+            // Get dynamo mapper if it exists
+            dynamoDBObjectMapper.load(NewsfeedObjectModel.self, hashKey: self.userName, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+                
+                var newsfeedObjectMapper : NewsfeedObjectModel!
+
+                // If successfull find, use that data
+                if (resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil)
+                {
+                    newsfeedObjectMapper = resultTask.result as! NewsfeedObjectModel
+                }
+                else // Else, use new mapper class
+                {
+                    newsfeedObjectMapper = NewsfeedObjectModel()
+                }
+                
+                // Store key
+                newsfeedObjectMapper.username = self.userName
+                
+                // Upload to Dynamo
+                let otherUsersArray = NSArray(objects: self.recentUsernameAdds)
+                let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollows", "otherusers": otherUsersArray, "timestamp" : getTimestampAsInt()] )
+                newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
+                
+                dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+                    print("DynamoObjectMapper sucessful save for newsfeedObject")
+                    
+                    return nil
+                }
+
+                
+                return nil
+            })
+            
+            
+            
         }
         
     }
