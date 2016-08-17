@@ -115,10 +115,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         // Only update dynamo if there are changes to account for.
         if !recentUsernameAdds.isEmpty
         {
+
             // Here's what we'll do: When the user leaves this page, we will take the recent additions (100 max)
             // and store them in dynamo. This information will be used for the newsfeed.
             let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
 
+            // Get a consistent timestamp
+            let currentTimestamp = getTimestampAsInt()
             
             // Get dynamo mapper if it exists
             dynamoDBObjectMapper.load(NewsfeedObjectModel.self, hashKey: self.userName, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
@@ -140,11 +143,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 // Upload to Dynamo
                 let otherUsersArray = NSArray(objects: self.recentUsernameAdds)
-                let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollows", "otherusers": otherUsersArray, "timestamp" : getTimestampAsInt()] )
+                let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollows", "otherusers": otherUsersArray, "timestamp" : currentTimestamp] )
                 newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
                 
                 dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
-                    print("DynamoObjectMapper sucessful save for newsfeedObject")
+                    print("DynamoObjectMapper sucessful save for newsfeedObject #1")
                     
                     return nil
                 }
@@ -153,6 +156,48 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 return nil
             })
             
+            
+            // For all people that a user follows, make sure to add a dynamo event for them too 
+            for user in recentUsernameAdds
+            {
+                
+                let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+                
+                
+                // Get dynamo mapper if it exists
+                dynamoDBObjectMapper.load(NewsfeedObjectModel.self, hashKey: user, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+                    
+                    var newsfeedObjectMapper : NewsfeedObjectModel!
+                    
+                    // If successfull find, use that data
+                    if (resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil)
+                    {
+                        newsfeedObjectMapper = resultTask.result as! NewsfeedObjectModel
+                    }
+                    else // Else, use a new mapper class
+                    {
+                        newsfeedObjectMapper = NewsfeedObjectModel()
+                    }
+                    
+                    // Store key
+                    newsfeedObjectMapper.username = user
+                    
+                    // Upload to Dynamo
+                    let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollower", "otheruser": self.userName, "timestamp" : currentTimestamp] )
+                    newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
+                    
+                    dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+                        print("DynamoObjectMapper sucessful save for newsfeedObject #2")
+                        
+                        return nil
+                    }
+                    
+                    
+                    return nil
+                })
+
+                
+            }
             
             
         }
