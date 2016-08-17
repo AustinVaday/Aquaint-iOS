@@ -23,6 +23,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var shouldShowSearchResults = false
     var defaultImage : UIImage!
     var followeesMapping : [String: Int]!
+    var recentUsernameAdds : Set<String>!
     
 
     override func viewDidLoad(){
@@ -30,6 +31,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         allUsers = Array<User>()
         filteredUsers = Array<User>()
         followeesMapping = [String: Int]()
+        recentUsernameAdds = Set<String>!
         
 //        configureSearchController()
         configureCustomSearchController()
@@ -104,6 +106,23 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             }
         }
 
+    }
+    
+    // When the view disappears, upload action data to Dynamo (used for newsfeed)
+    override func viewDidDisappear(animated: Bool) {
+        
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        let newsfeedObjectMapper = NewsfeedObjectModel()
+        newsfeedObjectMapper.username = "myUserNameA"
+        let newsfeedObject = NSMutableDictionary(dictionary: ["event": "eventA", "otheruser": "otheruserA", "timestamp" : getTimestampAsInt()] )
+        newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
+        
+        dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+            print("DynamoObjectMapper sucessful save for newsfeedObject")
+            
+            return nil
+        }
+        
     }
     
     // **** SEARCHBAR PROTOCOLS (CUSTOM SEARCH BAR) *****

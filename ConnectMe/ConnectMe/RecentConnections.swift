@@ -126,23 +126,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             return nil
             
         }
-
-        
-//        // Fill out temporary connections list...
-//        let con = Connection()
-//        
-//        for i in 0...10
-//        {
-//            con.userFullName = "User" + String(i)
-//            con.userName = "username" + String(i)
-//            con.userImage = UIImage(imageLiteral: "Person Icon Black")
-//            con.timestampGMT = getTimestampAsInt()
-//            con.socialMediaUserNames = ["facebook" : "AVTheMan", "snapchat": "yolo", "twitter": "tweet"]
-//            
-//            connectionList.append(con)
-//        }
-        
     }
+    
     
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
