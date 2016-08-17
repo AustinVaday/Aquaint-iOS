@@ -10,6 +10,12 @@
 import UIKit
 import AWSLambda
 
+protocol SearchTableViewCellDelegate
+{
+    func addedUser(username: String)
+    func removedUser(username: String)
+}
+
 class SearchTableViewCell: UITableViewCell {
     
     @IBOutlet weak var cellImage: UIImageView!
@@ -18,6 +24,8 @@ class SearchTableViewCell: UITableViewCell {
 //    @IBOutlet weak var cellAddPendingButton: UIButton!
     @IBOutlet weak var cellDeleteButton: UIButton!
     @IBOutlet weak var cellUserName: UILabel!
+    
+    var searchDelegate : SearchTableViewCellDelegate?
 
     func hideAllButtons()
     {
@@ -92,6 +100,8 @@ class SearchTableViewCell: UITableViewCell {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             self.activateDeleteButton()
                     })
+                    
+                    self.searchDelegate?.addedUser(self.cellUserName.text!)
 
                 }
                 else
@@ -164,6 +174,9 @@ class SearchTableViewCell: UITableViewCell {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.activateAddButton()
                     })
+                    
+                    self.searchDelegate?.removedUser(self.cellUserName.text!)
+
                     
                 }
                 else

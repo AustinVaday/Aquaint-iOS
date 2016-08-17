@@ -10,7 +10,7 @@ import UIKit
 import AWSDynamoDB
 import AWSLambda
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate, SearchTableViewCellDelegate {
 
     @IBOutlet weak var searchTableView: UITableView!
     
@@ -31,13 +31,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         allUsers = Array<User>()
         filteredUsers = Array<User>()
         followeesMapping = [String: Int]()
-        recentUsernameAdds = Set<String>!
+        recentUsernameAdds = Set<String>()
         
 //        configureSearchController()
         configureCustomSearchController()
         
         userName = getCurrentCachedUser()
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
+        
         
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
         let parameters = ["action":"getFollowees", "target": userName]
@@ -300,6 +301,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 //        cell.cellImage.layer.borderWidth = 0.5
 //        cell.cellImage.layer.borderColor = UIColor.blackColor().CGColor
         
+        
+        // IMPORTANT!!!! If we don't have this we can't get data when user adds/deletes people.
+        cell.searchDelegate = self
+        
         return cell
         
     }
@@ -368,4 +373,23 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         searchTableView.tableHeaderView = customSearchController.customSearchBar
     }
 
+    
+    
+    // Implement delegate actions for SearchTableViewCellDelegate
+    func addedUser(username: String) {
+        // When user is added from tableview cell
+        // Add to set to keep track of recently added users
+        recentUsernameAdds.insert(username)
+        print("OKOK. USER ADDED: ", username)
+    }
+    
+    func removedUser(username: String) {
+        // When user is removed from tableview cell
+        if recentUsernameAdds.contains(username)
+        {
+            recentUsernameAdds.remove(username)
+            print("OKOK. USER REMOVED: ", username)
+
+        }
+    }
 }
