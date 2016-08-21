@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Firebase
 import AWSDynamoDB
 import AWSLambda
 
@@ -20,14 +19,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
-    
-    var firebaseRootRef : FIRDatabaseReference!
-    var firebaseUsersRef: FIRDatabaseReference!
-    var firebaseLinkedAccountsRef: FIRDatabaseReference!
-    var firebaseConnectionsRef: FIRDatabaseReference!
-    var firebaseUserImagesRef: FIRDatabaseReference!
     var refreshControl : UIRefreshControl!
-    var connectionList : Array<Connection>!
+//    var connectionList : Array<Connection>!
     var defaultImage : UIImage!
     
     var newsfeedList : NSArray! // Array of dictionary to hold all newsfeed data
@@ -39,6 +32,12 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         newsfeedList = NSArray()
     
+        
+        // Fill the dictionary of all social media names (key) with an image (val).
+        // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
+        socialMediaImageDictionary = getAllPossibleSocialMediaImages(possibleSocialMediaNameList)
+        
+        
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
         let parameters = ["action":"getNewsfeed", "target": "tolvstad"]
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
@@ -61,201 +60,28 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
                 self.newsfeedList = resultTask.result as! NSArray
                 
-                print (self.newsfeedList)
+                
+                print (self.newsfeedList[0]["user"])
+                
+                // Update UI on main thread
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.newsfeedTableView.reloadData()
+                })
+
+                
             }
             
             return nil
             
         }
 
-        
-        
-        
-        
         // Fetch the user's username
         currentUserName = getCurrentCachedUser()
-        
-        // Firebase root, our data is stored here
-        firebaseRootRef = FIRDatabase.database().reference()
-        firebaseUsersRef = firebaseRootRef.child("Users/")
-        firebaseUserImagesRef = firebaseRootRef.child("UserImages/")
-        firebaseLinkedAccountsRef = firebaseRootRef.child("LinkedSocialMediaAccounts/")
-        firebaseConnectionsRef = firebaseRootRef.child("Connections/" + currentUserName)
 
-        connectionList = Array<Connection>()
+//        connectionList = Array<Connection>()
         expansionObj = CellExpansion()
 
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
-        
-        //TEMP : USED TO MAKE WEBSITE IMAGES
-        // ---------------------------------
-        
-        var connection = Connection()
-        connection.timestampGMT = 1462085382
-        connection.userFullName = "Yilei Zhou"
-        connection.userImage = UIImage(imageLiteral: "6")
-        connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
-        connectionList.append(connection)
-        
-        connection = Connection()
-        connection.timestampGMT = 1462085372
-        connection.userFullName = "Clytia Anica"
-        connection.userImage = UIImage(imageLiteral: "7")
-        connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
-        connectionList.append(connection)
-        
-        
-        connection = Connection()
-        connection.timestampGMT = 1462084282
-        connection.userFullName = "Mark Samil"
-        connection.userImage = UIImage(imageLiteral: "17")
-        connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
-        connectionList.append(connection)
-        
-        
-        connection = Connection()
-        connection.timestampGMT = 1462082382
-        connection.userFullName = "Bertha Helmine"
-        connection.userImage = UIImage(imageLiteral: "13")
-        connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
-        connectionList.append(connection)
-        
-        
-        connection = Connection()
-        connection.timestampGMT = 1462075382
-        connection.userFullName = "Shereen Judith"
-        connection.userImage = UIImage(imageLiteral: "18")
-        connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
-        connectionList.append(connection)
-        
-        
-        connection = Connection()
-        connection.timestampGMT = 1462025382
-        connection.userFullName = "Jamie Marko"
-        connection.userImage = UIImage(imageLiteral: "21")
-        connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
-        connectionList.append(connection)
-        
-        
-        connection = Connection()
-        connection.timestampGMT = 1462025381
-        connection.userFullName = "Elizabeth Jackson"
-        connection.userImage = UIImage(imageLiteral: "25")
-        connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
-        connectionList.append(connection)
-        
-        
-        connection = Connection()
-        connection.timestampGMT = 1462025381
-        connection.userFullName = "Ralph John"
-        connection.userImage = UIImage(imageLiteral: "23")
-        connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
-        connectionList.append(connection)
-    
-        
-        
-        
-        
-        // ---------------------------------
-        
-        //        // Load all connections and respective information from servers
-        //        firebaseConnectionsRef.queryOrderedByValue().observeEventType(FIRDataEventType.ChildAdded, withBlock: { (snapshot) -> Void in
-        //
-        //
-        //            // Get your connection's user name
-        //            let connectionUserName = snapshot.key
-        //            let connection = Connection()
-        //
-        //            // Store server data into our local "cached" object -- connection
-        //            connection.userName = snapshot.key
-        //            connection.timestampGMT = snapshot.value as! Int
-        //
-        //            // Store the user's info (except image)
-        //            self.firebaseUsersRef.child(connectionUserName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
-        //
-        //                connection.userFullName = snapshot.childSnapshotForPath("/fullName").value as! String
-        //
-        //                //                self.recentConnTableView.reloadData()
-        //
-        //            })
-        //
-        //            // Store the user's image
-        //            self.firebaseUserImagesRef.child(connectionUserName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
-        //
-        //                // Get base 64 string image
-        //
-        //                // If user has an image, display it in table. Else, display default image
-        //                if (snapshot.exists())
-        //                {
-        //                    let userImageBase64String = snapshot.childSnapshotForPath("/profileImage").value as! String
-        //                    connection.userImage = convertBase64ToImage(userImageBase64String)
-        //                }
-        //                else
-        //                {
-        //                    connection.userImage = self.defaultImage
-        //
-        //                }
-        //
-        //                self.recentConnTableView.reloadData()
-        //
-        //            })
-        //
-        //            // Store the user's social media accounts
-        //            self.firebaseLinkedAccountsRef.child(connectionUserName).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) -> Void in
-        //
-        //                // Store dictionary of all key-val pairs..
-        //                // I.e.: (facebook, [user's facebook username])
-        //                //       (twitter,  [user's twitter username]) ... etc
-        //                connection.socialMediaUserNames = snapshot.value as! NSDictionary
-        //
-        //                //                self.recentConnTableView.reloadData()
-        //
-        //
-        //                // Add connection to connection list -- sorted in ascending order by time!
-        //                // Front of list == largest time == most recent add
-        //                //                print(snapshot)
-        //                //                self.connectionList.insert(connection, atIndex: 0)
-        //
-        //                self.connectionList.append(connection)
-        //                // NOTE: CODE CRASHES FOR connectionList.insert because apparantly it's fetching 'aquaint' at the beginning of the list... look into this!!!!)
-        //
-        //                self.recentConnTableView.reloadData()
-        //
-        //            })
-        //
-        //
-        //
-        //        })
-        
-        // Load up all images we have
-        var imageName:String!
-        var newUIImage:UIImage!
-        let size = possibleSocialMediaNameList.count
-        
-        socialMediaImageDictionary = Dictionary<String, UIImage>()
-        
-        // Generate all necessary images for the emblems
-        for i in 0...size-1
-        {
-            // Fetch emblem name
-            imageName = possibleSocialMediaNameList[i]
-            
-            // Generate image
-            newUIImage = UIImage(named: imageName)
-            
-            if (newUIImage != nil)
-            {
-                // Store image into our 'cache'
-                socialMediaImageDictionary[imageName] = newUIImage
-            }
-            else
-            {
-                print ("ERROR: RecentConnections.swift : social media emblem image not found.")
-                // TODO: Show error image
-                // socialMediaImageList.append(UIImage(named: ")
-            }
-            
-        }
         
         
         // Set up refresh control for when user drags for a refresh.
@@ -264,8 +90,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // When user pulls, this function will be called
         refreshControl.addTarget(self, action: #selector(NewsfeedViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
         newsfeedTableView.addSubview(refreshControl)
-        
-        
         
     }
     
@@ -290,7 +114,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Display up to 30 users immediately
         // Display 20 more if user keeps sliding down
         
-        return connectionList.count
+        return newsfeedList.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -302,90 +126,71 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         cell.sponsoredProfileImageView.layer.cornerRadius = cell.sponsoredProfileImageView.frame.size.width / 2
         
         // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
-        cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
+        cell.collectionView.tag = indexPath.row
         
-        let connectedUser = connectionList[indexPath.row]
-        
-        print("CVTAG#: ", cell.collectionView.tag, "CORRESPONDS TO: ", connectedUser.userName )
-        
-        //        let mutableMessageString = NSMutableAttributedString(string: connectedUser.userFullName + " became aquainted with you",
-        //                                                             attributes: [NSFontAttributeName : ])
-        
-        
-        if (indexPath.row == 0 || indexPath.row == 3 )
-        {
-            let textString = connectedUser.userFullName +  " added a Snapchat account, check it out!"
+//        let connectedUserName = newsfeedList[indexPath.row]["user"]!
+        let event = newsfeedList[indexPath.row]["event"]!
+//        let time = newsfeedList[indexPath.row]["time"]!
 
-            cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [connectedUser.userFullName.characters.count])
+        switch event!
+        {
+            // If a friend starts following new people
+            case "newfollowing":
+                
+                let user = newsfeedList[indexPath.row]["user"]!!
+                let otherUser = newsfeedList[indexPath.row]["otheruser"]!!
+                
+                let textString = user +  " started following " + otherUser
+                let textStringLength = textString.characters.count
+                
+                // Find location of and bold the user names in the text string, store as cell message.
+                cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0, textStringLength - otherUser.characters.count], boldEndArray: [user.characters.count, textStringLength])
+                
+                break;
+            // If I myself have a new follower
+            case "newfollower":
+                
+                let otherUser = newsfeedList[indexPath.row]["otheruser"]!!
+                
+                let textString = otherUser +  " started following you"
+                let textStringLength = textString.characters.count
+                
+                // Find location of and bold the user names in the text string, store as cell message.
+                cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [otherUser.characters.count])
+                break;
             
-            // show the new account that was added
-            cell.sponsoredProfileImageView.hidden = false
-            cell.sponsoredProfileImageView.image = socialMediaImageDictionary["snapchat"]
+            // If a friend adds in a new profile
+            case "newprofile":
+                
+                let otherUser = newsfeedList[indexPath.row]["otheruser"]!!
+                let socialMediaType = newsfeedList[indexPath.row]["data"]!["type"]!!
+                
+                
+                print("SOCIAL MEDIA TYPE: ", newsfeedList[indexPath.row]["data"]!["type"])
+                print("SOCIAL MEDIA NAME: ", newsfeedList[indexPath.row]["data"]!["name"])
 
-        }
-        else if (indexPath.row == 5 )
-        {
-            let textString = connectedUser.userFullName +  " added a Twitter account, check it out!"
+                
+                let textString = otherUser +  " added a " + socialMediaType + " account, check it out!"
+                
+                cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [otherUser.characters.count])
+                
+                // show the new account that was added
+                cell.sponsoredProfileImageView.hidden = false
+                
+                print("SocialMediaType var is: ", socialMediaType)
+                cell.sponsoredProfileImageView.image = socialMediaImageDictionary[socialMediaType]
+                
+                break;
             
-            cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [connectedUser.userFullName.characters.count])
-            
-            // show the new account that was added
-            cell.sponsoredProfileImageView.hidden = false
-            cell.sponsoredProfileImageView.image = socialMediaImageDictionary["twitter"]
-        }
-        else if (indexPath.row == 9)
-        {
-            let textString = connectedUser.userFullName +  " added a Instagram account, check it out!"
-            
-            cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [connectedUser.userFullName.characters.count])
-            
-            // show the new account that was added
-            cell.sponsoredProfileImageView.hidden = false
-            cell.sponsoredProfileImageView.image = socialMediaImageDictionary["instagram"]
-        }
-        else
-        {
-            
-            var person : String!
-            if (indexPath.row == 1)
-            {
-                person = "Jimmy Wheyburn"
-            }
-            else if (indexPath.row == 2)
-            {
-                person = "Karl Koert"
-            }
-            else if (indexPath.row == 4)
-            {
-                person = "Silvio Rube"
-            }
-            else if (indexPath.row == 6)
-            {
-                person = "Quang Rama"
-            }
-            else if (indexPath.row == 7)
-            {
-                person = "Ellis Terrance"
-            }
-            else if (indexPath.row == 8)
-            {
-                person = "Jojo Daniel"
-            }
-            else
-            {
-                person = "Felicia Markov"
-            }
-            
-            let textString = connectedUser.userFullName +  " became aquainted with " + person
-            let personStringLength = person.characters.count
-            let textStringLength = textString.characters.count
-            
-            // Find location of and bold the user names in the text string, store as cell message. 
-            cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0, textStringLength - personStringLength], boldEndArray: [connectedUser.userFullName.characters.count, textStringLength])
+            default:
+                break;
             
         }
-        cell.cellImage.image = connectedUser.userImage
-        cell.cellTimeConnected.text = connectedUser.computeTimeDiff()
+        
+        
+        
+        cell.cellImage.image = defaultImage
+        cell.cellTimeConnected.text = "2s"
         
         
         
@@ -417,8 +222,9 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         // Use the tag to know which tableView row we're at
-        return connectionList[collectionView.tag].socialMediaUserNames.count
-        
+//        return connectionList[collectionView.tag].socialMediaUserNames.count
+
+        return 2
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -429,28 +235,28 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         print("CVTAG IS:", collectionView.tag)
         
-        
-        // Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
-        // an array so that we can easily get the social media mediums that the user has (i.e. facebook, twitter, etc).
-        var userSocialMediaNames = connectionList[collectionView.tag].socialMediaUserNames.allKeys as! Array<String>
-        userSocialMediaNames = userSocialMediaNames.sort()
-        
-        print(indexPath.item)
-        let socialMediaName = userSocialMediaNames[indexPath.item % self.possibleSocialMediaNameList.count]
-        
-        print(socialMediaName)
-        
-        // We will delay the image assignment to prevent buggy race conditions
-        // (Check to see what happens when the delay is not set... then you'll understand)
-        // Probable cause: tableView.beginUpdates() and tableView.endUpdates() in tableView(didSelectIndexPath) method
-        delay(0) { () -> () in
-            
-            // Generate a UI image for the respective social media type
-            cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaName]
-            
-            cell.socialMediaName = socialMediaName
-            
-        }
+//        
+//        // Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
+//        // an array so that we can easily get the social media mediums that the user has (i.e. facebook, twitter, etc).
+//        var userSocialMediaNames = connectionList[collectionView.tag].socialMediaUserNames.allKeys as! Array<String>
+//        userSocialMediaNames = userSocialMediaNames.sort()
+//        
+//        print(indexPath.item)
+//        let socialMediaName = userSocialMediaNames[indexPath.item % self.possibleSocialMediaNameList.count]
+//        
+//        print(socialMediaName)
+//        
+//        // We will delay the image assignment to prevent buggy race conditions
+//        // (Check to see what happens when the delay is not set... then you'll understand)
+//        // Probable cause: tableView.beginUpdates() and tableView.endUpdates() in tableView(didSelectIndexPath) method
+//        delay(0) { () -> () in
+//            
+//            // Generate a UI image for the respective social media type
+//            cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaName]
+//            
+//            cell.socialMediaName = socialMediaName
+//            
+//        }
         
         // Make cell image circular
         cell.layer.cornerRadius = cell.frame.width / 2
@@ -470,107 +276,107 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
         print("SELECTED ITEM AT ", indexPath.item)
         
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
-        let socialMediaName = cell.socialMediaName
-        
-        var urlString:String!
-        var altString:String!
-        var socialMediaURL:NSURL!
-        
-        //        let userName = "AustinVaday"
-        let connectionSocialMediaUserNames = connectionList[collectionView.tag].socialMediaUserNames
-        
-        
-        urlString = ""
-        altString = ""
-        
-        switch (socialMediaName)
-        {
-        case "facebook":
-            
-            let facebookUserName = connectionSocialMediaUserNames["facebook"] as! String
-            urlString = "fb://requests/" + facebookUserName
-            altString = "http://www.facebook.com/" + facebookUserName
-            break;
-        case "snapchat":
-            
-            let snapchatUserName = connectionSocialMediaUserNames["snapchat"] as! String
-            urlString = "snapchat://add/" + snapchatUserName
-            altString = ""
-            break;
-        case "instagram":
-            
-            let instagramUserName = connectionSocialMediaUserNames["instagram"] as! String
-            urlString = "instagram://user?username=" + instagramUserName
-            altString = "http://www.instagram.com/" + instagramUserName
-            break;
-        case "twitter":
-            
-            let twitterUserName = connectionSocialMediaUserNames["twitter"] as! String
-            urlString = "twitter:///user?screen_name=" + twitterUserName
-            altString = "http://www.twitter.com/" + twitterUserName
-            break;
-        case "linkedin":
-            
-            let linkedinUserName = connectionSocialMediaUserNames["linkedin"] as! String
-            urlString = "linkedin://profile/" + linkedinUserName
-            altString = "http://www.linkedin.com/in/" + linkedinUserName
-            
-            break;
-        case "youtube":
-            
-            let youtubeUserName = connectionSocialMediaUserNames["youtube"] as! String
-            urlString = "youtube:www.youtube.com/user/" + youtubeUserName
-            altString = "http://www.youtube.com/" + youtubeUserName
-            break;
-        case "phone":
-            print ("COMING SOON")
-            
-            //                contact.familyName = "Vaday"
-            //                contact.givenName  = "Austin"
-            //
-            //                let phoneNum  = CNPhoneNumber(stringValue: "9493758223")
-            //                let cellPhone = CNLabeledValue(label: CNLabelPhoneNumberiPhone, value: phoneNum)
-            //
-            //                contact.phoneNumbers.append(cellPhone)
-            //
-            //                //TODO: Check if contact already exists in phone
-            //                let saveRequest = CNSaveRequest()
-            //                saveRequest.addContact(contact, toContainerWithIdentifier: nil)
-            //
-            
-            //                return
-            
-            break;
-        default:
-            break;
-        }
-        
-        socialMediaURL = NSURL(string: urlString)
-        
-        // If user doesn't have social media app installed, open using default browser instead (use altString)
-        if (!UIApplication.sharedApplication().canOpenURL(socialMediaURL))
-        {
-            if (altString != "")
-            {
-                socialMediaURL = NSURL(string: altString)
-            }
-            else
-            {
-                if (socialMediaName == "snapchat")
-                {
-                    showAlert("Sorry", message: "You need to have the Snapchat app! Please download it and try again!", buttonTitle: "Ok", sender: self)
-                }
-                else
-                {
-                    showAlert("Hold on!", message: "Feature coming soon...", buttonTitle: "Ok", sender: self)
-                }
-                return
-            }
-        }
-        
-        // Perform the request, go to external application and let the user do whatever they want!
-        UIApplication.sharedApplication().openURL(socialMediaURL)
+//        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
+//        let socialMediaName = cell.socialMediaName
+//        
+//        var urlString:String!
+//        var altString:String!
+//        var socialMediaURL:NSURL!
+//        
+//        //        let userName = "AustinVaday"
+//        let connectionSocialMediaUserNames = connectionList[collectionView.tag].socialMediaUserNames
+//        
+//        
+//        urlString = ""
+//        altString = ""
+//        
+//        switch (socialMediaName)
+//        {
+//        case "facebook":
+//            
+//            let facebookUserName = connectionSocialMediaUserNames["facebook"] as! String
+//            urlString = "fb://requests/" + facebookUserName
+//            altString = "http://www.facebook.com/" + facebookUserName
+//            break;
+//        case "snapchat":
+//            
+//            let snapchatUserName = connectionSocialMediaUserNames["snapchat"] as! String
+//            urlString = "snapchat://add/" + snapchatUserName
+//            altString = ""
+//            break;
+//        case "instagram":
+//            
+//            let instagramUserName = connectionSocialMediaUserNames["instagram"] as! String
+//            urlString = "instagram://user?username=" + instagramUserName
+//            altString = "http://www.instagram.com/" + instagramUserName
+//            break;
+//        case "twitter":
+//            
+//            let twitterUserName = connectionSocialMediaUserNames["twitter"] as! String
+//            urlString = "twitter:///user?screen_name=" + twitterUserName
+//            altString = "http://www.twitter.com/" + twitterUserName
+//            break;
+//        case "linkedin":
+//            
+//            let linkedinUserName = connectionSocialMediaUserNames["linkedin"] as! String
+//            urlString = "linkedin://profile/" + linkedinUserName
+//            altString = "http://www.linkedin.com/in/" + linkedinUserName
+//            
+//            break;
+//        case "youtube":
+//            
+//            let youtubeUserName = connectionSocialMediaUserNames["youtube"] as! String
+//            urlString = "youtube:www.youtube.com/user/" + youtubeUserName
+//            altString = "http://www.youtube.com/" + youtubeUserName
+//            break;
+//        case "phone":
+//            print ("COMING SOON")
+//            
+//            //                contact.familyName = "Vaday"
+//            //                contact.givenName  = "Austin"
+//            //
+//            //                let phoneNum  = CNPhoneNumber(stringValue: "9493758223")
+//            //                let cellPhone = CNLabeledValue(label: CNLabelPhoneNumberiPhone, value: phoneNum)
+//            //
+//            //                contact.phoneNumbers.append(cellPhone)
+//            //
+//            //                //TODO: Check if contact already exists in phone
+//            //                let saveRequest = CNSaveRequest()
+//            //                saveRequest.addContact(contact, toContainerWithIdentifier: nil)
+//            //
+//            
+//            //                return
+//            
+//            break;
+//        default:
+//            break;
+//        }
+//        
+//        socialMediaURL = NSURL(string: urlString)
+//        
+//        // If user doesn't have social media app installed, open using default browser instead (use altString)
+//        if (!UIApplication.sharedApplication().canOpenURL(socialMediaURL))
+//        {
+//            if (altString != "")
+//            {
+//                socialMediaURL = NSURL(string: altString)
+//            }
+//            else
+//            {
+//                if (socialMediaName == "snapchat")
+//                {
+//                    showAlert("Sorry", message: "You need to have the Snapchat app! Please download it and try again!", buttonTitle: "Ok", sender: self)
+//                }
+//                else
+//                {
+//                    showAlert("Hold on!", message: "Feature coming soon...", buttonTitle: "Ok", sender: self)
+//                }
+//                return
+//            }
+//        }
+//        
+//        // Perform the request, go to external application and let the user do whatever they want!
+//        UIApplication.sharedApplication().openURL(socialMediaURL)
         
     }
     
