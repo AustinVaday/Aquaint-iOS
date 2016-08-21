@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import AWSDynamoDB
+import AWSLambda
 
 class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -28,10 +30,47 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     var connectionList : Array<Connection>!
     var defaultImage : UIImage!
     
+    var newsfeedList : NSArray! // Array of dictionary to hold all newsfeed data
+    
     
     var expansionObj:CellExpansion!
 
     override func viewDidLoad() {
+        
+        newsfeedList = NSArray()
+    
+        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let parameters = ["action":"getNewsfeed", "target": "tolvstad"]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            if resultTask.error != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+            }
+            else if resultTask.exception != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+            }
+            else if resultTask.result == nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+            }
+            else
+            {
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                self.newsfeedList = resultTask.result as! NSArray
+                
+                print (self.newsfeedList)
+            }
+            
+            return nil
+            
+        }
+
+        
+        
+        
         
         // Fetch the user's username
         currentUserName = getCurrentCachedUser()
