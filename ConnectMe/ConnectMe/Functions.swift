@@ -637,3 +637,12 @@ func getProfilePopup() -> KLCPopup
     return popup
 }
 
+func showPopupForUser(username: String)
+{
+    let popup = getProfilePopup()
+    let view = popup.contentView as! ProfilePopupView
+    view.setDataForUser(username)
+    popup.contentView = view
+    popup.show()
+}
+

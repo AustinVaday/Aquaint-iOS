@@ -28,15 +28,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewDidLoad(){
         
-        let popup = getProfilePopup()
-        
-        let view = popup.contentView as! ProfilePopupView
-        view.setDataForUser("tolvstad")
-        popup.contentView = view
-        popup.show()
-        
-        
-        
+        // Display popup for a particular user upon request
+        showPopupForUser("tolvstad")
         
         allUsers = Array<User>()
         filteredUsers = Array<User>()
