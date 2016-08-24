@@ -16,7 +16,11 @@ class NewsfeedTableViewCell: UITableViewCell {
     @IBOutlet weak var cellUserName: UILabel!
     @IBOutlet weak var cellTimeConnected: UILabel!
     @IBOutlet weak var caretImageView: UIImageView!
-    @IBOutlet weak var sponsoredProfileImageView: UIImageView!
+    @IBOutlet weak var sponsoredProfileImageButton: UIButton!
+    
+    var sponsoredProfileImageType : String!
+    var sponsoredProfileImageName : String!
+    
     
     
 //    override init(style: UITableViewCellStyle, reuseIdentifier: String? )
@@ -40,4 +44,17 @@ class NewsfeedTableViewCell: UITableViewCell {
         
         caretImageView.transform = CGAffineTransformRotate(caretImageView.transform, CGFloat(M_PI))
     }
+    
+
+    @IBAction func onSponsoredProfileImageClicked(sender: UIButton) {
+        
+        print("SPONSORED BUTTON CLICKED")
+        
+        let socialMediaURL = getUserSocialMediaURL(sponsoredProfileImageName, socialMediaTypeName: sponsoredProfileImageType, sender: self)
+        
+        // Perform the request, go to external application and let the user do whatever they want!
+        UIApplication.sharedApplication().openURL(socialMediaURL)
+        
+    }
+    
 }

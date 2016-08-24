@@ -123,7 +123,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
-        cell.sponsoredProfileImageView.layer.cornerRadius = cell.sponsoredProfileImageView.frame.size.width / 2
+        cell.sponsoredProfileImageButton.layer.cornerRadius = cell.sponsoredProfileImageButton.frame.size.width / 2
         
         // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
         cell.collectionView.tag = indexPath.row
@@ -164,7 +164,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 let otherUser = newsfeedList[indexPath.row]["otheruser"]!!
                 let socialMediaType = newsfeedList[indexPath.row]["data"]!["type"]!!
-                
+                let socialMediaName = newsfeedList[indexPath.row]["data"]!["name"]!!
                 
                 print("SOCIAL MEDIA TYPE: ", newsfeedList[indexPath.row]["data"]!["type"])
                 print("SOCIAL MEDIA NAME: ", newsfeedList[indexPath.row]["data"]!["name"])
@@ -175,11 +175,14 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [otherUser.characters.count])
                 
                 // show the new account that was added
-                cell.sponsoredProfileImageView.hidden = false
+                cell.sponsoredProfileImageType = socialMediaType
+                cell.sponsoredProfileImageName = socialMediaName
                 
+                cell.sponsoredProfileImageButton.hidden = false
                 print("SocialMediaType var is: ", socialMediaType)
-                cell.sponsoredProfileImageView.image = socialMediaImageDictionary[socialMediaType]
+                cell.sponsoredProfileImageButton.imageView!.image = socialMediaImageDictionary[socialMediaType]
                 
+
                 break;
             
             default:
