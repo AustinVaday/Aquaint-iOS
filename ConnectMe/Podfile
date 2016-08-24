@@ -15,7 +15,7 @@ pod 'Firebase/Auth'
 # Misc Pods
 # -------------
 pod 'SimpleAuth'
-
+pod 'KLCPopup'
 # Pod for phone kit parsing
 # -------------
 source 'https://github.com/CocoaPods/Specs.git'

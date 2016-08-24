@@ -15,6 +15,8 @@
 		FF1001ED1C80374A00B53F8B /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */; };
 		FF1660071D4323F400900686 /* DropDownTableViewFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */; };
 		FF29BB1D9643BB46054B3871 /* Pods_Aquaint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D1CC9F354D9EF78F36FCC8C /* Pods_Aquaint.framework */; };
+		FF3834D31D6D483E00FC9F2A /* PopUpAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */; };
+		FF3834D51D6D529500FC9F2A /* ProfilePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */; };
 		FF47274D1D48750F0065F418 /* SectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */; };
 		FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */; };
 		FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */; };
@@ -109,6 +111,8 @@
 		FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownTableViewFunctions.swift; sourceTree = "<group>"; };
+		FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PopUpAlert.storyboard; sourceTree = "<group>"; };
+		FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePopupView.swift; sourceTree = "<group>"; };
 		FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderCell.swift; sourceTree = "<group>"; };
 		FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsTableViewCell.swift; sourceTree = "<group>"; };
@@ -290,6 +294,7 @@
 				FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */,
 				FF83A4DE1CC59A3800AFB26B /* RBResizer.swift */,
 				FFF442351C4B2244007651DE /* Functions.swift */,
+				FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */,
 				FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */,
 				FF8420211D29B59F002D2927 /* BackendAPI.swift */,
 				FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */,
@@ -331,6 +336,7 @@
 				FF897C3B1C01AC63001B2634 /* Assets.xcassets */,
 				FF65D31C1C1E0BFC0015C99F /* Main.storyboard */,
 				FFF442391C4C2B21007651DE /* Launch Screen.storyboard */,
+				FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */,
 				FF897C341C01AC63001B2634 /* AppDelegate.swift */,
 				FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */,
 				FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */,
@@ -554,6 +560,7 @@
 				FFF419B11D23752C00DE4352 /* GoogleService-Info.plist in Resources */,
 				FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */,
 				FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */,
+				FF3834D31D6D483E00FC9F2A /* PopUpAlert.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -747,6 +754,7 @@
 				FF7878611C3010E700354936 /* LogInController.swift in Sources */,
 				FFF3A2A91D49BF18009EF4F2 /* MenuButtonTableViewCell.swift in Sources */,
 				FFF3A2A71D488F12009EF4F2 /* MenuProfilesCell.swift in Sources */,
+				FF3834D51D6D529500FC9F2A /* ProfilePopupView.swift in Sources */,
 				FF8420241D2B42A0002D2927 /* DynamoDBUser.swift in Sources */,
 				FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */,
 				FF83A4DF1CC59A3900AFB26B /* RBResizer.swift in Sources */,

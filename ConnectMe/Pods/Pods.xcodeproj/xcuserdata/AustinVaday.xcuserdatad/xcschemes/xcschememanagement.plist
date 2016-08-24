@@ -59,6 +59,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>KLCPopup.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>NSData+Base64.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -112,17 +117,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>21327D44DE201C28003E7270B73CF80C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>227CAB7C5B53958921B7FC4BE5F9A2F6</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>3B41A9B1D49827D58E203AF61D34F608</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4045F7EA49BBEF7A2A84B20DABA54314</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>416F61019097508B928EF8279F0EC86D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -137,12 +142,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7C53217BC2D71DDBC69F04C103EA9C11</key>
+		<key>75582799E1268EDA36372D5A4E79563B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7E2BD7C9F0D611F125C129099D7A1B32</key>
+		<key>92CDBCB215CE1EFDC156B08E5BDFD3F1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -162,6 +167,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>A2B0015A233361600C30EC2A06C5F0E0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A79E4DFDB520AC579CEA22EC6DE9ECD7</key>
 		<dict>
 			<key>primary</key>
@@ -177,7 +187,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C3AAA0BBF31A8CBEBC5CB9F20571A9A9</key>
+		<key>CEBC86B2779DE64D8CBC371CFF6316B8</key>
 		<dict>
 			<key>primary</key>
 			<true/>

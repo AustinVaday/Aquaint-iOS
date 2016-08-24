@@ -11,6 +11,7 @@
 
 import Foundation
 import UIKit
+import KLCPopup
 
 // The dictionary we receive from AWS DynamoDB maps a string to an array.
 // When we have a collection view, we need a way to propogate this
@@ -614,5 +615,25 @@ func convertJSONStringToArray(jsonString: AnyObject) -> [String]
     }
     
     return result
+}
+
+// For getting the app's special popup view to display user 'profiles'
+func getProfilePopup() -> KLCPopup
+{
+    // Get our special popup design from the XIB
+    let storyboard = UIStoryboard(name: "PopUpAlert", bundle: nil)
+    let viewController = storyboard.instantiateViewControllerWithIdentifier("ProfilePopUp")
+    let popup = KLCPopup()
+
+    // Modify size of content view accordingly
+    let contentView = viewController.view
+    contentView.frame.size.height = 200.0
+    contentView.frame.size.width = viewController.view.frame.size.width - 30.0
+    contentView.layer.cornerRadius = 12.0
+    
+    // Set popup's content view to be what we just fetched
+    popup.contentView = viewController.view
+
+    return popup
 }
 
