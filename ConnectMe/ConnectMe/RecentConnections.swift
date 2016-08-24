@@ -167,7 +167,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         print("CVTAG#: ", cell.collectionView.tag, "CORRESPONDS TO: ", connectedUser.userName )
         
-        cell.cellName.text = connectedUser.userFullName
+        cell.cellName.setTitle(connectedUser.userFullName, forState: .Normal)
         cell.cellUserName.text = connectedUser.userName
         cell.cellImage.image = connectedUser.userImage
         cell.cellTimeConnected.text = connectedUser.computeTimeDiff()
