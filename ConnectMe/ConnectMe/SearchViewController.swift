@@ -28,6 +28,16 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewDidLoad(){
         
+        let popup = getProfilePopup()
+        
+        let view = popup.contentView as! ProfilePopupView
+        view.setDataForUser("tolvstad")
+        popup.contentView = view
+        popup.show()
+        
+        
+        
+        
         allUsers = Array<User>()
         filteredUsers = Array<User>()
         followeesMapping = [String: Int]()

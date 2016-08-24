@@ -33,8 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        getProfilePopup()
-        
         SimpleAuth.configuration()["facebook"] = [
             "app_id"  : "544667035683597"
         ]

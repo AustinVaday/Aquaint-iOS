@@ -21,44 +21,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         
-        
-        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = NSMutableDictionary()
-        
-        parameters.setValue("IT WORKED1!!", forKey: "action1")
-        parameters.setValue("IT WORKED2!!", forKey: "action2")
-        parameters.setValue("IT WORKED3!!", forKey: "action3")
 
-        
-        
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-            if resultTask.error != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-            }
-            else if resultTask.exception != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                
-            }
-            else if resultTask.result != nil
-            {
-                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
-                
-            }
-            else
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-                
-            }
-            
-            return nil
-            
-        }
-
-        
-        
-        
         
 //
 //        let testObject = PFObject(className: "Friend")
