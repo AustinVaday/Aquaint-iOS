@@ -12,10 +12,15 @@ import FBSDKLoginKit
 import SimpleAuth
 import AWSDynamoDB
 
+protocol AddSocialMediaProfileDelegate {
+    func userDidAddNewProfile(socialMediaType:String, socialMediaName:String)
+}
+
 class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
+    var delegate: AddSocialMediaProfileDelegate?
     
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
     
@@ -112,6 +117,11 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                             socialMediaName = FBSDKAccessToken.currentAccessToken().userID
                             
                             self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+                            
+                            if self.delegate != nil
+                            {
+                                self.delegate?.userDidAddNewProfile(socialMediaType, socialMediaName: socialMediaName)
+                            }
 
                         }
 
@@ -149,6 +159,11 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                     print("Twitter username returned is: ", socialMediaName)
                     
                     self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+                    
+                    if self.delegate != nil
+                    {
+                        self.delegate?.userDidAddNewProfile(socialMediaType, socialMediaName: socialMediaName)
+                    }
                     
                 }
                 else
@@ -219,6 +234,11 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                             socialMediaName = urlArray[1]
                             self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
                             
+                            if self.delegate != nil
+                            {
+                                self.delegate?.userDidAddNewProfile(socialMediaType, socialMediaName: socialMediaName)
+                            }
+                            
                         }
                     }
                 }
@@ -266,6 +286,11 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                     print("Tumblr username returned is: ", socialMediaName)
                     
                     self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+                    
+                    if self.delegate != nil
+                    {
+                        self.delegate?.userDidAddNewProfile(socialMediaType, socialMediaName: socialMediaName)
+                    }
                 }
                 else
                 {

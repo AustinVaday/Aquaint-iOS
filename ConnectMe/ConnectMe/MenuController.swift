@@ -14,7 +14,7 @@ import AWSDynamoDB
 import AWSS3
 import AWSLambda
 
-class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate {
     
     enum MenuData: Int {
         case LINKED_PROFILES
@@ -530,6 +530,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             return 0
         }
     
+        print ("NUM KEYVALSOCIALMEDIAPAR IN LIST: ", keyValSocialMediaPairList.count)
         return keyValSocialMediaPairList.count
     }
     
@@ -550,6 +551,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
+        print("INSIDE COLLECTION VIEW -- ENSUANTA")
+        
+        print("DATATATA: ", keyValSocialMediaPairList)
+
         
       let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accountsCollectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
         
@@ -651,6 +657,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         {
         case MenuData.LINKED_PROFILES.rawValue:
             let cell = tableView.dequeueReusableCellWithIdentifier("menuProfilesCell") as! MenuProfilesCell!
+            
+            cell.profilesCollectionView.reloadData()
             
             // Show delete buttons if editing is enabled.
             if (enableEditing)
@@ -855,6 +863,49 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
    
     }
     
+    /*************************************************************************
+     *    SELF-DEFINED DATA TRANSFER PROTOCOL
+     **************************************************************************/
+    func userDidAddNewProfile(socialMediaType: String, socialMediaName: String) {
+        
+        print("In protocol implementation -- data added: ", socialMediaType, " ", socialMediaName)
+        
+        print("BEFORE: ", keyValSocialMediaPairList)
+        // Dynamo updated already, just update local cache
+        
+        // If user does not have a particular social media type,
+        // we need to create a list
+        if (currentUserAccounts.valueForKey(socialMediaType) == nil)
+        {
+            currentUserAccounts.setValue([ socialMediaName ], forKey: socialMediaType)
+            
+        } // If it already exists, append value to end of list
+        else
+        {
+            var list = currentUserAccounts.valueForKey(socialMediaType) as! Array<String>
+            list.append(socialMediaName)
+            
+            currentUserAccounts.setValue(list, forKey: socialMediaType)
+        }
+
+        
+        setCurrentCachedUserProfiles(currentUserAccounts)
+        
+        // Dictionary with key: string of social media types (i.e. "facebook"),
+        // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
+        self.socialMediaUserNames = currentUserAccounts
+        
+        // Convert dictionary to key,val pairs. Redundancy allowed
+        self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+        
+        print("AFTER: ", keyValSocialMediaPairList)
+
+        
+        // Reload table view data
+        settingsTableView.reloadData()
+        
+    }
+    
     // Helper functions
     //---------------------------------------------------------------------------------------------------
     // Function that is called when user drags/pulls table with intention of refreshing it
@@ -875,9 +926,18 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBAction func unwindBackToMenuVC(segue:UIStoryboardSegue)
     {
         print("Success unwind to menu VC")
-        print("REFRESH COLLECTION VIEW")
-        currentUserAccountsDirty = true
-        viewDidLoad()
+//        print("REFRESH COLLECTION VIEW")
+//        currentUserAccountsDirty = true
+//        viewDidLoad()
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "segueToAddSocialMediaProfilesController"
+        {
+            // Need to set delegate so that we can fetch which data user added in
+            let vc = segue.destinationViewController as! AddSocialMediaProfilesController
+            vc.delegate = self
+        }
     }
     
     

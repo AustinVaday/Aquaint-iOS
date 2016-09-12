@@ -10,4 +10,5 @@ import UIKit
 
 class MenuProfilesCell: UITableViewCell {
 
+    @IBOutlet weak var profilesCollectionView: UICollectionView!
 }
