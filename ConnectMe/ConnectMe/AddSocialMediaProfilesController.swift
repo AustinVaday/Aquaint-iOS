@@ -55,72 +55,76 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
             /*************************************************************************
              * FACEBOOK DATA FETCH
              **************************************************************************/
-            SimpleAuth.authorize("facebook-web") { (result, error) in
-                
-                if (result == nil)
-                {
-                    print("CANCELLED REQUEST")
-                }
-                else if (error == nil)
-                {
-                    print ("RESULT IS: ", result)
-                    
-                    let jsonResult = result as! NSDictionary
-                    
-                    // Get user's nickname from JSON object returned. I.e:
-                    // info
-                    // {
-                    //    nickname = "AustinVaday";
-                    //    ...
-                    // }
-                    
-//                    socialMediaName = jsonResult["info"]!["nickname"]! as String!
-//                    print("Twitter username returned is: ", socialMediaName)
-//                    
-//                    self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
-                    
-                }
-                else
-                {
-                    print ("FAILED TO PROCESS REQUEST")
-                }
-                
-            }
-
-            
-            
-
-//                let login = FBSDKLoginManager.init()
+//            SimpleAuth.authorize("facebook") { (result, error) in
 //                
-//                // Open in app instead of web browser!
-//                login.loginBehavior = FBSDKLoginBehavior.Native
-//                
-//                // Request basic profile permissions just to get user ID
-//                login.logInWithReadPermissions(["public_profile"], fromViewController: self) { (result, error) in
-//                    
-//                    // If no error, store facebook user ID
-//                    if (error == nil)
-//                    {
-//                        print("SUCCESS LOG IN!", result.debugDescription)
-//                        print(result.description)
-//                        
-////                        // Below can be nil????
-////                        if (FBSDKAccessToken.currentAccessToken() != nil)
-////                        {
-////                            print(FBSDKAccessToken.currentAccessToken().userID)    
-//                        FBSDKAccessToken.currentAccessToken().userID
-////                        }
-//
-//                    }
-//                    else if (result == nil)
-//                    {
-//                        print ("RESULT IS NIL")
-//                    }
-//                    else
-//                    {
-//                        print("FAIL LOG IN")
-//                    }
+//                print("ERROR IS: ", error)
+//                if (result == nil)
+//                {
+//                    print("CANCELLED REQUEST")
 //                }
+//                else if (error == nil)
+//                {
+//                    print ("RESULT IS: ", result)
+//                    
+//                    let jsonResult = result as! NSDictionary
+//                    
+//                    // Get user's nickname from JSON object returned. I.e:
+//                    // info
+//                    // {
+//                    //    nickname = "AustinVaday";
+//                    //    ...
+//                    // }
+//                    
+////                    socialMediaName = jsonResult["info"]!["nickname"]! as String!
+////                    print("Twitter username returned is: ", socialMediaName)
+////                    
+////                    self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+//                    
+//                }
+//                else
+//                {
+//                    print ("FAILED TO PROCESS REQUEST")
+//                }
+//                
+//            }
+
+            
+            
+
+                let login = FBSDKLoginManager.init()
+                
+                // Open in app instead of web browser!
+                login.loginBehavior = FBSDKLoginBehavior.Native
+                
+                // Request basic profile permissions just to get user ID
+                login.logInWithReadPermissions(["public_profile"], fromViewController: self) { (result, error) in
+                    
+                    // If no error, store facebook user ID
+                    if (error == nil)
+                    {
+                        print("SUCCESS LOG IN!", result.debugDescription)
+                        print(result.description)
+                        
+                        if (FBSDKAccessToken.currentAccessToken() != nil)
+                        {
+                            print("FBSDK userID is:", FBSDKAccessToken.currentAccessToken().userID)
+                            
+                            socialMediaName = FBSDKAccessToken.currentAccessToken().userID
+                            
+                            self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+
+                        }
+
+                    }
+                    else if (result == nil && error != nil)
+                    {
+                        print ("ERROR IS: ", error)
+                    }
+                    else
+                    {
+                        print("FAIL LOG IN")
+                    }
+                }
             
         
             
@@ -161,6 +165,8 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
              * INSTAGRAM DATA FETCH
              **************************************************************************/
             SimpleAuth.authorize("instagram") { (result, error) in
+                print("ERROR IS: ", error)
+
                 
                 if (result == nil)
                 {

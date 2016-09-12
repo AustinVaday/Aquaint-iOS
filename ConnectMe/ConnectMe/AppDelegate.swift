@@ -59,8 +59,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         SimpleAuth.configuration()["instagram"] = [
             "client_id" : "5de275b3cf674c97b51a767e9ecdea66",
-//            SimpleAuthRedirectURIKey : "aquaint://"
-            "redirect_uri" : "aquaint://"
+            SimpleAuthRedirectURIKey : "aquaint://"
+//            "redirect_uri" : "aquaint://"
         ]
         
         SimpleAuth.configuration()["tumblr"] = [
@@ -140,7 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         
         
-                
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         return AWSMobileClient.sharedInstance.didFinishLaunching(application, withOptions: launchOptions)
 
         
@@ -152,8 +152,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let handled = FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication , annotation: annotation)
         print("FBSDK HANDLED:", handled)
 
-        
-        
+    
         return handled
     }
     

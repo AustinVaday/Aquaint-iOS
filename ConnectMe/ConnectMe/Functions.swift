@@ -82,7 +82,6 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
     case "linkedin":
         urlString = "linkedin://profile/" + socialMediaUserName
         altString = "http://www.linkedin.com/in/" + socialMediaUserName
-        
         break;
     case "youtube":
         urlString = "youtube:www.youtube.com/user/" + socialMediaUserName
