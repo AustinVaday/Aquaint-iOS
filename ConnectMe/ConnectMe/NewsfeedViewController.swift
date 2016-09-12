@@ -9,6 +9,7 @@
 import UIKit
 import AWSDynamoDB
 import AWSLambda
+import FRHyperLabel
 
 class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -140,23 +141,41 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 let user = newsfeedList[indexPath.row]["user"]!!
                 let otherUser = newsfeedList[indexPath.row]["otheruser"]!!
                 
-                let textString = user +  " started following " + otherUser
-                let textStringLength = textString.characters.count
                 
-                // Find location of and bold the user names in the text string, store as cell message.
-                cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0, textStringLength - otherUser.characters.count], boldEndArray: [user.characters.count, textStringLength])
+                let handlerUser = {
+                    (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
+                    showPopupForUser(user)
+                }
+                
+                let handlerOtherUser = {
+                    (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
+                    showPopupForUser(otherUser)
+                }
+                
+                let textString = user +  " started following " + otherUser + "."
+
+                cell.cellMessage.text = textString
+                cell.cellMessage.setLinkForSubstring(user, withLinkHandler: handlerUser)
+                cell.cellMessage.setLinkForSubstring(otherUser, withLinkHandler: handlerOtherUser)
+
                 
                 break;
             // If I myself have a new follower
             case "newfollower":
                 
                 let otherUser = newsfeedList[indexPath.row]["otheruser"]!!
+            
                 
-                let textString = otherUser +  " started following you"
-                let textStringLength = textString.characters.count
+                let handlerOtherUser = {
+                    (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
+                    showPopupForUser(otherUser)
+                }
                 
-                // Find location of and bold the user names in the text string, store as cell message.
-                cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [otherUser.characters.count])
+                let textString = otherUser +  " started following you."
+                
+                cell.cellMessage.text = textString
+                cell.cellMessage.setLinkForSubstring(otherUser, withLinkHandler: handlerOtherUser)
+
                 break;
             
             // If a friend adds in a new profile
@@ -169,11 +188,17 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 print("SOCIAL MEDIA TYPE: ", newsfeedList[indexPath.row]["data"]!["type"])
                 print("SOCIAL MEDIA NAME: ", newsfeedList[indexPath.row]["data"]!["name"])
 
+                let handlerOtherUser = {
+                    (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
+                    showPopupForUser(otherUser)
+                }
                 
                 let textString = otherUser +  " added a " + socialMediaType + " account, check it out!"
                 
-                cell.cellMessage.attributedText = createAttributedTextString(textString, boldStartArray: [0], boldEndArray: [otherUser.characters.count])
+                cell.cellMessage.text = textString
+                cell.cellMessage.setLinkForSubstring(otherUser, withLinkHandler: handlerOtherUser)
                 
+                                
                 // show the new account that was added
                 cell.sponsoredProfileImageType = socialMediaType
                 cell.sponsoredProfileImageName = socialMediaName

@@ -7,35 +7,37 @@
 //
 
 import UIKit
+import FRHyperLabel
 
 class NewsfeedTableViewCell: UITableViewCell {
     
     @IBOutlet weak var cellImage: UIImageView!
-    @IBOutlet weak var cellMessage: UILabel!
+    @IBOutlet weak var cellMessage: FRHyperLabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var cellUserName: UILabel!
     @IBOutlet weak var cellTimeConnected: UILabel!
     @IBOutlet weak var caretImageView: UIImageView!
     @IBOutlet weak var sponsoredProfileImageButton: UIButton!
+    @IBOutlet weak var newsfeedView: UIView!
     
     var sponsoredProfileImageType : String!
     var sponsoredProfileImageName : String!
     
     
-    
-//    override init(style: UITableViewCellStyle, reuseIdentifier: String? )
-//    {
-//        super.init(style: style, reuseIdentifier: reuseIdentifier)
-//
-//        // Make cell image views circular
-//        sponsoredProfileImageView.layer.cornerRadius = sponsoredProfileImageView.frame.width / 2
-//        cellImage.layer.cornerRadius = cellImage.frame.width / 2
-//
-//    }
-//    
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)!
-//    }
+    // Set default FRHyperLabel for this app. Set it here so that we
+    // do not have to set it later (if not, user might see default hyperlink while this is loading)
+    override func awakeFromNib() {
+        // UI Color for #0F7A9D (www.uicolor.xyz)
+        let aquaBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
+        let attributes = [NSForegroundColorAttributeName: aquaBlue,
+                          NSFontAttributeName: UIFont.boldSystemFontOfSize(15.0)]
+        cellMessage.numberOfLines = 0
+        cellMessage.linkAttributeDefault = attributes
+        
+        // Change cellMessage max width to a value close to the width of the frame itself
+        // Note: 10 is arbritrary
+//        cellMessageWidthConstraint.constant = self.frame.width - cellImage.frame.width - cellTimeConnected.frame.width - 10
+    }
     
     func rotateCaret180Degrees()
     {
