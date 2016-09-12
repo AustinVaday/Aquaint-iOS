@@ -173,14 +173,19 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             showPopupForUser(connectedUser.userName)
         }
         
-//        cell.cellName.text = connectedUser.userFullName
         cell.cellName.numberOfLines = 0
         let textString = connectedUser.userFullName + " Is the man!"
-        let attributes = [NSForegroundColorAttributeName: UIColor.blackColor(),
-                          NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)]
         
-        cell.cellName.attributedText = NSAttributedString(string: textString, attributes: attributes)
+        // UI Color for #0F7A9D (www.uicolor.xyz)
+        let aquaBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
+        let attributes = [NSForegroundColorAttributeName: aquaBlue,
+                          NSFontAttributeName: UIFont.boldSystemFontOfSize(15.0)]
+        
+        cell.cellName.attributedText = NSAttributedString(string: textString, attributes: nil)
         cell.cellName.setLinkForSubstring(connectedUser.userFullName, withLinkHandler: handler)
+ 
+        cell.cellName.linkAttributeDefault = attributes
+    
         
         cell.cellUserName.text = connectedUser.userName
         cell.cellImage.image = connectedUser.userImage
