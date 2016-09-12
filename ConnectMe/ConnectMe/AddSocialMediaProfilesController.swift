@@ -165,6 +165,8 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
              * INSTAGRAM DATA FETCH
              **************************************************************************/
             SimpleAuth.authorize("instagram") { (result, error) in
+                
+                print("INSTAGRAM")
                 print("ERROR IS: ", error)
 
                 
@@ -201,19 +203,24 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                     
                     let jsonResult = result as! NSDictionary
                     
-//                    socialMediaName = jsonResult["extra"]!["raw_info"]!["screen_name"]! as String!
-//                    
-//                    if (socialMediaName != nil)
-//                    {
-//                        print("Twitter username returned is: ", socialMediaName)
-//                    
-//                        self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
-//                    }
-//                    else
-//                    {
-//                        print("LINKEDIN USERNAME IS NIL.")
-//                    }
+                    let profileUrl = jsonResult["raw_info"]!["siteStandardProfileRequest"]!["url"]! as String!
 
+                    
+                    if (profileUrl != nil)
+                    {
+                        let urlArray = profileUrl.componentsSeparatedByString("id=")
+                        
+                        if urlArray.count == 2
+                        {
+                            print ("FIRST PART", urlArray[0])
+                            print ("SECOND PART", urlArray[1])
+                            
+                            // This is not a username, but a special ID linkedin generated for us.
+                            socialMediaName = urlArray[1]
+                            self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+                            
+                        }
+                    }
                 }
                 else
                 {

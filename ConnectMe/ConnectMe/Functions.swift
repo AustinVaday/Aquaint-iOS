@@ -80,8 +80,8 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
         altString = "http://www.twitter.com/" + socialMediaUserName
         break;
     case "linkedin":
-        urlString = "linkedin://profile/" + socialMediaUserName
-        altString = "http://www.linkedin.com/in/" + socialMediaUserName
+        urlString = "linkedin://profile/view?id=" + socialMediaUserName //MAY NOT WORK? (added view?)
+        altString = "https://www.linkedin.com/profile/view?id=" + socialMediaUserName
         break;
     case "youtube":
         urlString = "youtube:www.youtube.com/user/" + socialMediaUserName
@@ -136,6 +136,7 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
         }
     }
     
+    print("SOCIAL MEDIA URL IS: ", socialMediaURL)
     return socialMediaURL
 }
 
