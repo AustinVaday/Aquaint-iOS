@@ -15,7 +15,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     
     @IBOutlet weak var worldConnectionsTableView: UITableView!
     
-    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube")
+    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
     
     var currentUserName : String!
     

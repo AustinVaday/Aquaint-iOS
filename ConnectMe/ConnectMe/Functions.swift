@@ -68,7 +68,6 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
         altString = "http://www.facebook.com/" + socialMediaUserName
         break;
     case "snapchat":
-        
         urlString = "snapchat://add/" + socialMediaUserName
         altString = "http://www.snapchat.com/add/" + socialMediaUserName
         break;
@@ -89,6 +88,9 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
         urlString = "youtube:www.youtube.com/user/" + socialMediaUserName
         altString = "http://www.youtube.com/" + socialMediaUserName
         break;
+    case "tumblr":
+        urlString = "tumblr://x-callback-url/blog?blogName=" + socialMediaUserName
+        altString = "http://" + socialMediaUserName + ".tumblr.com"
     case "phone":
         print ("COMING SOON")
         

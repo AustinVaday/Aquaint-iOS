@@ -16,7 +16,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     let cellIdentifier = "newsfeedCell"
     @IBOutlet weak var newsfeedTableView: UITableView!
     
-    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube")
+    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
     
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!

@@ -64,8 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
         
         SimpleAuth.configuration()["tumblr"] = [
-            "consumer_key": "",
-            "consumer_secret": ""
+            "consumer_key": "tIjbRWwLaDWzczQ7OvD9afEzI9clVEBrRcPF3ll0ncoIhuhBfA",
+            "consumer_secret": "aOWaAIe92RsV0ddP3yEDQLCwgF307CXOlyngosvbE28DLGCYVm"
         ]
                 
         

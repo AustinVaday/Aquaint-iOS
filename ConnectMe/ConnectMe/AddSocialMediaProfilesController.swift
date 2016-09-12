@@ -17,7 +17,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
     
-    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube" /*, "phone"*/)
+    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
     
     override func viewDidLoad() {
        
@@ -141,13 +141,6 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                     
                     let jsonResult = result as! NSDictionary
                     
-                    // Get user's nickname from JSON object returned. I.e:
-                    // info
-                    // {
-                    //    nickname = "AustinVaday";
-                    //    ...
-                    // }
-                    
                     socialMediaName = jsonResult["info"]!["nickname"]! as String!
                     print("Twitter username returned is: ", socialMediaName)
                     
@@ -202,16 +195,6 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                     
                     let jsonResult = result as! NSDictionary
                     
-                    // Get user's LinkedIn screenname from JSON object returned. I.e:
-                    // extra
-                    // {
-                    //    raw_info
-                    //    {
-                    //       screen_name = ....
-                    //    }
-                    //    ...
-                    // }
-                    
 //                    socialMediaName = jsonResult["extra"]!["raw_info"]!["screen_name"]! as String!
 //                    
 //                    if (socialMediaName != nil)
@@ -248,6 +231,35 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
              **************************************************************************/
             showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
 
+            
+            break
+        case "tumblr" :
+            /*************************************************************************
+             * TUMBLR DATA FETCH
+             **************************************************************************/
+            SimpleAuth.authorize("tumblr") { (result, error) in
+                
+                if (result == nil)
+                {
+                    print("CANCELLED REQUEST")
+                }
+                else if (error == nil)
+                {
+                    print ("RESULT IS: ", result)
+                    
+                    let jsonResult = result as! NSDictionary
+                    
+                    socialMediaName = jsonResult["extra"]!["raw_info"]!["name"]! as String!
+                    print("Tumblr username returned is: ", socialMediaName)
+                    
+                    self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+                }
+                else
+                {
+                    print ("FAILED TO PROCESS REQUEST")
+                }
+                
+            }
             
             break
         default:
