@@ -45,6 +45,7 @@ PODS:
   - FirebaseDatabase (3.0.2):
     - FirebaseAnalytics (~> 3.2)
   - FirebaseInstanceID (1.0.7)
+  - FRHyperLabel (1.0.2)
   - GoogleAppUtilities (1.1.1):
     - GoogleSymbolUtilities (~> 1.0)
   - GoogleAuthUtilities (2.0.1):
@@ -146,6 +147,7 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
+  - FRHyperLabel
   - GoogleSignIn
   - KLCPopup
   - SimpleAuth
@@ -167,6 +169,7 @@ SPEC CHECKSUMS:
   FirebaseAuth: 5efddc3fae47042b73585f083f956462be4f5b8e
   FirebaseDatabase: 59bea2e7dfd81b3b8b2f8e396caf1a52c2ced6f7
   FirebaseInstanceID: a9d923f3d0b6fbf9fac89310860357aaadc34be5
+  FRHyperLabel: 967b8b7ffdd86b9f2d44f2981a5688c4d3faa9ac
   GoogleAppUtilities: f1730f91f67767b453c289577040dd3f425ffdc7
   GoogleAuthUtilities: d7a19615cd7627688afcf181737f1011ee8b5a23
   GoogleInterchangeUtilities: def8415a862effc67d549d5b5b0b9c7a2f97d4de

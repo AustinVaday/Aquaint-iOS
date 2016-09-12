@@ -54,6 +54,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FRHyperLabel.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>ISO8601.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -102,6 +107,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>053AA6636C9FBBBA1721D7E79C3A1D4A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>0EA1AF77E281BFE665CC0031A7EFE6A5</key>
 		<dict>
 			<key>primary</key>
@@ -122,12 +132,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4045F7EA49BBEF7A2A84B20DABA54314</key>
+		<key>3CC1CC8F1FF0227D7B20F9AADF2A0163</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>416F61019097508B928EF8279F0EC86D</key>
+		<key>44275ED18065CCAD7CCCB431C309CA20</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -147,7 +157,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>92CDBCB215CE1EFDC156B08E5BDFD3F1</key>
+		<key>8AC3A872076A8A8D427C4CF335EEF543</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8C7866E1905DC3A2FD452BCAF62690C6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -167,12 +182,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A2B0015A233361600C30EC2A06C5F0E0</key>
+		<key>A79E4DFDB520AC579CEA22EC6DE9ECD7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A79E4DFDB520AC579CEA22EC6DE9ECD7</key>
+		<key>A7F777F8FEACCF024DC7F8D2150AF7C7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -183,11 +198,6 @@
 			<true/>
 		</dict>
 		<key>BAA396C4D689A02A15029B49E076FAF0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>CEBC86B2779DE64D8CBC371CFF6316B8</key>
 		<dict>
 			<key>primary</key>
 			<true/>

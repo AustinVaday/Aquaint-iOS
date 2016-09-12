@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>icons-sketch</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="search-copy-2" sketch:type="MSLayerGroup" transform="translate(1.000000, 1.000000)">
+            <g id="group" transform="translate(5.000000, 5.100000) scale(-1, 1) translate(-5.000000, -5.100000) translate(0.600000, 0.800000)" stroke="#FFFFFF" sketch:type="MSShapeGroup">
+                <ellipse id="oval" stroke-width="0.6" cx="4.88237905" cy="3.90909091" rx="3.90590324" ry="3.90909091"></ellipse>
+                <path d="M4.7733771,6.41723302 C6.21765635,6.41723302 7.38847589,5.24545795 7.38847589,3.8" id="Shine" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="bevel"></path>
+                <path d="M2.0505992,6.73429752 L0.132128636,8.47978506" id="line" stroke-width="1.2" stroke-linecap="round"></path>
+            </g>
+            <rect id="bounds" sketch:type="MSShapeGroup" x="0" y="0" width="10" height="10"></rect>
+        </g>
+    </g>
+</svg>

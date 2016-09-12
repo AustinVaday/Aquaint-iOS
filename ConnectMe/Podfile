@@ -16,6 +16,7 @@ pod 'Firebase/Auth'
 # -------------
 pod 'SimpleAuth'
 pod 'KLCPopup'
+pod 'FRHyperLabel'
 # Pod for phone kit parsing
 # -------------
 source 'https://github.com/CocoaPods/Specs.git'

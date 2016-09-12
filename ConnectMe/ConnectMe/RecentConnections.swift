@@ -9,6 +9,7 @@
 
 import UIKit
 import AWSLambda
+import FRHyperLabel
 
 class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -167,7 +168,20 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         print("CVTAG#: ", cell.collectionView.tag, "CORRESPONDS TO: ", connectedUser.userName )
         
-        cell.cellName.setTitle(connectedUser.userFullName, forState: .Normal)
+        let handler = {
+            (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
+            showPopupForUser(connectedUser.userName)
+        }
+        
+//        cell.cellName.text = connectedUser.userFullName
+        cell.cellName.numberOfLines = 0
+        let textString = connectedUser.userFullName + " Is the man!"
+        let attributes = [NSForegroundColorAttributeName: UIColor.blackColor(),
+                          NSFontAttributeName: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)]
+        
+        cell.cellName.attributedText = NSAttributedString(string: textString, attributes: attributes)
+        cell.cellName.setLinkForSubstring(connectedUser.userFullName, withLinkHandler: handler)
+        
         cell.cellUserName.text = connectedUser.userName
         cell.cellImage.image = connectedUser.userImage
         cell.cellTimeConnected.text = connectedUser.computeTimeDiff()

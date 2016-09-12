@@ -7,16 +7,17 @@
 //
 
 import UIKit
+import FRHyperLabel
 
 class ContactsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var cellImage: UIImageView!
-    @IBOutlet weak var cellName: UIButton!
+    @IBOutlet weak var cellName: FRHyperLabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var cellUserName: UILabel!
     @IBOutlet weak var cellTimeConnected: UILabel!
     
-    @IBAction func nameButtonClicked(sender: AnyObject) {
-        showPopupForUser(cellUserName.text!)
-    }
+//    @IBAction func nameButtonClicked(sender: AnyObject) {
+//        showPopupForUser(cellUserName.text!)
+//    }
 }

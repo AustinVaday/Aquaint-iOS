@@ -28,8 +28,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewDidLoad(){
         
-        // Display popup for a particular user upon request
-        showPopupForUser("tolvstad")
         
         allUsers = Array<User>()
         filteredUsers = Array<User>()

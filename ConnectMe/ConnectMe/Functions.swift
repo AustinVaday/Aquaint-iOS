@@ -565,6 +565,12 @@ func getCurrentCachedUserImage() -> UIImage!
     // Get data of image
     let data = NSData(contentsOfURL: imageURL!)
     
+    if (data == nil)
+    {
+        print("Uh oh, no cached userImage available -- data is nil.")
+        return nil
+    }
+    
     // Generate image from data
     let currentUserImage = UIImage(data: data!)
     

@@ -59,6 +59,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var editedUserEmail : String!
     var editedUserPhone : String!
     
+    var currentUserAccountsDirty = false
     var isKeyboardShown = false
     var enableEditing = false // Whether or not to enable editing of text fields.
     var buttonViewOriginalFrame : CGRect!
@@ -112,6 +113,20 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         print("CUR USERNAME: ", currentUserName)
         
+        
+        if currentUserAccountsDirty
+        {
+            print("CURRENT USER ACCOUNT DIRTY!")
+            getUserDynamoData(currentUserName, completion: { (result, error) in
+                if result != nil && error == nil
+                {
+                    self.currentUserAccounts = result!.accounts as NSMutableDictionary
+                    setCurrentCachedUserProfiles(self.currentUserAccounts)
+                }
+            })
+            
+            
+        }
         
         // If any values are nil, we need to re-cache
         if (currentRealName == nil ||
@@ -636,6 +651,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         {
         case MenuData.LINKED_PROFILES.rawValue:
             let cell = tableView.dequeueReusableCellWithIdentifier("menuProfilesCell") as! MenuProfilesCell!
+            
+            // Show delete buttons if editing is enabled.
+            if (enableEditing)
+            {
+                //TODO: Red delete buttons
+            }
+            
             return cell
             break;
         case MenuData.MY_INFORMATION.rawValue:
@@ -854,6 +876,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     {
         print("Success unwind to menu VC")
         print("REFRESH COLLECTION VIEW")
+        currentUserAccountsDirty = true
         viewDidLoad()
     }
     

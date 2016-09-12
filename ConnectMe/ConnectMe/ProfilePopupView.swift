@@ -143,5 +143,20 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
 
     }
     
+    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
+        print("SELECTED ITEM AT ", indexPath.item)
+        
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
+        let socialMediaUserName = cell.socialMediaName // username..
+        let socialMediaType = cell.socialMediaType // "facebook", "snapchat", etc..
+        
+        let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
+        
+        // Perform the request, go to external application and let the user do whatever they want!
+        UIApplication.sharedApplication().openURL(socialMediaURL)
+        
+    }
+
+    
     
 }
