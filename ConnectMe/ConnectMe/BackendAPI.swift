@@ -300,4 +300,86 @@ func getUserPoolData(userName: String!, completion: (result: UserPoolData?, erro
     
 }
 
+func updateCurrentUserProfilesDynamoDB(socialMediaType:String, socialMediaName:String, isAdding:Bool, completion: (result: User?, error: NSError?)->())
+{
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+    let currentUser = getCurrentCachedUser()
+    let currentRealName = getCurrentCachedFullName()
+    let currentAccounts = getCurrentCachedUserProfiles() as NSMutableDictionary
+    
+
+    if (isAdding && currentAccounts.valueForKey(socialMediaType) == nil)
+    {
+        currentAccounts.setValue([ socialMediaName ], forKey: socialMediaType)
+        
+    } // If it already exists, append value to end of list
+    else
+    {
+        
+        var list = currentAccounts.valueForKey(socialMediaType) as! Array<String>
+        
+        if isAdding
+        {
+            list.append(socialMediaName)
+        }
+        else
+        {
+            // Get list without this socialMediaName (i.e. remove it...)
+            list.removeAtIndex(list.indexOf(socialMediaName)!)
+        }
+    
+        // If nothing in list, we need to delete the key
+        if list.count == 0
+        {
+            currentAccounts.removeObjectForKey(socialMediaType)
+        }
+        else
+        {
+            currentAccounts.setValue(list, forKey: socialMediaType)
+        }
+    }
+    
+    // Upload user DATA to DynamoDB
+    let dynamoDBUser = User()
+    
+    dynamoDBUser.username = currentUser
+    dynamoDBUser.realname = currentRealName
+    
+    // Only add this object if there is data to consider. If we give an empty dictionary,
+    // dynamo will throw an error.
+    if currentAccounts.count != 0
+    {
+        dynamoDBUser.accounts = currentAccounts
+    }
+
+    print(currentUser, " BEEP ", currentRealName, " BEEP ", currentAccounts)
+    
+    dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+        
+        if (resultTask.error != nil)
+        {
+            print ("DYNAMODB MODIFY PROFILE ERROR: ", resultTask.error)
+            completion(result: nil, error: resultTask.error)
+        }
+        
+        if (resultTask.result == nil)
+        {
+            print ("DYNAMODB MODIFY PROFILE result is nil....: ")
+            completion(result: nil, error: nil)
+            
+        }
+            // If successful save
+        else if (resultTask.error == nil)
+        {
+            print ("DYNAMODB MODIFY PROFILE SUCCESS: ", resultTask.result)
+            completion(result: dynamoDBUser, error: nil)
+        }
+        
+        
+        return nil
+    })
+    
+}
+
+
 

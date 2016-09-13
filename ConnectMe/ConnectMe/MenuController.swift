@@ -14,7 +14,7 @@ import AWSDynamoDB
 import AWSS3
 import AWSLambda
 
-class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate {
+class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate {
     
     enum MenuData: Int {
         case LINKED_PROFILES
@@ -551,12 +551,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        
-        print("INSIDE COLLECTION VIEW -- ENSUANTA")
-        
-        print("DATATATA: ", keyValSocialMediaPairList)
-
-        
+    
       let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accountsCollectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
         
         if (!keyValSocialMediaPairList.isEmpty)
@@ -571,6 +566,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             cell.socialMediaName = socialMediaUserName // username
             cell.socialMediaType = socialMediaType // facebook, snapchat, etc
+            
+            cell.delegate = self
             
             print("enableEditing is: ", enableEditing)
             // Show the delete buttons if in editing mode!
@@ -870,7 +867,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         print("In protocol implementation -- data added: ", socialMediaType, " ", socialMediaName)
         
-        print("BEFORE: ", keyValSocialMediaPairList)
         // Dynamo updated already, just update local cache
         
         // If user does not have a particular social media type,
@@ -898,11 +894,83 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Convert dictionary to key,val pairs. Redundancy allowed
         self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
         
-        print("AFTER: ", keyValSocialMediaPairList)
-
         
         // Reload table view data
         settingsTableView.reloadData()
+        
+    }
+    
+    func userDidDeleteSocialMediaProfile(socialMediaType: String, socialMediaName: String) {
+        
+        print("OK! time to delete ", socialMediaType, " --> ", socialMediaName)
+        
+        // NEED TO DELETE DYNAMO DATA HERE..
+//        
+//        // If user does not have a particular social media type,
+//        // nothing to do
+//        if (currentUserAccounts.valueForKey(socialMediaType) != nil)
+//        {
+//            let list = currentUserAccounts.valueForKey(socialMediaType) as! Array<String>
+//            // Get list without this socialMediaName (i.e. remove it...)
+//            let newList = list.filter{ $0 != socialMediaName }
+//            
+//            currentUserAccounts.setValue(newList, forKey: socialMediaType)
+//        }
+//        
+//        
+//        setCurrentCachedUserProfiles(currentUserAccounts)
+//        
+//        // Dictionary with key: string of social media types (i.e. "facebook"),
+//        // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
+//        self.socialMediaUserNames = currentUserAccounts
+//        
+//        // Convert dictionary to key,val pairs. Redundancy allowed
+//        self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+//        
+//        
+//        // Reload table view data
+//        settingsTableView.reloadData()
+//        
+//        // Remove data from dynamo..
+//        
+//        
+//        
+        updateCurrentUserProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName, isAdding: false) { (result, error) in
+            
+            if result != nil && error == nil
+            {
+                if result?.accounts == nil
+                {
+                    // Instantiate empty dictionary..
+                    self.currentUserAccounts = NSMutableDictionary()
+                }
+                else
+                {
+                    self.currentUserAccounts = (result?.accounts)!
+                }
+                
+                
+                setCurrentCachedUserProfiles(self.currentUserAccounts)
+                
+                // Dictionary with key: string of social media types (i.e. "facebook"),
+                // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
+                self.socialMediaUserNames = self.currentUserAccounts
+                
+                // Convert dictionary to key,val pairs. Redundancy allowed
+                self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                
+                
+                // Perform update on UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    // Propogate collection view with new data
+                    self.settingsTableView.reloadData()
+                    
+                })
+                
+            }
+        }
+        
         
     }
     
@@ -922,6 +990,54 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     }
     
+    private func updateProfilesDynamoDB(currentAccounts: NSMutableDictionary)
+    {
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        let currentUser = getCurrentCachedUser()
+        let currentRealName = getCurrentCachedFullName()
+    
+    
+        // Upload user DATA to DynamoDB
+        let dynamoDBUser = User()
+        
+        dynamoDBUser.username = currentUser
+        dynamoDBUser.realname = currentRealName
+        dynamoDBUser.accounts = currentAccounts
+        
+        dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+            
+            if (resultTask.error != nil)
+            {
+                print ("DYNAMODB MODIFY PROFILE ERROR: ", resultTask.error)
+            }
+            
+            if (resultTask.exception != nil)
+            {
+                print ("DYNAMODB MODIFY PROFILE EXCEPTION: ", resultTask.exception)
+            }
+            
+            if (resultTask.result == nil)
+            {
+                print ("DYNAMODB MODIFY PROFILE result is nil....: ")
+                
+            }
+                // If successful save
+            else if (resultTask.error == nil)
+            {
+                print ("DYNAMODB MODIFY PROFILE SUCCESS: ", resultTask.result)
+                
+                // Also cache accounts data
+//                setCurrentCachedUserProfiles(currentAccounts)
+                
+                // Refresh something...
+            }
+            
+            
+            return nil
+        })
+        
+    }
+
     // UNWIND SEGUES
     @IBAction func unwindBackToMenuVC(segue:UIStoryboardSegue)
     {
@@ -939,6 +1055,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             vc.delegate = self
         }
     }
+    
     
     
 }
