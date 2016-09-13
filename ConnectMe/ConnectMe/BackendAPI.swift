@@ -188,13 +188,50 @@ func getUserS3Image(userName: String!, completion: (result: UIImage?, error: NSE
         return nil
         
     })
-
-    
-    
-    
     
 }
 
+func setUserS3Image(userName: String!, userImage: UIImage!, completion: (error: NSError?)->())
+{
+    
+    // Resize photo for cheaper storage
+    let targetSize = CGSize(width: 150, height: 150)
+    let newImage = RBResizeImage(userImage, targetSize: targetSize)
+    
+    // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
+    let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
+    
+    // Force PNG format
+    let data = UIImagePNGRepresentation(newImage)
+    try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+    
+    // AWS TRANSFER REQUEST
+    let transferRequest = AWSS3TransferManagerUploadRequest()
+    transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
+    transferRequest.key = "public/" + userName
+    transferRequest.body = imageFileURL
+    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+    
+    transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
+        { (resultTask) -> AnyObject? in
+            
+            // if sucessful file transfer
+            if resultTask.error == nil
+            {
+                // Also cache it.. only if file successfully uploadsd
+                setCurrentCachedUserImage(userImage)
+                completion(error: nil)
+                
+            }
+            else // If fail file transfer
+            {
+                completion(error: resultTask.error)
+            }
+            
+            return nil
+    })
+
+}
 
 struct UserPoolData
 {

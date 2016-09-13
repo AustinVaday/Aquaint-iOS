@@ -14,7 +14,7 @@ import AWSDynamoDB
 import AWSS3
 import AWSLambda
 
-class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate {
+class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     enum MenuData: Int {
         case LINKED_PROFILES
@@ -327,6 +327,44 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     /*=======================================================
      * END : Keyboard/Button Animations
      =======================================================*/
+    
+    @IBAction func onChangeProfilePictureClicked(sender: UIButton) {
+        let imagePicker = UIImagePickerController()    // Used for selecting image from user's device
+
+        // Present the Saved Photo Album to user only if it is available
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum)
+        {
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum
+            imagePicker.allowsEditing = false
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+        }
+
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        // Close the image picker view when user is finished with it
+        self.dismissViewControllerAnimated(true, completion: nil)
+        
+        // Set the button's new image
+        setUserS3Image(currentUserName, userImage: image) { (error) in
+            
+            // Perform update on UI on main thread
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if error != nil
+                {
+                    showAlert("Sorry", message: "Something went wrong, we couldn't upload the photo right now. Please try again later.", buttonTitle: "Ok", sender: self)
+                }
+                else
+                {
+                    self.profileImageView.image = image
+                }
+            })
+        }
+    }
+    
+    
+    
     @IBAction func onEditInformationButtonClicked(sender: AnyObject) {
         
         // Reload data with editing enabled
