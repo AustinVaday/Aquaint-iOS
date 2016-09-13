@@ -28,11 +28,26 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     var expansionObj:CellExpansion!
+    var animatedObjects : Array<UIView>!
+    var shouldShowAnimations = false
 
+    
+    override func viewDidAppear(animated: Bool) {
+        if shouldShowAnimations && newsfeedList.count == 0
+        {
+            setUpAnimations(self.view.frame.width)
+        }
+    }
+    
+    // Remove animations after user leaves page. Prevents post-animation stale objects
+    override func viewDidDisappear(animated: Bool) {
+        clearUpAnimations()
+    }
     override func viewDidLoad() {
         
+        print ("VIEW LOADED")
         newsfeedList = NSArray()
-    
+        animatedObjects = Array<UIView>()
         
         // Fill the dictionary of all social media names (key) with an image (val).
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
@@ -66,7 +81,21 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 // Update UI on main thread
                 dispatch_async(dispatch_get_main_queue(), {
+                    
+                    // TODO: TEMPORARY
+                    // DEBUGGING MODE -- SET NEWSFEED LIST TO EMPTY LIST
+//                    self.newsfeedList = NSArray()
+                    
+                    if self.newsfeedList.count == 0
+                    {
+                        self.shouldShowAnimations = true
+                    }
+                    else
+                    {
+                        self.shouldShowAnimations = false
+                    }
                     self.newsfeedTableView.reloadData()
+
                 })
 
                 
@@ -114,6 +143,19 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // TODO: If more than one user,
         // Display up to 30 users immediately
         // Display 20 more if user keeps sliding down
+        
+        // Extra check to wait for trigger until showing animations
+        if shouldShowAnimations
+        {
+            if newsfeedList.count == 0
+            {
+                setUpAnimations(self.view.frame.width)
+            }
+            else
+            {
+                clearUpAnimations()
+            }
+        }
         
         return newsfeedList.count
     }
@@ -409,4 +451,78 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
 
+    private func setUpAnimations(viewWidth: CGFloat)
+    {
+        // Only add more animations if none exist already. Prevents user abuse
+        if !animatedObjects.isEmpty
+        {
+            return
+        }
+        
+        for i in 0...10
+        {
+            
+            // Set up object to animate
+            let object = UIView()
+            
+            // Generate random size offset from 0.0 to 20.0
+            let randomSizeOffset = CGFloat(arc4random_uniform(20))
+            
+            if i == 7
+            {
+                let aquaintEmblemImage = UIImage(named: "Emblem")
+                let aquaintEmblemView  = UIImageView(image: aquaintEmblemImage!)
+                aquaintEmblemView.frame = CGRect(x:0, y:0, width:100, height:100)
+                object.addSubview(aquaintEmblemView)
+            }
+            else
+            {
+                object.frame = CGRect(x:55, y:300, width:20 + randomSizeOffset, height:20 + randomSizeOffset)
+                object.backgroundColor = generateRandomColor()
+                object.layer.cornerRadius = object.frame.size.width / 2
+            
+            }
+
+            // Generate random number from 0.0 and 150.0
+            let randomYOffset = CGFloat( arc4random_uniform(150))
+            
+            // Add object to subview
+            self.view.addSubview(object)
+            
+            // Create a cool path that defines animation curve
+            let path = UIBezierPath()
+            path.moveToPoint(CGPoint(x:-20, y:239 + randomYOffset))
+            path.addCurveToPoint(CGPoint(x:viewWidth + 50 , y: 239 + randomYOffset), controlPoint1: CGPoint(x: 136, y: 373 + randomYOffset), controlPoint2: CGPoint(x: 178, y: 110 + randomYOffset))
+            
+            // Set up animation with path
+            let animation = CAKeyframeAnimation(keyPath: "position")
+            animation.path = path.CGPath
+            
+            // Set up rotational animations
+            animation.rotationMode = kCAAnimationRotateAuto
+            animation.repeatCount = Float.infinity
+            animation.duration = 5.0
+            // each square will take between 4.0 and 8.0 seconds
+            // to complete one animation loop
+            animation.duration = Double(arc4random_uniform(40)+30) / 10
+            
+            // stagger each animation by a random value
+            // `290` was chosen simply by experimentation
+            animation.timeOffset = Double(arc4random_uniform(290))
+            
+            object.layer.addAnimation(animation, forKey: "animate position along path")
+            animatedObjects.append(object)
+        }
+    }
+    
+    private func clearUpAnimations()
+    {
+        for object in animatedObjects
+        {
+            object.layer.removeAllAnimations()
+            object.removeFromSuperview()
+        }
+        
+        animatedObjects.removeAll()
+    }
 }
