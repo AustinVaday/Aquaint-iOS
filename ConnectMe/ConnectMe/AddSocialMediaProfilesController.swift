@@ -116,7 +116,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                             
                             socialMediaName = FBSDKAccessToken.currentAccessToken().userID
                             
-                            self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+//                            self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
                             
                             if self.delegate != nil
                             {
@@ -158,7 +158,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                     socialMediaName = jsonResult["info"]!["nickname"]! as String!
                     print("Twitter username returned is: ", socialMediaName)
                     
-                    self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+//                    self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
                     
                     if self.delegate != nil
                     {
@@ -232,7 +232,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                             
                             // This is not a username, but a special ID linkedin generated for us.
                             socialMediaName = urlArray[1]
-                            self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+//                            self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
                             
                             if self.delegate != nil
                             {
@@ -285,7 +285,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                     socialMediaName = jsonResult["extra"]!["raw_info"]!["name"]! as String!
                     print("Tumblr username returned is: ", socialMediaName)
                     
-                    self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+//                    self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
                     
                     if self.delegate != nil
                     {
@@ -336,7 +336,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
 //        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    
+    // The below function is too specific -- see general one
     private func updateProfilesDynamoDB(socialMediaType: String!, socialMediaName: String!)
     {
         let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()

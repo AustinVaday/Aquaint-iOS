@@ -867,36 +867,75 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         print("In protocol implementation -- data added: ", socialMediaType, " ", socialMediaName)
         
-        // Dynamo updated already, just update local cache
-        
-        // If user does not have a particular social media type,
-        // we need to create a list
-        if (currentUserAccounts.valueForKey(socialMediaType) == nil)
-        {
-            currentUserAccounts.setValue([ socialMediaName ], forKey: socialMediaType)
+        updateCurrentUserProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName, isAdding: true) { (result, error) in
             
-        } // If it already exists, append value to end of list
-        else
-        {
-            var list = currentUserAccounts.valueForKey(socialMediaType) as! Array<String>
-            list.append(socialMediaName)
-            
-            currentUserAccounts.setValue(list, forKey: socialMediaType)
+            if result != nil && error == nil
+            {
+                if result?.accounts == nil
+                {
+                    // Instantiate empty dictionary..
+                    self.currentUserAccounts = NSMutableDictionary()
+                }
+                else
+                {
+                    self.currentUserAccounts = (result?.accounts)!
+                }
+                
+                
+                setCurrentCachedUserProfiles(self.currentUserAccounts)
+                
+                // Dictionary with key: string of social media types (i.e. "facebook"),
+                // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
+                self.socialMediaUserNames = self.currentUserAccounts
+                
+                // Convert dictionary to key,val pairs. Redundancy allowed
+                self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                
+                
+                // Perform update on UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    // Propogate collection view with new data
+                    self.settingsTableView.reloadData()
+                    
+                })
+                
+            }
         }
 
         
-        setCurrentCachedUserProfiles(currentUserAccounts)
-        
-        // Dictionary with key: string of social media types (i.e. "facebook"),
-        // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
-        self.socialMediaUserNames = currentUserAccounts
-        
-        // Convert dictionary to key,val pairs. Redundancy allowed
-        self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
         
         
-        // Reload table view data
-        settingsTableView.reloadData()
+//        // Dynamo updated already, just update local cache
+//        
+//        // If user does not have a particular social media type,
+//        // we need to create a list
+//        if (currentUserAccounts.valueForKey(socialMediaType) == nil)
+//        {
+//            currentUserAccounts.setValue([ socialMediaName ], forKey: socialMediaType)
+//            
+//        } // If it already exists, append value to end of list
+//        else
+//        {
+//            var list = currentUserAccounts.valueForKey(socialMediaType) as! Array<String>
+//            list.append(socialMediaName)
+//            
+//            currentUserAccounts.setValue(list, forKey: socialMediaType)
+//        }
+//
+//        
+//        setCurrentCachedUserProfiles(currentUserAccounts)
+//        
+//        // Dictionary with key: string of social media types (i.e. "facebook"),
+//        // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
+//        self.socialMediaUserNames = currentUserAccounts
+//        
+//        // Convert dictionary to key,val pairs. Redundancy allowed
+//        self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+//        
+//        
+//        // Reload table view data
+//        settingsTableView.reloadData()
         
     }
     
