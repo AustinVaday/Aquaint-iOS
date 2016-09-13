@@ -77,6 +77,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     let footerHeight = CGFloat(65)
     let defaultTableViewCellHeight = CGFloat(60)
+    let defaultImage = UIImage(imageLiteral: "Person Icon Black")
 
     override func viewDidLoad() {
 
@@ -151,8 +152,15 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Set the UI
         userNameLabel.text = currentUserName
         realNameTextFieldLabel.text  = currentRealName
-        profileImageView.image = currentUserImage
-
+        
+        if currentUserImage == nil
+        {
+            profileImageView.image = defaultImage
+        }
+        else
+        {
+            profileImageView.image = currentUserImage
+        }
         
         // Set up dictionary for user's social media names
         socialMediaUserNames = currentUserAccounts

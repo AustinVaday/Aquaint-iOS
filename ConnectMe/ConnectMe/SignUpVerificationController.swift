@@ -293,10 +293,10 @@ class SignUpVerificationController: UIViewController {
                             dynamoDBUser.username = self.userName
                             
                             // No account data to store yet.
-                            let accountData = NSMutableDictionary()
-                            accountData.setValue(["austinvaday", "austinswag"], forKey: "facebook")
-                            accountData.setValue(["austinvaday","avtheman"], forKey: "instagram")
-                            dynamoDBUser.accounts = accountData
+//                            let accountData = NSMutableDictionary()
+//                            accountData.setValue(["austinvaday", "austinswag"], forKey: "facebook")
+//                            accountData.setValue(["austinvaday","avtheman"], forKey: "instagram")
+//                            dynamoDBUser.accounts = accountData
                             
                             self.dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
                                 
@@ -305,7 +305,7 @@ class SignUpVerificationController: UIViewController {
                                 {
                                     print ("DYNAMODB SUCCESS: ", resultTask.result)
                                     
-                                    setCurrentCachedUserProfiles(accountData)
+//                                    setCurrentCachedUserProfiles(accountData)
                                     
                                     // Perform update on UI on main thread
                                     dispatch_async(dispatch_get_main_queue(), { () -> Void in

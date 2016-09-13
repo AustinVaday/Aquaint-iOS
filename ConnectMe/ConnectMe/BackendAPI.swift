@@ -46,7 +46,11 @@ func setCachedUserFromAWS(userName: String!)
             
             setCurrentCachedUserName(userName)
             setCurrentCachedFullName(user.realname)
-            setCurrentCachedUserProfiles(user.accounts as NSMutableDictionary)
+            
+            if user.accounts != nil
+            {
+                setCurrentCachedUserProfiles(user.accounts as NSMutableDictionary)
+            }
         }
         
         return nil
@@ -342,8 +346,16 @@ func updateCurrentUserProfilesDynamoDB(socialMediaType:String, socialMediaName:S
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
     let currentUser = getCurrentCachedUser()
     let currentRealName = getCurrentCachedFullName()
-    let currentAccounts = getCurrentCachedUserProfiles() as NSMutableDictionary
+    var currentAccounts: NSMutableDictionary!
     
+    if (getCurrentCachedUserProfiles() == nil)
+    {
+        currentAccounts = NSMutableDictionary()
+    }
+    else
+    {
+        currentAccounts = getCurrentCachedUserProfiles() as NSMutableDictionary
+    }
 
     if (isAdding && currentAccounts.valueForKey(socialMediaType) == nil)
     {

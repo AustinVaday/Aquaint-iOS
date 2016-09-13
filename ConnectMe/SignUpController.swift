@@ -297,6 +297,10 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         let userFullNameString:String =  userFullName.text!
 //        var userNameExists = false
         
+        // Cache the user email and phone!
+        setCurrentCachedUserEmail(userEmailString)
+        setCurrentCachedUserPhone(userPhoneString)
+
         /*********************************************************************
         * ALERTS - send alert and leave if user enters in improper input
         **********************************************************************/
