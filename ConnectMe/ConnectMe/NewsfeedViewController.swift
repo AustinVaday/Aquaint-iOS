@@ -15,18 +15,15 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
 
     let cellIdentifier = "newsfeedCell"
     @IBOutlet weak var newsfeedTableView: UITableView!
+    @IBOutlet weak var noContentMessage: UILabel!
     
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
-    
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var refreshControl : UIRefreshControl!
 //    var connectionList : Array<Connection>!
     var defaultImage : UIImage!
-    
     var newsfeedList : NSArray! // Array of dictionary to hold all newsfeed data
-    
-    
     var expansionObj:CellExpansion!
     var animatedObjects : Array<UIView>!
     var shouldShowAnimations = false
@@ -35,6 +32,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidAppear(animated: Bool) {
         if shouldShowAnimations && newsfeedList.count == 0
         {
+            noContentMessage.hidden = false
             setUpAnimations(self.view.frame.width)
         }
     }
@@ -42,6 +40,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     // Remove animations after user leaves page. Prevents post-animation stale objects
     override func viewDidDisappear(animated: Bool) {
         clearUpAnimations()
+        noContentMessage.hidden = true
     }
     override func viewDidLoad() {
         
@@ -149,10 +148,12 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         {
             if newsfeedList.count == 0
             {
+                noContentMessage.hidden = false
                 setUpAnimations(self.view.frame.width)
             }
             else
             {
+                noContentMessage.hidden = true
                 clearUpAnimations()
             }
         }
@@ -483,8 +484,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             
             }
 
-            // Generate random number from 0.0 and 150.0
-            let randomYOffset = CGFloat( arc4random_uniform(150))
+            // Generate random number from 0.0 and 200.0
+            let randomYOffset = CGFloat( arc4random_uniform(200))
             
             // Add object to subview
             self.view.addSubview(object)
@@ -502,7 +503,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             animation.rotationMode = kCAAnimationRotateAuto
             animation.repeatCount = Float.infinity
             animation.duration = 5.0
-            // each square will take between 4.0 and 8.0 seconds
+            // Each object will take between 4.0 and 8.0 seconds
             // to complete one animation loop
             animation.duration = Double(arc4random_uniform(40)+30) / 10
             
@@ -517,6 +518,12 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     
     private func clearUpAnimations()
     {
+        // Only remove animations if there are some that exist already. O(1) if empty
+        if animatedObjects.isEmpty
+        {
+            return
+        }
+        
         for object in animatedObjects
         {
             object.layer.removeAllAnimations()
