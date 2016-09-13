@@ -15,7 +15,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
 
     let cellIdentifier = "newsfeedCell"
     @IBOutlet weak var newsfeedTableView: UITableView!
-    @IBOutlet weak var noContentMessage: UILabel!
+    @IBOutlet weak var noContentMessageView: UIView!
+    @IBOutlet weak var emblemButton: UIButton!
     
     let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
     var currentUserName : String!
@@ -32,7 +33,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidAppear(animated: Bool) {
         if shouldShowAnimations && newsfeedList.count == 0
         {
-            noContentMessage.hidden = false
+            noContentMessageView.hidden = false
             setUpAnimations(self.view.frame.width)
         }
     }
@@ -40,10 +41,22 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     // Remove animations after user leaves page. Prevents post-animation stale objects
     override func viewDidDisappear(animated: Bool) {
         clearUpAnimations()
-        noContentMessage.hidden = true
+        noContentMessageView.hidden = true
     }
-    override func viewDidLoad() {
+    
+    
+    @IBAction func onUserClickedAquaintButton(sender: UIButton) {
         
+        // Animate one of our embles out
+        addSingleEmblemAnimation(self.view.frame.width)
+        
+        print("CLICKED")
+    }
+    
+    
+    override func viewDidLoad() {
+        makeViewShine(emblemButton.imageView!)
+
         print ("VIEW LOADED")
         newsfeedList = NSArray()
         animatedObjects = Array<UIView>()
@@ -52,23 +65,28 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
         socialMediaImageDictionary = getAllPossibleSocialMediaImages(possibleSocialMediaNameList)
         
+        let currentUser = getCurrentCachedUser()
         
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action":"getNewsfeed", "target": "tolvstad"]
+        let parameters = ["action":"getNewsfeed", "target": currentUser]
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-            if resultTask.error != nil
+            if resultTask.error != nil || resultTask.exception != nil || resultTask.result == nil
             {
+                
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-            }
-            else if resultTask.exception != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                if self.newsfeedList.count == 0
+                {
+                    self.shouldShowAnimations = true
+                }
+                else
+                {
+                    self.shouldShowAnimations = false
+                }
                 
-            }
-            else if resultTask.result == nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-                
+                // Update UI on main thread
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.newsfeedTableView.reloadData()
+                })
             }
             else
             {
@@ -148,12 +166,12 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         {
             if newsfeedList.count == 0
             {
-                noContentMessage.hidden = false
+                noContentMessageView.hidden = false
                 setUpAnimations(self.view.frame.width)
             }
             else
             {
-                noContentMessage.hidden = true
+                noContentMessageView.hidden = true
                 clearUpAnimations()
             }
         }
@@ -516,6 +534,53 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+    private func addSingleEmblemAnimation(viewWidth: CGFloat)
+    {
+        
+        // Set up object to animate
+        let object = UIView()
+        
+        let aquaintEmblemImage = UIImage(named: "Emblem")
+        let aquaintEmblemView  = UIImageView(image: aquaintEmblemImage!)
+        // Set location off of screen so that user doesn't see object when animation completes
+        aquaintEmblemView.frame = CGRect(x:-50, y:-25, width:20, height:20)
+        object.addSubview(aquaintEmblemView)
+    
+        // Generate random number from 0.0 and 200.0
+        let randomYOffset = CGFloat( arc4random_uniform(200))
+        
+        // Add object to subview
+        self.view.addSubview(object)
+        
+        // Create a cool path that defines animation curve
+        let path = UIBezierPath()
+        path.moveToPoint(CGPoint(x:-20, y:239 + randomYOffset))
+        path.addCurveToPoint(CGPoint(x:viewWidth + 50 , y: 239 + randomYOffset), controlPoint1: CGPoint(x: 136, y: 373 + randomYOffset), controlPoint2: CGPoint(x: 178, y: 110 + randomYOffset))
+        
+        // Set up animation with path
+        let animation = CAKeyframeAnimation(keyPath: "position")
+        animation.path = path.CGPath
+        
+        // Set up rotational animations
+        animation.rotationMode = kCAAnimationRotateAuto
+        animation.repeatCount = 1
+        // Each object will take between 4.0 and 8.0 seconds
+        // to complete one animation loop
+        animation.duration = Double(arc4random_uniform(40)+30) / 10
+        
+        // stagger each animation by a random value
+        // `290` was chosen simply by experimentation
+        animation.timeOffset = Double(arc4random_uniform(290))
+        
+        object.layer.addAnimation(animation, forKey: "animate position along path")
+
+        delay(4)
+        {
+            object.layer.removeAllAnimations()
+            object.removeFromSuperview()
+        }
+    }
+    
     private func clearUpAnimations()
     {
         // Only remove animations if there are some that exist already. O(1) if empty
@@ -532,4 +597,26 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         animatedObjects.removeAll()
     }
+    
+    private func makeViewShine(view:UIView)
+    {
+        // UI Color for #12BBD5 (www.uicolor.xyz)
+        let aquaLightColor = UIColor(red:0.07, green:0.73, blue:0.84, alpha:1.0)
+        view.layer.shadowColor = aquaLightColor.CGColor
+        view.layer.shadowRadius = 1.0
+        view.layer.shadowOpacity = 1.0
+        view.layer.shadowOffset = CGSizeZero
+        
+        
+        UIView.animateWithDuration(1.5, delay: 0, options: [UIViewAnimationOptions.Autoreverse, UIViewAnimationOptions.CurveEaseInOut, UIViewAnimationOptions.Repeat, UIViewAnimationOptions.AllowUserInteraction], animations: {
+                UIView.setAnimationRepeatCount(Float.infinity)
+                view.transform = CGAffineTransformMakeScale(1.2, 1.2)
+            
+            }) { (finished) in
+                view.layer.shadowRadius = 0.0
+                view.transform = CGAffineTransformMakeScale(1.0, 1.0)
+                
+        }
+    }
+    
 }
