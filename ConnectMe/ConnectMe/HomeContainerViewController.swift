@@ -83,11 +83,12 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
     }
     
     @IBAction func goToPage1(sender: UIButton) {
-        
-        homePageViewController.changePage(1)
-        
-        hideAllSectionUnderlineViews()
-        sectionUnderlineView1.hidden = false
+
+//        TEMP.. UNCOMMENT IF WANT MORE THAN 1 PAGE.
+//        homePageViewController.changePage(1)
+//        
+//        hideAllSectionUnderlineViews()
+//        sectionUnderlineView1.hidden = false
     }
     
     func updateSectionUnderLineView(newViewNum: Int) {
