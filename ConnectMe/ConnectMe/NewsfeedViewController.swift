@@ -34,6 +34,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         if shouldShowAnimations && newsfeedList.count == 0
         {
             noContentMessageView.hidden = false
+            newsfeedTableView.hidden = true
             setUpAnimations(self.view.frame.width)
         }
     }
@@ -42,6 +43,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidDisappear(animated: Bool) {
         clearUpAnimations()
         noContentMessageView.hidden = true
+        newsfeedTableView.hidden = false
     }
     
     
@@ -167,11 +169,13 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             if newsfeedList.count == 0
             {
                 noContentMessageView.hidden = false
+                newsfeedTableView.hidden = true
                 setUpAnimations(self.view.frame.width)
             }
             else
             {
                 noContentMessageView.hidden = true
+                newsfeedTableView.hidden = false
                 clearUpAnimations()
             }
         }
