@@ -11,6 +11,7 @@ import AWSCognitoIdentityProvider
 import AWSMobileHubHelper
 import AWSDynamoDB
 import AWSS3
+import AWSLambda
 
 class SignUpVerificationController: UIViewController {
     
@@ -277,6 +278,37 @@ class SignUpVerificationController: UIViewController {
                                 })
                                 
                             }
+                            /*************************************
+                             *  UPLOAD USER DATA TO RDS via LAMBDA
+                             *************************************/
+                            // Store username and user realname
+                            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+                            let parameters = ["action":"adduser", "target": self.userName, "realname": self.userFullName]
+                            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+                                if resultTask.error != nil
+                                {
+                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+                                }
+                                else if resultTask.exception != nil
+                                {
+                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                                    
+                                }
+                                else if resultTask.result != nil
+                                {
+                                    print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+
+                                }
+                                else
+                                {
+                                    print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                                    
+                                }
+                                
+                                return nil
+                                
+                            }
+                            
 
                             /********************************
                              *  UPLOAD USER DATA TO DYNAMODB

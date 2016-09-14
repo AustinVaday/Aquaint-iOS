@@ -434,12 +434,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             // Change name at top of page, too
             realNameTextFieldLabel.text = currentRealName
-            
-            
-            // ADD CHANGE TO DYNAMO
-            
-            
-            
+        
         }
         
         if editedUserEmail != nil && !editedUserEmail.isEmpty
@@ -495,7 +490,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Check if we need to update dynamo
         if editedRealName != nil
         {
-            print ("UPDATING DYNAMO")
+            print ("UPDATING REALNAME IN DYNAMO AND LAMBDA")
             
             /********************************
              *  UPLOAD USER DATA TO DYNAMODB
@@ -529,6 +524,33 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 
                 return nil
             })
+            
+            // Update user real name in lambda as well
+            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+            let parameters = ["action":"updatern", "target": currentUserName, "realname": currentRealName]
+            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+                if resultTask.error != nil
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+                }
+                else if resultTask.exception != nil
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                    
+                }
+                else if resultTask.result != nil
+                {
+                    print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                }
+                else
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                    
+                }
+                
+                return nil
+                
+            }
             
         }
         
