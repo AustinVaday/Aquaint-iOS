@@ -54,43 +54,15 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
 //        let userPhone = PhoneNumberTextField()
 //        print("USER PHONE:", userPhone.currentRegion)
 //        print("USER PHONE:", userPhone.defaultRegion)
-        
-        // Get the IDENTITY POOL
-        pool = getAWSCognitoIdentityUserPool()
-        
-        // Set up fileManager for uploading prof pics
-        fileManager = AWSUserFileManager.defaultUserFileManager()
-        
-//        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e", identityProviderManager:pool)
-//        didSignInObserver =  NSNotificationCenter.defaultCenter().addObserverForName(AWSIdentityManagerDidSignInNotification,
-//             object: AWSIdentityManager.defaultIdentityManager(),
-//             queue: NSOperationQueue.mainQueue(),
-//             usingBlock: {(note: NSNotification) -> Void in
-//                
-//                // perform successful login actions here
-//                
-//                print("SUCCESSFUL LOG IN", note)
-//                print(AWSIdentityManager.defaultIdentityManager().userName)
-//                print(AWSIdentityManager.defaultIdentityManager().imageURL)
-//                print(AWSIdentityManager.defaultIdentityManager().identityId)
-//        })
-//        AWSIdentityManager.defaultIdentityManager().logoutWithCompletionHandler { (obj, error) in
-//            print("LOGGING USER OUT!")
-//        }
-        
+
         // Make the button round!
         userPhoto.clipsToBounds = true
         userPhoto.layer.cornerRadius = userPhoto.frame.size.width / 2
         userPhoto.contentVerticalAlignment = UIControlContentVerticalAlignment.Fill
         userPhoto.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Fill
         
-        
         // Set up animation
-        self.checkMark.hidden = true
-        self.checkMarkFlipped.hidden = true
-        self.userPhoto.hidden = false
-        checkMarkFlippedCopy = UIImageView(image: checkMark.image)
-        flipImageHorizontally(checkMarkFlippedCopy)
+        resetAnimations()
         
         // Empty previous email string
         prevEmailString = ""
@@ -402,10 +374,20 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         }
     }
     
+    private func resetAnimations()
+    {
+        self.checkMark.hidden = true
+        self.checkMarkFlipped.hidden = true
+        self.userPhoto.hidden = false
+        checkMarkFlippedCopy = UIImageView(image: checkMark.image)
+        flipImageHorizontally(checkMarkFlippedCopy)
+    }
+    
     // Use to go back to previous VC at ease.
     @IBAction func unwindBackVC(segue: UIStoryboardSegue)
     {
         print("CALLED UNWIND VC")
+        resetAnimations()
     }
 
 }

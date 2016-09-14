@@ -37,6 +37,7 @@ class SignUpVerificationController: UIViewController {
     var userName: String!
     var userImage: UIImage!
     var userPhone: String!
+    var userEmail: String!
     
     let segueDestination = "toMainContainerViewController"
     
@@ -52,13 +53,7 @@ class SignUpVerificationController: UIViewController {
         // get the IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
         
-        // Set up animation
-        self.checkMark.hidden = true
-        self.checkMarkFlipped.hidden = true
-        self.buttonToFlip.hidden = false
-        checkMarkFlippedCopy = UIImageView(image: checkMark.image)
-        flipImageHorizontally(checkMarkFlippedCopy)
-        
+        resetAnimations()
         
         // Display user's phone number-- "We sent a verification code to ..."
         phoneDisplayLabel.text = userPhone
@@ -231,6 +226,8 @@ class SignUpVerificationController: UIViewController {
                             
                             setCurrentCachedUserName(self.userName)
                             setCurrentCachedFullName(self.userFullName)
+                            setCurrentCachedUserEmail(self.userEmail)
+                            setCurrentCachedUserPhone(self.userPhone)
                             
                             /*********************
                             *  UPLOAD PHOTO TO S3
@@ -389,4 +386,15 @@ class SignUpVerificationController: UIViewController {
         
     }
 
+    
+    private func resetAnimations()
+    {
+        // Set up animation
+        self.checkMark.hidden = true
+        self.checkMarkFlipped.hidden = true
+        self.buttonToFlip.hidden = false
+        checkMarkFlippedCopy = UIImageView(image: checkMark.image)
+        flipImageHorizontally(checkMarkFlippedCopy)
+        
+    }
 }

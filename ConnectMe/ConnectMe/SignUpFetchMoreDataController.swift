@@ -51,15 +51,10 @@ class SignUpFetchMoreDataController: UIViewController {
         
         // get the IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
-
-        // Set up animation
-        self.checkMark.hidden = true
-        self.checkMarkFlipped.hidden = true
-        self.buttonToFlip.hidden = false
-        checkMarkFlippedCopy = UIImageView(image: checkMark.image)
-        flipImageHorizontally(checkMarkFlippedCopy)
         
+        resetAnimations()
     }
+    
     
     /*=======================================================
      * BEGIN : Keyboard/Button Animations
@@ -300,6 +295,7 @@ class SignUpFetchMoreDataController: UIViewController {
             nextViewController.userName = self.userName.text
             nextViewController.userImage = self.userImage
             nextViewController.userPhone = self.userPhone
+            nextViewController.userEmail = self.userEmail
             // Need phone to display it on next screen
             // Don't need to pass email.
             // Remember, email & phone stored on AWS User Pools, not DynamoDB users.
@@ -309,10 +305,22 @@ class SignUpFetchMoreDataController: UIViewController {
         
     }
     
+    private func resetAnimations()
+    {
+        // Set up animation
+        self.checkMark.hidden = true
+        self.checkMarkFlipped.hidden = true
+        self.buttonToFlip.hidden = false
+        checkMarkFlippedCopy = UIImageView(image: checkMark.image)
+        flipImageHorizontally(checkMarkFlippedCopy)
+    }
+    
     // Use to go back to previous VC at ease.
     @IBAction func unwindBackSignUpInfoVC(segue: UIStoryboardSegue)
     {
         print("CALLED UNWIND VC")
+        
+        resetAnimations()
     }
 
     

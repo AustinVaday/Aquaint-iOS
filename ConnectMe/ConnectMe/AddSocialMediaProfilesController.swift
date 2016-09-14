@@ -37,8 +37,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
         let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
         edgePan.edges = .Left
         view.addGestureRecognizer(edgePan)
-        
-        
+    
     }
     
     
