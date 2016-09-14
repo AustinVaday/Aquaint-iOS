@@ -336,6 +336,13 @@ func verifyEmailFormat(emailString:String) -> Bool
     
 }
 
+// Remove all non-digits from a string (i.e. phone number)
+func removeAllNonDigits(string: String) -> String
+{
+    let characterSetToRemove = NSCharacterSet.decimalDigitCharacterSet().invertedSet
+    return string.componentsSeparatedByCharactersInSet(characterSetToRemove).joinWithSeparator("")
+}
+
 // Check if phone number is proper
 func verifyPhoneFormat(phoneString: String) -> Bool
 {

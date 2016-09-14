@@ -238,8 +238,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
         let phoneString = userPhone.text
         
-        
-        
+        userPhone.text = removeAllNonDigits(phoneString!)
         
     }
     
