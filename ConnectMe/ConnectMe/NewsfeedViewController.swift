@@ -49,12 +49,16 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func onUserClickedAquaintButton(sender: UIButton) {
         
+        
+        print("Button intended was clicked")
+    }
+    
+    @IBAction func onUserClickedSubArea(sender: AnyObject) {
         // Animate one of our embles out
         addSingleEmblemAnimation(self.view.frame.width)
         
         print("CLICKED")
     }
-    
     
     override func viewDidLoad() {
         makeViewShine(emblemButton.imageView!)

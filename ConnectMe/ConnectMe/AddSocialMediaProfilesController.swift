@@ -32,9 +32,25 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
         // Fill the dictionary of all social media names (key) with an image (val).
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
         socialMediaImageDictionary = getAllPossibleSocialMediaImages(possibleSocialMediaNameList)
+        
+        // Set up pan gesture recognizer for when the user wants to swipe left/right
+        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
+        edgePan.edges = .Left
+        view.addGestureRecognizer(edgePan)
+        
+        
     }
     
     
+    func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer)
+    {
+        if recognizer.state == .Ended
+        {
+            print("Screen swiped!")
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+    }
     
     /*************************************************************************
     *    COLLECTION VIEW PROTOCOL
