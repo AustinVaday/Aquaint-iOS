@@ -283,7 +283,7 @@ class SignUpVerificationController: UIViewController {
                              *************************************/
                             // Store username and user realname
                             let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-                            let parameters = ["action":"adduser", "target": self.userName, "realname": self.userFullName]
+                            var parameters = ["action":"adduser", "target": self.userName, "realname": self.userFullName]
                             lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
                                 if resultTask.error != nil
                                 {
@@ -298,6 +298,59 @@ class SignUpVerificationController: UIViewController {
                                 {
                                     print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
 
+                                }
+                                else
+                                {
+                                    print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                                    
+                                }
+                                
+                                return nil
+                                
+                            }
+                            
+                            
+                            // Have user automatically follow and be followed by Aquaint Team!
+                            parameters = ["action":"follow", "target": self.userName, "me": "aquaint"]
+                            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+                                if resultTask.error != nil
+                                {
+                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+                                }
+                                else if resultTask.exception != nil
+                                {
+                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                                    
+                                }
+                                else if resultTask.result != nil
+                                {
+                                    print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                                    
+                                }
+                                else
+                                {
+                                    print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                                    
+                                }
+                                
+                                return nil
+                                
+                            }
+                            parameters = ["action":"follow", "target": "aquaint", "me": self.userName]
+                            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+                                if resultTask.error != nil
+                                {
+                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+                                }
+                                else if resultTask.exception != nil
+                                {
+                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                                    
+                                }
+                                else if resultTask.result != nil
+                                {
+                                    print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                                    
                                 }
                                 else
                                 {
@@ -356,9 +409,6 @@ class SignUpVerificationController: UIViewController {
                                         {
                                             
                                             self.performSegueWithIdentifier(self.segueDestination, sender: nil)
-                                            
-                                            //TODO: Automatically become followed by Aquaint Team
-                                            
                                             
                                         }
                                         

@@ -43,7 +43,16 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                 // Update UI on main thread
                 dispatch_async(dispatch_get_main_queue(), {
                     self.realNameTextFieldLabel.text = resultUser.realname
-                    self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                    
+                    if resultUser.accounts != nil
+                    {
+                        self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                    }
+                    else
+                    {
+                        self.keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
+                    }
+                
                 })
                 // Get image data asynchronously (why is this in getUserDynamoData? IF we want to wait for all data to complete before displaying anything)
                 getUserS3Image(username, completion: { (result, error) in

@@ -48,7 +48,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         // Get array of connections from Lambda -- RDS
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action":"getFollowers", "target": currentUserName]
+        let parameters = ["action":"getFollowees", "target": currentUserName]
 
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
             if resultTask.error != nil
@@ -85,8 +85,14 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                                 let resultUser = result! as User
                                 con.userFullName = resultUser.realname
                                 
-                                con.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
-                                
+                                if resultUser.accounts != nil
+                                {
+                                    con.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                                }
+                                else
+                                {
+                                    con.keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
+                                }
                                 
                                 getUserS3Image(userName, completion: { (result, error) in
                                     if error == nil

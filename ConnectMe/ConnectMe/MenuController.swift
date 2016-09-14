@@ -256,14 +256,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             return nil
             
         }
-        
-        // Set up refresh control for when user drags for a refresh.
-        refreshControl = UIRefreshControl()
-        
-        // When user pulls, this function will be called
-        refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        settingsTableView.addSubview(refreshControl)
-
 
 
     }
@@ -277,6 +269,17 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewWillAppear(true)
         
         registerForKeyboardNotifications()
+        
+
+        // Put refersh control here because we call viewDidload() in refreshControl function
+        // And problems may arise.
+        // Set up refresh control for when user drags for a refresh.
+        refreshControl = UIRefreshControl()
+        
+        // When user pulls, this function will be called
+        refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        settingsTableView.addSubview(refreshControl)
+
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -860,9 +863,10 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         if (indexPath.section == MenuData.ACTIONS.rawValue)
         {
+            // Reset password button
             if (indexPath.item == 0)
             {
-                print ("COMING SOON")
+                performSegueWithIdentifier("toResetPasswordViewController", sender: self)
             }
             
             // Log out button
@@ -1086,14 +1090,19 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
-        self.settingsTableView.reloadData()
-        print ("Reloading Data...")
+//        self.settingsTableView.reloadData()
 
+        
         // Need to end refreshing
         delay(0.5)
         {
             self.refreshControl.endRefreshing()
+            print("REFRESH CONTROL!")
+            self.viewDidLoad()
+
+            
         }
+
 
     }
     

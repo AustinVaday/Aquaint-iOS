@@ -185,6 +185,23 @@ class LogInController: UIViewController {
         // Mimic clicking the log in button
         loginButtonClicked(logInButton.self)
     }
+    
+    @IBAction func forgotPasswordButtonClicked(sender: AnyObject) {
+        
+        print("CLICKED!!")
+        
+        let currentUser = "tolvstad"
+        let userPool = getAWSCognitoIdentityUserPool()
+        userPool.getUser(currentUser).forgotPassword().continueWithSuccessBlock { (resultTask) -> AnyObject? in
+            print ("forgotPassword successfully initiated")
+            
+            return nil
+        }
+        
+    }
+    
+    
+    
     @IBAction func loginButtonClicked(sender: UIButton) {
         
         // Disable log in button so that user can only send one request at a time
