@@ -258,7 +258,7 @@ func verifyUserNameLength(userNameString: String) -> Bool
     {
         let numChar = userNameString.characters.count
         
-        if (numChar >= 6 && numChar <= 20)
+        if (numChar >= 5 && numChar <= 20)
         {
             return true
         }

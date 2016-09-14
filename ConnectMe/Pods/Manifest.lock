@@ -69,6 +69,7 @@ PODS:
   - ISO8601 (0.6.0)
   - KLCPopup (1.0)
   - NSData+Base64 (1.0.0)
+  - ReachabilitySwift (2.3.3)
   - ReactiveCocoa (4.2.1):
     - Result (~> 2.0)
   - Result (2.1.2)
@@ -150,6 +151,7 @@ DEPENDENCIES:
   - FRHyperLabel
   - GoogleSignIn
   - KLCPopup
+  - ReachabilitySwift
   - SimpleAuth
 
 SPEC CHECKSUMS:
@@ -181,6 +183,7 @@ SPEC CHECKSUMS:
   ISO8601: d3ea3ba9b752820cf92c6b47a9ee327e9f0e13fc
   KLCPopup: 76c5a19227977f1e53d85236f9ef42257c168d98
   NSData+Base64: 4e84902c4db907a15673474677e57763ef3903e4
+  ReachabilitySwift: e0f6b6f280effb47731acfaaa2d5ffe223703793
   ReactiveCocoa: 5a42745f11ea236f405bb9ce5e97c5e3b23562dd
   Result: 6e722d4a66b1408680dbfcdf51c0b1c4b706316a
   SimpleAuth: bc7d594f90711a7e6ef7624dce5aa8c8b09770ab

@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'D2E7B84CA09F252CC69121AA'
+               BlueprintIdentifier = '71756AF2EB09229BBCACB9FE'
                BlueprintName = 'AWSDynamoDB'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'AWSDynamoDB.framework'>

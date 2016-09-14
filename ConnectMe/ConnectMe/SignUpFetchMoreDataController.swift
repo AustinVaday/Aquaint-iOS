@@ -158,7 +158,7 @@ class SignUpFetchMoreDataController: UIViewController {
          **********************************************************************/
         if (!verifyUserNameLength(userNameString))
         {
-            showAlert("Improper username format", message: "Please create a username between 6 and 20 characters long!", buttonTitle: "Try again", sender: self)
+            showAlert("Improper username format", message: "Please create a username between 5 and 20 characters long!", buttonTitle: "Try again", sender: self)
             return
         }
         

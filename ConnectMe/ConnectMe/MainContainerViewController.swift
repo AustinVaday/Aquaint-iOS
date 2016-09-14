@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-
+import ReachabilitySwift
 
 class MainContainerViewController: UIViewController, UIPageViewControllerDelegate, MainPageSectionUnderLineViewDelegate {
     
@@ -26,11 +26,13 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     
     @IBOutlet weak var notificationView: UIView!
     @IBOutlet weak var notificationViewLabel: UILabel!
+    @IBOutlet weak var noInternetBanner: UIView!
     
     var connectionRequestList : Array<String>! // MAKE IT Connection type LATER
     var firebaseRootRef : FIRDatabaseReference!
     var userName : String!
-    
+    var reachability: Reachability!
+
     // This is our child (container) view controller that holds all our pages
     var mainPageViewController: MainPageViewController!
 
@@ -44,15 +46,11 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         sectionUnderlineView3.hidden = true
     }
     
-    
-    
     override func viewDidLoad() {
-        
-        
+
         // Get the mainPageViewController, this holds all our pages!
         mainPageViewController = self.childViewControllers.last as! MainPageViewController
-//
-//        mainPageViewController.delegate = self
+
         
         // SET UP NOTIFICATIONS
         // ----------------------------------------------
@@ -73,6 +71,61 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         // Show only the bar for the home icon
         sectionUnderlineView0.hidden = false
         
+        // Set banner hidden by default
+        noInternetBanner.hidden = true
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        // Set up notifications for determining whether to display the "No Internet" Banner.
+        do
+        {
+            reachability = try Reachability(hostname: "www.google.com")
+        }
+        catch
+        {
+            print("Could not create reachability object to www.google.com")
+        }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: reachability)
+        
+        do
+        {
+            try reachability.startNotifier()
+        }
+        catch
+        {
+            print("Could not start reachability notifier...")
+        }
+    }
+    
+    func reachabilityChanged(note: NSNotification)
+    {
+        let reachability = note.object as! Reachability
+        
+        if reachability.isReachable()
+        {
+            if reachability.isReachableViaWiFi()
+            {
+                print ("Reachable via WIFI")
+            }
+            else
+            {
+                print ("Reachable via CELLULAR DATA")
+            }
+            noInternetBanner.hidden = true
+        }
+        else
+        {
+            print ("Internet not reachable")
+            noInternetBanner.hidden = false
+        }
+    }
+
+    override func viewWillDisappear(animated: Bool){
+        // Get rid of all notifications we set for wifi connectivity
+        reachability.stopNotifier()
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotification, object: reachability)
     }
     // BUTTONS TO CHANGE THE PAGE
     

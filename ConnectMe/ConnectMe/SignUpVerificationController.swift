@@ -325,6 +325,9 @@ class SignUpVerificationController: UIViewController {
                                             
                                             self.performSegueWithIdentifier(self.segueDestination, sender: nil)
                                             
+                                            //TODO: Automatically become followed by Aquaint Team
+                                            
+                                            
                                         }
                                         
                                         self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
