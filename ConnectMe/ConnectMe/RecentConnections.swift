@@ -27,10 +27,10 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         // Fetch the user's username
         currentUserName = getCurrentCachedUser()
-        
+
         connectionList = Array<Connection>()
         expansionObj = CellExpansion()
-
+        
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
 
         
@@ -46,100 +46,18 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         refreshControl.addTarget(self, action: #selector(RecentConnections.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
         recentConnTableView.addSubview(refreshControl)
         
-        // Get array of connections from Lambda -- RDS
-        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action":"getFollowees", "target": currentUserName]
-
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-            if resultTask.error != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-            }
-            else if resultTask.exception != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                
-            }
-            else if resultTask.result != nil
-            {
-                
-                
-                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
-                
-                let connectionsFetchedDictionary = resultTask.result! as! [String: Int]
-                
-//                let connectionsFetchedArray = convertJSONStringToArray(resultTask.result!)
-
-                for userName in connectionsFetchedDictionary.keys
-                {
-                    let con = Connection()
-
-                    con.userName = userName
-                    con.timestampGMT = connectionsFetchedDictionary[userName]!
-                    
-                    getUserDynamoData(userName, completion: { (result, error) in
-                        if error == nil
-                        {
-                            if result != nil
-                            {
-                                let resultUser = result! as User
-                                con.userFullName = resultUser.realname
-                                
-                                if resultUser.accounts != nil
-                                {
-                                    con.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
-                                }
-                                else
-                                {
-                                    con.keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
-                                }
-                                
-                                getUserS3Image(userName, completion: { (result, error) in
-                                    if error == nil
-                                    {
-                                        if result != nil
-                                        {
-                                            con.userImage = result! as UIImage
-                                        }
-                                    }
-                                    else
-                                    {
-                                        con.userImage = self.defaultImage
-                                    }
-                                    
-                                    
-                                    self.connectionList.append(con)
-                                    
-                                    // Update UI on main thread
-                                    dispatch_async(dispatch_get_main_queue(), {
-                                        self.recentConnTableView.reloadData()
-                                    })
-                                })
-                                
-
-                            }
-                        }
-                    })
-                }
-                
-                
-            }
-            else
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-                
-            }
-            
-            return nil
-            
-        }
+        // Call all lambda functions and AWS-needed stuff
+        generateData()
+    
     }
     
     
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
-        recentConnTableView.reloadData()
+//        recentConnTableView.reloadData()
+
+        generateData()
         
         // Need to end refreshing
         delay(0.5)
@@ -276,6 +194,149 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Perform the request, go to external application and let the user do whatever they want!
         UIApplication.sharedApplication().openURL(socialMediaURL)
         
+    }
+    
+    private func generateData()
+    {
+        // Store old connection list so that we can get determine whether to refresh table or not
+        let previousConnectionList = connectionList
+        
+        // ALWAYS start with a fresh list.
+        connectionList = Array<Connection>()
+
+        // Get array of connections from Lambda -- RDS
+        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let parameters = ["action":"getFollowees", "target": currentUserName]
+        
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            if resultTask.error != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+            }
+            else if resultTask.exception != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+            }
+            else if resultTask.result != nil
+            {
+                
+                
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                
+                let connectionsFetchedList = resultTask.result! as! NSArray
+                
+                //                let connectionsFetchedArray = convertJSONStringToArray(resultTask.result!)
+                
+                print("Connections FETCHED LIST IS: ", connectionsFetchedList)
+                
+                // Propogate local data structure -- helps us prevent needing to
+                // fetch more data and prevents race conditions later too
+                for userData in connectionsFetchedList
+                {
+                    let con = Connection()
+                    con.userName = userData.objectAtIndex(0) as! String
+                    con.timestampGMT = userData.objectAtIndex(1) as! Int
+                    
+                    self.connectionList.append(con)
+                }
+                
+                // If lists are equal, we haven't added or removed a user.
+                // So, simply refresh table to update the times
+                if (!self.areListsEqual(self.connectionList, array2: previousConnectionList))
+                {
+                    // Update UI on main thread
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.recentConnTableView.reloadData()
+                    })
+                    
+                    return nil
+                }
+
+                
+                // If lists are not equal, we need to fetch data from the servers
+                // and re-propagate the list
+                for userConnection in self.connectionList
+                {
+                    getUserDynamoData(userConnection.userName, completion: { (result, error) in
+                        if error == nil
+                        {
+                            if result != nil
+                            {
+                                let resultUser = result! as User
+                                userConnection.userFullName = resultUser.realname
+                                
+                                if resultUser.accounts != nil
+                                {
+                                    userConnection.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                                }
+                                else
+                                {
+                                    userConnection.keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
+                                }
+                                
+                                getUserS3Image(userConnection.userName, completion: { (result, error) in
+                                    if error == nil
+                                    {
+                                        if result != nil
+                                        {
+                                            userConnection.userImage = result! as UIImage
+                                        }
+                                    }
+                                    else
+                                    {
+                                        userConnection.userImage = self.defaultImage
+                                    }
+                                    
+                                    
+                                    // Update UI on main thread
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        
+                                        let range = NSMakeRange(0, self.recentConnTableView.numberOfSections)
+                                        let sections = NSIndexSet(indexesInRange: range)
+                                        self.recentConnTableView.reloadSections(sections, withRowAnimation: .Fade)
+    //                                        self.recentConnTableView.reloadData()
+                                    })
+                    
+                                })
+                                
+                                
+                            }
+                        }
+                    })
+                }
+                
+                
+            }
+            else
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+            }
+            
+            return nil
+            
+        }
+
+    }
+    
+    // EXPECTED TO BE IN ORDER.
+    private func areListsEqual(array1: Array<Connection>, array2: Array<Connection>) -> Bool
+    {
+        if array1.count != array2.count
+        {
+            return false
+        }
+        
+        let size = array1.count
+        for i in 0...size - 1
+        {
+            if array1[i] != array2[i]
+            {
+                return false
+            }
+        }
+        return true
     }
 
 

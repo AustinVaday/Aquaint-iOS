@@ -187,16 +187,16 @@ class LogInController: UIViewController {
     }
     
     @IBAction func forgotPasswordButtonClicked(sender: AnyObject) {
-        
-        print("CLICKED!!")
-        
-        let currentUser = "tolvstad"
-        let userPool = getAWSCognitoIdentityUserPool()
-        userPool.getUser(currentUser).forgotPassword().continueWithSuccessBlock { (resultTask) -> AnyObject? in
-            print ("forgotPassword successfully initiated")
-            
-            return nil
-        }
+//        
+//        print("CLICKED!!")
+//        
+//        let currentUser = "austin"
+//        let userPool = getAWSCognitoIdentityUserPool()
+//        userPool.getUser(currentUser).forgotPassword().continueWithSuccessBlock { (resultTask) -> AnyObject? in
+//            print ("forgotPassword successfully initiated")
+//            
+//            return nil
+//        }
         
     }
     

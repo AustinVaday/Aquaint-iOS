@@ -42,7 +42,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action":"getFollowees", "target": userName]
+        let parameters = ["action":"getFolloweesDict", "target": userName]
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
             if resultTask.error != nil
             {

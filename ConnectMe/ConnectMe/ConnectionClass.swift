@@ -21,7 +21,7 @@ import UIKit
 //}
 
 
-class Connection
+class Connection : Equatable
 {
     var userName             = String()
     var userImage            = UIImage()
@@ -29,7 +29,6 @@ class Connection
     var timestampGMT         = Int()
     var socialMediaUserNames = NSDictionary()
     var keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
-
     
     // Computes time difference to display from GMT (now) to timestampGMT
     // Used in recentconnections tableview to indicate how long ago you connected with your friends
@@ -85,7 +84,22 @@ class Connection
         }
         
     }
+}
 
+// Note: This is a very, very soft check.
+// Intended to check whether two connections have 
+// the same username
+func ==(lhs: Connection, rhs: Connection) -> Bool
+{
+    if lhs.userName == rhs.userName &&
+        lhs.timestampGMT == rhs.timestampGMT
+    {
+        return true
+    }
+    else
+    {
+        return false
+    }
 }
 
 

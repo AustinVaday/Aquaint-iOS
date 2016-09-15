@@ -90,14 +90,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // Ensure that the button view is always visible -- in front of the table view
         buttonView.layer.zPosition = 1
-        
-        // Fetch the user's username and real name
-        currentUserName = getCurrentCachedUser()
-        currentRealName = getCurrentCachedFullName()
-        currentUserImage = getCurrentCachedUserImage()
-        currentUserAccounts = getCurrentCachedUserProfiles()
-        currentUserEmail = getCurrentCachedEmail()
-        currentUserPhone = getCurrentCachedPhone()
+    
         
         // Set up the data for the table views section. Note: Dictionary does not work for this list as we need a sense of ordering.   
         tableViewSectionsList = Array<SectionTitleAndCountPair>()
@@ -108,156 +101,15 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Actions", sectionCount: 2))
         
         
-        // Initialize array so that collection view has something to check while we
-        // fetch data from dynamo
-        keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
-        
-        print("CUR USERNAME: ", currentUserName)
-        
-        
-        if currentUserAccountsDirty
-        {
-            print("CURRENT USER ACCOUNT DIRTY!")
-            getUserDynamoData(currentUserName, completion: { (result, error) in
-                if result != nil && error == nil
-                {
-                    self.currentUserAccounts = result!.accounts as NSMutableDictionary
-                    setCurrentCachedUserProfiles(self.currentUserAccounts)
-                }
-            })
-            
-            
-        }
-        
-        // If any values are nil, we need to re-cache
-        if (currentRealName == nil ||
-            currentUserImage == nil ||
-            currentUserAccounts == nil ||
-            currentUserEmail == nil ||
-            currentUserPhone == nil)
-        {
-            
-            print("RE-caching user...")
-            setCachedUserFromAWS(currentUserName)
-            
-            //re-set attributes
-//            currentUserName = getCurrentCachedUser()
-            currentRealName = getCurrentCachedFullName()
-            currentUserImage = getCurrentCachedUserImage()
-            currentUserAccounts = getCurrentCachedUserProfiles()
-            currentUserEmail = getCurrentCachedEmail()
-            currentUserPhone = getCurrentCachedPhone()
-        }
-            
-        // Set the UI
-        userNameLabel.text = currentUserName
-        realNameTextFieldLabel.text  = currentRealName
-        
-        if currentUserImage == nil
-        {
-            profileImageView.image = defaultImage
-        }
-        else
-        {
-            profileImageView.image = currentUserImage
-        }
-        
-        // Set up dictionary for user's social media names
-        socialMediaUserNames = currentUserAccounts
-        
-        // Fill the dictionary of all social media names (key) with an image (val).
-        // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
-        socialMediaImageDictionary = getAllPossibleSocialMediaImages(possibleSocialMediaNameList)
-        
-        // If user has added accounts/profiles, show them
-        if(currentUserAccounts != nil)
-        {
-            // Dictionary with key: string of social media types (i.e. "facebook"),
-            // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
-            self.socialMediaUserNames = currentUserAccounts
-            
-            // Convert dictionary to key,val pairs. Redundancy allowed
-            self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
-            
-            
-            // Perform update on UI on main thread
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                
-                // Propogate collection view with new data
-                self.settingsTableView.reloadData()
-                
-                print("RELOADING COLLECTIONVIEW")
-            })
-        }
-        
-        // Fetch num followers from lambda
-        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        var parameters = ["action":"getNumFollowers", "target": currentUserName]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-            if resultTask.error != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-            }
-            else if resultTask.exception != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                
-            }
-            else if resultTask.result != nil
-            {
-                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+        // Call this function to generate all AWS data for this page!
+        generateData()
 
-                // Update UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    let number = resultTask.result as? Int
-                    self.numFollowersLabel.text = String(number!)
-                })
-                
-            }
-            else
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-                
-            }
-            
-            return nil
-            
-        }
+        // Set up refresh control for when user drags for a refresh.
+        refreshControl = UIRefreshControl()
         
-        // Fetch num followees from lambda
-        parameters = ["action":"getNumFollowees", "target": currentUserName]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-            if resultTask.error != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-            }
-            else if resultTask.exception != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                
-            }
-            else if resultTask.result != nil
-            {
-                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
-                
-                // Update UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    let number = resultTask.result as? Int
-                    self.numFollowsLabel.text = String(number!)
-                })
-                
-            }
-            else
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-                
-            }
-            
-            return nil
-            
-        }
-
-
+        // When user pulls, this function will be called
+        refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        settingsTableView.addSubview(refreshControl)
     }
     
     /*=======================================================
@@ -270,22 +122,18 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         registerForKeyboardNotifications()
         
-
-        // Put refersh control here because we call viewDidload() in refreshControl function
-        // And problems may arise.
-        // Set up refresh control for when user drags for a refresh.
-        refreshControl = UIRefreshControl()
-        
-        // When user pulls, this function will be called
-        refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        settingsTableView.addSubview(refreshControl)
-
     }
+    
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
         
         deregisterForKeyboardNotifications()
+        
+//        // Clean up refreshControl to not have any possible leftover spinners
+//        refreshControl.endRefreshing()
+//        refreshControl.removeFromSuperview()
+        
     }
     
     // KEYBOARD shift-up buttons functionality
@@ -1092,17 +940,179 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     {
 //        self.settingsTableView.reloadData()
 
+        generateData()
         
         // Need to end refreshing
         delay(0.5)
         {
             self.refreshControl.endRefreshing()
             print("REFRESH CONTROL!")
-            self.viewDidLoad()
-
+//            self.viewDidLoad()
             
         }
 
+
+    }
+    
+    private func generateData()
+    {
+        // Initialize array so that collection view has something to check while we
+        // fetch data from dynamo
+        keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
+        
+        // Fetch the user's username and real name
+        currentUserName = getCurrentCachedUser()
+        currentRealName = getCurrentCachedFullName()
+        currentUserImage = getCurrentCachedUserImage()
+        currentUserAccounts = getCurrentCachedUserProfiles()
+        currentUserEmail = getCurrentCachedEmail()
+        currentUserPhone = getCurrentCachedPhone()
+        
+        print("CUR USERNAME: ", currentUserName)
+        
+        
+        if currentUserAccountsDirty
+        {
+            print("CURRENT USER ACCOUNT DIRTY!")
+            getUserDynamoData(currentUserName, completion: { (result, error) in
+                if result != nil && error == nil
+                {
+                    self.currentUserAccounts = result!.accounts as NSMutableDictionary
+                    setCurrentCachedUserProfiles(self.currentUserAccounts)
+                }
+            })
+            
+            
+        }
+        
+        // If any values are nil, we need to re-cache
+        if (currentRealName == nil ||
+            currentUserImage == nil ||
+            currentUserAccounts == nil ||
+            currentUserEmail == nil ||
+            currentUserPhone == nil)
+        {
+            
+            print("RE-caching user...")
+            setCachedUserFromAWS(currentUserName)
+            
+            //re-set attributes
+            //            currentUserName = getCurrentCachedUser()
+            currentRealName = getCurrentCachedFullName()
+            currentUserImage = getCurrentCachedUserImage()
+            currentUserAccounts = getCurrentCachedUserProfiles()
+            currentUserEmail = getCurrentCachedEmail()
+            currentUserPhone = getCurrentCachedPhone()
+        }
+        
+        // Set the UI
+        userNameLabel.text = currentUserName
+        realNameTextFieldLabel.text  = currentRealName
+        
+        if currentUserImage == nil
+        {
+            profileImageView.image = defaultImage
+        }
+        else
+        {
+            profileImageView.image = currentUserImage
+        }
+        
+        // Set up dictionary for user's social media names
+        socialMediaUserNames = currentUserAccounts
+        
+        // Fill the dictionary of all social media names (key) with an image (val).
+        // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
+        socialMediaImageDictionary = getAllPossibleSocialMediaImages(possibleSocialMediaNameList)
+        
+        // If user has added accounts/profiles, show them
+        if(currentUserAccounts != nil)
+        {
+            // Dictionary with key: string of social media types (i.e. "facebook"),
+            // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
+            self.socialMediaUserNames = currentUserAccounts
+            
+            // Convert dictionary to key,val pairs. Redundancy allowed
+            self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+            
+            
+            // Perform update on UI on main thread
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
+                // Propogate collection view with new data
+                self.settingsTableView.reloadData()
+                
+                print("RELOADING COLLECTIONVIEW")
+            })
+        }
+        
+        // Fetch num followers from lambda
+        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        var parameters = ["action":"getNumFollowers", "target": currentUserName]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            if resultTask.error != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+            }
+            else if resultTask.exception != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+            }
+            else if resultTask.result != nil
+            {
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                
+                // Update UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    let number = resultTask.result as? Int
+                    self.numFollowersLabel.text = String(number!)
+                })
+                
+            }
+            else
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+            }
+            
+            return nil
+            
+        }
+        
+        // Fetch num followees from lambda
+        parameters = ["action":"getNumFollowees", "target": currentUserName]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            if resultTask.error != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+            }
+            else if resultTask.exception != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+            }
+            else if resultTask.result != nil
+            {
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                
+                // Update UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    let number = resultTask.result as? Int
+                    self.numFollowsLabel.text = String(number!)
+                })
+                
+            }
+            else
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+            }
+            
+            return nil
+            
+        }
+        
 
     }
     
