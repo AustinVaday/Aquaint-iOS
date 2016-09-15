@@ -25,6 +25,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var followeesMapping : [String: Int]!
     var recentUsernameAdds : Set<String>!
     
+    let imageCache = NSCache()
+    
 
     override func viewDidLoad(){
         
@@ -327,24 +329,35 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
         
 
+        let image = imageCache.objectForKey(userName) as? UIImage
         
-        getUserS3Image(userName, completion: { (result, error) in
+        if image != nil
+        {
+            cell.cellImage.image = image!
+            print("USING CACHED IMAGE!")
+        }
+        else
+        {
+            getUserS3Image(userName, completion: { (result, error) in
+                    
+                // If no image, use default image
+                if (error != nil)
+                {
+                    userImage = self.defaultImage
+
+                }
+                else if (result != nil)
+                {
+                    userImage = result
+                }
                 
-            // If no image, use default image
-            if (error != nil)
-            {
-                userImage = self.defaultImage
+                cell.cellImage.image = userImage
+                
+                // Cache user image so we don't have to reload it next time
+                self.imageCache.setObject(userImage, forKey: userName)
 
-            }
-            else if (result != nil)
-            {
-                userImage = result
-            }
-            
-            cell.cellImage.image = userImage
-
-            
-        })
+            })
+        }
         
         
         // Do not let user add him/herself

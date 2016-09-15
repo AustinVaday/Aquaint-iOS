@@ -80,6 +80,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
+        
         let cell = tableView.dequeueReusableCellWithIdentifier("contactsCell", forIndexPath: indexPath) as! ContactsTableViewCell
         
         // Ensure that internal cellImage is circular
@@ -87,6 +88,12 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
         // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
         cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
+        
+        
+        if connectionList.isEmpty
+        {
+            return cell
+        }
         
         let connectedUser = connectionList[indexPath.row]
         
@@ -103,6 +110,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         cell.cellImage.image = connectedUser.userImage
         cell.cellTimeConnected.text = connectedUser.computeTimeDiff()
         
+        cell.collectionView.reloadData()
+        
         return cell
         
     }
@@ -113,6 +122,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Set the new selectedRowIndex
         updateCurrentlyExpandedRow(&expansionObj, currentRow: indexPath.row)
         
+        print  ("Index path: ", indexPath.row)
         // Update UI with animation
         tableView.beginUpdates()
         tableView.endUpdates()
@@ -226,9 +236,16 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 
                 let connectionsFetchedList = resultTask.result! as! NSArray
                 
-                //                let connectionsFetchedArray = convertJSONStringToArray(resultTask.result!)
-                
                 print("Connections FETCHED LIST IS: ", connectionsFetchedList)
+                
+                // If empty list, then no users to display (refresh table)
+                // Update UI on main thread
+                if connectionsFetchedList.count == 0
+                {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.recentConnTableView.reloadData()
+                    })
+                }
                 
                 // Propogate local data structure -- helps us prevent needing to
                 // fetch more data and prevents race conditions later too
@@ -241,70 +258,73 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                     self.connectionList.append(con)
                 }
                 
-                // If lists are equal, we haven't added or removed a user.
-                // So, simply refresh table to update the times
-                if (!self.areListsEqual(self.connectionList, array2: previousConnectionList))
-                {
-                    // Update UI on main thread
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.recentConnTableView.reloadData()
-                    })
-                    
-                    return nil
-                }
+//                // If lists are equal, we haven't added or removed a user.
+//                // So, simply refresh table to update the times
+//                if (!self.areListsEqual(self.connectionList, array2: previousConnectionList))
+//                {
+//                    // Update UI on main thread
+//                    dispatch_async(dispatch_get_main_queue(), {
+//                        self.recentConnTableView.reloadData()
+//                    })
+//                    
+//                    return nil
+//                }
 
-                
                 // If lists are not equal, we need to fetch data from the servers
                 // and re-propagate the list
                 for userConnection in self.connectionList
                 {
                     getUserDynamoData(userConnection.userName, completion: { (result, error) in
-                        if error == nil
+                        if error == nil && result != nil
                         {
-                            if result != nil
+
+                            let resultUser = result! as User
+                            userConnection.userFullName = resultUser.realname
+                            
+                            if resultUser.accounts != nil
                             {
-                                let resultUser = result! as User
-                                userConnection.userFullName = resultUser.realname
-                                
-                                if resultUser.accounts != nil
+                                userConnection.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                            }
+                            else
+                            {
+                                userConnection.keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
+                            }
+                            
+                            getUserS3Image(userConnection.userName, completion: { (result, error) in
+                                if error == nil && result != nil
                                 {
-                                    userConnection.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                                    userConnection.userImage = result! as UIImage
                                 }
                                 else
                                 {
-                                    userConnection.keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
+                                    userConnection.userImage = self.defaultImage
                                 }
                                 
-                                getUserS3Image(userConnection.userName, completion: { (result, error) in
-                                    if error == nil
-                                    {
-                                        if result != nil
-                                        {
-                                            userConnection.userImage = result! as UIImage
-                                        }
-                                    }
-                                    else
-                                    {
-                                        userConnection.userImage = self.defaultImage
-                                    }
+                                
+                                // Update UI on main thread
+                                dispatch_async(dispatch_get_main_queue(), {
+//                                        let range = NSMakeRange(0, self.recentConnTableView.numberOfSections)
+//                                        let sections = NSIndexSet(indexesInRange: range)
+//                                        self.recentConnTableView.reloadSections(sections, withRowAnimation: .Fade)
+                                        self.recentConnTableView.reloadData()
                                     
-                                    
-                                    // Update UI on main thread
-                                    dispatch_async(dispatch_get_main_queue(), {
-                                        
-                                        let range = NSMakeRange(0, self.recentConnTableView.numberOfSections)
-                                        let sections = NSIndexSet(indexesInRange: range)
-                                        self.recentConnTableView.reloadSections(sections, withRowAnimation: .Fade)
-    //                                        self.recentConnTableView.reloadData()
-                                    })
-                    
+                                        print("FINISHED RELOADING DATA FOR:::", userConnection.userName)
                                 })
-                                
-                                
-                            }
+                
+                            })
                         }
                     })
                 }
+                
+//                print("GONNA DELAY")
+//                delay(3)
+//                {
+//                    // Update UI on main thread
+//                    dispatch_async(dispatch_get_main_queue(), {
+////                        let range = NSMakeRange(0, self.recentConnTableView.numberOfSections)
+//                        let sections = NSIndexSet(index: 0)
+//                        self.recentConnTableView.reloadSections(sections, withRowAnimation: .Fade)                    })
+//                }
                 
                 
             }
