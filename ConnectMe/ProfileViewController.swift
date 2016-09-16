@@ -60,32 +60,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         })
         
         
-        let size = possibleSocialMediaNameList.count
-        
-        socialMediaImageDictionary = Dictionary<String, UIImage>()
-        
-        // Generate all necessary images for the emblems
-        for i in 0...size-1
-        {
-            // Fetch emblem name
-            let imageName = possibleSocialMediaNameList[i]
-            
-            print("Generating image for: ", imageName)
-            // Generate image
-            let newUIImage = UIImage(named: imageName)
-            
-            if (newUIImage != nil)
-            {
-                // Store image into our 'cache'
-                socialMediaImageDictionary[imageName] = newUIImage
-            }
-            else
-            {
-                print ("ERROR: ProfileViewController : social media emblem image not found.")
-  
-            }
-            
-        }
+        socialMediaImageDictionary = getAllPossibleSocialMediaImages()
 
         
     }
