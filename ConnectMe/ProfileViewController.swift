@@ -18,9 +18,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var linkedAccountsCollectionView: UICollectionView!
-    
-    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
-    
+        
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
@@ -109,7 +107,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     
         userSocialMediaNames = userSocialMediaNames.sort()
 
-        let socialMediaName = userSocialMediaNames[indexPath.item % self.possibleSocialMediaNameList.count]
+        let socialMediaName = userSocialMediaNames[indexPath.item % getNumberPossibleSocialMedia()]
 
         // Generate a UI image for the respective social media type
         cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaName]

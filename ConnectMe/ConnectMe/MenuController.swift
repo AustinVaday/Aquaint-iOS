@@ -69,9 +69,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var tableViewSectionsList : Array<SectionTitleAndCountPair>!
     var refreshControl : UIRefreshControl!
 
-    
-    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
-    
+        
     // AWS credentials provider
     let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
     
@@ -809,7 +807,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 self.socialMediaUserNames = self.currentUserAccounts
                 
                 // Convert dictionary to key,val pairs. Redundancy allowed
-                self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames)
                 
                 
                 // Perform update on UI on main thread
@@ -916,7 +914,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 self.socialMediaUserNames = self.currentUserAccounts
                 
                 // Convert dictionary to key,val pairs. Redundancy allowed
-                self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames)
                 
                 
                 // Perform update on UI on main thread
@@ -1023,7 +1021,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // Fill the dictionary of all social media names (key) with an image (val).
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
-        socialMediaImageDictionary = getAllPossibleSocialMediaImages(possibleSocialMediaNameList)
+        socialMediaImageDictionary = getAllPossibleSocialMediaImages()
         
         // If user has added accounts/profiles, show them
         if(currentUserAccounts != nil)
@@ -1033,7 +1031,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             self.socialMediaUserNames = currentUserAccounts
             
             // Convert dictionary to key,val pairs. Redundancy allowed
-            self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+            self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames)
             
             
             // Perform update on UI on main thread

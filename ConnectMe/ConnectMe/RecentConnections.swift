@@ -14,7 +14,6 @@ import FRHyperLabel
 class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var recentConnTableView: UITableView!
-    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var refreshControl : UIRefreshControl!
@@ -36,7 +35,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         // Fill the dictionary of all social media names (key) with an image (val).
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
-        socialMediaImageDictionary = getAllPossibleSocialMediaImages(possibleSocialMediaNameList)
+        socialMediaImageDictionary = getAllPossibleSocialMediaImages()
         
         
         // Set up refresh control for when user drags for a refresh.
@@ -80,8 +79,19 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
+        print("DDD*********************************************************")
+        print(" Size of connectionList is: ", connectionList.count)
+        print(" Indexpath is: ", indexPath.row)
+        print("*********************************************************")
+
+        
         
         let cell = tableView.dequeueReusableCellWithIdentifier("contactsCell", forIndexPath: indexPath) as! ContactsTableViewCell
+        
+        if connectionList.isEmpty
+        {
+            return cell
+        }
         
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
@@ -89,12 +99,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
         cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
         
-        
-        if connectionList.isEmpty
-        {
-            return cell
-        }
-        
+        print ("INDEXPATH ROW IS:", indexPath.row)
+        print ("CONNECTIONLIST SIZE IS:", connectionList.count)
         let connectedUser = connectionList[indexPath.row]
         
         print("CVTAG#: ", cell.collectionView.tag, "CORRESPONDS TO: ", connectedUser.userName )
@@ -104,6 +110,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             showPopupForUser(connectedUser.userName)
         }
         
+        cell.cellName.clearActionDictionary()
         cell.cellName.text = connectedUser.userFullName
         cell.cellName.setLinkForSubstring(connectedUser.userFullName, withLinkHandler: handler)
         cell.cellUserName.text = connectedUser.userName
@@ -111,7 +118,9 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         cell.cellTimeConnected.text = connectedUser.computeTimeDiff()
         
         cell.collectionView.reloadData()
-        
+//        let sections = NSIndexSet(index: 0)
+//        cell.collectionView.reloadSections(sections)
+//        
         return cell
         
     }
@@ -151,7 +160,17 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        print("CCC*********************************************************")
+        print(" Size of connectionList is: ", connectionList.count)
+        print(" Indexpath is: ", indexPath.row)
+        print(" Collection view tag is: ", collectionView.tag)
+        print(" User corresponding to tag is: ", connectionList[collectionView.tag].userName)
+        print(" User supposedly has ", connectionList[collectionView.tag].keyValSocialMediaPairList.count, " linked profiles" )
+        print(" Here they are: \n", connectionList[collectionView.tag].keyValSocialMediaPairList)
+        print("*********************************************************")
 
+        
+        
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
         
         
@@ -176,11 +195,14 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             // Probable cause: tableView.beginUpdates() and tableView.endUpdates() in tableView(didSelectIndexPath) method
             delay(0) { () -> () in
                 
-                // Generate a UI image for the respective social media type
-                cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
-                
-                cell.socialMediaType = socialMediaType //i.e. facebook, twitter, ..
-                cell.socialMediaName = socialMediaUserName //i.e. austinvaday, avtheman, ..
+                dispatch_async(dispatch_get_main_queue(), {
+                    // Generate a UI image for the respective social media type
+                    cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
+                    
+                    cell.socialMediaType = socialMediaType //i.e. facebook, twitter, ..
+                    cell.socialMediaName = socialMediaUserName //i.e. austinvaday, avtheman, ..
+                })
+
             }
             
         }
@@ -283,7 +305,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                             
                             if resultUser.accounts != nil
                             {
-                                userConnection.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                                userConnection.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts)
                             }
                             else
                             {
@@ -306,7 +328,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 //                                        let range = NSMakeRange(0, self.recentConnTableView.numberOfSections)
 //                                        let sections = NSIndexSet(indexesInRange: range)
 //                                        self.recentConnTableView.reloadSections(sections, withRowAnimation: .Fade)
-                                        self.recentConnTableView.reloadData()
+//                                        self.recentConnTableView.reloadData()
                                     
                                         print("FINISHED RELOADING DATA FOR:::", userConnection.userName)
                                 })
@@ -317,14 +339,17 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 }
                 
 //                print("GONNA DELAY")
-//                delay(3)
-//                {
-//                    // Update UI on main thread
-//                    dispatch_async(dispatch_get_main_queue(), {
+                delay(5)
+                {
+                    // Update UI on main thread
+                    dispatch_async(dispatch_get_main_queue(), {
 ////                        let range = NSMakeRange(0, self.recentConnTableView.numberOfSections)
 //                        let sections = NSIndexSet(index: 0)
-//                        self.recentConnTableView.reloadSections(sections, withRowAnimation: .Fade)                    })
-//                }
+//                        self.recentConnTableView.reloadSections(sections, withRowAnimation: .Fade)                    
+                        self.recentConnTableView.reloadData()
+                        print("DONE RELOADED")
+                    })
+                }
                 
                 
             }

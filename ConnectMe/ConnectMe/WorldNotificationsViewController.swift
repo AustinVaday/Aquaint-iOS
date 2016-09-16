@@ -14,9 +14,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     let cellIdentifier = "connectionCell"
     
     @IBOutlet weak var worldConnectionsTableView: UITableView!
-    
-    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
-    
+        
     var currentUserName : String!
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
@@ -188,36 +186,9 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
 //            
 //            
 //        })
+
         
-        // Load up all images we have
-        var imageName:String!
-        var newUIImage:UIImage!
-        let size = possibleSocialMediaNameList.count
-        
-        socialMediaImageDictionary = Dictionary<String, UIImage>()
-        
-        // Generate all necessary images for the emblems
-        for i in 0...size-1
-        {
-            // Fetch emblem name
-            imageName = possibleSocialMediaNameList[i]
-            
-            // Generate image
-            newUIImage = UIImage(named: imageName)
-            
-            if (newUIImage != nil)
-            {
-                // Store image into our 'cache'
-                socialMediaImageDictionary[imageName] = newUIImage
-            }
-            else
-            {
-                print ("ERROR: RecentConnections.swift : social media emblem image not found.")
-                // TODO: Show error image
-                // socialMediaImageList.append(UIImage(named: ")
-            }
-            
-        }
+        socialMediaImageDictionary = getAllPossibleSocialMediaImages()
         
         
         // Set up refresh control for when user drags for a refresh.
@@ -348,7 +319,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         userSocialMediaNames = userSocialMediaNames.sort()
         
         print(indexPath.item)
-        let socialMediaName = userSocialMediaNames[indexPath.item % self.possibleSocialMediaNameList.count]
+        let socialMediaName = userSocialMediaNames[indexPath.item % getNumberPossibleSocialMedia()]
         
         print(socialMediaName)
         

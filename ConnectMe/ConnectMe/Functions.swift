@@ -13,6 +13,9 @@ import Foundation
 import UIKit
 import KLCPopup
 
+// Private so to not let other files use this list directly.
+private let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
+
 // The dictionary we receive from AWS DynamoDB maps a string to an array.
 // When we have a collection view, we need a way to propogate this
 // datastructure linearly, because we're given indices based on
@@ -25,11 +28,19 @@ struct KeyValSocialMediaPair
     var socialMediaUserName : String!   // i.e. "austinvaday"
 }
 
-func convertDictionaryToSocialMediaKeyValPairList(dict: NSMutableDictionary,
-                                                  possibleSocialMediaNameList: Array<String>)
+func getNumberPossibleSocialMedia() -> Int
+{
+    return possibleSocialMediaNameList.count
+}
+
+func getAllPossibleSocialMediaList() -> Array<String>
+{
+    return possibleSocialMediaNameList
+}
+
+func convertDictionaryToSocialMediaKeyValPairList(dict: NSMutableDictionary)
     -> Array<KeyValSocialMediaPair>!
 {
-    
     var pairList = Array<KeyValSocialMediaPair>()
     
     // dict is a dictionary that maps a social media name (i.e. facebook) to every
@@ -177,10 +188,9 @@ func createAttributedTextString(string: String, boldStartArray: [Int], boldEndAr
 }
 
 // Get a dictionary of all images!
-func getAllPossibleSocialMediaImages(possibleSocialMediaNameList: Array<String>) -> Dictionary<String, UIImage>!
+func getAllPossibleSocialMediaImages() -> Dictionary<String, UIImage>!
 {
     let size = possibleSocialMediaNameList.count
-    
     var socialMediaImageDictionary = Dictionary<String, UIImage>()
     // Generate all necessary images for the emblems
     for i in 0...size-1

@@ -22,8 +22,6 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
     var socialMediaUserNames: NSMutableDictionary!
     var delegate: AddSocialMediaProfileDelegate?
     
-    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
-    
     override func viewDidLoad() {
        
         // Set up dictionary for user's social media names
@@ -31,7 +29,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
             
         // Fill the dictionary of all social media names (key) with an image (val).
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
-        socialMediaImageDictionary = getAllPossibleSocialMediaImages(possibleSocialMediaNameList)
+        socialMediaImageDictionary = getAllPossibleSocialMediaImages()
         
         // Set up pan gesture recognizer for when the user wants to swipe left/right
         let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
@@ -55,7 +53,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
     *    COLLECTION VIEW PROTOCOL
     **************************************************************************/
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return possibleSocialMediaNameList.count
+        return getNumberPossibleSocialMedia()
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -329,7 +327,8 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("addProfileCollectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
     
-        let socialMediaType = possibleSocialMediaNameList[indexPath.item % possibleSocialMediaNameList.count]
+        let allSocialMediaList = getAllPossibleSocialMediaList()
+        let socialMediaType = allSocialMediaList[indexPath.item % allSocialMediaList.count]
         
         // Generate a UI image for the respective social media type
         cell.emblemImage.image = socialMediaImageDictionary[socialMediaType]

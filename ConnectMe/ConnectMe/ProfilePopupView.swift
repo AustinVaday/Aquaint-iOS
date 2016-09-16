@@ -20,7 +20,6 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
-    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
     
     /*
     // Only override drawRect: if you perform custom drawing.
@@ -46,7 +45,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                     
                     if resultUser.accounts != nil
                     {
-                        self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
+                        self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts)
                     }
                     else
                     {
@@ -75,7 +74,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                         // Generate dictionary
                         // Fill the dictionary of all social media names (key) with an image (val).
                         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
-                        self.socialMediaImageDictionary = getAllPossibleSocialMediaImages(self.possibleSocialMediaNameList)
+                        self.socialMediaImageDictionary = getAllPossibleSocialMediaImages()
                         
                         self.socialMediaCollectionView.reloadData()
                     })

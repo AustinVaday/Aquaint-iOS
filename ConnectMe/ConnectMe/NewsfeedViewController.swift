@@ -18,7 +18,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var noContentMessageView: UIView!
     @IBOutlet weak var emblemButton: UIButton!
     
-    let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr" /*, "phone"*/)
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var refreshControl : UIRefreshControl!
@@ -69,7 +68,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Fill the dictionary of all social media names (key) with an image (val).
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
-        socialMediaImageDictionary = getAllPossibleSocialMediaImages(possibleSocialMediaNameList)
+        socialMediaImageDictionary = getAllPossibleSocialMediaImages()
         
         let currentUser = getCurrentCachedUser()
         
