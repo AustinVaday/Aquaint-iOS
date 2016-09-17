@@ -28,5 +28,15 @@ class ContactsTableViewCell: UITableViewCell {
         cellName.numberOfLines = 0
         cellName.linkAttributeDefault = attributes
     }
-   
+    
+//    func cleanForReuse()
+//    {
+//        
+//    }
+//    
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        
+//        collectionView.deleteItemsAtIndexPaths(<#T##indexPaths: [NSIndexPath]##[NSIndexPath]#>)
+//    }
 }

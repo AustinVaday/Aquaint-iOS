@@ -56,14 +56,18 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
-//        recentConnTableView.reloadData()
-
-        generateData()
         
+        // Clear table
+        connectionList = Array<Connection>()
+        recentConnTableView.reloadData()
+        recentConnTableView.layoutIfNeeded()
+
+        // Regenerate data
+        self.generateData()
         // Need to end refreshing
         delay(0.5)
         {
-         self.refreshControl.endRefreshing()
+            self.refreshControl.endRefreshing()
         }
     }
     
@@ -76,7 +80,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Display up to 30 users immediately
         // Display 20 more if user keeps sliding down
         
-        print("CNLST CNT: ", connectionList.count)
+        print("CONNECTION LIST SIZE 2: ", connectionList.count)
         return connectionList.count
     }
     
@@ -84,27 +88,18 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 
         print("DDD*********************************************************")
         print(" Size of connectionList is: ", connectionList.count)
+        print(" Number of rowsi n table is: ", tableView.numberOfRowsInSection(0))
         print(" Indexpath is: ", indexPath.row)
         print("*********************************************************")
 
         
         let cell = tableView.dequeueReusableCellWithIdentifier("contactsCell", forIndexPath: indexPath) as! ContactsTableViewCell
         
-        if connectionList.isEmpty
+        if connectionList.count == 0
         {
             return cell
         }
         
-        
-//        // Only set once -- allows us to reset layout to avoid indexPath crashing problems in the future
-//        if defaultCollectionViewLayout == nil
-//        {
-//            print ("SETTING DEFAULT CVL")
-//            defaultCollectionViewLayout = cell.collectionView.collectionViewLayout
-//        }
-        
-//        cell.collectionView.collectionViewLayout.invalidateLayout()
-//        cell.collectionView.collectionViewLayout = defaultCollectionViewLayout
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
     
@@ -114,9 +109,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         print ("CONNECTIONLIST SIZE IS:", connectionList.count)
 
         let connectedUser = connectionList[indexPath.row]
-        
-//        print("CVTAG#: ", cell.collectionView.tag, "CORRESPONDS TO: ", connectedUser.userName )
-
         
         let handler = {
             (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
@@ -140,26 +132,30 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // and thus.. the app will search out of the proper index range and CRASH.
         // To fix this, we need to clear our data source, reload, and then reload with
         // applicable data. Shown as follows:
+        
         cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
         let temporaryList = connectionList[indexPath.row].keyValSocialMediaPairList
         connectionList[indexPath.row].keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
         cell.collectionView.reloadData()
         cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
 
+        
         // Needed because reloadData is synchronous without the below
         cell.collectionView.layoutIfNeeded()
+        
         cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
 
         connectionList[indexPath.row].keyValSocialMediaPairList = temporaryList
+        
         cell.collectionView.reloadData()
         
+        cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
 
         
-        cell.collectionView.layoutIfNeeded()
-
         return cell
         
     }
+    
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
@@ -170,7 +166,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             
             print  ("Index path BRUH: ", indexPath.row)
             // Update UI with animation
-            status = "userTouch"
+            
+//            status = "userTouch"
             tableView.beginUpdates()
             tableView.endUpdates()
            
@@ -180,34 +177,36 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         // Return height computed by our special function
         
-        if status == "loading"
-        {
-            print("STATUS LOADING")
-            return 120
-        }
-        
-        if status == "transition"
-        {
-            print("STATUS TRANSITION")
-            return 60
-        }
-        
-        if status == "userTouch"
-        {
-            print("STATUS USERTOUCH")
-            return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
-        }
+//        if status == "loading"
+//        {
+//            print("STATUS LOADING")
+//            return 120
+//        }
+//        
+//        if status == "transition"
+//        {
+//            print("STATUS TRANSITION")
+//            return 60
+//        }
+//        
+//        if status == "userTouch"
+//        {
+//            print("STATUS USERTOUCH")
+//            return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
+//        }
 
         print("NO STATUS...")
         return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
+        
+//        return 120
 
     }
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        collectionView.collectionViewLayout.invalidateLayout()
-        
-        return 1
-    }
+//    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+//        collectionView.collectionViewLayout.invalidateLayout()
+//        
+//        return 1
+//    }
     
     // COLLECTION VIEW
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -220,20 +219,28 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 //            return 0
 //        }
         
+        if connectionList.count == 0
+        {
+            return 0
+        }
+        
+        
+        collectionView.collectionViewLayout.invalidateLayout()
         print("RETURNING content for index: ", collectionView.tag)
-        print("Size is: ", connectionList[collectionView.tag].keyValSocialMediaPairList.count)
+        print("Size is of collectionview should be...: ", connectionList[collectionView.tag].keyValSocialMediaPairList.count)
+//        print("Size is of collectionview really is...: ", collectionView.numberOfItemsInSection(0))
         return connectionList[collectionView.tag].keyValSocialMediaPairList.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-//        print("CCC*********************************************************")
-//        print(" Size of connectionList is: ", connectionList.count)
-//        print(" Indexpath is: ", indexPath.row)
-//        print(" Collection view tag is: ", collectionView.tag)
-//        print(" User corresponding to tag is: ", connectionList[collectionView.tag].userName)
-//        print(" User supposedly has ", connectionList[collectionView.tag].keyValSocialMediaPairList.count, " linked profiles" )
-//        print(" Here they are: \n", connectionList[collectionView.tag].keyValSocialMediaPairList)
-//        print("*********************************************************")
+        print("CCC*********************************************************")
+        print(" Size of connectionList is: ", connectionList.count)
+        print(" Indexpath is: ", indexPath)
+        print(" Collection view tag is: ", collectionView.tag)
+        print(" User corresponding to tag is: ", connectionList[collectionView.tag].userName)
+        print(" User supposedly has ", connectionList[collectionView.tag].keyValSocialMediaPairList.count, " linked profiles" )
+        print(" Here they are: \n", connectionList[collectionView.tag].keyValSocialMediaPairList)
+        print("*********************************************************")
 
         
         
@@ -296,11 +303,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     private func generateData()
     {
-        // Store old connection list so that we can get determine whether to refresh table or not
-        let previousConnectionList = connectionList
-        
-        // ALWAYS start with a fresh list.
-        connectionList = Array<Connection>()
+        var newConnectionList = Array<Connection>()
 
         // Get array of connections from Lambda -- RDS
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
@@ -319,7 +322,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             else if resultTask.result != nil
             {
                 
-                
                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
                 
                 let connectionsFetchedList = resultTask.result! as! NSArray
@@ -332,7 +334,10 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 {
                     dispatch_async(dispatch_get_main_queue(), {
                         self.recentConnTableView.reloadData()
+                        print("RELOADED 0 COUNT DATA")
                     })
+                    
+                    return nil
                 }
                 
                 // Propogate local data structure -- helps us prevent needing to
@@ -343,7 +348,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                     con.userName = userData.objectAtIndex(0) as! String
                     con.timestampGMT = userData.objectAtIndex(1) as! Int
                     
-                    self.connectionList.append(con)
+                    newConnectionList.append(con)
                 }
                 
 //                // If lists are equal, we haven't added or removed a user.
@@ -360,7 +365,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 
                 // If lists are not equal, we need to fetch data from the servers
                 // and re-propagate the list
-                for userConnection in self.connectionList
+                for userConnection in newConnectionList
                 {
                     getUserDynamoData(userConnection.userName, completion: { (result, error) in
                         if error == nil && result != nil
@@ -389,41 +394,65 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                                 }
                                 
                                 
-                                // Update UI on main thread
-                                dispatch_async(dispatch_get_main_queue(), {
-//                                        let range = NSMakeRange(0, self.recentConnTableView.numberOfSections)
-//                                        let sections = NSIndexSet(indexesInRange: range)
-//                                        self.recentConnTableView.reloadSections(sections, withRowAnimation: .Fade)
-//                                        self.recentConnTableView.reloadData()
-                                    
-                                        print("FINISHED RELOADING DATA FOR:::", userConnection.userName)
-                                    self.status = "loading"
-                                    self.recentConnTableView.reloadData()
-                                    self.recentConnTableView.layoutIfNeeded()
-                                    
-                                    self.status = "transition"
-                                    self.recentConnTableView.beginUpdates()
-                                    self.recentConnTableView.endUpdates()
-                            
-
-                                })
+//                                // Update UI on main thread
+//                                dispatch_async(dispatch_get_main_queue(), {
+////                                        self.recentConnTableView.reloadData()
+//                                    
+//                                    self.connectionList = newConnectionList
+//                                    
+//                                    //                        self.status = "loading"
+//                                    self.recentConnTableView.reloadData()
+//                                    self.recentConnTableView.layoutIfNeeded()
+//                                    
+//                                        print("FINISHED RELOADING DATA FOR:::", userConnection.userName)
+////                                    self.status = "loading"
+////                                    self.recentConnTableView.reloadData()
+////                                    self.recentConnTableView.layoutIfNeeded()
+////                                    
+//// 
+////                                    let range = NSMakeRange(0, self.recentConnTableView.numberOfSections)
+////                                    let sections = NSIndexSet(indexesInRange: range)
+////                                    self.recentConnTableView.reloadSections(sections, withRowAnimation: .Fade)
+////                            
+//
+//                                })
                 
                             })
                         }
                     })
                 }
                 
-//                print("GONNA DELAY")
-//                delay(5)
-//                {
-//                    // Update UI on main thread
-//                    dispatch_async(dispatch_get_main_queue(), {
-//////                        let range = NSMakeRange(0, self.recentConnTableView.numberOfSections)
-////                        let sections = NSIndexSet(index: 0)
-////                        self.recentConnTableView.reloadSections(sections, withRowAnimation: .Fade)  
-//                        print("DONE RELOADED")
-//                    })
-//                }
+                print("GONNA DELAY")
+                delay(5)
+                {
+                    // Update UI on main thread
+                    dispatch_async(dispatch_get_main_queue(), {
+                        
+                        self.connectionList = newConnectionList
+                        
+//                        self.status = "loading"
+                        self.recentConnTableView.reloadData()
+                        self.recentConnTableView.layoutIfNeeded()
+                        
+                        
+//                        delay(3)
+//                        {
+//                            dispatch_async(dispatch_get_main_queue(), {
+//                                
+//                                self.status = "transition"
+////                                self.recentConnTableView.reloadData()
+////                                self.recentConnTableView.layoutIfNeeded()
+//                                
+//                                self.recentConnTableView.beginUpdates()
+//                                self.recentConnTableView.endUpdates()
+//                            })
+//                        }
+                        
+                        print("DONE RELOADED")
+                        print("Connection list size is: ", self.connectionList.count)
+
+                    })
+                }
                 
                 
             }
