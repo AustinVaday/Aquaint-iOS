@@ -57,13 +57,14 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     func refreshTable(sender:AnyObject)
     {
         
-        // Clear table
-        connectionList = Array<Connection>()
-        recentConnTableView.reloadData()
-        recentConnTableView.layoutIfNeeded()
+        // Clear table (not needed)
+//        connectionList = Array<Connection>()
+//        recentConnTableView.reloadData()
+//        recentConnTableView.layoutIfNeeded()
 
         // Regenerate data
-        self.generateData()
+        generateData()
+        
         // Need to end refreshing
         delay(0.5)
         {
@@ -80,17 +81,16 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Display up to 30 users immediately
         // Display 20 more if user keeps sliding down
         
-        print("CONNECTION LIST SIZE 2: ", connectionList.count)
         return connectionList.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        print("DDD*********************************************************")
-        print(" Size of connectionList is: ", connectionList.count)
-        print(" Number of rowsi n table is: ", tableView.numberOfRowsInSection(0))
-        print(" Indexpath is: ", indexPath.row)
-        print("*********************************************************")
+//        print("DDD*********************************************************")
+//        print(" Size of connectionList is: ", connectionList.count)
+//        print(" Number of rowsi n table is: ", tableView.numberOfRowsInSection(0))
+//        print(" Indexpath is: ", indexPath.row)
+//        print("*********************************************************")
 
         
         let cell = tableView.dequeueReusableCellWithIdentifier("contactsCell", forIndexPath: indexPath) as! ContactsTableViewCell
@@ -121,7 +121,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         cell.cellUserName.text = connectedUser.userName
         cell.cellImage.image = connectedUser.userImage
         cell.cellTimeConnected.text = connectedUser.computeTimeDiff()
-        
+        cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
+
         // Reset UICollectionViewLayout
         
         // So, turns out that iOS will re-use collection views. Imagine the following scenario:
@@ -132,25 +133,17 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // and thus.. the app will search out of the proper index range and CRASH.
         // To fix this, we need to clear our data source, reload, and then reload with
         // applicable data. Shown as follows:
-        
-        cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
-        let temporaryList = connectionList[indexPath.row].keyValSocialMediaPairList
-        connectionList[indexPath.row].keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
-        cell.collectionView.reloadData()
-        cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
-
-        
-        // Needed because reloadData is synchronous without the below
-        cell.collectionView.layoutIfNeeded()
-        
-        cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
-
-        connectionList[indexPath.row].keyValSocialMediaPairList = temporaryList
-        
+//        let temporaryList = connectionList[indexPath.row].keyValSocialMediaPairList
+//        connectionList[indexPath.row].keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
+//        cell.collectionView.reloadData()
+//        
+//        // Perform reloadData actions immediately instead of later
+//        cell.collectionView.layoutIfNeeded()
+//        
+//        connectionList[indexPath.row].keyValSocialMediaPairList = temporaryList
+        cell.collectionView.collectionViewLayout.invalidateLayout()
         cell.collectionView.reloadData()
         
-        cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
-
         
         return cell
         
@@ -176,48 +169,11 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         // Return height computed by our special function
-        
-//        if status == "loading"
-//        {
-//            print("STATUS LOADING")
-//            return 120
-//        }
-//        
-//        if status == "transition"
-//        {
-//            print("STATUS TRANSITION")
-//            return 60
-//        }
-//        
-//        if status == "userTouch"
-//        {
-//            print("STATUS USERTOUCH")
-//            return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
-//        }
-
-        print("NO STATUS...")
         return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
-        
-//        return 120
-
     }
-    
-//    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-//        collectionView.collectionViewLayout.invalidateLayout()
-//        
-//        return 1
-//    }
     
     // COLLECTION VIEW
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-         
-        // Use the tag to know which tableView row we're at
-//        let list = connectionList[collectionView.tag].keyValSocialMediaPairList
-//        
-//        if list.isEmpty
-//        {
-//            return 0
-//        }
         
         if connectionList.count == 0
         {
@@ -225,10 +181,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         }
         
         
-        collectionView.collectionViewLayout.invalidateLayout()
         print("RETURNING content for index: ", collectionView.tag)
         print("Size is of collectionview should be...: ", connectionList[collectionView.tag].keyValSocialMediaPairList.count)
-//        print("Size is of collectionview really is...: ", collectionView.numberOfItemsInSection(0))
         return connectionList[collectionView.tag].keyValSocialMediaPairList.count
     }
     
@@ -241,8 +195,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         print(" User supposedly has ", connectionList[collectionView.tag].keyValSocialMediaPairList.count, " linked profiles" )
         print(" Here they are: \n", connectionList[collectionView.tag].keyValSocialMediaPairList)
         print("*********************************************************")
-
-        
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
         
@@ -333,6 +285,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 if connectionsFetchedList.count == 0
                 {
                     dispatch_async(dispatch_get_main_queue(), {
+                        
+                        self.connectionList = Array<Connection>()
                         self.recentConnTableView.reloadData()
                         print("RELOADED 0 COUNT DATA")
                     })

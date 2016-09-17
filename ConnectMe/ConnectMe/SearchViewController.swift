@@ -472,6 +472,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         // When user is added from tableview cell
         // Add to set to keep track of recently added users
         recentUsernameAdds.insert(username)
+        followeesMapping[username] = getTimestampAsInt()
         print("OKOK. USER ADDED: ", username)
     }
     
@@ -480,8 +481,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         if recentUsernameAdds.contains(username)
         {
             recentUsernameAdds.remove(username)
-            print("OKOK. USER REMOVED: ", username)
-
         }
+        
+        followeesMapping.removeValueForKey(username)
+        
+        print("OKOK. USER REMOVED: ", username)
+
     }
 }
