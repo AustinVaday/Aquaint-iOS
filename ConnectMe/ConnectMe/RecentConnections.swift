@@ -187,14 +187,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        print("CCC*********************************************************")
-        print(" Size of connectionList is: ", connectionList.count)
-        print(" Indexpath is: ", indexPath)
-        print(" Collection view tag is: ", collectionView.tag)
-        print(" User corresponding to tag is: ", connectionList[collectionView.tag].userName)
-        print(" User supposedly has ", connectionList[collectionView.tag].keyValSocialMediaPairList.count, " linked profiles" )
-        print(" Here they are: \n", connectionList[collectionView.tag].keyValSocialMediaPairList)
-        print("*********************************************************")
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
         
@@ -317,10 +309,13 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 //                    return nil
 //                }
 
+                
+                var runningRequests = 0
                 // If lists are not equal, we need to fetch data from the servers
                 // and re-propagate the list
                 for userConnection in newConnectionList
                 {
+                    runningRequests = runningRequests + 1
                     getUserDynamoData(userConnection.userName, completion: { (result, error) in
                         if error == nil && result != nil
                         {
@@ -348,65 +343,46 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                                 }
                                 
                                 
-//                                // Update UI on main thread
-//                                dispatch_async(dispatch_get_main_queue(), {
-////                                        self.recentConnTableView.reloadData()
-//                                    
-//                                    self.connectionList = newConnectionList
-//                                    
-//                                    //                        self.status = "loading"
-//                                    self.recentConnTableView.reloadData()
-//                                    self.recentConnTableView.layoutIfNeeded()
-//                                    
-//                                        print("FINISHED RELOADING DATA FOR:::", userConnection.userName)
-////                                    self.status = "loading"
-////                                    self.recentConnTableView.reloadData()
-////                                    self.recentConnTableView.layoutIfNeeded()
-////                                    
-//// 
-////                                    let range = NSMakeRange(0, self.recentConnTableView.numberOfSections)
-////                                    let sections = NSIndexSet(indexesInRange: range)
-////                                    self.recentConnTableView.reloadSections(sections, withRowAnimation: .Fade)
-////                            
-//
-//                                })
-                
+                                runningRequests = runningRequests - 1
+                                
+                                if runningRequests == 0
+                                {
+                                    // Update UI when no more running requests! (last async call finished)
+                                    // Update UI on main thread
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        
+                                        self.connectionList = newConnectionList
+                                        
+                                        self.recentConnTableView.reloadData()
+                                        self.recentConnTableView.layoutIfNeeded()
+                                        
+                                        print("DONE RELOADED")
+                                        print("Connection list size is: ", self.connectionList.count)
+                                        
+                                    })
+
+                                }
                             })
                         }
                     })
                 }
                 
-                print("GONNA DELAY")
-                delay(5)
-                {
-                    // Update UI on main thread
-                    dispatch_async(dispatch_get_main_queue(), {
-                        
-                        self.connectionList = newConnectionList
-                        
-//                        self.status = "loading"
-                        self.recentConnTableView.reloadData()
-                        self.recentConnTableView.layoutIfNeeded()
-                        
-                        
-//                        delay(3)
-//                        {
-//                            dispatch_async(dispatch_get_main_queue(), {
-//                                
-//                                self.status = "transition"
-////                                self.recentConnTableView.reloadData()
-////                                self.recentConnTableView.layoutIfNeeded()
-//                                
-//                                self.recentConnTableView.beginUpdates()
-//                                self.recentConnTableView.endUpdates()
-//                            })
-//                        }
-                        
-                        print("DONE RELOADED")
-                        print("Connection list size is: ", self.connectionList.count)
-
-                    })
-                }
+//                print("GONNA DELAY")
+//                delay(5)
+//                {
+//                    // Update UI on main thread
+//                    dispatch_async(dispatch_get_main_queue(), {
+//                        
+//                        self.connectionList = newConnectionList
+//                        
+//                        self.recentConnTableView.reloadData()
+//                        self.recentConnTableView.layoutIfNeeded()
+//                        
+//                        print("DONE RELOADED")
+//                        print("Connection list size is: ", self.connectionList.count)
+//
+//                    })
+//                }
                 
                 
             }
