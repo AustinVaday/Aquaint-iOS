@@ -671,6 +671,22 @@ func getProfilePopup() -> KLCPopup
     return popup
 }
 
+func clearCookies (domain: String)
+{
+    let cookieJar : NSHTTPCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
+    for cookie in cookieJar.cookies! as [NSHTTPCookie]{
+        
+        let url = "www." + domain + ".com"
+        let appUrl = "api." + domain + ".com"
+        
+        if cookie.domain == url || cookie.domain == appUrl
+        {
+            cookieJar.deleteCookie(cookie)
+            print("Cleared cookies for ", domain)
+        }
+    }
+}
+
 func showPopupForUser(username: String)
 {
     let popup = getProfilePopup()

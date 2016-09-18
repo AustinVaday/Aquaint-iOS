@@ -111,6 +111,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
 
                 let login = FBSDKLoginManager.init()
                 login.logOut()
+                
                 // Open in app instead of web browser!
                 login.loginBehavior = FBSDKLoginBehavior.Native
                 
@@ -191,26 +192,40 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
             
             break
         case "instagram" :
+            
+            // Make sure to clear Instagram cookies. This will allow users to obtain a fresh login page every time.
+            clearCookies("instagram")
+            
             /*************************************************************************
              * INSTAGRAM DATA FETCH
              **************************************************************************/
             SimpleAuth.authorize("instagram") { (result, error) in
                 
                 print("INSTAGRAM")
-                print("ERROR IS: ", error)
 
-                
-                if (result == nil)
+                if (result == nil && error == nil)
                 {
                     print("CANCELLED REQUEST")
                 }
                 else if (error == nil)
-                {
-                    print ("RESULT IS: ", result)
+                {                    
+                    let jsonResult = result as! NSDictionary
+                    
+                    socialMediaName = jsonResult["user_info"]!["username"]! as String!
+                    print("Instagram username returned is: ", socialMediaName)
+                    
+                    if self.delegate != nil
+                    {
+                        self.delegate?.userDidAddNewProfile(socialMediaType, socialMediaName: socialMediaName)
+                    }
+                    
                 }
                 else
                 {
+                    
                     print ("FAILED TO PROCESS REQUEST")
+                    print("ERROR IS: ", error)
+
                 }
                 
             }
