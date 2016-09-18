@@ -110,7 +110,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
             
 
                 let login = FBSDKLoginManager.init()
-                
+                login.logOut()
                 // Open in app instead of web browser!
                 login.loginBehavior = FBSDKLoginBehavior.Native
                 
@@ -118,7 +118,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                 login.logInWithReadPermissions(["public_profile"], fromViewController: self) { (result, error) in
                     
                     // If no error, store facebook user ID
-                    if (error == nil)
+                    if (error == nil && result != nil)
                     {
                         print("SUCCESS LOG IN!", result.debugDescription)
                         print(result.description)
@@ -129,14 +129,16 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                             
                             socialMediaName = FBSDKAccessToken.currentAccessToken().userID
                             
-//                            self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
-                            
                             if self.delegate != nil
                             {
                                 self.delegate?.userDidAddNewProfile(socialMediaType, socialMediaName: socialMediaName)
                             }
 
+                        
+                            login.logOut()
                         }
+                        
+                        
 
                     }
                     else if (result == nil && error != nil)
