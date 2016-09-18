@@ -286,92 +286,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
             /*************************************************************************
              * SNAPCHAT DATA FETCH
              **************************************************************************/
-            var alertViewResponder: SCLAlertViewResponder!
-            let subview = UIView(frame: CGRectMake(0,0,216,70))
-            let x = (subview.frame.width - 180) / 2
-            let colorDarkBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
-
-            // Add text field for username
-            let textField = UITextField(frame: CGRectMake(x,10,180,25))
-        
-//            textField.layer.borderColor = colorLightBlue.CGColor
-//            textField.layer.borderWidth = 1.5
-//            textField.layer.cornerRadius = 5
-            textField.font = UIFont(name: "Avenir Roman", size: 14.0)
-            textField.textColor = colorDarkBlue
-            textField.placeholder = "Enter Username"
-            textField.textAlignment = NSTextAlignment.Center
-            
-            // Add target to text field to validate user input of a proper input
-            textField.addTarget(self, action: #selector(usernameTextFieldDidChange), forControlEvents: UIControlEvents.EditingChanged)
-            
-            subview.addSubview(textField)
-            
-            
-            
-            let alertAppearance = SCLAlertView.SCLAppearance(
-                showCircularIcon: true,
-                kCircleIconHeight: 60,
-                kCircleHeight: 55,
-                shouldAutoDismiss: false,
-                hideWhenBackgroundViewIsTapped: true
-                
-            )
-  
-            let alertView = SCLAlertView(appearance: alertAppearance)
-            
-            alertView.customSubview = subview
-            alertView.addButton("Save", action: {
-                print("Save button clicked for textField data:", textField.text)
-                
-                if alertViewResponder == nil
-                {
-                    print("Something went wrong...")
-                    return
-                }
-                
-                let username = textField.text!
-                
-                if username.isEmpty
-                {
-                    //TODO: Nothing?
-                }
-                else if username.characters.count > 30
-                {
-                    //TODO: Notify that username is too long
-                    alertViewResponder.close()
-
-                }
-                else
-                {
-                    
-                    let socialMediaName = username
-                    print("Snapchat username returned is: ", socialMediaName)
-                    
-                    if self.delegate != nil
-                    {
-                        self.delegate?.userDidAddNewProfile(socialMediaType, socialMediaName: socialMediaName)
-                    }
-                    
-                    alertViewResponder.close()
-
-                }
-                
-                
-            })
-            
-            let alertViewIcon = UIImage(named: "snapchat")
-            
-            alertViewResponder = alertView.showTitle("Snapchat",
-                               subTitle: "",
-                               duration:0.0,
-                               completeText: "Cancel",
-                               style: .Success,
-                               colorStyle: 0x0F7A9D,
-                               colorTextButton: 0xFFFFFF,
-                               circleIconImage: alertViewIcon,
-                               animationStyle: .BottomToTop
-            )
+            showAndProcessUsernameAlert(socialMediaType)
             
             break
         case "youtube" :
@@ -459,6 +374,95 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
         
         textField.text = removeAllNonAlphaNumeric(usernameString!)
     }
+    
+    
+    private func showAndProcessUsernameAlert(socialMediaType: String)
+    {
+        var alertViewResponder: SCLAlertViewResponder!
+        let subview = UIView(frame: CGRectMake(0,0,216,70))
+        let x = (subview.frame.width - 180) / 2
+        let colorDarkBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
+        
+        // Add text field for username
+        let textField = UITextField(frame: CGRectMake(x,10,180,25))
+        
+        //            textField.layer.borderColor = colorLightBlue.CGColor
+        //            textField.layer.borderWidth = 1.5
+        //            textField.layer.cornerRadius = 5
+        textField.font = UIFont(name: "Avenir Roman", size: 14.0)
+        textField.textColor = colorDarkBlue
+        textField.placeholder = "Enter Username"
+        textField.textAlignment = NSTextAlignment.Center
+        
+        // Add target to text field to validate/fix user input of a proper input
+        textField.addTarget(self, action: #selector(usernameTextFieldDidChange), forControlEvents: UIControlEvents.EditingChanged)
+        subview.addSubview(textField)
+        
+        let alertAppearance = SCLAlertView.SCLAppearance(
+            showCircularIcon: true,
+            kCircleIconHeight: 60,
+            kCircleHeight: 55,
+            shouldAutoDismiss: false,
+            hideWhenBackgroundViewIsTapped: true
+            
+        )
+        
+        let alertView = SCLAlertView(appearance: alertAppearance)
+        
+        alertView.customSubview = subview
+        alertView.addButton("Save", action: {
+            print("Save button clicked for textField data:", textField.text)
+            
+            if alertViewResponder == nil
+            {
+                print("Something went wrong...")
+                return
+            }
+            
+            let username = textField.text!
+            
+            if username.isEmpty
+            {
+                //TODO: Nothing?
+            }
+            else if username.characters.count > 30
+            {
+                //TODO: Notify that username is too long
+                alertViewResponder.close()
+                
+            }
+            else
+            {
+                
+                let socialMediaName = username
+                print(socialMediaType, " username returned is: ", socialMediaName)
+                
+                if self.delegate != nil
+                {
+                    self.delegate?.userDidAddNewProfile(socialMediaType, socialMediaName: socialMediaName)
+                }
+                
+                alertViewResponder.close()
+                
+            }
+            
+            
+        })
+        
+        let alertViewIcon = UIImage(named: socialMediaType)
+
+        alertViewResponder = alertView.showTitle(socialMediaType.capitalizedString,
+                                                 subTitle: "",
+                                                 duration:0.0,
+                                                 completeText: "Cancel",
+                                                 style: .Success,
+                                                 colorStyle: 0x0F7A9D,
+                                                 colorTextButton: 0xFFFFFF,
+                                                 circleIconImage: alertViewIcon,
+                                                 animationStyle: .BottomToTop
+        )
+    }
+    
     
     // The below function is too specific -- see general one
     private func updateProfilesDynamoDB(socialMediaType: String!, socialMediaName: String!)
