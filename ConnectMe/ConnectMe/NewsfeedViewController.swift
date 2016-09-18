@@ -34,7 +34,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         {
             noContentMessageView.hidden = false
             newsfeedTableView.hidden = true
-            setUpAnimations(self.view.frame.width)
+            setUpAnimations(self)
         }
     }
     
@@ -173,7 +173,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             {
                 noContentMessageView.hidden = false
                 newsfeedTableView.hidden = true
-                setUpAnimations(self.view.frame.width)
+                setUpAnimations(self)
             }
             else
             {
@@ -477,7 +477,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
 
-    private func setUpAnimations(viewWidth: CGFloat)
+    private func setUpAnimations(viewController: UIViewController)
     {
         // Only add more animations if none exist already. Prevents user abuse
         if !animatedObjects.isEmpty
@@ -518,7 +518,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             // Create a cool path that defines animation curve
             let path = UIBezierPath()
             path.moveToPoint(CGPoint(x:-20, y:239 + randomYOffset))
-            path.addCurveToPoint(CGPoint(x:viewWidth + 50 , y: 239 + randomYOffset), controlPoint1: CGPoint(x: 136, y: 373 + randomYOffset), controlPoint2: CGPoint(x: 178, y: 110 + randomYOffset))
+            path.addCurveToPoint(CGPoint(x:viewController.view.frame.width + 50 , y: 239 + randomYOffset), controlPoint1: CGPoint(x: 136, y: 373 + randomYOffset), controlPoint2: CGPoint(x: 178, y: 110 + randomYOffset))
             
             // Set up animation with path
             let animation = CAKeyframeAnimation(keyPath: "position")

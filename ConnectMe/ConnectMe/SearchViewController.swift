@@ -13,6 +13,8 @@ import AWSLambda
 class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate, SearchTableViewCellDelegate {
 
     @IBOutlet weak var searchTableView: UITableView!
+    @IBOutlet weak var noSearchResultsView: UIView!
+    @IBOutlet weak var searchResultsInfoLabel: UILabel!
     
     var searchController: UISearchController!
     var customSearchController: CustomSearchController!
@@ -21,10 +23,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var allUsers: Array<User>!
     var filteredUsers: Array<User>!
     var shouldShowSearchResults = false
+    var isTypingSearch = false
     var defaultImage : UIImage!
     var followeesMapping : [String: Int]!
     var recentUsernameAdds : Set<String>!
-    
+    var animatedObjects : Array<UIView>!
     let imageCache = NSCache()
     
 
@@ -35,8 +38,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         filteredUsers = Array<User>()
         followeesMapping = [String: Int]()
         recentUsernameAdds = Set<String>()
+        animatedObjects = Array<UIView>()
         
-//        configureSearchController()
+        noSearchResultsView.hidden = true
+        
         configureCustomSearchController()
         
         userName = getCurrentCachedUser()
@@ -114,6 +119,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     // When the view disappears, upload action data to Dynamo (used for newsfeed)
     override func viewDidDisappear(animated: Bool) {
+        
+        // Clear any animations that were deployed
+        clearUpAnimations()
+        noSearchResultsView.hidden = true
         
         // Only update dynamo if there are changes to account for.
         if !recentUsernameAdds.isEmpty
@@ -231,6 +240,15 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     func didChangeSearchText(searchText: String) {
         
+        if searchText.isEmpty
+        {
+            isTypingSearch = false
+        }
+        else
+        {
+            isTypingSearch = true
+        }
+        
         filteredUsers = allUsers.filter({ (someUser) -> Bool in
             
             let userName = someUser.username as NSString
@@ -249,61 +267,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         searchTableView.reloadData()
 
     }
-    
-    
-//    // **** SEARCHBAR PROTOCOLS (DEFAULT SEARCH BAR) ***** 
-//    // **** NOT CURRENTLY USED ****
-//    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-//        
-//        // Use filtered array
-//        shouldShowSearchResults = true
-//        searchTableView.reloadData()
-//    }
-//    
-//    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-//        
-//        // Use default array
-//        shouldShowSearchResults = false
-//        searchTableView.reloadData()
-//    }
-//    
-//    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-//        
-//        // If not already showing results, begin showing them now
-//        if (!shouldShowSearchResults)
-//        {
-//            shouldShowSearchResults = true
-//            searchTableView.reloadData()
-//        }
-//        
-//        searchController.becomeFirstResponder()
-//    }
-//    
-//    // *** SEARCH RESULTS UPDATING PROTOCOL ****
-//    func updateSearchResultsForSearchController(searchController: UISearchController) {
-//        
-//        let searchString = searchController.searchBar.text!
-//        
-//        
-//        filteredUsers = allUsers.filter({ (someUser) -> Bool in
-//        
-//            let userName = someUser.username as NSString
-//            let realName = someUser.realname as NSString
-//            
-//            // Check if we have a user with a corresponding exact substring (case insensitive)
-//            let userNameMatch = userName.rangeOfString(searchString, options: .CaseInsensitiveSearch).location != NSNotFound
-//            let realNameMatch = realName.rangeOfString(searchString, options: .CaseInsensitiveSearch).location != NSNotFound
-//
-//            // If we have either a user name or real name match, add the user to the filtered array!
-//            return userNameMatch || realNameMatch
-//        })
-//        
-//        
-//        // Reload table view with new results
-//        searchTableView.reloadData()
-//    }
-//    
-    
     
     // **** SEARCH TABLE VIEW *****
     
@@ -389,11 +352,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
         
-//        // Create a nice border for the cellImage
-//        cell.cellImage.layer.borderWidth = 0.5
-//        cell.cellImage.layer.borderColor = UIColor.blackColor().CGColor
-        
-        
         // IMPORTANT!!!! If we don't have this we can't get data when user adds/deletes people.
         cell.searchDelegate = self
         
@@ -405,37 +363,46 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         if (shouldShowSearchResults)
         {
-            // If user is searching, show applicable search results
+            // If user is searching, show applicable search results.
+            // If no users, show animation indicating no result
+            
+            if filteredUsers.count == 0
+            {
+                setUpAnimations(self)
+                noSearchResultsView.hidden = false
+                
+                if isTypingSearch
+                {
+                    searchResultsInfoLabel.hidden = false
+                }
+                else
+                {
+                    searchResultsInfoLabel.hidden = true
+                }
+            }
+            else
+            {
+                clearUpAnimations()
+                noSearchResultsView.hidden = true
+                searchResultsInfoLabel.hidden = true
+
+            }
+            
             return filteredUsers.count
         }
         else
         {
+            
+            clearUpAnimations()
+            noSearchResultsView.hidden = true
+
             // If user is not searching, show all users
             return allUsers.count
         }
         
     }
 
-    
-    // If you want default (ugly) iOS search bar
-    private func configureSearchController()
-    {
-        
-        //When the nil value is passed as an argument, 
-        // the search controller knows that the view controller that exists to
-        // is also going to handle and display the search results.
-//        searchController = UISearchController(searchResultsController: nil)
-//        searchController.dimsBackgroundDuringPresentation = false
-//        searchController.searchResultsUpdater = self
-//        searchController.searchBar.placeholder = "Search here"
-//        searchController.searchBar.delegate = self
-//        searchController.searchBar.sizeToFit()
-//        searchTableView.tableHeaderView = searchController.searchBar
-        
-        
-    }
-    
-    
+
     // If you want custom (beautiful) Aquaint search bar
     private func configureCustomSearchController()
     {
@@ -443,7 +410,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         let font = UIFont(name: "Avenir", size: 14.0)!
         
         // UI Color for #12BBD5 (www.uicolor.xyz)
-//        let textColor = UIColor(red:0.07, green:0.73, blue:0.84, alpha:1.0)
+//        let textColor = UIColor(red:0.07, greenblue:0.84, alpha:1.0)
 
         let textColor = UIColor.whiteColor()
         
@@ -463,6 +430,86 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         customSearchController.customDelegate = self
         
         searchTableView.tableHeaderView = customSearchController.customSearchBar
+    }
+
+
+    private func setUpAnimations(viewController: UIViewController)
+    {
+        // Only add more animations if none exist already. Prevents user abuse
+        if !animatedObjects.isEmpty
+        {
+            return
+        }
+        
+        for i in 0...10
+        {
+            
+            // Set up object to animate
+            let object = UIView()
+            
+            // Generate random size offset from 0.0 to 20.0
+            let randomSizeOffset = CGFloat(arc4random_uniform(20))
+            
+//            let image = UIImage(named:"Search Icon")
+//            let imageView = UIImageView(image: image)
+//            imageView.frame = CGRect(x:0, y:0, width:20 + randomSizeOffset, height:20 + randomSizeOffset)
+//            imageView.backgroundColor = generateRandomColor()
+//            imageView.layer.cornerRadius = imageView.frame.size.width / 2
+//            object.addSubview(imageView)
+            
+            object.frame = CGRect(x:0, y:0, width:20 + randomSizeOffset, height:20 + randomSizeOffset)
+            object.backgroundColor = generateRandomColor()
+            object.layer.cornerRadius = object.frame.size.width / 2
+
+            
+            // Generate random number from 0.0 and 200.0
+            let randomYOffset = CGFloat( arc4random_uniform(200))
+            
+            // Add object to subview
+            self.view.addSubview(object)
+            
+            // Create a cool path that defines animation curve
+            let path = UIBezierPath()
+            path.moveToPoint(CGPoint(x:-20, y:239 + randomYOffset))
+            path.addCurveToPoint(CGPoint(x:viewController.view.frame.width + 50 , y: 239 + randomYOffset), controlPoint1: CGPoint(x: 136, y: 373 + randomYOffset), controlPoint2: CGPoint(x: 178, y: 110 + randomYOffset))
+            
+            // Set up animation with path
+            let animation = CAKeyframeAnimation(keyPath: "position")
+            animation.path = path.CGPath
+            
+            // Set up rotational animations
+            animation.rotationMode = kCAAnimationRotateAuto
+            animation.repeatCount = Float.infinity
+            animation.duration = 5.0
+            // Each object will take between 4.0 and 8.0 seconds
+            // to complete one animation loop
+            animation.duration = Double(arc4random_uniform(40)+30) / 10
+            
+            // stagger each animation by a random value
+            // `290` was chosen simply by experimentation
+            animation.timeOffset = Double(arc4random_uniform(290))
+            
+            object.layer.addAnimation(animation, forKey: "animate position along path")
+            animatedObjects.append(object)
+        }
+    }
+    
+    
+    private func clearUpAnimations()
+    {
+        // Only remove animations if there are some that exist already. O(1) if empty
+        if animatedObjects.isEmpty
+        {
+            return
+        }
+        
+        for object in animatedObjects
+        {
+            object.layer.removeAllAnimations()
+            object.removeFromSuperview()
+        }
+        
+        animatedObjects.removeAll()
     }
 
     
