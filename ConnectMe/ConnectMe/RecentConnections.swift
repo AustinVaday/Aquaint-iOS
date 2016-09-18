@@ -367,24 +367,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                     })
                 }
                 
-//                print("GONNA DELAY")
-//                delay(5)
-//                {
-//                    // Update UI on main thread
-//                    dispatch_async(dispatch_get_main_queue(), {
-//                        
-//                        self.connectionList = newConnectionList
-//                        
-//                        self.recentConnTableView.reloadData()
-//                        self.recentConnTableView.layoutIfNeeded()
-//                        
-//                        print("DONE RELOADED")
-//                        print("Connection list size is: ", self.connectionList.count)
-//
-//                    })
-//                }
-                
-                
             }
             else
             {
