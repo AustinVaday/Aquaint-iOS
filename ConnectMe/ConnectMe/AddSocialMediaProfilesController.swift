@@ -293,7 +293,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
             /*************************************************************************
              * YOUTUBE DATA FETCH
              **************************************************************************/
-            showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+            showAndProcessUsernameAlert(socialMediaType)
 
             
             break

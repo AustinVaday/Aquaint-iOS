@@ -96,8 +96,22 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         {
             return arrayOfViewControllers[CONNECTIONS]
         }
+        
                 
         return nil
+    }
+    
+    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        
+        print("TRANSITION COMPLETED?: ", completed)
+        
+        // Only show the updated section underline if the transition is completed.
+        // Previously, we did not check this, so if the user would "fake" a swipe to the left,
+        // the section underline would be changed (improper behavior). This is now fixed!
+        if completed
+        {
+            sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
+        }
     }
     
     func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
@@ -125,7 +139,6 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         }
         
         print(currentPageIndex)
-        sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
     
     }
 
