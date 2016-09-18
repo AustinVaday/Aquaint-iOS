@@ -94,6 +94,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SCLAlertView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SimpleAuth-SimpleAuth.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -127,17 +132,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>20B962C4B8BF6964893582BC2C882660</key>
+		<key>1783E7F58340438426ECB07901409816</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>262A98271F16FFB3BEB2975258561AC4</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2D2321C442F65D66A3FB6E1249D8596B</key>
+		<key>1927E402894CE3F82A18C5C473A49D96</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -147,7 +147,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6B9893C78542AE7BD5CA7FAD1E146162</key>
+		<key>49BFB11A461923BE09899624B38843E5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -167,6 +167,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>7EA050E25E069DC954EB5C2CCB9C2460</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>8C7866E1905DC3A2FD452BCAF62690C6</key>
 		<dict>
 			<key>primary</key>
@@ -182,12 +187,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A05CE7B8B92FC54CBE8FDB2CB68C1F7B</key>
+		<key>9FBB7BBE9FAFD7F22EB874ADBFEA9830</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A231E66A637A5E31DB6592DE057AF80F</key>
+		<key>A05CE7B8B92FC54CBE8FDB2CB68C1F7B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -207,12 +212,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CE653AF5A116DF85922F4BFCCBD44B48</key>
+		<key>BE4B82E3A6E972D452EE5AA2F3BF710D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>D7C577A782ECBFCC395DF4C6F01965C3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F8B1607893F1ADE783F05FA06BA07CB2</key>
 		<dict>
 			<key>primary</key>
 			<true/>

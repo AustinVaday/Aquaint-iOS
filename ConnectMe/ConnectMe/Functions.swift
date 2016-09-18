@@ -353,6 +353,13 @@ func removeAllNonDigits(string: String) -> String
     return string.componentsSeparatedByCharactersInSet(characterSetToRemove).joinWithSeparator("")
 }
 
+// Remove all non-alpha-numeric characters from a string (i.e. username)
+func removeAllNonAlphaNumeric(string: String) -> String
+{
+    let characterSetToRemove = NSCharacterSet.alphanumericCharacterSet().invertedSet
+    return string.componentsSeparatedByCharactersInSet(characterSetToRemove).joinWithSeparator("")
+}
+
 // Check if phone number is proper
 func verifyPhoneFormat(phoneString: String) -> Bool
 {

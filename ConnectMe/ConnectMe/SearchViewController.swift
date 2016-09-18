@@ -410,7 +410,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         let font = UIFont(name: "Avenir", size: 14.0)!
         
         // UI Color for #12BBD5 (www.uicolor.xyz)
-//        let textColor = UIColor(red:0.07, greenblue:0.84, alpha:1.0)
+//        let textColor = UIColor(red:0.07, green:0.73, blue:0.84, alpha:1.0)
 
         let textColor = UIColor.whiteColor()
         

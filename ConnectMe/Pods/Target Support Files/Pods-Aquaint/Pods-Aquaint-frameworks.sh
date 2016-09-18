@@ -101,6 +101,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Aquaint/ReachabilitySwift.framework"
   install_framework "Pods-Aquaint/ReactiveCocoa.framework"
   install_framework "Pods-Aquaint/Result.framework"
+  install_framework "Pods-Aquaint/SCLAlertView.framework"
   install_framework "Pods-Aquaint/SimpleAuth.framework"
   install_framework "Pods-Aquaint/cocoa_oauth.framework"
 fi
@@ -122,6 +123,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Aquaint/ReachabilitySwift.framework"
   install_framework "Pods-Aquaint/ReactiveCocoa.framework"
   install_framework "Pods-Aquaint/Result.framework"
+  install_framework "Pods-Aquaint/SCLAlertView.framework"
   install_framework "Pods-Aquaint/SimpleAuth.framework"
   install_framework "Pods-Aquaint/cocoa_oauth.framework"
 fi

@@ -11,6 +11,8 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import SimpleAuth
 import AWSDynamoDB
+import SCLAlertView
+
 
 protocol AddSocialMediaProfileDelegate {
     func userDidAddNewProfile(socialMediaType:String, socialMediaName:String)
@@ -208,7 +210,7 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
                     print("CANCELLED REQUEST")
                 }
                 else if (error == nil)
-                {                    
+                {
                     let jsonResult = result as! NSDictionary
                     
                     socialMediaName = jsonResult["user_info"]!["username"]! as String!
@@ -284,8 +286,92 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
             /*************************************************************************
              * SNAPCHAT DATA FETCH
              **************************************************************************/
-            showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
+            var alertViewResponder: SCLAlertViewResponder!
+            let subview = UIView(frame: CGRectMake(0,0,216,70))
+            let x = (subview.frame.width - 180) / 2
+            let colorDarkBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
 
+            // Add text field for username
+            let textField = UITextField(frame: CGRectMake(x,10,180,25))
+        
+//            textField.layer.borderColor = colorLightBlue.CGColor
+//            textField.layer.borderWidth = 1.5
+//            textField.layer.cornerRadius = 5
+            textField.font = UIFont(name: "Avenir Roman", size: 14.0)
+            textField.textColor = colorDarkBlue
+            textField.placeholder = "Enter Username"
+            textField.textAlignment = NSTextAlignment.Center
+            
+            // Add target to text field to validate user input of a proper input
+            textField.addTarget(self, action: #selector(usernameTextFieldDidChange), forControlEvents: UIControlEvents.EditingChanged)
+            
+            subview.addSubview(textField)
+            
+            
+            
+            let alertAppearance = SCLAlertView.SCLAppearance(
+                showCircularIcon: true,
+                kCircleIconHeight: 60,
+                kCircleHeight: 55,
+                shouldAutoDismiss: false,
+                hideWhenBackgroundViewIsTapped: true
+                
+            )
+  
+            let alertView = SCLAlertView(appearance: alertAppearance)
+            
+            alertView.customSubview = subview
+            alertView.addButton("Save", action: {
+                print("Save button clicked for textField data:", textField.text)
+                
+                if alertViewResponder == nil
+                {
+                    print("Something went wrong...")
+                    return
+                }
+                
+                let username = textField.text!
+                
+                if username.isEmpty
+                {
+                    //TODO: Nothing?
+                }
+                else if username.characters.count > 30
+                {
+                    //TODO: Notify that username is too long
+                    alertViewResponder.close()
+
+                }
+                else
+                {
+                    
+                    let socialMediaName = username
+                    print("Snapchat username returned is: ", socialMediaName)
+                    
+                    if self.delegate != nil
+                    {
+                        self.delegate?.userDidAddNewProfile(socialMediaType, socialMediaName: socialMediaName)
+                    }
+                    
+                    alertViewResponder.close()
+
+                }
+                
+                
+            })
+            
+            let alertViewIcon = UIImage(named: "snapchat")
+            
+            alertViewResponder = alertView.showTitle("Snapchat",
+                               subTitle: "",
+                               duration:0.0,
+                               completeText: "Cancel",
+                               style: .Success,
+                               colorStyle: 0x0F7A9D,
+                               colorTextButton: 0xFFFFFF,
+                               circleIconImage: alertViewIcon,
+                               animationStyle: .BottomToTop
+            )
             
             break
         case "youtube" :
@@ -365,6 +451,13 @@ class AddSocialMediaProfilesController: UIViewController, UICollectionViewDelega
         // refresh the collection view on the previous page
         // when we go back. So instead, we will use an unwind action.
 //        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func usernameTextFieldDidChange(textField: UITextField)
+    {
+        let usernameString = textField.text?.lowercaseString
+        
+        textField.text = removeAllNonAlphaNumeric(usernameString!)
     }
     
     // The below function is too specific -- see general one

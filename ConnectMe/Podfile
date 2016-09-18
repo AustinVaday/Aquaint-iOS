@@ -16,6 +16,7 @@ pod 'Firebase/Auth'
 # -------------
 pod 'SimpleAuth'
 pod 'KLCPopup'
+pod 'SCLAlertView'
 pod 'FRHyperLabel'
 pod 'ReachabilitySwift'
 # Pod for phone kit parsing

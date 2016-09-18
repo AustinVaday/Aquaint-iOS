@@ -73,6 +73,7 @@ PODS:
   - ReactiveCocoa (4.2.1):
     - Result (~> 2.0)
   - Result (2.1.2)
+  - SCLAlertView (0.6.0)
   - SimpleAuth (0.3.9):
     - SimpleAuth/BoxWeb (= 0.3.9)
     - SimpleAuth/Core (= 0.3.9)
@@ -152,6 +153,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - KLCPopup
   - ReachabilitySwift
+  - SCLAlertView
   - SimpleAuth
 
 SPEC CHECKSUMS:
@@ -186,6 +188,7 @@ SPEC CHECKSUMS:
   ReachabilitySwift: e0f6b6f280effb47731acfaaa2d5ffe223703793
   ReactiveCocoa: 5a42745f11ea236f405bb9ce5e97c5e3b23562dd
   Result: 6e722d4a66b1408680dbfcdf51c0b1c4b706316a
+  SCLAlertView: 0f6b3c23a48b4993564ff1dd3c065782e4b2b687
   SimpleAuth: bc7d594f90711a7e6ef7624dce5aa8c8b09770ab
 
 COCOAPODS: 0.39.0
