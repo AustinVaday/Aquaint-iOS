@@ -15,6 +15,7 @@
 		FF1001ED1C80374A00B53F8B /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */; };
 		FF1660071D4323F400900686 /* DropDownTableViewFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */; };
 		FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */; };
+		FF23A12F1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A12E1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift */; };
 		FF29BB1D9643BB46054B3871 /* Pods_Aquaint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D1CC9F354D9EF78F36FCC8C /* Pods_Aquaint.framework */; };
 		FF3834D31D6D483E00FC9F2A /* PopUpAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */; };
 		FF3834D51D6D529500FC9F2A /* ProfilePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */; };
@@ -113,6 +114,7 @@
 		FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownTableViewFunctions.swift; sourceTree = "<group>"; };
 		FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetViewController.swift; sourceTree = "<group>"; };
+		FF23A12E1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSocialMediaPageTableViewCell.swift; sourceTree = "<group>"; };
 		FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PopUpAlert.storyboard; sourceTree = "<group>"; };
 		FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePopupView.swift; sourceTree = "<group>"; };
 		FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderCell.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				FF84201D1D299A5E002D2927 /* SignUpVerificationController.swift */,
 				FF7878601C3010E600354936 /* LogInController.swift */,
 				FF8420231D2B42A0002D2927 /* DynamoDBUser.swift */,
+				FF23A12E1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift */,
 			);
 			name = Login/Signup;
 			sourceTree = "<group>";
@@ -746,6 +749,7 @@
 				FF8420221D29B59F002D2927 /* BackendAPI.swift in Sources */,
 				FF7878791C352D0400354936 /* TableViewCell.swift in Sources */,
 				FF1001ED1C80374A00B53F8B /* MainPageViewController.swift in Sources */,
+				FF23A12F1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift in Sources */,
 				FFBDD75F1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift in Sources */,
 				FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */,
 				FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */,
