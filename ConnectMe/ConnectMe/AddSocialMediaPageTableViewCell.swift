@@ -45,12 +45,21 @@ class AddSocialMediaPageTableViewCell: UITableViewCell {
     {
         emblemImage.hidden = true
         
-        UIView.transitionWithView(self.checkMarkView, duration: 2, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+        UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
             
             self.checkMarkFlipped.hidden = false
             self.checkMarkFlipped.image = self.checkMark.image
             
-            }, completion: nil)
+            }, completion: { (boolResult) -> Void in
+                
+                UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                    
+                    self.checkMarkFlipped.hidden = true
+                    self.emblemImage.hidden = false
+                    
+                }, completion: nil)
+                
+            })
         
         self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
 

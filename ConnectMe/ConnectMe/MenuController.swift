@@ -97,7 +97,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "My Information", sectionCount: 3))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Notification Settings", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 1))
-        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Actions", sectionCount: 2))
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Account Actions", sectionCount: 2))
         
         
         // Call this function to generate all AWS data for this page!
@@ -744,7 +744,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             switch (indexPath.item)
             {
             case 0:
-                cell.menuButtonLabel.text = "Reset Password"
+                cell.menuButtonLabel.text = "Change Password"
                 break;
             case 1: //Log out button
                 cell.menuButtonLabel.text = "Log Out"

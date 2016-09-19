@@ -134,8 +134,12 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
                         if self.delegate != nil
                         {
                             self.delegate?.userDidAddNewProfile(socialMediaType, socialMediaName: socialMediaName)
-                            cell.showSuccessAnimation()
-
+                            
+                            // Delay the animation because it happens too fast!
+                            delay(0.2)
+                            {
+                                cell.showSuccessAnimation()
+                            }
                         }
                         
                         
@@ -347,6 +351,10 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
             break
             
         }
+        
+        
+        // Row was highlighted (selected), make sure to deselect the row after a few seconds
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -363,6 +371,11 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
         
         // Make cell image circular
         cell.emblemImage.layer.cornerRadius = cell.emblemImage.frame.width / 2
+        
+        // Change background color of a selected cell
+        let selectionColorView = UIView()
+        selectionColorView.backgroundColor = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
+        cell.selectedBackgroundView = selectionColorView
         
         return cell
 
