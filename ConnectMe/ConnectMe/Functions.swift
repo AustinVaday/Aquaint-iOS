@@ -453,6 +453,21 @@ func showAlertFetchText(title: String, message: String, buttonTitle: String, tex
 
 func clearUserDefaults()
 {
+    // Make sure delete the temporary user image that we created...
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
+    // Fetch cached image URL
+    let imageURL = defaults.URLForKey("userimage")
+    
+    let fileManager = NSFileManager.defaultManager()
+    
+    if imageURL != nil
+    {
+        // Delete image from path so that next user will have a fresh location
+        try? fileManager.removeItemAtURL(imageURL!)
+        
+    }
+    
     NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
 }
 
@@ -586,6 +601,7 @@ func getCurrentCachedPhone() -> String!
 // Get the current user image that is signed into the app
 func getCurrentCachedUserImage() -> UIImage!
 {
+    
     // Get the user defaults set previously in the program (username of user)
     let defaults = NSUserDefaults.standardUserDefaults()
     

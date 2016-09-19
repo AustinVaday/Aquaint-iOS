@@ -113,7 +113,7 @@
                                                                 <constraint firstAttribute="height" constant="32" id="bp3-U0-Ei3"/>
                                                                 <constraint firstAttribute="width" constant="32" id="ucN-BE-Dnd"/>
                                                             </constraints>
-                                                            <state key="normal" image="29C4E5D6-D0AD-463D-91D5-6BDDAE45C00A"/>
+                                                            <state key="normal" image="C792B1F7-5DFA-4479-81CE-9B91F2FF6A9A"/>
                                                         </button>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="acQ-m5-SkP">
                                                             <rect key="frame" x="-1" y="0.0" width="46" height="46"/>
@@ -210,7 +210,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="29C4E5D6-D0AD-463D-91D5-6BDDAE45C00A" width="32" height="32">
+        <image name="C792B1F7-5DFA-4479-81CE-9B91F2FF6A9A" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

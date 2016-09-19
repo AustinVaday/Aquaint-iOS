@@ -341,22 +341,13 @@ func getUserPoolData(userName: String!, completion: (result: UserPoolData?, erro
     
 }
 
-func updateCurrentUserProfilesDynamoDB(socialMediaType:String, socialMediaName:String, isAdding:Bool, completion: (result: User?, error: NSError?)->())
+func updateCurrentUserProfilesDynamoDB(currentUserProfiles: NSMutableDictionary, socialMediaType:String, socialMediaName:String, isAdding:Bool, completion: (result: User?, error: NSError?)->())
 {
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
     let currentUser = getCurrentCachedUser()
     let currentRealName = getCurrentCachedFullName()
-    var currentAccounts: NSMutableDictionary!
+    let currentAccounts = currentUserProfiles
     
-    if (getCurrentCachedUserProfiles() == nil)
-    {
-        currentAccounts = NSMutableDictionary()
-    }
-    else
-    {
-        currentAccounts = getCurrentCachedUserProfiles() as NSMutableDictionary
-    }
-
     if (isAdding && currentAccounts.valueForKey(socialMediaType) == nil)
     {
         currentAccounts.setValue([ socialMediaName ], forKey: socialMediaType)
@@ -417,7 +408,7 @@ func updateCurrentUserProfilesDynamoDB(socialMediaType:String, socialMediaName:S
             completion(result: nil, error: nil)
             
         }
-            // If successful save
+        // If successful save
         else if (resultTask.error == nil)
         {
             print ("DYNAMODB MODIFY PROFILE SUCCESS: ", resultTask.result)

@@ -52,6 +52,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var currentUserName : String!
     var currentRealName : String!
     var currentUserAccounts : NSMutableDictionary!
+    var oldUserAccounts : NSMutableDictionary!
     var currentUserImage: UIImage!
     var currentUserEmail : String!
     var currentUserPhone : String!
@@ -59,12 +60,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var editedUserEmail : String!
     var editedUserPhone : String!
     
-    var currentUserAccountsDirty = false
     var isKeyboardShown = false
     var enableEditing = false // Whether or not to enable editing of text fields.
+    var hasDeletedProfiles = false
     var buttonViewOriginalFrame : CGRect!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
-    var socialMediaUserNames: NSMutableDictionary!
     var keyValSocialMediaPairList : Array<KeyValSocialMediaPair>!
     var tableViewSectionsList : Array<SectionTitleAndCountPair>!
     var refreshControl : UIRefreshControl!
@@ -85,6 +85,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
         // Disable editing by default
         enableEditing = false
+        hasDeletedProfiles = false
         
         // Ensure that the button view is always visible -- in front of the table view
         buttonView.layer.zPosition = 1
@@ -184,6 +185,17 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     /*=======================================================
      * END : Keyboard/Button Animations
      =======================================================*/
+  
+    @IBAction func onAddSocialMediaProfileButtonClicked(sender: AnyObject) {
+        
+        // Do this so we don't have any miscrepencies when adding profiles from edit mode
+        if enableEditing
+        {
+           // Mimic a cancellation
+            self.onCancelButtonClicked(self)
+        }
+    }
+    
     
     @IBAction func onChangeProfilePictureClicked(sender: UIButton) {
         let imagePicker = UIImagePickerController()    // Used for selecting image from user's device
@@ -233,6 +245,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         cancelButton.hidden = false
         saveButton.hidden = false
         
+        // Used to keep track of accounts the user wants to delete or not
+        oldUserAccounts = NSMutableDictionary(dictionary: currentUserAccounts as [NSObject : AnyObject], copyItems: true)
+        
         // Set first input field as first responder
 //        realNameTextFieldLabel.becomeFirstResponder()
         realNameTextFieldLabel.performSelector(#selector(becomeFirstResponder))
@@ -242,12 +257,16 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBAction func onCancelButtonClicked(sender: AnyObject) {
         
         enableEditing = false
-        settingsTableView.reloadData()
         
         // Show the edit button again
         editButton.hidden = false
         cancelButton.hidden = true
         saveButton.hidden = true
+        
+        // Reset any modified user accounts (profiles)
+        currentUserAccounts = NSMutableDictionary(dictionary: oldUserAccounts as [NSObject : AnyObject], copyItems: true)
+        keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(currentUserAccounts)
+        self.settingsTableView.reloadData()
         
     }
     
@@ -403,6 +422,58 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
         }
         
+        if hasDeletedProfiles
+        {
+            
+            /********************************
+             *  UPLOAD USER DATA TO DYNAMODB
+             ********************************/
+            // Upload user DATA to DynamoDB
+            let dynamoDBUser = User()
+            
+            dynamoDBUser.realname = currentRealName
+            dynamoDBUser.username = currentUserName
+            dynamoDBUser.accounts = currentUserAccounts
+            
+            let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+            
+            dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+                
+                // If successful save
+                if (resultTask.error == nil && resultTask.result != nil)
+                {
+                    print ("DYNAMODB SUCCESSFUL SAVE: ", resultTask.result)
+                    
+                    // Cache user accounts result
+                    setCurrentCachedUserProfiles(self.currentUserAccounts)
+                    self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.currentUserAccounts)
+
+                    self.hasDeletedProfiles = false
+        
+                    // Update UI on main thread
+                    dispatch_async(dispatch_get_main_queue(), {
+                        // Reload table
+                        self.settingsTableView.reloadData()
+
+                    })
+                }
+                
+                if (resultTask.error != nil)
+                {
+                    print ("DYNAMODB ERROR: ", resultTask.error)
+                }
+                
+                if (resultTask.exception != nil)
+                {
+                    print ("DYNAMODB EXCEPTION: ", resultTask.exception)
+                }
+                
+                return nil
+            })
+
+
+        }
+        
         // Clear the edited results
         editedRealName = nil
         editedUserEmail = nil
@@ -453,18 +524,20 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
-        
-        print ("SELECTED", cell.socialMediaName)
-        
-        let socialMediaUserName = cell.socialMediaName
-        let socialMediaType = cell.socialMediaType
-        
-        let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
+        if !enableEditing
+        {
+            let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
+            
+            print ("SELECTED", cell.socialMediaName)
+            
+            let socialMediaUserName = cell.socialMediaName
+            let socialMediaType = cell.socialMediaType
+            
+            let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
 
-        // Perform the request, go to external application and let the user do whatever they want!
-        UIApplication.sharedApplication().openURL(socialMediaURL)
-        
+            // Perform the request, go to external application and let the user do whatever they want!
+            UIApplication.sharedApplication().openURL(socialMediaURL)
+        }
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -785,7 +858,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         print("In protocol implementation -- data added: ", socialMediaType, " ", socialMediaName)
         
-        updateCurrentUserProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName, isAdding: true) { (result, error) in
+        updateCurrentUserProfilesDynamoDB(currentUserAccounts, socialMediaType: socialMediaType, socialMediaName: socialMediaName, isAdding: true) { (result, error) in
             
             if result != nil && error == nil
             {
@@ -799,15 +872,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                     self.currentUserAccounts = (result?.accounts)!
                 }
                 
-                
                 setCurrentCachedUserProfiles(self.currentUserAccounts)
                 
                 // Dictionary with key: string of social media types (i.e. "facebook"),
                 // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
-                self.socialMediaUserNames = self.currentUserAccounts
-                
                 // Convert dictionary to key,val pairs. Redundancy allowed
-                self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames)
+                self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.currentUserAccounts)
                 
                 
                 // Perform update on UI on main thread
@@ -860,75 +930,30 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     func userDidDeleteSocialMediaProfile(socialMediaType: String, socialMediaName: String) {
         
         print("OK! time to delete ", socialMediaType, " --> ", socialMediaName)
+        hasDeletedProfiles = true
         
-        // NEED TO DELETE DYNAMO DATA HERE..
-//        
-//        // If user does not have a particular social media type,
-//        // nothing to do
-//        if (currentUserAccounts.valueForKey(socialMediaType) != nil)
-//        {
-//            let list = currentUserAccounts.valueForKey(socialMediaType) as! Array<String>
-//            // Get list without this socialMediaName (i.e. remove it...)
-//            let newList = list.filter{ $0 != socialMediaName }
-//            
-//            currentUserAccounts.setValue(newList, forKey: socialMediaType)
-//        }
-//        
-//        
-//        setCurrentCachedUserProfiles(currentUserAccounts)
-//        
-//        // Dictionary with key: string of social media types (i.e. "facebook"),
-//        // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
-//        self.socialMediaUserNames = currentUserAccounts
-//        
-//        // Convert dictionary to key,val pairs. Redundancy allowed
-//        self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames, possibleSocialMediaNameList: self.possibleSocialMediaNameList)
-//        
-//        
-//        // Reload table view data
-//        settingsTableView.reloadData()
-//        
-//        // Remove data from dynamo..
-//        
-//        
-//        
-        updateCurrentUserProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName, isAdding: false) { (result, error) in
+        // Delete account from local list. If user hits success button -- save changes
+        if currentUserAccounts.valueForKey(socialMediaType) != nil
+        {
+            var list = currentUserAccounts.objectForKey(socialMediaType) as! Array<String>
             
-            if result != nil && error == nil
+            // Update list as to remove this specific value
+            list.removeAtIndex(list.indexOf(socialMediaName)!)
+            
+            // If nothing in list, we need to delete the key
+            if list.count == 0
             {
-                if result?.accounts == nil
-                {
-                    // Instantiate empty dictionary..
-                    self.currentUserAccounts = NSMutableDictionary()
-                }
-                else
-                {
-                    self.currentUserAccounts = (result?.accounts)!
-                }
-                
-                
-                setCurrentCachedUserProfiles(self.currentUserAccounts)
-                
-                // Dictionary with key: string of social media types (i.e. "facebook"),
-                // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
-                self.socialMediaUserNames = self.currentUserAccounts
-                
-                // Convert dictionary to key,val pairs. Redundancy allowed
-                self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames)
-                
-                
-                // Perform update on UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    
-                    // Propogate collection view with new data
-                    self.settingsTableView.reloadData()
-                    
-                })
-                
+                currentUserAccounts.removeObjectForKey(socialMediaType)
             }
+            else
+            {
+                currentUserAccounts.setValue(list, forKey: socialMediaType)
+            }
+            
+            keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(currentUserAccounts)
+            settingsTableView.reloadData()
+
         }
-        
-        
     }
     
     // Helper functions
@@ -968,22 +993,23 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         print("CUR USERNAME: ", currentUserName)
         
+//        
+//        if currentUserAccountsDirty
+//        {
+//            print("CURRENT USER ACCOUNT DIRTY!")
+//            getUserDynamoData(currentUserName, completion: { (result, error) in
+//                if result != nil && error == nil
+//                {
+//                    self.currentUserAccounts = result!.accounts as NSMutableDictionary
+//                    setCurrentCachedUserProfiles(self.currentUserAccounts)
+//                }
+//            })
+//            
+//            
+//        }
         
-        if currentUserAccountsDirty
-        {
-            print("CURRENT USER ACCOUNT DIRTY!")
-            getUserDynamoData(currentUserName, completion: { (result, error) in
-                if result != nil && error == nil
-                {
-                    self.currentUserAccounts = result!.accounts as NSMutableDictionary
-                    setCurrentCachedUserProfiles(self.currentUserAccounts)
-                }
-            })
-            
-            
-        }
-        
-        // If any values are nil, we need to re-cache
+        // If any values are nil, we need to re-cache -- safety precautions
+        // Note if a user has no user accounts, we'll be re-caching every time (side effect)
         if (currentRealName == nil ||
             currentUserImage == nil ||
             currentUserAccounts == nil ||
@@ -1001,6 +1027,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             currentUserAccounts = getCurrentCachedUserProfiles()
             currentUserEmail = getCurrentCachedEmail()
             currentUserPhone = getCurrentCachedPhone()
+
         }
         
         // Set the UI
@@ -1016,9 +1043,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             profileImageView.image = currentUserImage
         }
         
-        // Set up dictionary for user's social media names
-        socialMediaUserNames = currentUserAccounts
-        
         // Fill the dictionary of all social media names (key) with an image (val).
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
         socialMediaImageDictionary = getAllPossibleSocialMediaImages()
@@ -1028,10 +1052,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         {
             // Dictionary with key: string of social media types (i.e. "facebook"),
             // val: array of usernames for that social media (i.e. "austinvaday, austinv, sammyv")
-            self.socialMediaUserNames = currentUserAccounts
-            
+ 
             // Convert dictionary to key,val pairs. Redundancy allowed
-            self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.socialMediaUserNames)
+            self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.currentUserAccounts)
             
             
             // Perform update on UI on main thread
