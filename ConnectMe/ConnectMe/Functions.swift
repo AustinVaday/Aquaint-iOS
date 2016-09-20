@@ -282,7 +282,10 @@ func verifyUserNameFormat(userNameString: String) -> Bool
     
     if (!userNameString.isEmpty)
     {
-        let notAcceptableRange = userNameString.rangeOfCharacterFromSet(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+        let acceptableCharacterSet = NSMutableCharacterSet.alphanumericCharacterSet()
+        acceptableCharacterSet.addCharactersInString("_-")
+        
+        let notAcceptableRange = userNameString.rangeOfCharacterFromSet(acceptableCharacterSet.invertedSet)
         
         if (notAcceptableRange == nil)
         {
@@ -354,11 +357,26 @@ func removeAllNonDigits(string: String) -> String
 }
 
 // Remove all non-alpha-numeric characters from a string (i.e. username)
+func removeAllNonAlphaNumeric(string: String, charactersToKeep: String? = nil) -> String
+{
+    let acceptableCharacterSet = NSMutableCharacterSet.alphanumericCharacterSet()
+    
+    // If user specifies any characters to keep, add them to acceptable set
+    if charactersToKeep != nil
+    {
+        acceptableCharacterSet.addCharactersInString(charactersToKeep!)
+    }
+    let characterSetToRemove = acceptableCharacterSet.invertedSet
+    return string.componentsSeparatedByCharactersInSet(characterSetToRemove).joinWithSeparator("")
+}
+
+// Remove all non-alpha-numeric characters from a string (i.e. username)
 func removeAllNonAlphaNumeric(string: String) -> String
 {
     let characterSetToRemove = NSCharacterSet.alphanumericCharacterSet().invertedSet
     return string.componentsSeparatedByCharactersInSet(characterSetToRemove).joinWithSeparator("")
 }
+
 
 // Check if phone number is proper
 func verifyPhoneFormat(phoneString: String) -> Bool

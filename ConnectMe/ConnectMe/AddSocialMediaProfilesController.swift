@@ -703,7 +703,7 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
     {
         let usernameString = textField.text?.lowercaseString
         
-        textField.text = removeAllNonAlphaNumeric(usernameString!)
+        textField.text = removeAllNonAlphaNumeric(usernameString!, charactersToKeep: "_-")
     }
     
     

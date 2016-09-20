@@ -164,7 +164,7 @@ class SignUpFetchMoreDataController: UIViewController {
         
         if (!verifyUserNameFormat(userNameString))
         {
-            showAlert("Improper username format", message: "Please use a proper username format: no spaces and no special characters!", buttonTitle: "Try again", sender: self)
+            showAlert("Improper username format", message: "Please use a proper username format: no spaces and no special characters other than '-' and '_'!", buttonTitle: "Try again", sender: self)
             return
         }
         
