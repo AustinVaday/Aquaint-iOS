@@ -96,7 +96,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Linked Profiles", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "My Information", sectionCount: 3))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Notification Settings", sectionCount: 1))
-        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 1))
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 2))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Account Actions", sectionCount: 2))
         
         
@@ -732,8 +732,10 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             switch (indexPath.item)
             {
-            case 0: //Log out button
-                cell.menuButtonLabel.text = "Coming Soon!"
+            case 0: //Link to privacy policy page
+                cell.menuButtonLabel.text = "Privacy Policy"
+            case 1: //Log out button
+                cell.menuButtonLabel.text = "More Coming Soon!"
                 break;
                 
             default: //Default
@@ -799,6 +801,15 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             if (indexPath.item == 1)
             {
                 logUserOut()
+            }
+        }
+        
+        if (indexPath.section == MenuData.PRIVACY_SETTINGS.rawValue)
+        {
+            // Go to privacy page
+            if (indexPath.item == 0)
+            {
+                performSegueWithIdentifier("toPrivacyPolicyViewController", sender: self)
             }
         }
     

@@ -20,6 +20,7 @@
 		FF23A1351D9327170062E9A0 /* FollowersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A1341D9327170062E9A0 /* FollowersViewController.swift */; };
 		FF23A1371D9327290062E9A0 /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A1361D9327290062E9A0 /* FollowingViewController.swift */; };
 		FF23A13B1D9327990062E9A0 /* AquaintsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A13A1D9327990062E9A0 /* AquaintsPageViewController.swift */; };
+		FF23A13D1D9340480062E9A0 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A13C1D9340480062E9A0 /* PrivacyPolicyViewController.swift */; };
 		FF29BB1D9643BB46054B3871 /* Pods_Aquaint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D1CC9F354D9EF78F36FCC8C /* Pods_Aquaint.framework */; };
 		FF3834D31D6D483E00FC9F2A /* PopUpAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */; };
 		FF3834D51D6D529500FC9F2A /* ProfilePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */; };
@@ -123,6 +124,7 @@
 		FF23A1341D9327170062E9A0 /* FollowersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersViewController.swift; sourceTree = "<group>"; };
 		FF23A1361D9327290062E9A0 /* FollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingViewController.swift; sourceTree = "<group>"; };
 		FF23A13A1D9327990062E9A0 /* AquaintsPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintsPageViewController.swift; sourceTree = "<group>"; };
+		FF23A13C1D9340480062E9A0 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PopUpAlert.storyboard; sourceTree = "<group>"; };
 		FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePopupView.swift; sourceTree = "<group>"; };
 		FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderCell.swift; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 				FF7878761C34EC4A00354936 /* RecentConnections.swift */,
 				FF78783F1C26A0A900354936 /* MenuController.swift */,
 				FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */,
+				FF23A13C1D9340480062E9A0 /* PrivacyPolicyViewController.swift */,
 				FF8420251D30A138002D2927 /* AddSocialMediaProfilesController.swift */,
 				FF897C401C01AC63001B2634 /* Info.plist */,
 			);
@@ -778,6 +781,7 @@
 				FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */,
 				FFBDD7611CD5B6190007A188 /* NewsfeedTableViewCell.swift in Sources */,
 				FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */,
+				FF23A13D1D9340480062E9A0 /* PrivacyPolicyViewController.swift in Sources */,
 				FFF3A2AB1D4EBC08009EF4F2 /* ContactsTableViewCell.swift in Sources */,
 				FF8420201D299A9C002D2927 /* SignUpFetchMoreDataController.swift in Sources */,
 				FF9BFCD51D3F389500987D78 /* CustomSearchController.swift in Sources */,
