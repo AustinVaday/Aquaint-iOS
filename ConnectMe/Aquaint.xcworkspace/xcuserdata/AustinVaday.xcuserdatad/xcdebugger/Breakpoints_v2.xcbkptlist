@@ -808,11 +808,11 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint/ConnectMe/ConnectMe/MenuController.swift"
-                  timestampString = "496180064.829509"
+                  timestampString = "496184256.037508"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "861"
-                  endingLineNumber = "861"
+                  startingLineNumber = "868"
+                  endingLineNumber = "868"
                   offsetFromSymbolStart = "417">
                </Location>
                <Location
@@ -823,11 +823,11 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint/ConnectMe/ConnectMe/MenuController.swift"
-                  timestampString = "496180064.829872"
+                  timestampString = "496184256.037666"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "863"
-                  endingLineNumber = "863"
+                  startingLineNumber = "870"
+                  endingLineNumber = "870"
                   offsetFromSymbolStart = "40">
                </Location>
             </Locations>
@@ -968,11 +968,11 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint/ConnectMe/ConnectMe/MenuController.swift"
-                  timestampString = "496180141.628248"
+                  timestampString = "496184256.043328"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "932"
-                  endingLineNumber = "932"
+                  startingLineNumber = "939"
+                  endingLineNumber = "939"
                   offsetFromSymbolStart = "61">
                </Location>
                <Location
@@ -983,11 +983,11 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint/ConnectMe/ConnectMe/MenuController.swift"
-                  timestampString = "496180141.628591"
+                  timestampString = "496184256.043459"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "930"
-                  endingLineNumber = "930"
+                  startingLineNumber = "937"
+                  endingLineNumber = "937"
                   offsetFromSymbolStart = "12">
                </Location>
             </Locations>

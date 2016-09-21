@@ -38,7 +38,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         arrayOfViewControllers = Array<UIViewController>()
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeContainerViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("SearchViewController"))!)
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("RecentConnectionsViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("AquaintsContainerViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))!)
         
         let firstViewController = arrayOfViewControllers[HOME]
@@ -60,7 +60,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             return arrayOfViewControllers[CONNECTIONS]
         }
         
-        if viewController.isKindOfClass(RecentConnections)
+        if viewController.isKindOfClass(AquaintsContainerViewController)
         {
             return arrayOfViewControllers[MENU]
         }
@@ -87,7 +87,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             return arrayOfViewControllers[HOME]
         }
         
-        if viewController.isKindOfClass(RecentConnections)
+        if viewController.isKindOfClass(AquaintsContainerViewController)
         {
             return arrayOfViewControllers[SEARCH]
         }
@@ -123,7 +123,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             currentPageIndex = MENU
         }
 
-        else if nextViewController.isKindOfClass(RecentConnections)
+        else if nextViewController.isKindOfClass(AquaintsContainerViewController)
         {
             currentPageIndex = CONNECTIONS
         }
