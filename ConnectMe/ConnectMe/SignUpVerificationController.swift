@@ -58,6 +58,11 @@ class SignUpVerificationController: UIViewController {
         
         // Display user's phone number-- "We sent a verification code to ..."
         phoneDisplayLabel.text = userPhone
+        
+        // Set up pan gesture recognizer for when the user wants to swipe left/right
+        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
+        edgePan.edges = .Left
+        view.addGestureRecognizer(edgePan)
 
     }
     
@@ -138,6 +143,15 @@ class SignUpVerificationController: UIViewController {
     /*=======================================================
      * END : Keyboard/Button Animations
      =======================================================*/
+    func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer)
+    {
+        if recognizer.state == .Ended
+        {
+            print("Screen swiped!")
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+    }
     
     // Prevent non-numeric characters from being put in
     @IBAction func onTextFieldEditingDidChange(sender: UITextField) {

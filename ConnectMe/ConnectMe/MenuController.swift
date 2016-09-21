@@ -433,7 +433,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             dynamoDBUser.realname = currentRealName
             dynamoDBUser.username = currentUserName
-            dynamoDBUser.accounts = currentUserAccounts
+            
+            // If no current account data, do not upload to dynamo
+            // or else it will throw an error.
+            if currentUserAccounts.count != 0
+            {
+                dynamoDBUser.accounts = currentUserAccounts
+            }
             
             let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
             
@@ -443,15 +449,16 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 if (resultTask.error == nil && resultTask.result != nil)
                 {
                     print ("DYNAMODB SUCCESSFUL SAVE: ", resultTask.result)
-                    
-                    // Cache user accounts result
-                    setCurrentCachedUserProfiles(self.currentUserAccounts)
-                    self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.currentUserAccounts)
-
-                    self.hasDeletedProfiles = false
+                
         
                     // Update UI on main thread
                     dispatch_async(dispatch_get_main_queue(), {
+                        // Cache user accounts result
+                        setCurrentCachedUserProfiles(self.currentUserAccounts)
+                        self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.currentUserAccounts)
+                        
+                        self.hasDeletedProfiles = false
+                        
                         // Reload table
                         self.settingsTableView.reloadData()
 

@@ -50,7 +50,14 @@ class LogInController: UIViewController {
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
         
         flipImageHorizontally(checkMarkFlippedCopy)
+        
+        // Set up pan gesture recognizer for when the user wants to swipe left/right
+        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
+        edgePan.edges = .Left
+        view.addGestureRecognizer(edgePan)
+
     }
+
     
     /*=======================================================
      * BEGIN : Keyboard/Button Animations
@@ -131,6 +138,15 @@ class LogInController: UIViewController {
      * END : Keyboard/Button Animations
      =======================================================*/
     
+    func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer)
+    {
+        if recognizer.state == .Ended
+        {
+            print("Screen swiped!")
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+    }
     
 //    @IBAction func emailEditingDidEnd(sender: UITextField) {
 //        let userEmailString:String = userEmail.text!

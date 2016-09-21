@@ -341,14 +341,20 @@ func getUserPoolData(userName: String!, completion: (result: UserPoolData?, erro
     
 }
 
-func updateCurrentUserProfilesDynamoDB(currentUserProfiles: NSMutableDictionary, socialMediaType:String, socialMediaName:String, isAdding:Bool, completion: (result: User?, error: NSError?)->())
+func updateCurrentUserProfilesDynamoDB(currentUserProfiles: NSMutableDictionary!, socialMediaType:String, socialMediaName:String, isAdding:Bool, completion: (result: User?, error: NSError?)->())
 {
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
     let currentUser = getCurrentCachedUser()
     let currentRealName = getCurrentCachedFullName()
-    let currentAccounts = currentUserProfiles
+    var currentAccounts = currentUserProfiles
     
-    if (isAdding && currentAccounts.valueForKey(socialMediaType) == nil)
+    if (isAdding && currentAccounts == nil)
+    {
+        currentAccounts = NSMutableDictionary()
+        currentAccounts.setValue([ socialMediaName ], forKey: socialMediaType)
+
+    }
+    else if (isAdding && currentAccounts.valueForKey(socialMediaType) == nil)
     {
         currentAccounts.setValue([ socialMediaName ], forKey: socialMediaType)
         

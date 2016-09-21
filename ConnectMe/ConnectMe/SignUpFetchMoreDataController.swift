@@ -53,6 +53,11 @@ class SignUpFetchMoreDataController: UIViewController {
         pool = getAWSCognitoIdentityUserPool()
         
         resetAnimations()
+        
+        // Set up pan gesture recognizer for when the user wants to swipe left/right
+        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
+        edgePan.edges = .Left
+        view.addGestureRecognizer(edgePan)
     }
     
     
@@ -135,6 +140,16 @@ class SignUpFetchMoreDataController: UIViewController {
     /*=======================================================
      * END : Keyboard/Button Animations
      =======================================================*/
+    
+    func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer)
+    {
+        if recognizer.state == .Ended
+        {
+            print("Screen swiped!")
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+    }
     
     // When user clicks "next" on keyboard
     @IBAction func onUserNameEditingDidEndOnExit(sender: AnyObject) {
