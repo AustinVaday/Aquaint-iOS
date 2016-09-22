@@ -14,7 +14,7 @@ import AWSDynamoDB
 import AWSS3
 import AWSLambda
 
-class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     enum MenuData: Int {
         case LINKED_PROFILES
@@ -69,7 +69,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var tableViewSectionsList : Array<SectionTitleAndCountPair>!
     var refreshControl : UIRefreshControl!
 
-        
     // AWS credentials provider
     let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
     
@@ -246,8 +245,14 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         saveButton.hidden = false
         
         // Used to keep track of accounts the user wants to delete or not
-        oldUserAccounts = NSMutableDictionary(dictionary: currentUserAccounts as [NSObject : AnyObject], copyItems: true)
-        
+        if currentUserAccounts == nil
+        {
+            oldUserAccounts = nil
+        }
+        else
+        {
+            oldUserAccounts = NSMutableDictionary(dictionary: currentUserAccounts as [NSObject : AnyObject], copyItems: true)
+        }
         // Set first input field as first responder
 //        realNameTextFieldLabel.becomeFirstResponder()
         realNameTextFieldLabel.performSelector(#selector(becomeFirstResponder))
@@ -264,13 +269,22 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         saveButton.hidden = true
         
         // Reset any modified user accounts (profiles)
-        currentUserAccounts = NSMutableDictionary(dictionary: oldUserAccounts as [NSObject : AnyObject], copyItems: true)
+        if oldUserAccounts == nil
+        {
+            currentUserAccounts = nil
+        }
+        else
+        {
+            currentUserAccounts = NSMutableDictionary(dictionary: oldUserAccounts as [NSObject : AnyObject], copyItems: true)
+        }
         keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(currentUserAccounts)
         self.settingsTableView.reloadData()
         
     }
     
     @IBAction func onSaveButtonClicked(sender: AnyObject) {
+
+        // State resets
         self.enableEditing = false
         self.settingsTableView.reloadData()
         
@@ -278,6 +292,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.editButton.hidden = false
         self.cancelButton.hidden = true
         self.saveButton.hidden = true
+
         
         let fullNameIndexPath = NSIndexPath(forRow: MyInformationData.FULL_NAME.rawValue , inSection: MenuData.MY_INFORMATION.rawValue)
         let emailIndexPath = NSIndexPath(forRow: MyInformationData.EMAIL.rawValue, inSection: MenuData.MY_INFORMATION.rawValue)
@@ -295,14 +310,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 showAlert("Improper full name format", message: "Please create a full name that is less than 30 characters long!", buttonTitle: "Try again", sender: self)
                 return
             }
-
-            fullNameCell.menuValue.text = editedRealName
-            currentRealName = editedRealName
-            setCurrentCachedFullName(currentRealName)
-            
-            // Change name at top of page, too
-            realNameTextFieldLabel.text = currentRealName
-        
         }
         
         if editedUserEmail != nil && !editedUserEmail.isEmpty
@@ -312,52 +319,140 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 showAlert("Improper email address", message: "Please enter in a proper email address!", buttonTitle: "Try again", sender: self)
                 return
             }
-            
-            
-            emailCell.menuValue.text = editedUserEmail
-            currentUserEmail = editedUserEmail
-            setCurrentCachedUserEmail(currentUserEmail)
+    
         }
         
         
         if editedUserPhone != nil && !editedUserPhone.isEmpty
         {
-//            if (!verifyPhoneFormat(editedUserPhone!))
-//            {
-//                showAlert("Improper phone number", message: "Please enter in a proper U.S. phone number.", buttonTitle: "Try again", sender: self)
-//                return
-//            }
+            // Get the text from the beginning of the phone number (not US country code)
+            let string = editedUserPhone as NSString
+            let phoneString = string.substringFromIndex(2)
             
-            phoneCell.menuValue.text = editedUserPhone
-            currentUserPhone = editedUserPhone
-            setCurrentCachedUserPhone(currentUserPhone)
+            if !verifyPhoneFormat(phoneString)
+            {
+                showAlert("Improper phone number", message: "Please enter in a proper U.S. phone number.", buttonTitle: "Try again", sender: self)
+                return
+            }
+            
+           
         }
         
-        // Check if we need to update user pools
-        if editedUserEmail != nil || editedUserPhone != nil
+        // ADD CHANGE TO USERPOOLS (email/phone only)
+        let userPool = getAWSCognitoIdentityUserPool()
+        let email = AWSCognitoIdentityUserAttributeType()
+        let phone = AWSCognitoIdentityUserAttributeType()
+        email.name = "email"
+        phone.name = "phone_number"
+
+        if editedUserEmail != nil && editedUserEmail != currentUserEmail
         {
-            print ("UPDATING USER POOLS")
-            // ADD CHANGE TO USERPOOLS (email/phone only)
-            let userPool = getAWSCognitoIdentityUserPool()
-            let email = AWSCognitoIdentityUserAttributeType()
-            let phone = AWSCognitoIdentityUserAttributeType()
-            
-            email.name = "email"
+            // Update user pools with currentUserPhone
+            emailCell.menuValue.text = editedUserEmail
+            currentUserEmail = editedUserEmail
+      
             email.value = currentUserEmail
-            phone.name = "phone_number"
             phone.value = currentUserPhone
             
             
             userPool.getUser(currentUserName).updateAttributes([email, phone]).continueWithSuccessBlock { (resultTask) -> AnyObject? in
-                print("successful user pools update!")
+             
+                print("SUCCESSFUL USER EMAIL UPDATE IN USERPOOLS")
                 return nil
             }
+            
+        }
+        
+        if editedUserPhone != nil && editedUserPhone != currentUserPhone
+        {
+            // Update user pools with currentUserEmail
+            phoneCell.menuValue.text = editedUserPhone
+            currentUserPhone = editedUserPhone
+            
+            email.value = currentUserEmail
+            phone.value = currentUserPhone
+            
+            userPool.getUser(currentUserName).updateAttributes([email, phone]).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+                
+                
+                // Prompt user to enter in confirmation code.
+                
+                print("SUCCESSFUL USER PHONE UPDATE IN USERPOOLS")
+                return nil
+            }
+            
 
         }
+        
+//        // Check if we need to update user pools
+//        if editedUserEmail != nil || editedUserPhone != nil
+//        {
+//            print ("UPDATING USER POOLS")
+//            
+//            // Only update if at least one of them changed.
+//            if (editedUserEmail != currentUserEmail ||
+//                editedUserPhone != currentUserPhone)
+//            {
+//                // In case we need to revert changes -- if user cannot verify
+//                let oldPhoneNum = phoneCell.menuValue.text
+//                
+//                
+//                // ADD CHANGE TO USERPOOLS (email/phone only)
+//                let userPool = getAWSCognitoIdentityUserPool()
+//                let email = AWSCognitoIdentityUserAttributeType()
+//                let phone = AWSCognitoIdentityUserAttributeType()
+//                
+//                email.name = "email"
+//                email.value = currentUserEmail
+//                phone.name = "phone_number"
+//                phone.value = currentUserPhone
+//                
+//                
+//                userPool.getUser(currentUserName).updateAttributes([email, phone]).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+//                    print("successful user pools update!")
+//                    
+//                    setCurrentCachedUserEmail(self.currentUserEmail)
+//                    
+//                    
+//                    // Now, we need to verify their new phone number
+//                    userPool.getUser(self.currentUserName).resendConfirmationCode().continueWithBlock({ (task) -> AnyObject? in
+//                        if task.result != nil && task.error == nil
+//                        {
+//                            // Sent confirmation code, prompt user to enter it in
+//                            
+//                            userPool.getUser(self.currentUserName).getAttributeVerificationCode("phone_number").continueWithSuccessBlock({ (verifResult) -> AnyObject? in
+//                                print("VERIFRESULT IS: ", verifResult.result)
+//                                
+//                                return nil
+//                            })
+//
+//                        }
+//                        else
+//                        {
+//                            //error sending code
+//                        }
+//                        
+//                        return nil
+//                    })
+//                    
+//                    
+//                    setCurrentCachedUserPhone(self.currentUserPhone)
+//
+//                    return nil
+//                }
+//
+//            }
+//        }
         
         // Check if we need to update dynamo
         if editedRealName != nil
         {
+            fullNameCell.menuValue.text = editedRealName
+            currentRealName = editedRealName
+            
+            // Change name at top of page, too
+            realNameTextFieldLabel.text = currentRealName
+            
             print ("UPDATING REALNAME IN DYNAMO AND LAMBDA")
             
             /********************************
@@ -368,7 +463,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             dynamoDBUser.realname = currentRealName
             dynamoDBUser.username = currentUserName
-            dynamoDBUser.accounts = currentUserAccounts
+
+            if currentUserAccounts != nil && currentUserAccounts.count != 0
+            {
+                dynamoDBUser.accounts = currentUserAccounts
+            }
             
             let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
             
@@ -378,6 +477,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 if (resultTask.error == nil && resultTask.result != nil)
                 {
                     print ("DYNAMODB SUCCESSFUL SAVE: ", resultTask.result)
+                    setCurrentCachedFullName(self.currentRealName)
+
                 }
                 
                 if (resultTask.error != nil)
@@ -585,7 +686,34 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         return cell
     }
     
+    // Used for polishing phone number in table view
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        if textField.tag == MyInformationData.PHONE.rawValue
+        {
+            print ("HOLA")
+            
+            // Do not let user modify first 2 characters. Right now this is for US phone numbers ("+1")
+            if (range.location < 2)
+            {
+                return false
+            }
+            
+            return true
+        }
+
+        return false
+    }
     
+    func phoneNumberTextFieldEditingDidChange(textField: UITextField)
+    {
+        // Get the text from the beginning of the phone number (not US country code)
+        let string = (textField.text)! as NSString
+        let phoneString = string.substringFromIndex(2)
+        
+        textField.text = "+1" + removeAllNonDigits(phoneString)
+        
+        
+    }
     
     /**************************************************************************
      *    TABLE VIEW PROTOCOL
@@ -679,14 +807,17 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 cell.menuValue.text = currentUserEmail
                 // Tag is needed so we can detect which text field is being modified later on
                 cell.menuValue.tag  = MyInformationData.EMAIL.rawValue
-
+            
                 break;
             case MyInformationData.PHONE.rawValue: //User phone
                 cell.menuTitle.text = "Phone"
                 cell.menuValue.text = currentUserPhone
                 // Tag is needed so we can detect which text field is being modified later on
                 cell.menuValue.tag  = MyInformationData.PHONE.rawValue
-
+                
+                cell.menuValue.addTarget(self, action: #selector(phoneNumberTextFieldEditingDidChange), forControlEvents: UIControlEvents.EditingChanged)
+                cell.menuValue.delegate = self
+                cell.menuValue.keyboardType = UIKeyboardType.NumberPad
                 break;
                 
             default: //Default
@@ -1011,20 +1142,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         print("CUR USERNAME: ", currentUserName)
         
-//        
-//        if currentUserAccountsDirty
-//        {
-//            print("CURRENT USER ACCOUNT DIRTY!")
-//            getUserDynamoData(currentUserName, completion: { (result, error) in
-//                if result != nil && error == nil
-//                {
-//                    self.currentUserAccounts = result!.accounts as NSMutableDictionary
-//                    setCurrentCachedUserProfiles(self.currentUserAccounts)
-//                }
-//            })
-//            
-//            
-//        }
         
         // If any values are nil, we need to re-cache -- safety precautions
         // Note if a user has no user accounts, we'll be re-caching every time (side effect)

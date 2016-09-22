@@ -38,10 +38,17 @@ func getAllPossibleSocialMediaList() -> Array<String>
     return possibleSocialMediaNameList
 }
 
-func convertDictionaryToSocialMediaKeyValPairList(dict: NSMutableDictionary)
+func convertDictionaryToSocialMediaKeyValPairList(dict: NSMutableDictionary!)
     -> Array<KeyValSocialMediaPair>!
 {
+    
+
     var pairList = Array<KeyValSocialMediaPair>()
+    
+    if dict == nil
+    {
+        return pairList
+    }
     
     // dict is a dictionary that maps a social media name (i.e. facebook) to every
     // single username that the user has for that social media type. We need to find how many
