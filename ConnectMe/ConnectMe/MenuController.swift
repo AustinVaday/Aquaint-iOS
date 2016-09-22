@@ -13,6 +13,7 @@ import AWSCognitoIdentityProvider
 import AWSDynamoDB
 import AWSS3
 import AWSLambda
+import SCLAlertView
 
 class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
@@ -365,6 +366,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         if editedUserPhone != nil && editedUserPhone != currentUserPhone
         {
+            // In case we need to revert changes -- if user cannot verify
+            let oldPhoneNum = currentUserPhone
+            
             // Update user pools with currentUserEmail
             phoneCell.menuValue.text = editedUserPhone
             currentUserPhone = editedUserPhone
@@ -375,7 +379,39 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             userPool.getUser(currentUserName).updateAttributes([email, phone]).continueWithSuccessBlock { (resultTask) -> AnyObject? in
                 
                 
-                // Prompt user to enter in confirmation code.
+//                // Prompt user to enter in confirmation code.
+//                dispatch_async(dispatch_get_main_queue(), {
+//                    self.showVerificationPopup({ (result) in
+//                        if result != nil
+//                        {
+//                            // Check if valid verification code
+//                            userPool.getUser(self.currentUserName).confirmSignUp(result!).continueWithBlock { (resultTask) -> AnyObject? in
+//                                
+//                                // If success code
+//                                if resultTask.error == nil
+//                                {
+//                                    // We good to go!
+//                                    print("WE GOOD TO GO!")
+//                                }
+//                                else
+//                                {
+//                                    // Invalid code
+//                                    print("INVALID CODE")
+//                                }
+//                                
+//                                return nil
+//                            }
+//                        }
+//                        else
+//                        {
+//                            // Invalid entry or request, revert back to previous phone number
+//                            print("INVALID REQUESTO")
+//                        }
+//                    })
+//
+//                })
+                
+                setCurrentCachedUserPhone(self.currentUserPhone)
                 
                 print("SUCCESSFUL USER PHONE UPDATE IN USERPOOLS")
                 return nil
@@ -383,66 +419,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
 
         }
-        
-//        // Check if we need to update user pools
-//        if editedUserEmail != nil || editedUserPhone != nil
-//        {
-//            print ("UPDATING USER POOLS")
-//            
-//            // Only update if at least one of them changed.
-//            if (editedUserEmail != currentUserEmail ||
-//                editedUserPhone != currentUserPhone)
-//            {
-//                // In case we need to revert changes -- if user cannot verify
-//                let oldPhoneNum = phoneCell.menuValue.text
-//                
-//                
-//                // ADD CHANGE TO USERPOOLS (email/phone only)
-//                let userPool = getAWSCognitoIdentityUserPool()
-//                let email = AWSCognitoIdentityUserAttributeType()
-//                let phone = AWSCognitoIdentityUserAttributeType()
-//                
-//                email.name = "email"
-//                email.value = currentUserEmail
-//                phone.name = "phone_number"
-//                phone.value = currentUserPhone
-//                
-//                
-//                userPool.getUser(currentUserName).updateAttributes([email, phone]).continueWithSuccessBlock { (resultTask) -> AnyObject? in
-//                    print("successful user pools update!")
-//                    
-//                    setCurrentCachedUserEmail(self.currentUserEmail)
-//                    
-//                    
-//                    // Now, we need to verify their new phone number
-//                    userPool.getUser(self.currentUserName).resendConfirmationCode().continueWithBlock({ (task) -> AnyObject? in
-//                        if task.result != nil && task.error == nil
-//                        {
-//                            // Sent confirmation code, prompt user to enter it in
-//                            
-//                            userPool.getUser(self.currentUserName).getAttributeVerificationCode("phone_number").continueWithSuccessBlock({ (verifResult) -> AnyObject? in
-//                                print("VERIFRESULT IS: ", verifResult.result)
-//                                
-//                                return nil
-//                            })
-//
-//                        }
-//                        else
-//                        {
-//                            //error sending code
-//                        }
-//                        
-//                        return nil
-//                    })
-//                    
-//                    
-//                    setCurrentCachedUserPhone(self.currentUserPhone)
-//
-//                    return nil
-//                }
-//
-//            }
-//        }
         
         // Check if we need to update dynamo
         if editedRealName != nil
@@ -1318,6 +1294,91 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             return nil
         })
         
+    }
+    
+    
+    private func showVerificationPopup(completion: (result:String?)->())
+    {
+        var alertViewResponder: SCLAlertViewResponder!
+        let subview = UIView(frame: CGRectMake(0,0,216,70))
+        let x = (subview.frame.width - 180) / 2
+        let colorDarkBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
+        
+        // Add text field for username
+        let textField = UITextField(frame: CGRectMake(x,10,180,25))
+        
+        //            textField.layer.borderColor = colorLightBlue.CGColor
+        //            textField.layer.borderWidth = 1.5
+        //            textField.layer.cornerRadius = 5
+        textField.font = UIFont(name: "Avenir Roman", size: 14.0)
+        textField.textColor = colorDarkBlue
+        textField.placeholder = "Enter Verification Code"
+        textField.textAlignment = NSTextAlignment.Center
+        
+        // Add target to text field to validate/fix user input of a proper input
+//        textField.addTarget(self, action: #selector(usernameTextFieldDidChange), forControlEvents: UIControlEvents.EditingChanged)
+        subview.addSubview(textField)
+//
+        let alertAppearance = SCLAlertView.SCLAppearance(
+            showCircularIcon: true,
+            kCircleIconHeight: 40,
+            kCircleHeight: 55,
+            shouldAutoDismiss: false,
+            hideWhenBackgroundViewIsTapped: true
+            
+        )
+        
+        let alertView = SCLAlertView(appearance: alertAppearance)
+        
+        alertView.customSubview = subview
+        alertView.addButton("Submit", action: {
+            print("Submit button clicked for textField data:", textField.text)
+            
+            if alertViewResponder == nil
+            {
+                print("Something went wrong...")
+                completion(result: nil)
+            }
+            
+            let code = textField.text!
+            
+            if code.isEmpty
+            {
+                //TODO: Nothing?
+            }
+            else if code.characters.count != 6
+            {
+                //TODO: Notify that username is too long
+                alertViewResponder.close()
+                completion(result: nil)
+
+                
+                // Reset userpools to old phone number
+            }
+            else
+            {
+                print("SUCCESS RESULT:", code)
+                alertViewResponder.close()
+                completion(result: code)
+                // Update userpools with verification
+            }
+            
+            
+        })
+        
+        let alertViewIcon = UIImage(named: "Emblem White")
+        
+        alertViewResponder = alertView.showTitle("Verify Phone",
+                                                 subTitle: "",
+                                                 duration:0.0,
+                                                 completeText: "Cancel",
+                                                 style: .Success,
+                                                 colorStyle: 0x0F7A9D,
+                                                 colorTextButton: 0xFFFFFF,
+                                                 circleIconImage: alertViewIcon,
+                                                 animationStyle: .BottomToTop
+        )
+
     }
 
     // UNWIND SEGUES
