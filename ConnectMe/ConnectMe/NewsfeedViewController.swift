@@ -191,16 +191,13 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
 
         switch event
         {
-            // If a friend starts following new people
+            // If someone I follow starts following another person
             case "newfollowing":
                 
                 let user = newsfeedList[indexPath.row].valueForKey("user")! as! String
-                print("all data: ", newsfeedList[indexPath.row])
-
-
                 let otherUsers = NSArray(array: newsfeedList[indexPath.row].valueForKey("other") as! NSArray)
+                let otherUser = otherUsers[0] as! String
                 
-                let firstUser = otherUsers[0] as! String
                 let handlerUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
                     showPopupForUser(user)
@@ -208,32 +205,40 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 let handlerOtherUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(firstUser)
+                    showPopupForUser(otherUser)
                 }
                 
-                let textString = user +  " started following " + firstUser + "."
+                let textString = user +  " started following " + otherUser + "."
 
                 cell.cellMessage.text = textString
                 cell.cellMessage.setLinkForSubstring(user, withLinkHandler: handlerUser)
-                cell.cellMessage.setLinkForSubstring(firstUser, withLinkHandler: handlerOtherUser)
+                cell.cellMessage.setLinkForSubstring(otherUser, withLinkHandler: handlerOtherUser)
 
                 
                 break;
-            // If I myself have a new follower
+            // If someone I follow has a new follower
             case "newfollower":
                 
+                let followedUser = newsfeedList[indexPath.row].valueForKey("user")! as! String
                 let otherUsers = NSArray(array: newsfeedList[indexPath.row].valueForKey("other") as! NSArray)
-                let firstUser = otherUsers[0] as! String
+                let otherUser = otherUsers[0] as! String
+                
+                let handlerFolloweddUser = {
+                    (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
+                    showPopupForUser(followedUser)
+                }
+
                 
                 let handlerOtherUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(firstUser)
+                    showPopupForUser(otherUser)
                 }
                 
-                let textString = firstUser +  " started following you."
+                let textString = "Your friend " + followedUser +  " was followed by " + otherUser
                 
                 cell.cellMessage.text = textString
-                cell.cellMessage.setLinkForSubstring(firstUser, withLinkHandler: handlerOtherUser)
+                cell.cellMessage.setLinkForSubstring(followedUser, withLinkHandler: handlerFolloweddUser)
+                cell.cellMessage.setLinkForSubstring(otherUser, withLinkHandler: handlerOtherUser)
 
                 break;
             
