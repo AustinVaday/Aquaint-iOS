@@ -36,6 +36,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             newsfeedTableView.hidden = true
             setUpAnimations(self)
         }
+        
     }
     
     // Remove animations after user leaves page. Prevents post-animation stale objects
@@ -70,67 +71,48 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
         socialMediaImageDictionary = getAllPossibleSocialMediaImages()
         
-        let currentUser = getCurrentCachedUser()
-        
-        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action":"getNewsfeed", "target": currentUser]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-            if resultTask.error != nil || resultTask.exception != nil || resultTask.result == nil
-            {
-                
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-                if self.newsfeedList.count == 0
-                {
-                    self.shouldShowAnimations = true
-                }
-                else
-                {
-                    self.shouldShowAnimations = false
-                }
-                
-                // Update UI on main thread
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.newsfeedTableView.reloadData()
-                })
-            }
-            else
-            {
-                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
-                self.newsfeedList = resultTask.result as! NSArray
-                
-                
-                print (self.newsfeedList[0]["user"])
-                
-                // Update UI on main thread
-                dispatch_async(dispatch_get_main_queue(), {
-                    
-                    // TODO: TEMPORARY
-                    // DEBUGGING MODE -- SET NEWSFEED LIST TO EMPTY LIST
-//                    self.newsfeedList = NSArray()
-                    
-                    if self.newsfeedList.count == 0
-                    {
-                        self.shouldShowAnimations = true
-                    }
-                    else
-                    {
-                        self.shouldShowAnimations = false
-                    }
-                    self.newsfeedTableView.reloadData()
-
-                })
-
-                
-            }
-            
-            return nil
-            
-        }
-
         // Fetch the user's username
         currentUserName = getCurrentCachedUser()
+        
+        
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        dynamoDBObjectMapper.load(NewsfeedResultObjectModel.self, hashKey: "tolvstad", rangeKey: 0).continueWithSuccessBlock { (result) -> AnyObject? in
+            
+            var newsfeedResultObjectMapper : NewsfeedResultObjectModel!
+            
+            // If successfull find, use that data
+            if (result.error == nil && result.exception == nil && result.result != nil)
+            {
+                newsfeedResultObjectMapper = result.result as! NewsfeedResultObjectModel
+                
+                print("SUCCESS ReSuLT: ", newsfeedResultObjectMapper.username)
+                print("SUCCESS ReSuLT: ", newsfeedResultObjectMapper.data)
+            
+                
+                self.newsfeedList = convertJSONStringToArray(newsfeedResultObjectMapper.data) as NSArray
 
-//        connectionList = Array<Connection>()
+                
+                // Update UI on main thread
+                dispatch_async(dispatch_get_main_queue(), {
+
+                    
+                    print("NEWSFEED LIST IS: ", self.newsfeedList)
+                    self.newsfeedTableView.reloadData()
+                })
+                
+            }
+            else // Else, use new mapper class
+            {
+                newsfeedResultObjectMapper = NewsfeedResultObjectModel()
+                
+                print("FAIL!!: ", result.error)
+            }
+            
+        
+            return nil
+        }
+
+
         expansionObj = CellExpansion()
 
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
@@ -183,6 +165,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         
+    
         return newsfeedList.count
     }
     
@@ -197,19 +180,27 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
         cell.collectionView.tag = indexPath.row
         
-//        let connectedUserName = newsfeedList[indexPath.row]["user"]!
-        let event = newsfeedList[indexPath.row]["event"]!
-//        let time = newsfeedList[indexPath.row]["time"]!
+        let event = newsfeedList[indexPath.row].valueForKey("event")! as! String
+        let timestamp = newsfeedList[indexPath.row].valueForKey("time")! as! Int
+        
+        // Set time dif of event on the cell
+        cell.cellTimeConnected.text = computeTimeDiffFromNow(timestamp)
+        
+        
+        print(time)
 
-        switch event!
+        switch event
         {
             // If a friend starts following new people
             case "newfollowing":
                 
-                let user = newsfeedList[indexPath.row]["user"]!!
-                let otherUser = newsfeedList[indexPath.row]["otheruser"]!!
+                let user = newsfeedList[indexPath.row].valueForKey("user")! as! String
+                print("all data: ", newsfeedList[indexPath.row])
+
+
+                let otherUsers = NSArray(array: newsfeedList[indexPath.row].valueForKey("other") as! NSArray)
                 
-                
+                let firstUser = otherUsers[0] as! String
                 let handlerUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
                     showPopupForUser(user)
@@ -217,32 +208,32 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 let handlerOtherUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(otherUser)
+                    showPopupForUser(firstUser)
                 }
                 
-                let textString = user +  " started following " + otherUser + "."
+                let textString = user +  " started following " + firstUser + "."
 
                 cell.cellMessage.text = textString
                 cell.cellMessage.setLinkForSubstring(user, withLinkHandler: handlerUser)
-                cell.cellMessage.setLinkForSubstring(otherUser, withLinkHandler: handlerOtherUser)
+                cell.cellMessage.setLinkForSubstring(firstUser, withLinkHandler: handlerOtherUser)
 
                 
                 break;
             // If I myself have a new follower
             case "newfollower":
                 
-                let otherUser = newsfeedList[indexPath.row]["otheruser"]!!
-            
+                let otherUsers = NSArray(array: newsfeedList[indexPath.row].valueForKey("other") as! NSArray)
+                let firstUser = otherUsers[0] as! String
                 
                 let handlerOtherUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(otherUser)
+                    showPopupForUser(firstUser)
                 }
                 
-                let textString = otherUser +  " started following you."
+                let textString = firstUser +  " started following you."
                 
                 cell.cellMessage.text = textString
-                cell.cellMessage.setLinkForSubstring(otherUser, withLinkHandler: handlerOtherUser)
+                cell.cellMessage.setLinkForSubstring(firstUser, withLinkHandler: handlerOtherUser)
 
                 break;
             
@@ -286,8 +277,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         cell.cellImage.image = defaultImage
-        cell.cellTimeConnected.text = "2s"
-        
         
         
         return cell

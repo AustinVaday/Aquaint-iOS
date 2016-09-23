@@ -73,6 +73,51 @@ func convertDictionaryToSocialMediaKeyValPairList(dict: NSMutableDictionary!)
     
 }
 
+func computeTimeDiffFromNow(timestampGMT: Int) -> String
+{
+    let currentTime = getTimestampAsInt()
+    
+    // Get time diff in seconds
+    let timeDiffSec = (currentTime - timestampGMT)
+    
+    // If we're in seconds, return seconds
+    if (timeDiffSec < 60)
+    {
+        return String(Int(timeDiffSec)) + " sec"
+    }
+        // If it's better to use minutes
+    else if (timeDiffSec < (60 * 60))
+    {
+        let calcTime = Int(timeDiffSec / 60)
+        return String(calcTime) + " min"
+    }
+        // If it's better to use hours
+    else if (timeDiffSec < (60 * 60 * 24))
+    {
+        let calcTime = Int(timeDiffSec / 60 / 60)
+        return String(calcTime) + " h"
+    }
+        // If it's better to use days
+    else if (timeDiffSec < (60 * 60 * 24 * 30))
+    {
+        let calcTime = Int(timeDiffSec / 60 / 60 / 24 )
+        return String(calcTime) + " d"
+    }
+        // If it's better to use months
+    else if (timeDiffSec < (60 * 60 * 24 * 30 * 12))
+    {
+        let calcTime = Int(timeDiffSec / 60 / 60 / 24 / 30)
+        return String(calcTime) + " mo"
+    }
+    else
+    {
+        let calcTime = Int(timeDiffSec / 60 / 60 / 24 / 365)
+        return String(calcTime) + " y"
+    }
+    
+}
+
+
 // Necessary for fetching username URLs
 func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: String!, sender: AnyObject) -> NSURL!
 {
@@ -680,16 +725,16 @@ func getTimestampAsInt() -> Int!
 }
 
 // For parsing return data (example use case: lambda)
-func convertJSONStringToArray(jsonString: AnyObject) -> [String]
+func convertJSONStringToArray(jsonString: AnyObject) -> NSArray!
 {
     let string = jsonString as! String
     
     let data = string.dataUsingEncoding(NSUTF8StringEncoding)
-    var result : [String]!
+    var result : NSArray!
     
     do
     {
-        result = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String]
+        result = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSArray
     }
     catch let error as NSError
     {

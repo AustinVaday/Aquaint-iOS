@@ -26,7 +26,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var isTypingSearch = false
     var defaultImage : UIImage!
     var followeesMapping : [String: Int]!
-    var recentUsernameAdds : Set<String>!
+    var recentUsernameAdds : NSMutableDictionary!
     var animatedObjects : Array<UIView>!
     let imageCache = NSCache()
     
@@ -37,7 +37,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         allUsers = Array<User>()
         filteredUsers = Array<User>()
         followeesMapping = [String: Int]()
-        recentUsernameAdds = Set<String>()
+        recentUsernameAdds = NSMutableDictionary()
         animatedObjects = Array<UIView>()
         
         noSearchResultsView.hidden = true
@@ -125,7 +125,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         noSearchResultsView.hidden = true
         
         // Only update dynamo if there are changes to account for.
-        if !recentUsernameAdds.isEmpty
+        if recentUsernameAdds.count != 0
         {
 
             // Here's what we'll do: When the user leaves this page, we will take the recent additions (100 max)
@@ -136,26 +136,28 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             let currentTimestamp = getTimestampAsInt()
             
             // Get dynamo mapper if it exists
-            dynamoDBObjectMapper.load(NewsfeedObjectModel.self, hashKey: self.userName, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+            dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: self.userName, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
                 
-                var newsfeedObjectMapper : NewsfeedObjectModel!
+                var newsfeedObjectMapper : NewsfeedEventListObjectModel!
 
                 // If successfull find, use that data
                 if (resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil)
                 {
-                    newsfeedObjectMapper = resultTask.result as! NewsfeedObjectModel
+                    newsfeedObjectMapper = resultTask.result as! NewsfeedEventListObjectModel
                 }
                 else // Else, use new mapper class
                 {
-                    newsfeedObjectMapper = NewsfeedObjectModel()
+                    newsfeedObjectMapper = NewsfeedEventListObjectModel()
                 }
                 
                 // Store key
                 newsfeedObjectMapper.username = self.userName
                 
                 // Upload to Dynamo
-                let otherUsersArray = NSArray(objects: self.recentUsernameAdds)
-                let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollowing", "otherusers": otherUsersArray, "time" : currentTimestamp] )
+            
+                
+                let otherUsersArray = self.recentUsernameAdds.allKeys as NSArray
+                let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollowing", "other": otherUsersArray, "time" : currentTimestamp] )
                 newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
                 
                 dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
@@ -170,32 +172,33 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
             
             // For all people that a user follows, make sure to add a dynamo event for them too 
-            for user in recentUsernameAdds
+            for user in recentUsernameAdds.allKeys
             {
                 
                 let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
                 
                 
                 // Get dynamo mapper if it exists
-                dynamoDBObjectMapper.load(NewsfeedObjectModel.self, hashKey: user, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+                dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: user, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
                     
-                    var newsfeedObjectMapper : NewsfeedObjectModel!
+                    var newsfeedObjectMapper : NewsfeedEventListObjectModel!
                     
                     // If successfull find, use that data
                     if (resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil)
                     {
-                        newsfeedObjectMapper = resultTask.result as! NewsfeedObjectModel
+                        newsfeedObjectMapper = resultTask.result as! NewsfeedEventListObjectModel
                     }
                     else // Else, use a new mapper class
                     {
-                        newsfeedObjectMapper = NewsfeedObjectModel()
+                        newsfeedObjectMapper = NewsfeedEventListObjectModel()
                     }
                     
                     // Store key
-                    newsfeedObjectMapper.username = user
+                    newsfeedObjectMapper.username = user as! String
                     
                     // Upload to Dynamo - Indicate that this user has a new follower
-                    let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollower", "otheruser": self.userName, "time" : currentTimestamp] )
+                    let otherUsersArray = NSArray(object: self.userName)
+                    let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollower", "other":  otherUsersArray, "time" : currentTimestamp] )
                     newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
                     
                     dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
@@ -518,16 +521,16 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     func addedUser(username: String) {
         // When user is added from tableview cell
         // Add to set to keep track of recently added users
-        recentUsernameAdds.insert(username)
+        recentUsernameAdds.setObject(getTimestampAsInt(), forKey: username)
         followeesMapping[username] = getTimestampAsInt()
         print("OKOK. USER ADDED: ", username)
     }
     
     func removedUser(username: String) {
         // When user is removed from tableview cell
-        if recentUsernameAdds.contains(username)
+        if recentUsernameAdds.objectForKey(username) != nil
         {
-            recentUsernameAdds.remove(username)
+            recentUsernameAdds.removeObjectForKey(username)
         }
         
         followeesMapping.removeValueForKey(username)

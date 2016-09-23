@@ -31,36 +31,42 @@ class User : AWSDynamoDBObjectModel
 }
 
 
-//class NewsfeedObject
-//{
-//    var username : String!
-//    var event : String!
-//    var otherUser : String!
-//    var timestamp : NSInteger!
-//}
+// The below class is the acctual newsfeed that will be displayed
+class NewsfeedResultObjectModel : AWSDynamoDBObjectModel
+{
+    
+    var data : NSMutableArray!
+    var username : String!
+    var seq : Int!
+    
+    class func dynamoDBTableName() -> String {
+        
+        return "aquaint-newsfeed"
+    }
+    
+    class func hashKeyAttribute() -> String {
+        
+        return "username"
+    }
+    
+    class func rangeKeyAttribute() -> String {
+        
+        print("SUCCESS SORT KEY DETECTION")
+        return "seq"
+    }
+    
+}
 
-
-class NewsfeedObjectModel : AWSDynamoDBObjectModel
+// The below class is used to submit user events
+class NewsfeedEventListObjectModel : AWSDynamoDBObjectModel
 {
 
     var newsfeedList : NSMutableArray! // Really: Array<NSMutableDictionary>!
     var username : String!
     
-//    override init()
-//    {
-//        super.init()
-//        
-//        newsfeedList = NSMutableArray()
-//        
-//    }
-//    
-//    required init!(coder: NSCoder!) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
     class func dynamoDBTableName() -> String {
         
-        return "aquaint-newsfeed"
+        return "aquaint-user-eventlist"
     }
     
     class func hashKeyAttribute() -> String {
