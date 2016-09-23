@@ -131,9 +131,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             // Here's what we'll do: When the user leaves this page, we will take the recent additions (100 max)
             // and store them in dynamo. This information will be used for the newsfeed.
             let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-
-            // Get a consistent timestamp
-            let currentTimestamp = getTimestampAsInt()
             
             // Get dynamo mapper if it exists
             dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: self.userName, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
@@ -155,15 +152,29 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 // Upload to Dynamo
             
-                
-                let otherUsersArray = self.recentUsernameAdds.allKeys as NSArray
-                let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollowing", "other": otherUsersArray, "time" : currentTimestamp] )
-                newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
-                
-                dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
-                    print("DynamoObjectMapper sucessful save for newsfeedObject #1")
+                // Add an event for first 10 username add
+                let numUsersLimit = 10
+                var index = 0
+                for otherUser in self.recentUsernameAdds.allKeys
+                {
+                    // Prevent too many adds at once
+                    index = index + 1
+                    if index >= numUsersLimit
+                    {
+                        // Exit loop
+                        break
+                    }
                     
-                    return nil
+                    let otherUsersArray = NSArray(object: otherUser)
+                    let timestamp = self.recentUsernameAdds.objectForKey(otherUser) as! Int
+                    let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollowing", "other": otherUsersArray, "time" : timestamp])
+                    newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
+                    
+                    dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+                        print("DynamoObjectMapper sucessful save for newsfeedObject #1")
+                        
+                        return nil
+                    }
                 }
 
                 
@@ -198,7 +209,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                     
                     // Upload to Dynamo - Indicate that this user has a new follower
                     let otherUsersArray = NSArray(object: self.userName)
-                    let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollower", "other":  otherUsersArray, "time" : currentTimestamp] )
+                    let timestamp = self.recentUsernameAdds.objectForKey(user) as! Int
+                    let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollower", "other":  otherUsersArray, "time" : timestamp] )
                     newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
                     
                     dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
@@ -206,7 +218,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                         
                         return nil
                     }
-                    
                     
                     return nil
                 })

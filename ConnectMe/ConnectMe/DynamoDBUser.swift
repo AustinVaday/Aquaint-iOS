@@ -83,8 +83,8 @@ class NewsfeedEventListObjectModel : AWSDynamoDBObjectModel
         }
         
         let numParameters = 3
-        let maxSize = 10 // Denotes how much data to store for one user's newsfeed
-//        let listOfParameters = ["username", "event", "otheruser", "timestamp"]
+        let maxSize = 25 // Denotes how much data to store for one user's newsfeed
+//        let listOfParameters = ["username", "event", "other", "timestamp"]
         
         // Reject if attempts to add dictionary with insufficient data
         if object.count != numParameters
