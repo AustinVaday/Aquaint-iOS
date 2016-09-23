@@ -37,7 +37,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         allUsers = Array<User>()
         filteredUsers = Array<User>()
         followeesMapping = [String: Int]()
-        recentUsernameAdds = NSMutableDictionary()
+//        recentUsernameAdds = NSMutableDictionary()
         animatedObjects = Array<UIView>()
         
         noSearchResultsView.hidden = true
@@ -117,6 +117,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     }
     
+    override func viewDidAppear(animated: Bool) {
+
+        // If this is not here, then we will upload same user events to dynamo every time.
+        recentUsernameAdds = NSMutableDictionary()
+
+    }
+    
     // When the view disappears, upload action data to Dynamo (used for newsfeed)
     override func viewDidDisappear(animated: Bool) {
         
@@ -170,12 +177,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                     let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollowing", "other": otherUsersArray, "time" : timestamp])
                     newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
                     
-                    dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
-                        print("DynamoObjectMapper sucessful save for newsfeedObject #1")
-                        
-                        return nil
-                    }
                 }
+                
+                dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+                    print("DynamoObjectMapper sucessful save for newsfeedObject #1")
+                    
+                    return nil
+                }
+
 
                 
                 return nil

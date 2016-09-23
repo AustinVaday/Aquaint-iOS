@@ -51,7 +51,6 @@ class NewsfeedResultObjectModel : AWSDynamoDBObjectModel
     
     class func rangeKeyAttribute() -> String {
         
-        print("SUCCESS SORT KEY DETECTION")
         return "seq"
     }
     
@@ -76,28 +75,15 @@ class NewsfeedEventListObjectModel : AWSDynamoDBObjectModel
     
     func addNewsfeedObject(object: NSMutableDictionary)
     {
+        print("adding newsfeed object: ", object)
         // Initialize if not already done so
         if newsfeedList == nil
         {
             newsfeedList = NSMutableArray()
         }
         
-        let numParameters = 3
-        let maxSize = 25 // Denotes how much data to store for one user's newsfeed
-//        let listOfParameters = ["username", "event", "other", "timestamp"]
-        
-        // Reject if attempts to add dictionary with insufficient data
-        if object.count != numParameters
-        {
-            print("Not adding newsfeed object because bad parameters!")
-            return
-        }
-        
-        //TODO: Reject if invalid keys
-//        if listOfParameters != object.allKeys
-//        {
-//            
-//        }
+        let maxSize = 30 // Denotes how much data to store for one user's newsfeed
+
 
         // If we have space, add newsfeed object to beginning list
         if newsfeedList.count < maxSize

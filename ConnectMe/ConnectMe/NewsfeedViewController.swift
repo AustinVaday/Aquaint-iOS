@@ -74,45 +74,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Fetch the user's username
         currentUserName = getCurrentCachedUser()
         
-        
-        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        dynamoDBObjectMapper.load(NewsfeedResultObjectModel.self, hashKey: "tolvstad", rangeKey: 0).continueWithSuccessBlock { (result) -> AnyObject? in
-            
-            var newsfeedResultObjectMapper : NewsfeedResultObjectModel!
-            
-            // If successfull find, use that data
-            if (result.error == nil && result.exception == nil && result.result != nil)
-            {
-                newsfeedResultObjectMapper = result.result as! NewsfeedResultObjectModel
-                
-                print("SUCCESS ReSuLT: ", newsfeedResultObjectMapper.username)
-                print("SUCCESS ReSuLT: ", newsfeedResultObjectMapper.data)
-            
-                
-                self.newsfeedList = convertJSONStringToArray(newsfeedResultObjectMapper.data) as NSArray
-
-                
-                // Update UI on main thread
-                dispatch_async(dispatch_get_main_queue(), {
-
-                    
-                    print("NEWSFEED LIST IS: ", self.newsfeedList)
-                    self.newsfeedTableView.reloadData()
-                })
-                
-            }
-            else // Else, use new mapper class
-            {
-                newsfeedResultObjectMapper = NewsfeedResultObjectModel()
-                
-                print("FAIL!!: ", result.error)
-            }
-            
-        
-            return nil
-        }
-
-
         expansionObj = CellExpansion()
 
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
@@ -125,6 +86,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         refreshControl.addTarget(self, action: #selector(NewsfeedViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
         newsfeedTableView.addSubview(refreshControl)
         
+        generateData()
+        
     }
     
     // Function that is called when user drags/pulls table with intention of refreshing it
@@ -132,6 +95,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     {
         newsfeedTableView.addSubview(refreshControl)
         
+        generateData()
         // Need to end refreshing
         delay(0.5)
         {
@@ -470,7 +434,48 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    private func generateData()
+    {
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        dynamoDBObjectMapper.load(NewsfeedResultObjectModel.self, hashKey: currentUserName, rangeKey: 0).continueWithSuccessBlock { (result) -> AnyObject? in
+            
+            var newsfeedResultObjectMapper : NewsfeedResultObjectModel!
+            
+            // If successfull find, use that data
+            if (result.error == nil && result.exception == nil && result.result != nil)
+            {
+                newsfeedResultObjectMapper = result.result as! NewsfeedResultObjectModel
+                
+                print("SUCCESS ReSuLT: ", newsfeedResultObjectMapper.username)
+                print("SUCCESS ReSuLT: ", newsfeedResultObjectMapper.data)
+                
+                
+                self.newsfeedList = convertJSONStringToArray(newsfeedResultObjectMapper.data) as NSArray
+                
+                
+                // Update UI on main thread
+                dispatch_async(dispatch_get_main_queue(), {
+                    
+                    
+                    print("NEWSFEED LIST IS: ", self.newsfeedList)
+                    self.newsfeedTableView.reloadData()
+                })
+                
+            }
+            else // Else, use new mapper class
+            {
+                newsfeedResultObjectMapper = NewsfeedResultObjectModel()
+                
+                print("FAIL!!: ", result.error)
+            }
+            
+            
+            return nil
+        }
+        
 
+    }
+    
     private func setUpAnimations(viewController: UIViewController)
     {
         // Only add more animations if none exist already. Prevents user abuse

@@ -54,6 +54,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var currentRealName : String!
     var currentUserAccounts : NSMutableDictionary!
     var oldUserAccounts : NSMutableDictionary!
+    var newUserAccountsForNewsfeed : NSMutableDictionary! // Used so that we can add new accounts to newsfeed
     var currentUserImage: UIImage!
     var currentUserEmail : String!
     var currentUserPhone : String!
@@ -89,7 +90,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // Ensure that the button view is always visible -- in front of the table view
         buttonView.layer.zPosition = 1
-    
         
         // Set up the data for the table views section. Note: Dictionary does not work for this list as we need a sense of ordering.   
         tableViewSectionsList = Array<SectionTitleAndCountPair>()
@@ -121,6 +121,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         registerForKeyboardNotifications()
         
+        // Set up datastructure for newsfeed.. If this is not reset
+        // in viewWillAppear, then we'll keep uploading the same info to dynamo
+        newUserAccountsForNewsfeed = NSMutableDictionary()
     }
     
     
@@ -129,9 +132,71 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         deregisterForKeyboardNotifications()
         
-//        // Clean up refreshControl to not have any possible leftover spinners
-//        refreshControl.endRefreshing()
-//        refreshControl.removeFromSuperview()
+        // When the view disappears, upload action data to Dynamo (used for the newsfeed)
+        print ("You will be uploading this data to dynamo: ", self.newUserAccountsForNewsfeed)
+        
+        let currentUser = getCurrentCachedUser()
+        if self.newUserAccountsForNewsfeed.count != 0
+        {
+            // Here's what we'll do: When the user leaves this page, we will take the recent additions (100 max)
+            // and store them in dynamo. This information will be used for the newsfeed.
+            let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+            
+            // Get dynamo mapper if it exists
+            dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: currentUser, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+                
+                var newsfeedObjectMapper : NewsfeedEventListObjectModel!
+                
+                // If successfull find, use that data
+                if (resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil)
+                {
+                    newsfeedObjectMapper = resultTask.result as! NewsfeedEventListObjectModel
+                }
+                else // Else, use new mapper class
+                {
+                    newsfeedObjectMapper = NewsfeedEventListObjectModel()
+                }
+                
+                // Store key
+                newsfeedObjectMapper.username = currentUser
+                
+                // Upload to Dynamo
+                let newKeyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.newUserAccountsForNewsfeed)
+                
+                // Add an event for first 10 profile adds
+                let numUsersLimit = 10
+                var index = 0
+                
+            
+                print ("YOLO24: ", newKeyValSocialMediaPairList)
+                for pair in newKeyValSocialMediaPairList
+                {
+                    // Prevent too many adds at once
+                    index = index + 1
+                    if index >= numUsersLimit
+                    {
+                        print("LEAVING FOR STATEMENT")
+                        // Exit loop
+                        break
+                    }
+                    
+                    let timestamp = getTimestampAsInt()
+                    let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newprofile", "name": pair.socialMediaUserName, "type": pair.socialMediaType, "time" : timestamp])
+                    newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
+                }
+                
+                dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+                    print("DynamoObjectMapper sucessful save for newsfeedObject with new social media profile")
+                    
+                    return nil
+                }
+
+                
+                
+                return nil
+            })
+
+        }
         
     }
     
@@ -1005,6 +1070,21 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.currentUserAccounts)
                 
                 
+                // Propagate newsfeed object data
+                if self.newUserAccountsForNewsfeed.valueForKey(socialMediaType) == nil
+                {
+                    self.newUserAccountsForNewsfeed.setValue([ socialMediaName ], forKey: socialMediaType)
+                }
+                else // If the key already exists
+                {
+                    var list = self.newUserAccountsForNewsfeed.valueForKey(socialMediaType) as! Array<String>
+                    list.append(socialMediaName)
+                    self.newUserAccountsForNewsfeed.setValue(list, forKey: socialMediaType)
+                }
+                
+                print("Adding new profile [", socialMediaType, ":", socialMediaName, " to newUserAccountsForNewsfeed.")
+                print ("New list is: ", self.newUserAccountsForNewsfeed)
+                
                 // Perform update on UI on main thread
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
@@ -1079,6 +1159,34 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             settingsTableView.reloadData()
 
         }
+        
+        // Delete account from newsfeed object as well
+        if newUserAccountsForNewsfeed.valueForKey(socialMediaType) != nil
+        {
+            if newUserAccountsForNewsfeed.valueForKey(socialMediaType) != nil
+            {
+                var list = newUserAccountsForNewsfeed.valueForKey(socialMediaType) as! Array<String>
+                
+                if list.indexOf(socialMediaName) != nil
+                {
+                    // Update list as to remove this specific value
+                    list.removeAtIndex(list.indexOf(socialMediaName)!)
+                    
+                    // If nothing in list, we need to delete the key
+                    if list.count == 0
+                    {
+                        newUserAccountsForNewsfeed.removeObjectForKey(socialMediaType)
+                    }
+                    else
+                    {
+                        newUserAccountsForNewsfeed.setValue(list, forKey: socialMediaType)
+                    }
+                }
+            }
+        }
+        
+        print("Removing profile [", socialMediaType, ":", socialMediaName, " from newUserAccountsForNewsfeed.")
+        print ("New list is: ", self.newUserAccountsForNewsfeed)
     }
     
     // Helper functions
