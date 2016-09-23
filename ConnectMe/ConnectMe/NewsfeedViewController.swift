@@ -209,22 +209,20 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             // If a friend adds in a new profile
             case "newprofile":
                 
-                let otherUser = newsfeedList[indexPath.row]["otheruser"]!!
-                let socialMediaType = newsfeedList[indexPath.row]["data"]!["type"]!!
-                let socialMediaName = newsfeedList[indexPath.row]["data"]!["name"]!!
-                
-                print("SOCIAL MEDIA TYPE: ", newsfeedList[indexPath.row]["data"]!["type"])
-                print("SOCIAL MEDIA NAME: ", newsfeedList[indexPath.row]["data"]!["name"])
+                let followedUser = newsfeedList[indexPath.row].valueForKey("user")! as! String
+                let profileData = NSArray(array: newsfeedList[indexPath.row].valueForKey("other") as! NSArray)
+                let socialMediaType = profileData[0] as! String // Social platform name (i.e. facebook)
+                let socialMediaName = profileData[0] as! String // User's username on the platform
 
                 let handlerOtherUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(otherUser)
+                    showPopupForUser(followedUser)
                 }
                 
-                let textString = otherUser +  " added a " + socialMediaType + " account, check it out!"
+                let textString = followedUser +  " added a " + socialMediaType + " account, check it out!"
                 
                 cell.cellMessage.text = textString
-                cell.cellMessage.setLinkForSubstring(otherUser, withLinkHandler: handlerOtherUser)
+                cell.cellMessage.setLinkForSubstring(followedUser, withLinkHandler: handlerOtherUser)
                 
                                 
                 // show the new account that was added
@@ -232,10 +230,11 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.sponsoredProfileImageName = socialMediaName
                 
                 cell.sponsoredProfileImageButton.hidden = false
-                print("SocialMediaType var is: ", socialMediaType)
-                cell.sponsoredProfileImageButton.imageView!.image = socialMediaImageDictionary[socialMediaType]
+                cell.cellTimeConnected.hidden = true
                 
-
+                print ("Image dict is: ", socialMediaImageDictionary)
+                
+                cell.sponsoredProfileImageButton.setBackgroundImage(socialMediaImageDictionary[socialMediaType], forState: .Normal)
                 break;
             
             default:

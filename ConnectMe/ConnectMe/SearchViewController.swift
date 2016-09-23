@@ -37,7 +37,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         allUsers = Array<User>()
         filteredUsers = Array<User>()
         followeesMapping = [String: Int]()
-//        recentUsernameAdds = NSMutableDictionary()
+        recentUsernameAdds = NSMutableDictionary()
         animatedObjects = Array<UIView>()
         
         noSearchResultsView.hidden = true

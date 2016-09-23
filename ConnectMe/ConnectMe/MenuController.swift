@@ -181,7 +181,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                     }
                     
                     let timestamp = getTimestampAsInt()
-                    let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newprofile", "name": pair.socialMediaUserName, "type": pair.socialMediaType, "time" : timestamp])
+                    let othersArray = [pair.socialMediaType, pair.socialMediaUserName] as NSArray
+                    let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newprofile", "other": othersArray, "time" : timestamp])
                     newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
                 }
                 
