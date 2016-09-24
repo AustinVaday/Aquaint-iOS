@@ -17,7 +17,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var newsfeedTableView: UITableView!
     @IBOutlet weak var noContentMessageView: UIView!
     @IBOutlet weak var emblemButton: UIButton!
-    
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     var aquaintNewsfeed : Array<NewsfeedEntry>!
     var currentUserName : String!
@@ -29,6 +28,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     var expansionObj:CellExpansion!
     var animatedObjects : Array<UIView>!
     var shouldShowAnimations = false
+    var userDidRefreshTable = false
     
     
     override func viewDidAppear(animated: Bool) {
@@ -37,7 +37,11 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             noContentMessageView.hidden = false
             newsfeedTableView.hidden = true
             setUpAnimations(self)
+            
+            // attempt to regenerate data again
+//            generateData()
         }
+    
         
     }
     
@@ -96,6 +100,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     {
         newsfeedTableView.addSubview(refreshControl)
         
+        userDidRefreshTable = true
         generateData()
         // Need to end refreshing
         delay(0.5)
@@ -152,6 +157,10 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Set time dif of event on the cell
         cell.cellTimeConnected.text = computeTimeDiffFromNow(newsfeedObject.timestamp)
         
+        // Default hidden states
+        cell.sponsoredProfileImageButton.hidden = true
+        cell.cellTimeConnected.hidden = false
+        
         switch newsfeedObject.event
         {
             // If someone I follow starts following another person
@@ -174,7 +183,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.cellMessage.text = newsfeedObject.textString
                 cell.cellMessage.setLinkForSubstring(user, withLinkHandler: handlerUser)
                 cell.cellMessage.setLinkForSubstring(otherUser, withLinkHandler: handlerOtherUser)
-
                 
                 break;
             // If someone I follow has a new follower
@@ -222,7 +230,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 // show the new account that was added
                 cell.sponsoredProfileImageType = newsfeedObject.socialMediaType
                 cell.sponsoredProfileImageName = newsfeedObject.socialMediaName
-                
                 cell.sponsoredProfileImageButton.hidden = false
                 cell.cellTimeConnected.hidden = true
                 
@@ -325,118 +332,20 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         return cell
     }
-    
-    
-    //    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    //        print("SELECTED ITEM AT ", indexPath.item)
-    //
-    //    }
+
     
     func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
         print("SELECTED ITEM AT ", indexPath.item)
         
-//        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
-//        let socialMediaName = cell.socialMediaName
-//        
-//        var urlString:String!
-//        var altString:String!
-//        var socialMediaURL:NSURL!
-//        
-//        //        let userName = "AustinVaday"
-//        let connectionSocialMediaUserNames = connectionList[collectionView.tag].socialMediaUserNames
-//        
-//        
-//        urlString = ""
-//        altString = ""
-//        
-//        switch (socialMediaName)
-//        {
-//        case "facebook":
-//            
-//            let facebookUserName = connectionSocialMediaUserNames["facebook"] as! String
-//            urlString = "fb://requests/" + facebookUserName
-//            altString = "http://www.facebook.com/" + facebookUserName
-//            break;
-//        case "snapchat":
-//            
-//            let snapchatUserName = connectionSocialMediaUserNames["snapchat"] as! String
-//            urlString = "snapchat://add/" + snapchatUserName
-//            altString = ""
-//            break;
-//        case "instagram":
-//            
-//            let instagramUserName = connectionSocialMediaUserNames["instagram"] as! String
-//            urlString = "instagram://user?username=" + instagramUserName
-//            altString = "http://www.instagram.com/" + instagramUserName
-//            break;
-//        case "twitter":
-//            
-//            let twitterUserName = connectionSocialMediaUserNames["twitter"] as! String
-//            urlString = "twitter:///user?screen_name=" + twitterUserName
-//            altString = "http://www.twitter.com/" + twitterUserName
-//            break;
-//        case "linkedin":
-//            
-//            let linkedinUserName = connectionSocialMediaUserNames["linkedin"] as! String
-//            urlString = "linkedin://profile/" + linkedinUserName
-//            altString = "http://www.linkedin.com/in/" + linkedinUserName
-//            
-//            break;
-//        case "youtube":
-//            
-//            let youtubeUserName = connectionSocialMediaUserNames["youtube"] as! String
-//            urlString = "youtube:www.youtube.com/user/" + youtubeUserName
-//            altString = "http://www.youtube.com/" + youtubeUserName
-//            break;
-//        case "phone":
-//            print ("COMING SOON")
-//            
-//            //                contact.familyName = "Vaday"
-//            //                contact.givenName  = "Austin"
-//            //
-//            //                let phoneNum  = CNPhoneNumber(stringValue: "9493758223")
-//            //                let cellPhone = CNLabeledValue(label: CNLabelPhoneNumberiPhone, value: phoneNum)
-//            //
-//            //                contact.phoneNumbers.append(cellPhone)
-//            //
-//            //                //TODO: Check if contact already exists in phone
-//            //                let saveRequest = CNSaveRequest()
-//            //                saveRequest.addContact(contact, toContainerWithIdentifier: nil)
-//            //
-//            
-//            //                return
-//            
-//            break;
-//        default:
-//            break;
-//        }
-//        
-//        socialMediaURL = NSURL(string: urlString)
-//        
-//        // If user doesn't have social media app installed, open using default browser instead (use altString)
-//        if (!UIApplication.sharedApplication().canOpenURL(socialMediaURL))
-//        {
-//            if (altString != "")
-//            {
-//                socialMediaURL = NSURL(string: altString)
-//            }
-//            else
-//            {
-//                if (socialMediaName == "snapchat")
-//                {
-//                    showAlert("Sorry", message: "You need to have the Snapchat app! Please download it and try again!", buttonTitle: "Ok", sender: self)
-//                }
-//                else
-//                {
-//                    showAlert("Hold on!", message: "Feature coming soon...", buttonTitle: "Ok", sender: self)
-//                }
-//                return
-//            }
-//        }
-//        
-//        // Perform the request, go to external application and let the user do whatever they want!
-//        UIApplication.sharedApplication().openURL(socialMediaURL)
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
+        let socialMediaUserName = cell.socialMediaName // username..
+        let socialMediaType = cell.socialMediaType // "facebook", "snapchat", etc..
         
+        //TODO: TEST THIS FUNCTION...
+        let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
+        
+        // Perform the request, go to external application and let the user do whatever they want!
+        UIApplication.sharedApplication().openURL(socialMediaURL)
     }
     
     private func generateData()
@@ -444,8 +353,16 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Reset aquaint newsfeed object (so no duplicate entries on refresh)
         aquaintNewsfeed = Array<NewsfeedEntry>()
         
-        spinner.hidden = false
-        spinner.startAnimating()
+        // Only show the middle spinner if user did not refresh table (or else there would be two spinners!)
+        if !userDidRefreshTable
+        {
+            spinner.hidden = false
+            spinner.startAnimating()
+        }
+        else
+        {
+            userDidRefreshTable = false
+        }
         
         let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
         dynamoDBObjectMapper.load(NewsfeedResultObjectModel.self, hashKey: currentUserName, rangeKey: 0).continueWithSuccessBlock { (result) -> AnyObject? in
@@ -519,7 +436,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                             self.aquaintNewsfeed[index].socialMediaName = profileData[1] as! String // User's username on the platform
                             
                             
-                            self.aquaintNewsfeed[index].textString = self.aquaintNewsfeed[index].user +  " added a " + self.aquaintNewsfeed[index].socialMediaType + " account, check it out!"
+                            self.aquaintNewsfeed[index].textString = self.aquaintNewsfeed[index].user +  " added new a " + self.aquaintNewsfeed[index].socialMediaType + " account, check it out!"
                             
                             // Denotes which user to fetch data for in the dropdown!
                             getImageAndProfilesForUser = self.aquaintNewsfeed[index].user
@@ -558,6 +475,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                                         // Update UI when no more running requests! (last async call finished)
                                         // Update UI on main thread
                                         dispatch_async(dispatch_get_main_queue(), {
+                                            self.shouldShowAnimations = false
                                             self.spinner.stopAnimating()
                                             self.spinner.hidden = true
                                             self.newsfeedTableView.reloadData()
@@ -582,9 +500,16 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 
             }
-            else // Else, use new mapper class
+            else // Else, no newsfeed found
             {
-                print("FAIL!!: ", result.error)
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.shouldShowAnimations = true
+                    self.noContentMessageView.hidden = false
+                    self.spinner.hidden = true
+                    self.spinner.stopAnimating()
+                    self.newsfeedTableView.reloadData()
+
+                })
             }
             
             

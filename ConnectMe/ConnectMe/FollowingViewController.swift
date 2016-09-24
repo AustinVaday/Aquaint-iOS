@@ -14,6 +14,7 @@ import FRHyperLabel
 class FollowingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var recentConnTableView: UITableView!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var refreshControl : UIRefreshControl!
@@ -22,7 +23,8 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
     var defaultImage : UIImage!
     var defaultCollectionViewLayout : UICollectionViewLayout!
     var collectionViewClearDataRequest = false
-    
+    var userDidRefreshTable = false
+
     var status : String!
     override func viewDidLoad() {
         
@@ -57,16 +59,13 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
     func refreshTable(sender:AnyObject)
     {
         
-        // Clear table (not needed)
-        //        connectionList = Array<Connection>()
-        //        recentConnTableView.reloadData()
-        //        recentConnTableView.layoutIfNeeded()
+        userDidRefreshTable = true
         
         // Regenerate data
         generateData()
         
         // Need to end refreshing
-        delay(0.5)
+        delay(1)
         {
             self.refreshControl.endRefreshing()
         }
@@ -249,6 +248,17 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
     {
         var newConnectionList = Array<Connection>()
         
+        // Only show the middle spinner if user did not refresh table (or else there would be two spinners!)
+        if !userDidRefreshTable
+        {
+            spinner.hidden = false
+            spinner.startAnimating()
+        }
+        else
+        {
+            userDidRefreshTable = false
+        }
+        
         // Get array of connections from Lambda -- RDS
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
         let parameters = ["action":"getFollowees", "target": currentUserName]
@@ -350,6 +360,9 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
                                     // Update UI when no more running requests! (last async call finished)
                                     // Update UI on main thread
                                     dispatch_async(dispatch_get_main_queue(), {
+                                        
+                                        self.spinner.hidden = true
+                                        self.spinner.stopAnimating()
                                         
                                         self.connectionList = newConnectionList
                                         
