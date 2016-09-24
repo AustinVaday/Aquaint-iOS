@@ -12,6 +12,7 @@
 		FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */; };
 		FF0BF0231CB6DC78005188DA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */; };
 		FF0BF0251CB6DCB3005188DA /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */; };
+		FF0E82D61D95FB29003E87A1 /* NewsfeedEntryClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0E82D51D95FB28003E87A1 /* NewsfeedEntryClass.swift */; };
 		FF1001ED1C80374A00B53F8B /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */; };
 		FF1660071D4323F400900686 /* DropDownTableViewFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */; };
 		FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */; };
@@ -116,6 +117,7 @@
 		FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainContainerViewController.swift; sourceTree = "<group>"; };
 		FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = ../ProfileViewController.swift; sourceTree = "<group>"; };
 		FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		FF0E82D51D95FB28003E87A1 /* NewsfeedEntryClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsfeedEntryClass.swift; sourceTree = "<group>"; };
 		FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownTableViewFunctions.swift; sourceTree = "<group>"; };
 		FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetViewController.swift; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */,
+				FF0E82D51D95FB28003E87A1 /* NewsfeedEntryClass.swift */,
 				FF83A4DE1CC59A3800AFB26B /* RBResizer.swift */,
 				FFF442351C4B2244007651DE /* Functions.swift */,
 				FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */,
@@ -760,6 +763,7 @@
 				FF7878421C26A0CC00354936 /* CameraController.swift in Sources */,
 				FF7878401C26A0A900354936 /* MenuController.swift in Sources */,
 				FF0BF0251CB6DCB3005188DA /* SearchViewController.swift in Sources */,
+				FF0E82D61D95FB29003E87A1 /* NewsfeedEntryClass.swift in Sources */,
 				FF84201E1D299A5E002D2927 /* SignUpVerificationController.swift in Sources */,
 				FF9BFCD31D3F308A00987D78 /* CustomSearchBar.swift in Sources */,
 				FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */,
