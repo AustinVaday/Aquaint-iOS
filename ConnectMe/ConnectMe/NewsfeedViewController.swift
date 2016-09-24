@@ -22,7 +22,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var refreshControl : UIRefreshControl!
-//    var connectionList : Array<Connection>!
     var defaultImage : UIImage!
     var newsfeedList : NSArray! // Array of dictionary to hold all newsfeed data
     var expansionObj:CellExpansion!
@@ -91,6 +90,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         refreshControl.addTarget(self, action: #selector(NewsfeedViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
         newsfeedTableView.addSubview(refreshControl)
         
+        // Generates data needed -- fetches newsfeed from AWS
         generateData()
         
     }
@@ -98,12 +98,13 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
-        newsfeedTableView.addSubview(refreshControl)
         
         userDidRefreshTable = true
+
         generateData()
+        
         // Need to end refreshing
-        delay(0.5)
+        delay(1)
         {
             self.refreshControl.endRefreshing()
         }
@@ -142,6 +143,12 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! NewsfeedTableViewCell
+        
+        if aquaintNewsfeed == nil || aquaintNewsfeed.count == 0
+        {
+            return cell
+        }
+        
         let newsfeedObject = aquaintNewsfeed[indexPath.row]
         
         // Ensure that internal cellImage is circular
@@ -149,8 +156,11 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         cell.sponsoredProfileImageButton.layer.cornerRadius = cell.sponsoredProfileImageButton.frame.size.width / 2
         
         // Set user image and profiles
-        cell.cellImage.image = newsfeedObject.displayImage
-
+        if newsfeedObject.displayImage != nil
+        {
+            cell.cellImage.image = newsfeedObject.displayImage
+        } // else: use default image
+        
         // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
         cell.collectionView.tag = indexPath.row
         
@@ -160,6 +170,9 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Default hidden states
         cell.sponsoredProfileImageButton.hidden = true
         cell.cellTimeConnected.hidden = false
+        
+        // Clear FRHyperLabel for re-use (prevents case where user clicked may be used from a previously recycled cell)
+        cell.cellMessage.clearActionDictionary()
         
         switch newsfeedObject.event
         {
@@ -214,9 +227,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             case "newprofile":
                 
                 let followedUser = newsfeedObject.user
-//                let profileData = newsfeedObject.other
-//                let socialMediaType = profileData[0] as! String // Social platform name (i.e. facebook)
-//                let socialMediaName = profileData[0] as! String // User's username on the platform
 
                 let handlerOtherUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
@@ -253,32 +263,44 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        // Updates the index of the currently expanded row
-        updateCurrentlyExpandedRow(&expansionObj, currentRow: indexPath.row)
         
-        // Update UI with animation
-        tableView.beginUpdates()
-        tableView.endUpdates()
-
+        if !tableView.dragging && !tableView.tracking
+        {
+            // Updates the index of the currently expanded row
+            updateCurrentlyExpandedRow(&expansionObj, currentRow: indexPath.row)
+            
+            // Update UI with animation
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
         // Return height computed by our special function
         return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
-        
-        
     }
     
     // COLLECTION VIEW
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
+        if aquaintNewsfeed == nil || aquaintNewsfeed.count == 0
+        {
+            return 0
+        }
+        
         // Use the tag to know which tableView row we're at
         let profiles = aquaintNewsfeed[collectionView.tag].displayProfiles
-        let keyValSocialMediaPairs = convertDictionaryToSocialMediaKeyValPairList(profiles as! NSMutableDictionary)
         
+        if profiles == nil
+        {
+            return 0
+        }
+        else
+        {
+            let keyValSocialMediaPairs = convertDictionaryToSocialMediaKeyValPairList(profiles as! NSMutableDictionary)
+            return keyValSocialMediaPairs.count
+        }
        
-        return keyValSocialMediaPairs.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -286,14 +308,11 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
-        
-        print("CVTAG IS:", collectionView.tag)
-        
+
         
         // Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
         // an array so that we can easily get the social media mediums that the user has (i.e. facebook, twitter, etc).
         var keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(aquaintNewsfeed[collectionView.tag].displayProfiles as! NSMutableDictionary)
-        
         
         if (!keyValSocialMediaPairList.isEmpty)
         {
@@ -327,21 +346,16 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Make cell image circular
         cell.layer.cornerRadius = cell.frame.width / 2
         
-        // Make cell movements cleaner (increased FPM)
-        //        cell.layer.shouldRasterize = true
-        
         return cell
     }
 
     
     func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
-        print("SELECTED ITEM AT ", indexPath.item)
         
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
         let socialMediaUserName = cell.socialMediaName // username..
         let socialMediaType = cell.socialMediaType // "facebook", "snapchat", etc..
         
-        //TODO: TEST THIS FUNCTION...
         let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
         
         // Perform the request, go to external application and let the user do whatever they want!
@@ -350,8 +364,9 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     
     private func generateData()
     {
-        // Reset aquaint newsfeed object (so no duplicate entries on refresh)
-        aquaintNewsfeed = Array<NewsfeedEntry>()
+        // If we don't store our data into a temporary object -- we'll be modifying the table data source while it may still
+        // be used in the tableView methods! This prevents a crash.
+        var newAquaintsNewsfeed = Array<NewsfeedEntry>()
         
         // Only show the middle spinner if user did not refresh table (or else there would be two spinners!)
         if !userDidRefreshTable
@@ -386,60 +401,60 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                         runningRequests = runningRequests + 1
 
                         let newsfeedEntry = NewsfeedEntry()
-                        self.aquaintNewsfeed.append(newsfeedEntry)
-                        let index = self.aquaintNewsfeed.count - 1
+                        newAquaintsNewsfeed.append(newsfeedEntry)
+                        let index = newAquaintsNewsfeed.count - 1
                         
                         var getImageAndProfilesForUser : String!
                         
-                        self.aquaintNewsfeed[index].event = entry.valueForKey("event")! as! String
-                        self.aquaintNewsfeed[index].timestamp = entry.valueForKey("time")! as! Int
+                        newAquaintsNewsfeed[index].event = entry.valueForKey("event")! as! String
+                        newAquaintsNewsfeed[index].timestamp = entry.valueForKey("time")! as! Int
                         
-                        switch self.aquaintNewsfeed[index].event
+                        switch newAquaintsNewsfeed[index].event
                         {
                         // If someone I follow starts following another person
                         case "newfollowing":
                             
-                            self.aquaintNewsfeed[index].user = entry.valueForKey("user")! as! String
-                            self.aquaintNewsfeed[index].other = NSArray(array: entry.valueForKey("other") as! NSArray)
-                            let otherUser = self.aquaintNewsfeed[index].other[0] as! String
+                            newAquaintsNewsfeed[index].user = entry.valueForKey("user")! as! String
+                            newAquaintsNewsfeed[index].other = NSArray(array: entry.valueForKey("other") as! NSArray)
+                            let otherUser = newAquaintsNewsfeed[index].other[0] as! String
                             
-                            self.aquaintNewsfeed[index].textString = self.aquaintNewsfeed[index].user +  " started following " + otherUser + ".  "
+                            newAquaintsNewsfeed[index].textString = newAquaintsNewsfeed[index].user +  " started following " + otherUser + ".  "
                             
                             // Denotes which user to fetch data for in the dropdown!
-                            getImageAndProfilesForUser = self.aquaintNewsfeed[index].user
+                            getImageAndProfilesForUser = newAquaintsNewsfeed[index].user
                             print("getImageUser 1 is: ", getImageAndProfilesForUser)
                             
                             break;
                         // If someone I follow has a new follower
                         case "newfollower":
                             
-                            self.aquaintNewsfeed[index].user = entry.valueForKey("user")! as! String
-                            self.aquaintNewsfeed[index].other = NSArray(array: entry.valueForKey("other") as! NSArray)
-                            let otherUser = self.aquaintNewsfeed[index].other[0] as! String
+                            newAquaintsNewsfeed[index].user = entry.valueForKey("user")! as! String
+                            newAquaintsNewsfeed[index].other = NSArray(array: entry.valueForKey("other") as! NSArray)
+                            let otherUser = newAquaintsNewsfeed[index].other[0] as! String
                             
                             // Note: Extra characters needed at end to fix weird bug where hyperlink would extend as a 'ghost link' near the end
-                            self.aquaintNewsfeed[index].textString = "Your friend " + self.aquaintNewsfeed[index].user  +  " was followed by " + otherUser + ".  "
+                            newAquaintsNewsfeed[index].textString = "Your friend " + newAquaintsNewsfeed[index].user  +  " was followed by " + otherUser + ".  "
               
                             
                             // Denotes which user to fetch data for in the dropdown!
-                            getImageAndProfilesForUser = self.aquaintNewsfeed[index].user
+                            getImageAndProfilesForUser = newAquaintsNewsfeed[index].user
                             print("getImageUser 2 is: ", getImageAndProfilesForUser)
                             break;
                             
                         // If a friend adds in a new profile
                         case "newprofile":
                             
-                            self.aquaintNewsfeed[index].user = entry.valueForKey("user")! as! String
+                            newAquaintsNewsfeed[index].user = entry.valueForKey("user")! as! String
                             let profileData = NSArray(array: entry.valueForKey("other") as! NSArray)
                             
-                            self.aquaintNewsfeed[index].socialMediaType = profileData[0] as! String // Social platform name (i.e. facebook)
-                            self.aquaintNewsfeed[index].socialMediaName = profileData[1] as! String // User's username on the platform
+                            newAquaintsNewsfeed[index].socialMediaType = profileData[0] as! String // Social platform name (i.e. facebook)
+                            newAquaintsNewsfeed[index].socialMediaName = profileData[1] as! String // User's username on the platform
                             
                             
-                            self.aquaintNewsfeed[index].textString = self.aquaintNewsfeed[index].user +  " added new a " + self.aquaintNewsfeed[index].socialMediaType + " account, check it out!"
+                            newAquaintsNewsfeed[index].textString = newAquaintsNewsfeed[index].user +  " added new a " + newAquaintsNewsfeed[index].socialMediaType + " account, check it out!"
                             
                             // Denotes which user to fetch data for in the dropdown!
-                            getImageAndProfilesForUser = self.aquaintNewsfeed[index].user
+                            getImageAndProfilesForUser = newAquaintsNewsfeed[index].user
                             print("getImageUser 3 is: ", getImageAndProfilesForUser)
 
                             break;
@@ -456,7 +471,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                             if result != nil && error == nil
                             {
                                 let user = result! as User
-                                self.aquaintNewsfeed[index].displayProfiles = user.accounts
+                                newAquaintsNewsfeed[index].displayProfiles = user.accounts
                                 
                                 
                                 // Now, get S3 image and profiles for necessary user
@@ -465,7 +480,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                                     if result != nil && error == nil
                                     {
                                         print("Success got image!")
-                                        self.aquaintNewsfeed[index].displayImage = result! as UIImage
+                                        newAquaintsNewsfeed[index].displayImage = result! as UIImage
                                     }
                                     
                                     runningRequests = runningRequests - 1
@@ -475,6 +490,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                                         // Update UI when no more running requests! (last async call finished)
                                         // Update UI on main thread
                                         dispatch_async(dispatch_get_main_queue(), {
+                                            
+                                            self.aquaintNewsfeed = newAquaintsNewsfeed
                                             self.shouldShowAnimations = false
                                             self.spinner.stopAnimating()
                                             self.spinner.hidden = true

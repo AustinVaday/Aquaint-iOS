@@ -102,13 +102,7 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
         
-        // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
-        
-        print ("INDEXPATH ROW IS:", indexPath.row)
-        print ("CONNECTIONLIST SIZE IS:", connectionList.count)
-        
         let connectedUser = connectionList[indexPath.row]
-        
         let handler = {
             (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
             showPopupForUser(connectedUser.userName)
@@ -156,10 +150,7 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
             // Set the new selectedRowIndex
             updateCurrentlyExpandedRow(&expansionObj, currentRow: indexPath.row)
             
-            print  ("Index path BRUH: ", indexPath.row)
             // Update UI with animation
-            
-            //            status = "userTouch"
             tableView.beginUpdates()
             tableView.endUpdates()
             
@@ -230,13 +221,11 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
-        print("SELECTED ITEM AT ", indexPath.item)
         
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
         let socialMediaUserName = cell.socialMediaName // username..
         let socialMediaType = cell.socialMediaType // "facebook", "snapchat", etc..
         
-        //TODO: TEST THIS FUNCTION...
         let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
         
         // Perform the request, go to external application and let the user do whatever they want!
@@ -246,6 +235,8 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
     
     private func generateData()
     {
+        // If we don't store our data into a temporary object -- we'll be modifying the table data source while it may still
+        // be used in the tableView methods! This prevents a crash.
         var newConnectionList = Array<Connection>()
         
         // Only show the middle spinner if user did not refresh table (or else there would be two spinners!)
@@ -361,11 +352,9 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
                                     // Update UI on main thread
                                     dispatch_async(dispatch_get_main_queue(), {
                                         
+                                        self.connectionList = newConnectionList
                                         self.spinner.hidden = true
                                         self.spinner.stopAnimating()
-                                        
-                                        self.connectionList = newConnectionList
-                                        
                                         self.recentConnTableView.reloadData()
                                         self.recentConnTableView.layoutIfNeeded()
                                         

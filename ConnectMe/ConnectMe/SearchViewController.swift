@@ -157,12 +157,24 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 // Store key
                 newsfeedObjectMapper.username = self.userName
                 
+                // Sort datastructure by value (sort by timestamp)
+                let sortedKeys = self.recentUsernameAdds.allKeys.sort({ (firstKey, secondKey) -> Bool in
+                    // Sort time in ascending order
+                    let string1 = firstKey as! String
+                    let string2 = secondKey as! String
+                    
+                    let timestamp1 = self.recentUsernameAdds.valueForKey(string1) as! Int
+                    let timestamp2 = self.recentUsernameAdds.valueForKey(string2) as! Int
+                    
+                    return timestamp1 < timestamp2
+                })
+                
                 // Upload to Dynamo
             
                 // Add an event for first 10 username add
                 let numUsersLimit = 10
                 var index = 0
-                for otherUser in self.recentUsernameAdds.allKeys
+                for otherUser in sortedKeys
                 {
                     // Prevent too many adds at once
                     index = index + 1
