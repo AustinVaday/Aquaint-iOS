@@ -292,7 +292,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 if !isNewDataLoading
                 {
                     isNewDataLoading = true
-                    addTableViewFooterSpinner()
                     print("DATA IS LOADING")
                     newsfeedPageNum = newsfeedPageNum + 1
                     generateData(newsfeedPageNum)
@@ -401,6 +400,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         {
             userDidRefreshTable = false
         }
+
         
         let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
         dynamoDBObjectMapper.load(NewsfeedResultObjectModel.self, hashKey: currentUserName, rangeKey: pageNum).continueWithSuccessBlock { (result) -> AnyObject? in
@@ -411,6 +411,13 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             if (result.error == nil && result.exception == nil && result.result != nil)
             {
                 newsfeedResultObjectMapper = result.result as! NewsfeedResultObjectModel
+                
+                if self.isNewDataLoading
+                {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.addTableViewFooterSpinner()
+                    })
+                }
                 
                 let getResults = convertJSONStringToArray(newsfeedResultObjectMapper.data) as NSArray
                 
@@ -430,6 +437,11 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                                 self.shouldShowAnimations = true
                                 self.noContentMessageView.hidden = false
                                 
+                            }
+                            else // if pageNum is anything other than 0 (1, 2, etc).. append to current newsfeed
+                            {
+                                self.removeTableViewFooterSpinner()
+                                self.isNewDataLoading = false
                             }
                             
                             self.newsfeedTableView.reloadData()
@@ -544,7 +556,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                                             {
                                                 self.aquaintNewsfeed.appendContentsOf(newAquaintsNewsfeed)
                                                 self.removeTableViewFooterSpinner()
-                                                self.isNewDataLoading = true
+                                                self.isNewDataLoading = false
                                             }
                                             
                                             self.shouldShowAnimations = false
@@ -587,6 +599,11 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                         self.shouldShowAnimations = true
                         self.noContentMessageView.hidden = false
     
+                    }
+                    else // if pageNum is anything other than 0 (1, 2, etc).. append to current newsfeed
+                    {
+                        self.removeTableViewFooterSpinner()
+                        self.isNewDataLoading = false
                     }
                     
                     self.newsfeedTableView.reloadData()
