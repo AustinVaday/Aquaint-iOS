@@ -91,6 +91,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Ensure that the button view is always visible -- in front of the table view
         buttonView.layer.zPosition = 1
         
+        // Prevents crash when user attempts to add profiles -- then log out immediately (logOut() called before viewWillDisappear)
+        currentUserName = getCurrentCachedUser()
+        
         // Set up the data for the table views section. Note: Dictionary does not work for this list as we need a sense of ordering.   
         tableViewSectionsList = Array<SectionTitleAndCountPair>()
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Linked Profiles", sectionCount: 1))
@@ -135,7 +138,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // When the view disappears, upload action data to Dynamo (used for the newsfeed)
         print ("You will be uploading this data to dynamo: ", self.newUserAccountsForNewsfeed)
         
-        let currentUser = getCurrentCachedUser()
         if self.newUserAccountsForNewsfeed.count != 0
         {
             // Here's what we'll do: When the user leaves this page, we will take the recent additions (100 max)
@@ -143,7 +145,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
             
             // Get dynamo mapper if it exists
-            dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: currentUser, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+            dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: currentUserName, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
                 
                 var newsfeedObjectMapper : NewsfeedEventListObjectModel!
                 
@@ -158,7 +160,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 }
                 
                 // Store key
-                newsfeedObjectMapper.username = currentUser
+                newsfeedObjectMapper.username = self.currentUserName
                 
                 // Upload to Dynamo
                 let newKeyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.newUserAccountsForNewsfeed)

@@ -28,13 +28,14 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     var animatedObjects : Array<UIView>!
     var shouldShowAnimations = false
     var userDidRefreshTable = false
-    
+    var isNewDataLoading = false
+    var newsfeedPageNum = 0
     
     override func viewDidAppear(animated: Bool) {
         if shouldShowAnimations && newsfeedList.count == 0
         {            
             // attempt to regenerate data again
-            generateData()
+            generateData(0)
         }
         
     }
@@ -86,7 +87,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         newsfeedTableView.addSubview(refreshControl)
         
         // Generates data needed -- fetches newsfeed from AWS
-        generateData()
+        generateData(0)
         
     }
     
@@ -96,7 +97,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         userDidRefreshTable = true
 
-        generateData()
+        generateData(0)
         
         // Need to end refreshing
         delay(1)
@@ -154,7 +155,11 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         if newsfeedObject.displayImage != nil
         {
             cell.cellImage.image = newsfeedObject.displayImage
-        } // else: use default image
+        }
+        else // else: use default image
+        {
+            cell.cellImage.image = defaultImage
+        }
         
         // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
         cell.collectionView.tag = indexPath.row
@@ -275,6 +280,29 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
     }
     
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        if scrollView == newsfeedTableView
+        {
+            let location = scrollView.contentOffset.y + scrollView.frame.size.height
+            
+            if location >= scrollView.contentSize.height
+            {
+                // Load data only if more data is loading
+                if !isNewDataLoading
+                {
+                    isNewDataLoading = true
+                    addTableViewFooterSpinner()
+                    print("DATA IS LOADING")
+                    newsfeedPageNum = newsfeedPageNum + 1
+                    generateData(newsfeedPageNum)
+                    
+                }
+            }
+            
+        }
+    }
+    
     // COLLECTION VIEW
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -357,14 +385,14 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         UIApplication.sharedApplication().openURL(socialMediaURL)
     }
     
-    private func generateData()
+    private func generateData(pageNum: Int)
     {
         // If we don't store our data into a temporary object -- we'll be modifying the table data source while it may still
         // be used in the tableView methods! This prevents a crash.
         var newAquaintsNewsfeed = Array<NewsfeedEntry>()
         
         // Only show the middle spinner if user did not refresh table (or else there would be two spinners!)
-        if !userDidRefreshTable
+        if !userDidRefreshTable && !isNewDataLoading
         {
             spinner.hidden = false
             spinner.startAnimating()
@@ -375,7 +403,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        dynamoDBObjectMapper.load(NewsfeedResultObjectModel.self, hashKey: currentUserName, rangeKey: 0).continueWithSuccessBlock { (result) -> AnyObject? in
+        dynamoDBObjectMapper.load(NewsfeedResultObjectModel.self, hashKey: currentUserName, rangeKey: pageNum).continueWithSuccessBlock { (result) -> AnyObject? in
             
             var newsfeedResultObjectMapper : NewsfeedResultObjectModel!
             
@@ -384,17 +412,26 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             {
                 newsfeedResultObjectMapper = result.result as! NewsfeedResultObjectModel
                 
-                self.newsfeedList = convertJSONStringToArray(newsfeedResultObjectMapper.data) as NSArray
+                let getResults = convertJSONStringToArray(newsfeedResultObjectMapper.data) as NSArray
                 
                     
-                    print("NEWSFEED LIST IS: ", self.newsfeedList)
-                    if self.newsfeedList.count == 0
+//                    print("NEWSFEED LIST IS: ", newAquaintsNewsfeed)
+                    if getResults.count == 0
                     {
                         dispatch_async(dispatch_get_main_queue(), {
-                            self.shouldShowAnimations = true
-                            self.noContentMessageView.hidden = false
                             self.spinner.hidden = true
                             self.spinner.stopAnimating()
+                            
+                            // If pageNum is anything other than zero, we do not want to
+                            // show the "no content" animations. We just have no more data
+                            // to add to our existing data.
+                            if pageNum == 0
+                            {
+                                self.shouldShowAnimations = true
+                                self.noContentMessageView.hidden = false
+                                
+                            }
+                            
                             self.newsfeedTableView.reloadData()
                             
                         })
@@ -403,7 +440,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                     
                     var runningRequests = 0
                     // Get all data from dynamo, store all into local newsfeed data structure
-                    for entry in self.newsfeedList
+                    for entry in getResults
                     {
                         runningRequests = runningRequests + 1
 
@@ -498,7 +535,18 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                                         // Update UI on main thread
                                         dispatch_async(dispatch_get_main_queue(), {
                                             
-                                            self.aquaintNewsfeed = newAquaintsNewsfeed
+                                            
+                                            if pageNum == 0
+                                            {
+                                                self.aquaintNewsfeed = newAquaintsNewsfeed
+                                            }
+                                            else // if pageNum is anything other than 0 (1, 2, etc).. append to current newsfeed
+                                            {
+                                                self.aquaintNewsfeed.appendContentsOf(newAquaintsNewsfeed)
+                                                self.removeTableViewFooterSpinner()
+                                                self.isNewDataLoading = true
+                                            }
+                                            
                                             self.shouldShowAnimations = false
                                             self.spinner.stopAnimating()
                                             self.spinner.hidden = true
@@ -527,10 +575,20 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             else // Else, no newsfeed found
             {
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.shouldShowAnimations = true
-                    self.noContentMessageView.hidden = false
+                    
                     self.spinner.hidden = true
                     self.spinner.stopAnimating()
+                    
+                    // If pageNum is anything other than zero, we do not want to
+                    // show the "no content" animations. We just have no more data 
+                    // to add to our existing data.
+                    if pageNum == 0
+                    {
+                        self.shouldShowAnimations = true
+                        self.noContentMessageView.hidden = false
+    
+                    }
+                    
                     self.newsfeedTableView.reloadData()
 
                 })
