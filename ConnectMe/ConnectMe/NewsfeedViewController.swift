@@ -32,15 +32,10 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidAppear(animated: Bool) {
         if shouldShowAnimations && newsfeedList.count == 0
-        {
-            noContentMessageView.hidden = false
-            newsfeedTableView.hidden = true
-            setUpAnimations(self)
-            
+        {            
             // attempt to regenerate data again
-//            generateData()
+            generateData()
         }
-    
         
     }
     
@@ -393,6 +388,18 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 
                     
                     print("NEWSFEED LIST IS: ", self.newsfeedList)
+                    if self.newsfeedList.count == 0
+                    {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.shouldShowAnimations = true
+                            self.noContentMessageView.hidden = false
+                            self.spinner.hidden = true
+                            self.spinner.stopAnimating()
+                            self.newsfeedTableView.reloadData()
+                            
+                        })
+
+                    }
                     
                     var runningRequests = 0
                     // Get all data from dynamo, store all into local newsfeed data structure
@@ -683,6 +690,17 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 view.transform = CGAffineTransformMakeScale(1.0, 1.0)
                 
         }
+    }
+    
+    private func addTableViewFooterSpinner() {
+        let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        footerSpinner.startAnimating()
+        footerSpinner.frame = CGRectMake(0, 0, self.view.frame.width, 44)
+        newsfeedTableView.tableFooterView = footerSpinner
+    }
+    
+    private func removeTableViewFooterSpinner() {
+        newsfeedTableView.tableFooterView = nil
     }
     
 }

@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/NewsfeedViewController.swift"
-            timestampString = "496447555.340754"
+            timestampString = "496454955.12177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
             landmarkName = "tableView(_:cellForRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
