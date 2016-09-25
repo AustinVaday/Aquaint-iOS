@@ -278,7 +278,8 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
                 if connectionsFetchedList.count == 0
                 {
                     dispatch_async(dispatch_get_main_queue(), {
-                        
+                        self.spinner.hidden = true
+                        self.spinner.stopAnimating()
                         self.connectionList = Array<Connection>()
                         self.recentConnTableView.reloadData()
                         print("RELOADED 0 COUNT DATA")
@@ -373,6 +374,8 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
             else
             {
                 print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                self.spinner.hidden = true
+                self.spinner.stopAnimating()
                 
             }
             
