@@ -98,6 +98,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         userDidRefreshTable = true
 
         generateData(0)
+        newsfeedPageNum = 0
         
         // Need to end refreshing
         delay(1)
