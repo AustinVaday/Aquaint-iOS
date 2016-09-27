@@ -31,8 +31,10 @@ class NewsfeedTableViewCell: UITableViewCell {
         let aquaBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
         let attributes = [NSForegroundColorAttributeName: aquaBlue,
                           NSFontAttributeName: UIFont.boldSystemFontOfSize(15.0)]
-        cellMessage.numberOfLines = 0
+        cellMessage.numberOfLines = 2
         cellMessage.linkAttributeDefault = attributes
+//        cellMessage.adjustsFontSizeToFitWidth = true
+//        cellMessage.minimumScaleFactor = 0.2
         
         // Change cellMessage max width to a value close to the width of the frame itself
         // Note: 10 is arbritrary

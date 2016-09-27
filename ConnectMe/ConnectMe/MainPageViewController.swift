@@ -142,6 +142,27 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     
     }
 
+    func goToFollowersPage()
+    {
+        changePage(2)
+        let aquaintsVC = arrayOfViewControllers[CONNECTIONS] as! AquaintsContainerViewController
+        let dummyButton = UIButton()
+        aquaintsVC.goToPage0(dummyButton) // Send in random button
+        
+        sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
+
+    }
+    
+    func goToFollowingPage()
+    {
+        changePage(2)
+        let aquaintsVC = arrayOfViewControllers[CONNECTIONS] as! AquaintsContainerViewController
+        let dummyButton = UIButton()
+        aquaintsVC.goToPage1(dummyButton) // Send in random button
+        
+        sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
+    }
+    
     // Used so that we can use buttons to change the page!
     func changePage (pageIndex: Int)
     {

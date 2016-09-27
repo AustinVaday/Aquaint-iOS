@@ -165,8 +165,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 // Upload to Dynamo
                 let newKeyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.newUserAccountsForNewsfeed)
                 
-                // Add an event for first 10 profile adds
-                let numUsersLimit = 10
+                // Add an event for extracting first 10 profile adds only
+                let numProfilesLimit = 10
                 var index = 0
                 
             
@@ -175,7 +175,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 {
                     // Prevent too many adds at once
                     index = index + 1
-                    if index >= numUsersLimit
+                    if index >= numProfilesLimit
                     {
                         print("LEAVING FOR STATEMENT")
                         // Exit loop
@@ -264,6 +264,18 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
+
+    @IBAction func goToFollowersPage(sender: AnyObject) {
+        
+        let parentViewController = self.parentViewController as! MainPageViewController
+        parentViewController.goToFollowersPage()
+        
+    }
+   
+    @IBAction func goToFollowingPage(sender: AnyObject) {
+        let parentViewController = self.parentViewController as! MainPageViewController
+        parentViewController.goToFollowingPage()
+    }
     
     @IBAction func onChangeProfilePictureClicked(sender: UIButton) {
         let imagePicker = UIImagePickerController()    // Used for selecting image from user's device

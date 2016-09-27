@@ -350,31 +350,31 @@ class SignUpVerificationController: UIViewController {
                                 return nil
                                 
                             }
-                            parameters = ["action":"follow", "target": "aquaint", "me": self.userName]
-                            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-                                if resultTask.error != nil
-                                {
-                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-                                }
-                                else if resultTask.exception != nil
-                                {
-                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                                    
-                                }
-                                else if resultTask.result != nil
-                                {
-                                    print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
-                                    
-                                }
-                                else
-                                {
-                                    print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-                                    
-                                }
-                                
-                                return nil
-                                
-                            }
+//                            parameters = ["action":"follow", "target": "aquaint", "me": self.userName]
+//                            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+//                                if resultTask.error != nil
+//                                {
+//                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+//                                }
+//                                else if resultTask.exception != nil
+//                                {
+//                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+//                                    
+//                                }
+//                                else if resultTask.result != nil
+//                                {
+//                                    print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+//                                    
+//                                }
+//                                else
+//                                {
+//                                    print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+//                                    
+//                                }
+//                                
+//                                return nil
+//                                
+//                            }
                             
 
                             /********************************
