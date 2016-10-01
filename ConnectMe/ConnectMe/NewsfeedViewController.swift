@@ -195,6 +195,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 }
                 
                 cell.cellMessage.text = newsfeedObject.textString
+                cell.cellMessage.reloadInputViews()
                 cell.cellMessage.setLinkForSubstring(user, withLinkHandler: handlerUser)
                 cell.cellMessage.setLinkForSubstring(otherUser, withLinkHandler: handlerOtherUser)
                 
@@ -219,6 +220,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 
     
                 cell.cellMessage.text = newsfeedObject.textString
+                cell.cellMessage.reloadInputViews()
+
                 cell.cellMessage.setLinkForSubstring(followedUser, withLinkHandler: handlerFolloweddUser)
                 cell.cellMessage.setLinkForSubstring(otherUser, withLinkHandler: handlerOtherUser)
 
@@ -235,6 +238,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 }
                 
                 cell.cellMessage.text = newsfeedObject.textString
+                cell.cellMessage.reloadInputViews()
+
                 cell.cellMessage.setLinkForSubstring(followedUser, withLinkHandler: handlerOtherUser)
                 
 
@@ -490,7 +495,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                             let otherUser = newAquaintsNewsfeed[index].other[0] as! String
                             
                             // Note: Extra characters needed at end to fix weird bug where hyperlink would extend as a 'ghost link' near the end
-                            newAquaintsNewsfeed[index].textString = "Your friend " + newAquaintsNewsfeed[index].user  +  " was followed by " + otherUser + ".  "
+                            newAquaintsNewsfeed[index].textString = "Your friend 12345678912345678912 was followed by 12345678912345678912 "
+//                                + newAquaintsNewsfeed[index].user  +  " was followed by " + otherUser + ".  "
               
                             
                             // Denotes which user to fetch data for in the dropdown!

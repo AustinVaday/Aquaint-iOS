@@ -305,8 +305,16 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
              **************************************************************************/
             showAndProcessUsernameAlert(socialMediaType, forCell: cell)
             
+            break
+            
+        case "soundcloud" :
+            /*************************************************************************
+             * Soundcloud DATA FETCH
+             **************************************************************************/
+            showAndProcessUsernameAlert(socialMediaType, forCell: cell)
             
             break
+
         case "tumblr" :
             /*************************************************************************
              * TUMBLR DATA FETCH
