@@ -381,7 +381,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 
         let fullNameCell = settingsTableView.cellForRowAtIndexPath(fullNameIndexPath) as! MenuTableViewCell
         let emailCell = settingsTableView.cellForRowAtIndexPath(emailIndexPath) as! MenuTableViewCell
-        let phoneCell = settingsTableView.cellForRowAtIndexPath(phoneIndexPath) as! MenuTableViewCell
+        let phoneCell = settingsTableView.cellForRowAtIndexPath(phoneIndexPath) as! MenuTableViewCell //TODO: CRASH?
 
         // If modified data, adjust accordingly!
         if editedRealName != nil && !editedRealName.isEmpty

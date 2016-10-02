@@ -151,7 +151,7 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
         altString = "http://www.youtube.com/" + socialMediaUserName
         break;
     case "soundcloud":
-        urlString = "soundcloud://users/" + socialMediaUserName
+//        urlString = "soundcloud://users/" + socialMediaUserName
         altString = "http://www.soundcloud.com/" + socialMediaUserName
     case "tumblr":
         urlString = "tumblr://x-callback-url/blog?blogName=" + socialMediaUserName

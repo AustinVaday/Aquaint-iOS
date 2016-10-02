@@ -125,6 +125,8 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
                     print("SUCCESS LOG IN!", result.debugDescription)
                     print(result.description)
                     
+                    print("RESULTOO: ", result)
+                    
                     if (FBSDKAccessToken.currentAccessToken() != nil)
                     {
                         print("FBSDK userID is:", FBSDKAccessToken.currentAccessToken().userID)
@@ -220,6 +222,8 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
                 {
                     let jsonResult = result as! NSDictionary
                     
+                    print("RESULTOO: ", jsonResult)
+
                     socialMediaName = jsonResult["user_info"]!["username"]! as String!
                     print("Instagram username returned is: ", socialMediaName)
                     
