@@ -259,6 +259,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             
         }
         
+//        cell.cellMessage.
+        
         cell.collectionView.collectionViewLayout.invalidateLayout()
         cell.collectionView.reloadData()
         
