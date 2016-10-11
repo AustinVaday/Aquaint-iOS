@@ -22,23 +22,44 @@ class NewsfeedTableViewCell: UITableViewCell {
     
     var sponsoredProfileImageType : String!
     var sponsoredProfileImageName : String!
-    
+    let maxFitScreenWidth = CGFloat(350.0)
     
     // Set default FRHyperLabel for this app. Set it here so that we
     // do not have to set it later (if not, user might see default hyperlink while this is loading)
     override func awakeFromNib() {
         // UI Color for #0F7A9D (www.uicolor.xyz)
+        cellMessage.numberOfLines = 0
+        
         let aquaBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
         let attributes = [NSForegroundColorAttributeName: aquaBlue,
-                          NSFontAttributeName: UIFont.boldSystemFontOfSize(11)]
-        cellMessage.numberOfLines = 0
+                          NSFontAttributeName: UIFont.boldSystemFontOfSize(cellMessage.font.pointSize)]
         cellMessage.linkAttributeDefault = attributes
-//        cellMessage.adjustsFontSizeToFitWidth = true
-//        cellMessage.minimumScaleFactor = 0.2
         
-        // Change cellMessage max width to a value close to the width of the frame itself
-        // Note: 10 is arbritrary
-//        cellMessageWidthConstraint.constant = self.frame.width - cellImage.frame.width - cellTimeConnected.frame.width - 10
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let screenWidth = self.superview!.frame.width
+
+        // If we're on iPhone 4S or 5, screen sizes are small and text fields will overflow.
+        // Reduce font as a result
+        if screenWidth < maxFitScreenWidth
+        {
+            cellMessage.font = UIFont(name: "Avenir Book", size: 11)
+            
+            // Reset attributes
+            let aquaBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
+            let attributes = [NSForegroundColorAttributeName: aquaBlue,
+                              NSFontAttributeName: UIFont.boldSystemFontOfSize(11)]
+            cellMessage.linkAttributeDefault = attributes
+            
+            cellMessage.reloadInputViews()
+            
+            
+
+        }
+      
     }
     
     func rotateCaret180Degrees()
