@@ -91,11 +91,12 @@ class LogInController: UIViewController {
     
     func keyboardWasShown(notification: NSNotification!)
     {
-        // If keyboard shown already, no need to perform this method
-        if isKeyboardShown
-        {
-            return
-        }
+//        // If keyboard shown already, no need to perform this method
+//        if isKeyboardShown
+//        {
+//            return
+//        }
+        
         
         self.isKeyboardShown = true
         
@@ -106,8 +107,12 @@ class LogInController: UIViewController {
     
             print("KEYBOARD SHOWN")
 
-            self.logInButtonBottomConstraint.constant = -keyboardSize.height
-            self.view.layoutIfNeeded()
+            // Only show the 'submit' bar if very last entry!
+            if self.userPassword.isFirstResponder()
+            {
+                self.logInButtonBottomConstraint.constant = -keyboardSize.height
+                self.view.layoutIfNeeded()
+            }
 
             // FOR THE SCROLL VIEW
             let adjustmentHeight = keyboardSize.height

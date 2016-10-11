@@ -114,11 +114,11 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     
     func keyboardWasShown(notification: NSNotification!)
     {
-        // If keyboard shown already, no need to perform this method
-        if isKeyboardShown
-        {
-            return
-        }
+//        // If keyboard shown already, no need to perform this method
+//        if isKeyboardShown
+//        {
+//            return
+//        }
         
         self.isKeyboardShown = true
         
@@ -129,8 +129,11 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             
             print("KEYBOARD SHOWN")
             
-            self.buttonBottomConstraint.constant = keyboardSize.height
-            self.view.layoutIfNeeded()
+            if self.userFullName.isFirstResponder()
+            {
+                self.buttonBottomConstraint.constant = keyboardSize.height
+                self.view.layoutIfNeeded()
+            }
             
             // FOR THE SCROLL VIEW
             let adjustmentHeight = CGFloat(20)
@@ -261,11 +264,12 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     
     
     // When user clicks "Next" on keyboard
-    @IBAction func emailEditingDidEndOnExit(sender: UITextField) {
+    @IBAction func emailEditingDidEndOnExit(sender: AnyObject) {
         // Give control to next field
         userPhone.becomeFirstResponder()
+
     }
-    
+
     // When user clicks "Next" on keyboard
     @IBAction func phoneEditingDidEndOnExit(sender: UITextField) {
         // Give control to next field

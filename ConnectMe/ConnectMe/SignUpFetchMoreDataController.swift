@@ -94,11 +94,11 @@ class SignUpFetchMoreDataController: UIViewController {
     
     func keyboardWasShown(notification: NSNotification!)
     {
-        // If keyboard shown already, no need to perform this method
-        if isKeyboardShown
-        {
-            return
-        }
+//        // If keyboard shown already, no need to perform this method
+//        if isKeyboardShown
+//        {
+//            return
+//        }
         
         self.isKeyboardShown = true
         
@@ -109,11 +109,14 @@ class SignUpFetchMoreDataController: UIViewController {
             
             print("KEYBOARD SHOWN")
             
-            self.buttonBottomConstraint.constant = keyboardSize.height
-            self.view.layoutIfNeeded()
+            if self.userPassword.isFirstResponder()
+            {
+                self.buttonBottomConstraint.constant = -keyboardSize.height
+                self.view.layoutIfNeeded()
+            }
             
             // FOR THE SCROLL VIEW
-            let adjustmentHeight = CGFloat(20)
+            let adjustmentHeight = keyboardSize.height
             
             // Prevent abuse. If too much content inset, do not do anything
             if self.scrollView.contentInset.bottom < adjustmentHeight
