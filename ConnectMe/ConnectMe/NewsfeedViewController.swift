@@ -142,7 +142,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 clearUpAnimations()
             }
         }
-        
     
         return aquaintNewsfeed.count
     }

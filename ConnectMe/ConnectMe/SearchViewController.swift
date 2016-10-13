@@ -98,19 +98,44 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             else
             {
                 // Store all users locally
+                var numObjects = (paginatedOutput?.items)!.count
                 for object in (paginatedOutput?.items)!
                 {
                     let someUser = object as! User
                     
                     self.allUsers.append(someUser)
                     
+                    getUserS3Image(someUser.username, completion: { (result, error) in
+                        
+                        if (result != nil)
+                        {
+                            // Cache user image so we don't have to reload it next time
+                            self.imageCache.setObject(result! as UIImage, forKey: someUser.username)
+                       
+                        }
+                       
+                        numObjects = numObjects - 1
+                        
+                        // If we've just processed our last image, refresh table!
+                        if numObjects == 0
+                        {
+                            // Update UI on main thread
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.searchTableView.reloadData()
+                            })
+                        }
+  
+                        
+                    })
+
+                    
                 }
+                
                 
                 // Update UI on main thread
                 dispatch_async(dispatch_get_main_queue(), {
                     self.searchTableView.reloadData()
                 })
-
             
             }
         }
@@ -308,7 +333,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! SearchTableViewCell
-        
+        cell.cellImage.image = defaultImage
         
         var userFullName : String!
         var userName : String!
@@ -336,25 +361,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
         else
         {
-            getUserS3Image(userName, completion: { (result, error) in
-                    
-                // If no image, use default image
-                if (error != nil)
-                {
-                    userImage = self.defaultImage
-
-                }
-                else if (result != nil)
-                {
-                    userImage = result
-                }
-                
-                cell.cellImage.image = userImage
-                
-                // Cache user image so we don't have to reload it next time
-                self.imageCache.setObject(userImage, forKey: userName)
-
-            })
+            cell.cellImage.image = self.defaultImage
         }
         
         
