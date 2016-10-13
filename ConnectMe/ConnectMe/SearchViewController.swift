@@ -111,7 +111,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                         {
                             // Cache user image so we don't have to reload it next time
                             self.imageCache.setObject(result! as UIImage, forKey: someUser.username)
-                       
+                            print(result! as UIImage)
                         }
                        
                         numObjects = numObjects - 1
@@ -119,6 +119,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                         // If we've just processed our last image, refresh table!
                         if numObjects == 0
                         {
+                            print("RELOADINGGGG")
                             // Update UI on main thread
                             dispatch_async(dispatch_get_main_queue(), {
                                 self.searchTableView.reloadData()
@@ -333,6 +334,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! SearchTableViewCell
+        
+        // Set default image immediately for smooth transitions
         cell.cellImage.image = defaultImage
         
         var userFullName : String!

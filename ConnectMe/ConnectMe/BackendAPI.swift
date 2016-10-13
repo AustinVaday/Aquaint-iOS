@@ -159,7 +159,10 @@ func getUserS3Image(userName: String!, completion: (result: UIImage?, error: NSE
      * user image from S3
      ********************************************/
     // AWS TRANSFER REQUEST
-    let downloadingFilePath = NSTemporaryDirectory().stringByAppendingString("temp-popupuser")
+    let randomNum = 1000 + rand() % 999999
+    let downloadingFilePath = NSTemporaryDirectory().stringByAppendingString(String(randomNum))
+
+    print("DOWNLOADING FILEPATH FOR ", userName, " IS: ", downloadingFilePath)
     let downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath)
     let downloadRequest = AWSS3TransferManagerDownloadRequest()
     downloadRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
@@ -178,14 +181,16 @@ func getUserS3Image(userName: String!, completion: (result: UIImage?, error: NSE
             let data = NSData(contentsOfURL: downloadingFileURL)
             let image = UIImage(data: data!)!
             
+            
+            try! NSFileManager.defaultManager().removeItemAtPath(downloadingFilePath)
             completion(result: image, error: nil)
             
         }
         else // If fail file transfer
         {
-            
             print("fetch s3 user image: ERROR FILE DOWNLOAD: ", resultTask.error)
             
+//            try! NSFileManager.defaultManager().removeItemAtPath(downloadingFilePath)
             completion(result: nil, error: resultTask.error)
         }
         
