@@ -127,7 +127,7 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
     switch (socialMediaTypeName)
     {
     case "facebook":
-        urlString = "fb://requests/" + socialMediaUserName
+//        urlString = "fb://requests/" + socialMediaUserName
         altString = "http://www.facebook.com/" + socialMediaUserName
         break;
     case "snapchat":
