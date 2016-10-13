@@ -132,7 +132,7 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
         break;
     case "snapchat":
         urlString = "snapchat://add/" + socialMediaUserName
-        altString = "http://www.snapchat.com/add/" + socialMediaUserName
+//        altString = "http://www.snapchat.com/add/" + socialMediaUserName
         break;
     case "instagram":
         urlString = "instagram://user?username=" + socialMediaUserName
@@ -192,11 +192,15 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
         {
             if (socialMediaTypeName == "snapchat")
             {
-                showAlert("Sorry", message: "You need to have the Snapchat app! Please download it and try again!", buttonTitle: "Ok", sender: sender)
+                dispatch_async(dispatch_get_main_queue(), {
+                    showAlert("Sorry", message: "It seems like you don't have the Snapchat app installed! Please install it and try again.", buttonTitle: "Ok", sender: sender)
+                })
             }
             else
             {
-                showAlert("Hold on!", message: "Feature coming soon...", buttonTitle: "Ok", sender: sender)
+                dispatch_async(dispatch_get_main_queue(), {
+                    showAlert("Hold on!", message: "Feature coming soon...", buttonTitle: "Ok", sender: sender)
+                })
             }
             return nil
         }

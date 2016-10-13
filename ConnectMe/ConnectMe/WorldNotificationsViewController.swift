@@ -453,8 +453,10 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         }
         
         // Perform the request, go to external application and let the user do whatever they want!
-        UIApplication.sharedApplication().openURL(socialMediaURL)
-        
+        if socialMediaURL != nil
+        {
+            UIApplication.sharedApplication().openURL(socialMediaURL)
+        }
     }
     
 

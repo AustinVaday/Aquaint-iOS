@@ -11,7 +11,7 @@ import AWSDynamoDB
 import AWSLambda
 import FRHyperLabel
 
-class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
+class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, SponsoredProfileButtonDelegate {
 
     let cellIdentifier = "newsfeedCell"
     @IBOutlet weak var newsfeedTableView: UITableView!
@@ -108,6 +108,15 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+    func didClickSponsoredProfileButton(sponsoredProfileImageName: String, sponsoredProfileImageType: String) {
+        let socialMediaURL = getUserSocialMediaURL(sponsoredProfileImageName, socialMediaTypeName: sponsoredProfileImageType, sender: self)
+
+        // Perform the request, go to external application and let the user do whatever they want!
+        if socialMediaURL != nil
+        {
+            UIApplication.sharedApplication().openURL(socialMediaURL)
+        }
+    }
     
     
     // TABLE VIEW
@@ -141,6 +150,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! NewsfeedTableViewCell
+        cell.sponsoredDelegate = self
         
         if aquaintNewsfeed == nil || aquaintNewsfeed.count == 0
         {
@@ -390,7 +400,10 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
         
         // Perform the request, go to external application and let the user do whatever they want!
-        UIApplication.sharedApplication().openURL(socialMediaURL)
+        if socialMediaURL != nil
+        {
+            UIApplication.sharedApplication().openURL(socialMediaURL)
+        }
     }
     
     private func generateData(pageNum: Int)

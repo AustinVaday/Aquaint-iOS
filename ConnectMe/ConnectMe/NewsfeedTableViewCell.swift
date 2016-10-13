@@ -9,6 +9,10 @@
 import UIKit
 import FRHyperLabel
 
+protocol SponsoredProfileButtonDelegate {
+    func didClickSponsoredProfileButton(sponsoredProfileImageName: String, sponsoredProfileImageType: String)
+}
+
 class NewsfeedTableViewCell: UITableViewCell {
     
     @IBOutlet weak var cellImage: UIImageView!
@@ -20,6 +24,7 @@ class NewsfeedTableViewCell: UITableViewCell {
     @IBOutlet weak var sponsoredProfileImageButton: UIButton!
     @IBOutlet weak var newsfeedView: UIView!
     
+    var sponsoredDelegate:SponsoredProfileButtonDelegate?
     var sponsoredProfileImageType : String!
     var sponsoredProfileImageName : String!
     let maxFitScreenWidth = CGFloat(350.0)
@@ -75,10 +80,10 @@ class NewsfeedTableViewCell: UITableViewCell {
         
         print("SPONSORED BUTTON CLICKED")
         
-        let socialMediaURL = getUserSocialMediaURL(sponsoredProfileImageName, socialMediaTypeName: sponsoredProfileImageType, sender: self)
-        
-        // Perform the request, go to external application and let the user do whatever they want!
-        UIApplication.sharedApplication().openURL(socialMediaURL)
+        if sponsoredDelegate != nil
+        {
+            sponsoredDelegate?.didClickSponsoredProfileButton(sponsoredProfileImageName, sponsoredProfileImageType: sponsoredProfileImageType)
+        }
         
     }
     
