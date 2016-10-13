@@ -116,8 +116,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                        
                         numObjects = numObjects - 1
                         
-                        // If we've just processed our last image, refresh table!
-                        if numObjects == 0
+                        // Refresh for every 10 images processed
+                        if numObjects % 10 == 0
                         {
                             print("RELOADINGGGG")
                             // Update UI on main thread
