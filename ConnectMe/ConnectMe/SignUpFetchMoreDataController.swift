@@ -42,6 +42,7 @@ class SignUpFetchMoreDataController: UIViewController {
     var userEmail : String!
     var userFullName : String!
     var userImage: UIImage!
+    var attemptedUserName = String()
     let segueDestination = "toSignUpVerificationController"
 
     
@@ -168,6 +169,9 @@ class SignUpFetchMoreDataController: UIViewController {
 
     @IBAction func onFinishButtonClicked(sender: UIButton) {
     
+        // Disable button so that user cannot click on it twice (this is how errors happen)
+        self.nextButton.enabled = false
+        
         let userNameString:String = userName.text!
         let userPasswordString:String = userPassword.text!
         
@@ -220,11 +224,12 @@ class SignUpFetchMoreDataController: UIViewController {
         let phone = AWSCognitoIdentityUserAttributeType()
             phone.name = "phone_number"
             phone.value = userPhone
-
+        
 
         // Remember, AWSTask is ASYNCHRONOUS.
         pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email, phone], validationData: nil).continueWithBlock { (resultTask) -> AnyObject? in
 
+        
             // If sign up performed successfully.
             if (resultTask.error == nil)
             {
@@ -269,30 +274,91 @@ class SignUpFetchMoreDataController: UIViewController {
                     }
 
                     self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
-
+                    // Disable button so that user cannot click on it twice (this is how errors happen)
+                    self.nextButton.enabled = true
                 })
 
 
             }
             else // If sign up failed
             {
-                print("Fail signup")
-                
-                // Perform update on UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-
-                    // Stop showing activity indicator (spinner)
-                    self.spinner.stopAnimating()
-
-                    // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
-                    if (self.presentedViewController == nil)
+                // If user attempted to use the username before, let them proceed
+                if (!self.attemptedUserName.isEmpty && self.attemptedUserName == self.userName.text)
+                {
+                    //Proceed only if user is not confirmed
+                    if (self.pool.getUser(self.attemptedUserName).confirmedStatus.rawValue == 0)
                     {
+                        // Perform update on UI on main thread
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            
+                            // Stop showing activity indicator (spinner)
+                            self.checkMarkFlipped.hidden = false
+                            
+                            self.buttonToFlip.hidden = true
+                            self.spinner.stopAnimating()
+                            
+                            UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                                
+                                self.checkMarkFlipped.hidden = false
+                                self.checkMarkFlipped.image = self.checkMark.image
+                                
+                                }, completion: nil)
+                            
+                            
+                            delay(1.5)
+                            {
+                                
+                                self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                                
+                            }
+                            
+                            self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
+                            // Disable button so that user cannot click on it twice (this is how errors happen)
+                            self.nextButton.enabled = true
+                        })
 
-                        showAlert("Error signing up.", message: "Sorry, your username is already taken. Please try again!", buttonTitle: "Try again", sender: self)
-                    }
                     
-                })
+                    }
+                    else
+                    {
+                        // we failed.. do something like what we do below
+                        print("USER PRE CONFIRMED IN SIGN UP")
+                    }
+                }
+                else
+                {
 
+                
+                
+                    // Perform update on UI on main thread
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+
+                        // Stop showing activity indicator (spinner)
+                        self.spinner.stopAnimating()
+                        
+                        // Re-enable button
+                        self.nextButton.enabled = true
+                        
+                        self.attemptedUserName = String()
+
+                        // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
+                        if (self.presentedViewController == nil)
+                        {
+                            let error = (resultTask.error?.userInfo["__type"])! as! String
+                            
+                            if (error == "UsernameExistsException")
+                            {
+                                showAlert("Error signing up.", message: "Sorry, your username is already taken. Please try again!", buttonTitle: "Try again", sender: self)
+                            }
+                            else
+                            {
+                                showAlert("Error signing up", message: (resultTask.error?.userInfo["message"])! as! String, buttonTitle: "Try again", sender: self)
+
+                            }
+                            
+                        }
+                    })
+                }
             }
             
             return nil
@@ -314,6 +380,13 @@ class SignUpFetchMoreDataController: UIViewController {
             nextViewController.userImage = self.userImage
             nextViewController.userPhone = self.userPhone
             nextViewController.userEmail = self.userEmail
+            
+            // IMPORTANT: This will help us determine whether we should allow user to proceed to verification page or not. BE VERY CAREFUL.
+            // Problem: If user signs up, goes to verification page, then hits the "back button" -- they cannot use the username they tried to sign up with before -- it will say that it is taken. So we need to know when to let them try again. This will help us. See "unwindBackSignUpInfoVC" for more details
+            // Solution: This function will ONLY be called if username does not exist. Therefore it is safe to do this.
+            attemptedUserName = (self.userName.text?.lowercaseString)!
+            
+            
             // Need phone to display it on next screen
             // Don't need to pass email.
             // Remember, email & phone stored on AWS User Pools, not DynamoDB users.
