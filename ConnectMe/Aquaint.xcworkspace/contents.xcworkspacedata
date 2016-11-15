@@ -2,21 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:PasswordResetViewController.swift">
-   </FileRef>
-   <FileRef
-      location = "group:ConnectMe/SectionHeaderCell.swift">
-   </FileRef>
-   <FileRef
-      location = "group:SignUpFetchMoreDataController.swift">
-   </FileRef>
-   <FileRef
-      location = "group:HomeViewController.swift">
-   </FileRef>
-   <FileRef
-      location = "group:SearchViewController.swift">
-   </FileRef>
-   <FileRef
       location = "group:Aquaint.xcodeproj">
    </FileRef>
    <FileRef
