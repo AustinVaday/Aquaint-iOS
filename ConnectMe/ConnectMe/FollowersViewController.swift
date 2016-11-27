@@ -23,7 +23,6 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
     var defaultImage : UIImage!
     var defaultCollectionViewLayout : UICollectionViewLayout!
     var collectionViewClearDataRequest = false
-    var userDidRefreshTable = false
 
     var status : String!
     override func viewDidLoad() {
@@ -50,19 +49,19 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
         recentConnTableView.addSubview(refreshControl)
         
         // Call all lambda functions and AWS-needed stuff
-        generateData()
+        generateData(true)
         
     }
     
+    override func viewDidAppear(animated: Bool) {
+        generateData(false)
+    }
     
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
-        
-        userDidRefreshTable = true
-        
         // Regenerate data
-        generateData()
+        generateData(false)
         
         // Need to end refreshing
         delay(1)
@@ -236,21 +235,17 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
         
     }
     
-    private func generateData()
+    private func generateData(showSpinner: Bool)
     {
         // If we don't store our data into a temporary object -- we'll be modifying the table data source while it may still
         // be used in the tableView methods! This prevents a crash.
         var newConnectionList = Array<Connection>()
         
-        // Only show the middle spinner if user did not refresh table (or else there would be two spinners!)
-        if !userDidRefreshTable
+        // Only show the middle spinner if user did not refresh table or if init (or else there would be two spinners!)
+        if showSpinner
         {
             spinner.hidden = false
             spinner.startAnimating()
-        }
-        else
-        {
-            userDidRefreshTable = false
         }
         
         // Get array of connections from Lambda -- RDS

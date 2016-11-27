@@ -23,7 +23,6 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
     var defaultImage : UIImage!
     var defaultCollectionViewLayout : UICollectionViewLayout!
     var collectionViewClearDataRequest = false
-    var userDidRefreshTable = false
 
     var status : String!
     override func viewDidLoad() {
@@ -50,19 +49,20 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         recentConnTableView.addSubview(refreshControl)
         
         // Call all lambda functions and AWS-needed stuff
-        generateData()
+        generateData(true)
         
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        generateData(false)
     }
     
     
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
-        
-        userDidRefreshTable = true
-        
         // Regenerate data
-        generateData()
+        generateData(false)
         
         // Need to end refreshing
         delay(1)
@@ -246,19 +246,15 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
-    private func generateData()
+    private func generateData(showSpinner: Bool)
     {
         var newConnectionList = Array<Connection>()
         
         // Only show the middle spinner if user did not refresh table (or else there would be two spinners!)
-        if !userDidRefreshTable
+        if showSpinner
         {
             spinner.hidden = false
             spinner.startAnimating()
-        }
-        else
-        {
-            userDidRefreshTable = false
         }
         
         // Get array of connections from Lambda -- RDS
