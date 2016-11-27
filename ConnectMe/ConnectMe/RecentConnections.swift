@@ -112,7 +112,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         let handler = {
             (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-            showPopupForUser(connectedUser.userName)
+            showPopupForUser(connectedUser.userName, me: self.currentUserName)
         }
         
         cell.cellName.clearActionDictionary()

@@ -196,12 +196,12 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 let handlerUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(user)
+                    showPopupForUser(user, me: self.currentUserName)
                 }
                 
                 let handlerOtherUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(otherUser)
+                    showPopupForUser(otherUser, me: self.currentUserName)
                 }
                 
                 cell.cellMessage.text = newsfeedObject.textString
@@ -219,13 +219,13 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 let handlerFolloweddUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(followedUser)
+                    showPopupForUser(followedUser, me: self.currentUserName)
                 }
 
                 
                 let handlerOtherUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(otherUser)
+                    showPopupForUser(otherUser, me: self.currentUserName)
                 }
                 
     
@@ -244,7 +244,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
 
                 let handlerOtherUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(followedUser)
+                    showPopupForUser(followedUser, me: self.currentUserName)
                 }
                 
                 cell.cellMessage.text = newsfeedObject.textString

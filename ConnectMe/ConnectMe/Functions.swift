@@ -787,11 +787,11 @@ func clearCookies (domain: String)
     }
 }
 
-func showPopupForUser(username: String)
+func showPopupForUser(username: String, me: String)
 {
     let popup = getProfilePopup()
     let view = popup.contentView as! ProfilePopupView
-    view.setDataForUser(username)
+    view.setDataForUser(username, me: me)
     popup.contentView = view
     popup.show()
 }

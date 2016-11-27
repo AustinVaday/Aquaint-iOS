@@ -17,10 +17,12 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     @IBOutlet weak var numFollowsLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var socialMediaCollectionView: UICollectionView!
-    
+    @IBOutlet weak var cellAddButton: UIButton!
+    @IBOutlet weak var cellDeleteButton: UIButton!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
-    
+    var me: String!
+  
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -28,11 +30,12 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         // Drawing code
     }
     */
-    
-    func setDataForUser(username: String)
+  
+    func setDataForUser(username: String, me: String)
     {
         userNameLabel.text = username
-
+        self.me = me
+      
         // Get data from Dynamo
         getUserDynamoData(username) { (result, error) in
             if error == nil && result != nil
@@ -83,10 +86,32 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             
         }
         
+        // Determine whether "me" follows user or not
+        var lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        var parameters = ["action":"doIFollow", "me": self.me, "target": username]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            if resultTask.error == nil && resultTask.result != nil
+            {
+                // Update UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    let doIFollow = resultTask.result as? Int
+                    if (doIFollow == 1)
+                    {
+                        self.activateDeleteButton()
+                    }
+//                    else
+//                    {
+//                        self.activateAddButton()
+//                    }
+                })
+                
+            }
+            return nil
+        }
         
         // Fetch num followers from lambda
-        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        var parameters = ["action":"getNumFollowers", "target": username]
+        lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        parameters = ["action":"getNumFollowers", "target": username]
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
             if resultTask.error == nil && resultTask.result != nil
             {
@@ -118,6 +143,91 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             }
             
             return nil
+            
+        }
+
+    }
+  
+    @IBAction func onAddConnectionButtonClicked(sender: AnyObject) {
+        // Fetch current user from NSUserDefaults
+        let currentUserName = self.me
+        
+        // If currentUser is not trying to add themselves
+        if (currentUserName != userNameLabel.text!)
+        {
+            // Call lambda to store user connectons in database!
+            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+            let parameters = ["action": "follow", "target": userNameLabel.text!, "me": currentUserName]
+            
+            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
+                
+                if resultTask.error != nil
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+                }
+                else if resultTask.exception != nil
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                    
+                }
+                else if resultTask.result != nil
+                {
+                    // Perform update on UI on main thread
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.activateDeleteButton()
+                    })
+                }
+                else
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                }
+                
+                return nil
+                
+            })
+            
+        }
+
+    }
+
+    @IBAction func onDeleteConnectionButtonClicked(sender: AnyObject) {
+        // Fetch current user from NSUserDefaults
+        let currentUserName = me
+        
+        // If currentUser is not trying to add themselves
+        if (currentUserName != userNameLabel.text!)
+        {
+            // Call lambda to store user connectons in database!
+            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+            let parameters = ["action": "unfollow", "target": userNameLabel.text!, "me": currentUserName]
+            
+            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
+                
+                if resultTask.error != nil
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+                }
+                else if resultTask.exception != nil
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                    
+                }
+                else if resultTask.result != nil
+                {
+                    // Perform update on UI on main thread
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.activateAddButton()
+                    })  
+                }
+                else
+                {
+                    print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                    
+                }
+                
+                return nil
+                
+            })
             
         }
 
@@ -166,7 +276,19 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             UIApplication.sharedApplication().openURL(socialMediaURL)
         }
     }
+  
+  private func activateAddButton()
+  {
+    cellAddButton.superview?.bringSubviewToFront(cellAddButton)
+    
+  }
+  
+  private func activateDeleteButton()
+  {
+    cellDeleteButton.superview?.bringSubviewToFront(cellDeleteButton)
+  }
 
-    
-    
+
+  
+  
 }

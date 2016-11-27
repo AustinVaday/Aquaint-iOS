@@ -111,7 +111,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         
         let handler = {
             (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-            showPopupForUser(connectedUser.userName)
+            showPopupForUser(connectedUser.userName, me: self.currentUserName)
         }
         
         cell.cellName.clearActionDictionary()
