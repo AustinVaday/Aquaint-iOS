@@ -54,7 +54,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     override func viewDidAppear(animated: Bool) {
-        generateData(false)
+//        generateData(false)
     }
     
     

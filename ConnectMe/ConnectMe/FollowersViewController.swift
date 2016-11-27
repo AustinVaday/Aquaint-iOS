@@ -54,7 +54,7 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     override func viewDidAppear(animated: Bool) {
-        generateData(false)
+//        generateData(false)
     }
     
     // Function that is called when user drags/pulls table with intention of refreshing it
