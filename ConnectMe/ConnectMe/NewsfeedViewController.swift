@@ -30,6 +30,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     var userDidRefreshTable = false
     var isNewDataLoading = false
     var newsfeedPageNum = 0
+    var didExceedMaxDataDepth = false // Tells us when to stop requesting more data
     
     override func viewDidAppear(animated: Bool) {
         if shouldShowAnimations && newsfeedList.count == 0
@@ -297,27 +298,58 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Return height computed by our special function
         return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
     }
-    
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        
+
+    func scrollViewDidScroll(scrollView: UIScrollView) {
         if scrollView == newsfeedTableView
         {
             let location = scrollView.contentOffset.y + scrollView.frame.size.height
             
             if location >= scrollView.contentSize.height
             {
-                // Load data only if more data is loading
+                // Load data only if more data is not loading. 
                 if !isNewDataLoading
                 {
                     isNewDataLoading = true
                     print("DATA IS LOADING")
-                    newsfeedPageNum = newsfeedPageNum + 1
-                    generateData(newsfeedPageNum)
                     
+                    //Note: newsfeedPageNum will keep being incremented
+                    newsfeedPageNum = newsfeedPageNum + 1
+                    
+                    print("NEWSFEED PAGE NUM IS: ", newsfeedPageNum)
+
+                    
+                    // Only attempt to load more data if we did not exceed max data depth
+                    if !didExceedMaxDataDepth
+                    {
+                        print("NEWSFEED PAGE NUM IS: ", newsfeedPageNum)
+                        generateData(newsfeedPageNum)
+                    }
                 }
             }
             
         }
+    }
+    
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+//        if scrollView == newsfeedTableView
+//        {
+//            let location = scrollView.contentOffset.y + scrollView.frame.size.height
+//            
+//            if location >= scrollView.contentSize.height
+//            {
+//                // Load data only if more data is loading
+//                if !isNewDataLoading
+//                {
+//                    isNewDataLoading = true
+//                    print("DATA IS LOADING")
+//                    newsfeedPageNum = newsfeedPageNum + 1
+//                    generateData(newsfeedPageNum)
+//                    
+//                }
+//            }
+//            
+//        }
     }
     
     // COLLECTION VIEW
@@ -442,7 +474,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 let getResults = convertJSONStringToArray(newsfeedResultObjectMapper.data) as NSArray
                 
-                    
+
+                
 //                    print("NEWSFEED LIST IS: ", newAquaintsNewsfeed)
                     if getResults.count == 0
                     {
@@ -462,6 +495,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                             else // if pageNum is anything other than 0 (1, 2, etc).. append to current newsfeed
                             {
                                 self.removeTableViewFooterSpinner()
+                                // Note: possible race condition below
                                 self.isNewDataLoading = false
                             }
                             
@@ -577,6 +611,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                                             {
                                                 self.aquaintNewsfeed.appendContentsOf(newAquaintsNewsfeed)
                                                 self.removeTableViewFooterSpinner()
+                                                // Note: possible race condition below
                                                 self.isNewDataLoading = false
                                             }
                                             
@@ -625,6 +660,9 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                     {
                         self.removeTableViewFooterSpinner()
                         self.isNewDataLoading = false
+                        
+                        // set max data depth so we know whether or not to proceed farther for newsfeed requests
+                        self.didExceedMaxDataDepth = true
                     }
                     
                     self.newsfeedTableView.reloadData()
@@ -636,7 +674,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             return nil
         }
         
-
     }
     
     private func setUpAnimations(viewController: UIViewController)
