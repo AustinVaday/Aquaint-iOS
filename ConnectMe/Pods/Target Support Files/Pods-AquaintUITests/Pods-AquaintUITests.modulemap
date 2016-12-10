@@ -1,0 +1,6 @@
+framework module Pods_AquaintUITests {
+  umbrella header "Pods-AquaintUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
