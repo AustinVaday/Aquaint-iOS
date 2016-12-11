@@ -23,6 +23,10 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
     var defaultImage : UIImage!
     var defaultCollectionViewLayout : UICollectionViewLayout!
     var collectionViewClearDataRequest = false
+    var isNewDataLoading = false
+    var currentBegin = 0
+    var currentEnd = 20
+    let offset = 20
 
     var status : String!
     override func viewDidLoad() {
@@ -49,7 +53,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         recentConnTableView.addSubview(refreshControl)
         
         // Call all lambda functions and AWS-needed stuff
-        generateData(true)
+        generateData(true, start: currentBegin, end: currentEnd)
         
     }
     
@@ -62,7 +66,11 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
     func refreshTable(sender:AnyObject)
     {
         // Regenerate data
-        generateData(false)
+        currentBegin = 0
+        currentEnd = offset
+        isNewDataLoading = false
+        generateData(false, start: currentBegin, end: currentEnd)
+
         
         // Need to end refreshing
         delay(1)
@@ -71,6 +79,28 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if scrollView == self.recentConnTableView
+        {
+            let location = scrollView.contentOffset.y + scrollView.frame.size.height
+            
+            if location >= scrollView.contentSize.height
+            {
+                // Load data only if more data is not loading.
+                if !isNewDataLoading
+                {
+                    isNewDataLoading = true
+                    addTableViewFooterSpinner()
+                    
+                    currentBegin = currentBegin + offset
+                    currentEnd = currentEnd + offset
+                    generateData(false, start: currentBegin, end: currentEnd)
+                }
+            }
+            
+        }
+    }
+
     
     
     // TABLE VIEW
@@ -246,7 +276,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
-    private func generateData(showSpinner: Bool)
+    private func generateData(showSpinner: Bool, start: Int, end: Int)
     {
         var newConnectionList = Array<Connection>()
         
@@ -259,7 +289,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         
         // Get array of connections from Lambda -- RDS
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action":"getFollowees", "target": currentUserName]
+        let parameters = ["action":"getFollowees", "target": currentUserName, "start": start, "end": end]
         
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
             if resultTask.error != nil
@@ -282,7 +312,7 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
                 
                 // If empty list, then no users to display (refresh table)
                 // Update UI on main thread
-                if connectionsFetchedList.count == 0
+                if connectionsFetchedList.count == 0 && start == 0
                 {
                     dispatch_async(dispatch_get_main_queue(), {
                         self.spinner.hidden = true
@@ -293,6 +323,14 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
                     })
                     
                     return nil
+                }
+                else if connectionsFetchedList.count == 0 && start != 0
+                {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.removeTableViewFooterSpinner()
+                        
+                    })
+
                 }
                 
                 // Propogate local data structure -- helps us prevent needing to
@@ -305,19 +343,6 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
                     
                     newConnectionList.append(con)
                 }
-                
-                //                // If lists are equal, we haven't added or removed a user.
-                //                // So, simply refresh table to update the times
-                //                if (!self.areListsEqual(self.connectionList, array2: previousConnectionList))
-                //                {
-                //                    // Update UI on main thread
-                //                    dispatch_async(dispatch_get_main_queue(), {
-                //                        self.recentConnTableView.reloadData()
-                //                    })
-                //
-                //                    return nil
-                //                }
-                
                 
                 var runningRequests = 0
                 // If lists are not equal, we need to fetch data from the servers
@@ -360,16 +385,21 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
                                     // Update UI on main thread
                                     dispatch_async(dispatch_get_main_queue(), {
                                         
-                                        self.spinner.hidden = true
-                                        self.spinner.stopAnimating()
-                                        
-                                        self.connectionList = newConnectionList
+                                        if start == 0
+                                        {
+                                            self.connectionList = newConnectionList
+                                            self.spinner.hidden = true
+                                            self.spinner.stopAnimating()
+                                        }
+                                        else
+                                        {
+                                            self.removeTableViewFooterSpinner()
+                                            self.isNewDataLoading = false
+                                            self.connectionList.appendContentsOf(newConnectionList)
+                                        }
                                         
                                         self.recentConnTableView.reloadData()
                                         self.recentConnTableView.layoutIfNeeded()
-                                        
-                                        print("DONE RELOADED")
-                                        print("Connection list size is: ", self.connectionList.count)
                                         
                                     })
                                     
@@ -392,6 +422,18 @@ class FollowingViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
     }
+    
+    private func addTableViewFooterSpinner() {
+        let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        footerSpinner.startAnimating()
+        footerSpinner.frame = CGRectMake(0, 0, self.view.frame.width, 44)
+        self.recentConnTableView.tableFooterView = footerSpinner
+    }
+    
+    private func removeTableViewFooterSpinner() {
+        self.recentConnTableView.tableFooterView = nil
+    }
+
     
     // EXPECTED TO BE IN ORDER.
     private func areListsEqual(array1: Array<Connection>, array2: Array<Connection>) -> Bool

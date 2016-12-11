@@ -15,26 +15,28 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var searchTableView: UITableView!
     @IBOutlet weak var noSearchResultsView: UIView!
     @IBOutlet weak var searchResultsInfoLabel: UILabel!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     var searchController: UISearchController!
     var customSearchController: CustomSearchController!
     var userName : String!
     var userId   : String!
-    var allUsers: Array<User>!
+    var selectorSearchText : String!
     var filteredUsers: Array<User>!
     var shouldShowSearchResults = false
     var isTypingSearch = false
+    var isNewDataLoading = false
     var defaultImage : UIImage!
     var followeesMapping : [String: Int]!
     var recentUsernameAdds : NSMutableDictionary!
     var animatedObjects : Array<UIView>!
+    var currentSearchBegin = 0
+    var currentSearchEnd = 15
+    let searchOffset = 15
     let imageCache = NSCache()
-    
+
 
     override func viewDidLoad(){
-        
-        
-        allUsers = Array<User>()
         filteredUsers = Array<User>()
         followeesMapping = [String: Int]()
         recentUsernameAdds = NSMutableDictionary()
@@ -63,15 +65,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             else if resultTask.result != nil
             {
                 
-                
                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
-                
                 self.followeesMapping = resultTask.result! as! [String: Int]
                 
-                // Update UI on main thread
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.searchTableView.reloadData()
-                })
             }
             else
             {
@@ -83,71 +79,20 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
         }
 
-        
-        
-        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        let scanExpression = AWSDynamoDBScanExpression()
-        scanExpression.limit = 100
-        
-        dynamoDBObjectMapper.scan(User.self, expression: scanExpression) { (paginatedOutput, error) in
-            
-            if (error != nil)
-            {
-                print ("ERROR getting all users in search controller, ", error)
-            }
-            else
-            {
-                // Store all users locally
-                var numObjects = (paginatedOutput?.items)!.count
-                for object in (paginatedOutput?.items)!
-                {
-                    let someUser = object as! User
-                    
-                    self.allUsers.append(someUser)
-                    
-                    getUserS3Image(someUser.username, completion: { (result, error) in
-                        
-                        if (result != nil)
-                        {
-                            // Cache user image so we don't have to reload it next time
-                            self.imageCache.setObject(result! as UIImage, forKey: someUser.username)
-                            print(result! as UIImage)
-                        }
-                       
-                        numObjects = numObjects - 1
-                        
-                        // Refresh for every 10 images processed
-                        if numObjects % 10 == 0
-                        {
-                            print("RELOADINGGGG")
-                            // Update UI on main thread
-                            dispatch_async(dispatch_get_main_queue(), {
-                                self.searchTableView.reloadData()
-                            })
-                        }
-  
-                        
-                    })
-
-                    
-                }
-                
-                
-                // Update UI on main thread
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.searchTableView.reloadData()
-                })
-            
-            }
-        }
-
     }
     
     override func viewDidAppear(animated: Bool) {
 
         // If this is not here, then we will upload same user events to dynamo every time.
         recentUsernameAdds = NSMutableDictionary()
-
+        
+        // Set up animations
+        
+        if self.filteredUsers.count == 0
+        {
+            setUpAnimations(self)
+        }
+        print("Filter list size:", self.filteredUsers.count)
     }
     
     // When the view disappears, upload action data to Dynamo (used for newsfeed)
@@ -277,16 +222,47 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if scrollView == searchTableView
+        {
+            let location = scrollView.contentOffset.y + scrollView.frame.size.height
+            
+            print("Location is ", location)
+            print("content size is ", scrollView.contentSize.height)
+            if location >= scrollView.contentSize.height
+            {
+                // Load data only if more data is not loading.
+                if !isNewDataLoading
+                {
+                    isNewDataLoading = true
+                    addTableViewFooterSpinner()
+                    //Note: newsfeedPageNum will keep being incremented
+                    currentSearchBegin = currentSearchBegin + searchOffset
+                    currentSearchEnd = currentSearchEnd + searchOffset
+                    performSimpleSearch(selectorSearchText, start: currentSearchBegin, end: currentSearchEnd)
+                }
+            }
+            
+        }
+    }
+
+    
     // **** SEARCHBAR PROTOCOLS (CUSTOM SEARCH BAR) *****
     func didStartSearching() {
         // Use filtered array
         shouldShowSearchResults = true
+        resetCurrentSearchOffsets()
         searchTableView.reloadData()
     }
     
     func didTapOnCancelButton() {
-        // Use default array
         shouldShowSearchResults = false
+        
+        // Should wipe array
+        filteredUsers = Array<User>()
+        setUpAnimations(self)
+        resetCurrentSearchOffsets()
+        
         searchTableView.reloadData()
     }
     
@@ -300,33 +276,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func didChangeSearchText(searchText: String) {
-        
-        if searchText.isEmpty
-        {
-            isTypingSearch = false
-        }
-        else
-        {
-            isTypingSearch = true
-        }
-        
-        filteredUsers = allUsers.filter({ (someUser) -> Bool in
-            
-            let userName = someUser.username as NSString
-            let realName = someUser.realname as NSString
-            
-            // Check if we have a user with a corresponding exact substring (case insensitive)
-            let userNameMatch = userName.rangeOfString(searchText, options: .CaseInsensitiveSearch).location != NSNotFound
-            let realNameMatch = realName.rangeOfString(searchText, options: .CaseInsensitiveSearch).location != NSNotFound
-            
-            // If we have either a user name or real name match, add the user to the filtered array!
-            return userNameMatch || realNameMatch
-        })
-        
-        
-        // Reload table view with new results
-        searchTableView.reloadData()
-
+        // Implement throttle search to limit network activity and reload x seconds after key press
+        resetCurrentSearchOffsets()
+        selectorSearchText = searchText
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(SearchViewController.simpleSearchSelector), object: nil)
+        self.performSelector(#selector(SearchViewController.simpleSearchSelector), withObject: nil, afterDelay: 0.3)
     }
     
     // **** SEARCH TABLE VIEW *****
@@ -348,12 +302,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             userFullName = filteredUsers[indexPath.item].realname
             userName     = filteredUsers[indexPath.item].username
         }
-        else
-        {
-            userFullName = allUsers[indexPath.item].realname
-            userName     = allUsers[indexPath.item].username
-        }
-        
 
         let image = imageCache.objectForKey(userName) as? UIImage
         
@@ -414,7 +362,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             if filteredUsers.count == 0
             {
                 setUpAnimations(self)
-                noSearchResultsView.hidden = false
                 
                 if isTypingSearch
                 {
@@ -428,7 +375,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             else
             {
                 clearUpAnimations()
-                noSearchResultsView.hidden = true
                 searchResultsInfoLabel.hidden = true
 
             }
@@ -437,12 +383,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
         else
         {
-            
-            clearUpAnimations()
-            noSearchResultsView.hidden = true
-
-            // If user is not searching, show all users
-            return allUsers.count
+             return 0
         }
         
     }
@@ -476,7 +417,155 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         searchTableView.tableHeaderView = customSearchController.customSearchBar
     }
+    
+    func simpleSearchSelector()
+    {
+        self.performSimpleSearch(self.selectorSearchText, start: 0, end: 15)
+    }
 
+    func performSimpleSearch(searchText: String, start: Int, end: Int)
+    {
+        if searchText.characters.count < 1
+        {
+            isTypingSearch = false
+            return
+        }
+        else
+        {
+            isTypingSearch = true
+        }
+        
+        
+        
+        if start != 0 && end != self.searchOffset
+        {
+            addTableViewFooterSpinner()
+        }
+        else
+        {
+            spinner.startAnimating()
+        }
+        
+        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let parameters = ["action":"simplesearch", "target": searchText, "start": start, "end": end]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            if resultTask.error != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+            }
+            else if resultTask.exception != nil
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+            }
+            else if resultTask.result != nil
+            {
+                
+                print("RESULTO ARRAY IS:", resultTask.result)
+                
+                let searchResultArray = resultTask.result as! Array<String>
+                
+                if searchResultArray.count == 0 && start == 0
+                {
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.spinner.stopAnimating()
+                        self.noSearchResultsView.hidden = false
+                        self.filteredUsers = Array<User>()
+                        self.searchTableView.reloadData()
+                        
+                    })
+                }
+                else if searchResultArray.count == 0 && start != 0
+                {
+                    self.isNewDataLoading = false
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.removeTableViewFooterSpinner()
+                    })
+                    
+                }
+                else if start == 0
+                {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.noSearchResultsView.hidden = true
+                    })
+                }
+        
+                
+                
+                var runningRequests = 0
+                var newFilteredUsersList = Array<User>()
+                
+                // If lists are not equal, we need to fetch data from the servers
+                // and re-propagate the list
+                for searchUser in searchResultArray
+                {
+                    
+                    runningRequests = runningRequests + 1
+                    getUserDynamoData(searchUser, completion: { (result, error) in
+                        if error == nil && result != nil
+                        {
+                            
+                            let resultUser = result! as User
+                            
+                            newFilteredUsersList.append(resultUser)
+                            
+                            getUserS3Image(searchUser, completion: { (result, error) in
+                                
+                                if (result != nil)
+                                {
+                                    // Cache user image so we don't have to reload it next time
+                                    self.imageCache.setObject(result! as UIImage, forKey: searchUser)
+                                    
+                                }
+                                
+                                runningRequests = runningRequests - 1
+                                
+                                if runningRequests == 0
+                                {
+                                    // Update UI when no more running requests! (last async call finished)
+                                    // Update UI on main thread
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        self.spinner.stopAnimating()
+                                        
+                                        // Initial fetch, just store entire array
+                                        if start == 0 && end == self.searchOffset
+                                        {
+                                            self.filteredUsers = newFilteredUsersList
+                                        }
+                                        else // append to current filtered users list
+                                        {
+                                            self.removeTableViewFooterSpinner()
+                                            self.isNewDataLoading = false
+                                            self.filteredUsers.appendContentsOf(newFilteredUsersList)
+                                            
+                                        }
+                                        
+                                        self.searchTableView.reloadData()
+                                        
+                                    })
+                                    
+                                }
+                            })
+                        }
+                    })
+                }
+                
+            }
+            else
+            {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+            }
+            
+            return nil
+            
+        }
+        
+        // Reload table view with new results
+        searchTableView.reloadData()
+
+    }
 
     private func setUpAnimations(viewController: UIViewController)
     {
@@ -580,4 +669,21 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         print("OKOK. USER REMOVED: ", username)
 
     }
+    
+    private func addTableViewFooterSpinner() {
+        let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        footerSpinner.startAnimating()
+        footerSpinner.frame = CGRectMake(0, 0, self.view.frame.width, 44)
+        self.searchTableView.tableFooterView = footerSpinner
+    }
+    
+    private func removeTableViewFooterSpinner() {
+        self.searchTableView.tableFooterView = nil
+    }
+    
+    private func resetCurrentSearchOffsets() {
+        self.currentSearchBegin = 0
+        self.currentSearchEnd = self.searchOffset
+    }
+    
 }
