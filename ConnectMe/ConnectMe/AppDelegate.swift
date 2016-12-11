@@ -14,6 +14,7 @@ import SimpleAuth
 import AWSCore
 import AWSCognito
 import AWSLambda
+import AWSDynamoDB
 import KLCPopup
 
 // Begin using Firebase framework
@@ -161,7 +162,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   // Apple Push Notifications
   func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
     print("didRegisterForRemoteNotificationsWithDeviceToken: \(deviceToken)")
+    //let deviceTokenStr = String(data: deviceToken, encoding: NSUTF8StringEncoding);
+    //print("didRegisterForRemoteNotificationsWithDeviceToken: \(deviceTokenStr)")
+    setCurrentCachedDeviceID(deviceToken)
   }
+  
   
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     print("Failed to register for remote notification: ", error)

@@ -30,6 +30,19 @@ class User : AWSDynamoDBObjectModel
     
 }
 
+// AWS DynamoDB database to store device ID of each user
+class Device : AWSDynamoDBObjectModel {
+  var username: String!
+  var deviceid: String!
+  
+  class func dynamoDBTableName() -> String {
+    return "aquaint-devices"
+  }
+  
+  class func hashKeyAttribute() -> String {
+    return "username"
+  }
+}
 
 // The below class is the acctual newsfeed that will be displayed
 class NewsfeedResultObjectModel : AWSDynamoDBObjectModel

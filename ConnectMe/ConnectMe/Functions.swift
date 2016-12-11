@@ -565,6 +565,12 @@ func setCurrentCachedFullName(userFullName: String)
 
 }
 
+func setCurrentCachedDeviceID(deviceID: NSData) {
+  let defaults = NSUserDefaults.standardUserDefaults()
+  defaults.setObject(deviceID, forKey: "deviceID")
+  print("Cache deviceID success: ", deviceID)
+}
+
 func setCurrentCachedUserEmail(email: String)
 {
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -638,6 +644,19 @@ func getCurrentCachedFullName() -> String!
     
     return currentUserFullName
     
+}
+
+func getCurrentCachedDeviceID() -> NSData! {
+  let defaults = NSUserDefaults.standardUserDefaults()
+  
+  let currentDeviceID = defaults.dataForKey("deviceID")
+  
+  if currentDeviceID == nil {
+    print("Uh oh, no cached deviceID available.")
+    return nil
+  }
+  
+  return currentDeviceID
 }
 
 // Get the current user email that is signed into the app
