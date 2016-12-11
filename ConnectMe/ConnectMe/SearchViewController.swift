@@ -25,12 +25,16 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var filteredUsers: Array<User>!
     var shouldShowSearchResults = false
     var isTypingSearch = false
+    var isNewDataLoading = false
     var defaultImage : UIImage!
     var followeesMapping : [String: Int]!
     var recentUsernameAdds : NSMutableDictionary!
     var animatedObjects : Array<UIView>!
+    var currentSearchBegin = 0
+    var currentSearchEnd = 15
+    let searchOffset = 15
     let imageCache = NSCache()
-    
+
 
     override func viewDidLoad(){
         filteredUsers = Array<User>()
@@ -218,20 +222,46 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if scrollView == searchTableView
+        {
+            let location = scrollView.contentOffset.y + scrollView.frame.size.height
+            
+            print("Location is ", location)
+            print("content size is ", scrollView.contentSize.height)
+            if location >= scrollView.contentSize.height
+            {
+                // Load data only if more data is not loading.
+                if !isNewDataLoading
+                {
+                    isNewDataLoading = true
+                    addTableViewFooterSpinner()
+                    //Note: newsfeedPageNum will keep being incremented
+                    currentSearchBegin = currentSearchBegin + searchOffset
+                    currentSearchEnd = currentSearchEnd + searchOffset
+                    performSimpleSearch(selectorSearchText, start: currentSearchBegin, end: currentSearchEnd)
+                }
+            }
+            
+        }
+    }
+
+    
     // **** SEARCHBAR PROTOCOLS (CUSTOM SEARCH BAR) *****
     func didStartSearching() {
         // Use filtered array
         shouldShowSearchResults = true
+        resetCurrentSearchOffsets()
         searchTableView.reloadData()
     }
     
     func didTapOnCancelButton() {
-        // Use default array
         shouldShowSearchResults = false
         
         // Should wipe array
         filteredUsers = Array<User>()
         setUpAnimations(self)
+        resetCurrentSearchOffsets()
         
         searchTableView.reloadData()
     }
@@ -247,6 +277,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     func didChangeSearchText(searchText: String) {
         // Implement throttle search to limit network activity and reload x seconds after key press
+        resetCurrentSearchOffsets()
         selectorSearchText = searchText
         NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(SearchViewController.simpleSearchSelector), object: nil)
         self.performSelector(#selector(SearchViewController.simpleSearchSelector), withObject: nil, afterDelay: 0.3)
@@ -405,10 +436,18 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
         
         
-        spinner.startAnimating()
+        
+        if start != 0 && end != self.searchOffset
+        {
+            addTableViewFooterSpinner()
+        }
+        else
+        {
+            spinner.startAnimating()
+        }
         
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action":"simplesearch", "target": searchText, "start": 0, "end": 15]
+        let parameters = ["action":"simplesearch", "target": searchText, "start": start, "end": end]
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
             if resultTask.error != nil
             {
@@ -426,23 +465,33 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 let searchResultArray = resultTask.result as! Array<String>
                 
-                
                 if searchResultArray.count == 0
                 {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.spinner.stopAnimating()
-                        self.noSearchResultsView.hidden = false
-                        self.filteredUsers = Array<User>()
-                        self.searchTableView.reloadData()
-                        
-                    })
+                    if start == 0
+                    {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.spinner.stopAnimating()
+                            self.noSearchResultsView.hidden = false
+                            self.filteredUsers = Array<User>()
+                            self.searchTableView.reloadData()
+                            
+                        })
+                    }
+                    else
+                    {
+                        self.isNewDataLoading = false
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.removeTableViewFooterSpinner()
+                        })
+                    }
                 }
-                else
+                else if start == 0
                 {
                     dispatch_async(dispatch_get_main_queue(), {
                         self.noSearchResultsView.hidden = true
                     })
                 }
+        
                 
                 
                 var runningRequests = 0
@@ -479,7 +528,20 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                                     // Update UI on main thread
                                     dispatch_async(dispatch_get_main_queue(), {
                                         self.spinner.stopAnimating()
-                                        self.filteredUsers = newFilteredUsersList
+                                        
+                                        // Initial fetch, just store entire array
+                                        if start == 0 && end == self.searchOffset
+                                        {
+                                            self.filteredUsers = newFilteredUsersList
+                                        }
+                                        else // append to current filtered users list
+                                        {
+                                            self.removeTableViewFooterSpinner()
+                                            self.isNewDataLoading = false
+                                            self.filteredUsers.appendContentsOf(newFilteredUsersList)
+                                            
+                                        }
+                                        
                                         self.searchTableView.reloadData()
                                         
                                     })
@@ -608,4 +670,21 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         print("OKOK. USER REMOVED: ", username)
 
     }
+    
+    private func addTableViewFooterSpinner() {
+        let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        footerSpinner.startAnimating()
+        footerSpinner.frame = CGRectMake(0, 0, self.view.frame.width, 44)
+        self.searchTableView.tableFooterView = footerSpinner
+    }
+    
+    private func removeTableViewFooterSpinner() {
+        self.searchTableView.tableFooterView = nil
+    }
+    
+    private func resetCurrentSearchOffsets() {
+        self.currentSearchBegin = 0
+        self.currentSearchEnd = self.searchOffset
+    }
+    
 }
