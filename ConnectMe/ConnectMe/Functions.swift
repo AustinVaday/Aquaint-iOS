@@ -646,6 +646,7 @@ func getCurrentCachedFullName() -> String!
     
 }
 
+// Get the current user's device IDs, used for sending out push notification on server
 func getCurrentCachedDeviceID() -> NSData! {
   let defaults = NSUserDefaults.standardUserDefaults()
   
