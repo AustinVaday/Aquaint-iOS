@@ -315,13 +315,9 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                     //Note: newsfeedPageNum will keep being incremented
                     newsfeedPageNum = newsfeedPageNum + 1
                     
-                    print("NEWSFEED PAGE NUM IS: ", newsfeedPageNum)
-
-                    
                     // Only attempt to load more data if we did not exceed max data depth
                     if !didExceedMaxDataDepth
                     {
-                        print("NEWSFEED PAGE NUM IS: ", newsfeedPageNum)
                         generateData(newsfeedPageNum)
                     }
                 }
@@ -330,8 +326,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        
+//    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 //        if scrollView == newsfeedTableView
 //        {
 //            let location = scrollView.contentOffset.y + scrollView.frame.size.height
@@ -350,7 +345,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
 //            }
 //            
 //        }
-    }
+//    }
     
     // COLLECTION VIEW
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -465,25 +465,24 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 let searchResultArray = resultTask.result as! Array<String>
                 
-                if searchResultArray.count == 0
+                if searchResultArray.count == 0 && start == 0
                 {
-                    if start == 0
-                    {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.spinner.stopAnimating()
-                            self.noSearchResultsView.hidden = false
-                            self.filteredUsers = Array<User>()
-                            self.searchTableView.reloadData()
-                            
-                        })
-                    }
-                    else
-                    {
-                        self.isNewDataLoading = false
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.removeTableViewFooterSpinner()
-                        })
-                    }
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.spinner.stopAnimating()
+                        self.noSearchResultsView.hidden = false
+                        self.filteredUsers = Array<User>()
+                        self.searchTableView.reloadData()
+                        
+                    })
+                }
+                else if searchResultArray.count == 0 && start != 0
+                {
+                    self.isNewDataLoading = false
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.removeTableViewFooterSpinner()
+                    })
+                    
                 }
                 else if start == 0
                 {
