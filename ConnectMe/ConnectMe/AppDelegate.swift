@@ -134,11 +134,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       didFinishLaunchingWithOptions: launchOptions
     )
     
+    /* NOT READY YET
     // Apple Push Notification initialization
     let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
     let pushNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
     application.registerUserNotificationSettings(pushNotificationSettings)
     application.registerForRemoteNotifications()
+ 
+     */
     
     return AWSMobileClient.sharedInstance.didFinishLaunching(
       application,
@@ -159,6 +162,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return handled
   }
   
+/* NOT READY YET
   // Apple Push Notifications
   func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
     print("didRegisterForRemoteNotificationsWithDeviceToken: \(deviceToken)")
@@ -166,7 +170,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //print("didRegisterForRemoteNotificationsWithDeviceToken: \(deviceTokenStr)")
     setCurrentCachedDeviceID(deviceToken)
   }
-  
+*/
   
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     print("Failed to register for remote notification: ", error)
