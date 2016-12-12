@@ -49,37 +49,38 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
   
   // upload current user's device ID to dynamoDB database
   func updateDeviceIDDynamoDB() {
+    /* NOT READY YET -- notifications
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
     let currentUser = getCurrentCachedUser()
     let currentDeviceID = getCurrentCachedDeviceID()
     
-//    let dynamoDBDevice = Device()
-//    dynamoDBDevice.username = currentUser
-//    debugPrint("updateDeviceIDDynamoDB: dynamoDBDevice.username = ", currentUser)
-//    dynamoDBDevice.deviceid = currentDeviceID
-//    debugPrint("updateDeviceIDDynamoDB: dynamoDBDevice.deviceid = ", currentDeviceID)
-//    
-//    dynamoDBObjectMapper.save(dynamoDBDevice).continueWithBlock(
-//      { (resultTask) -> AnyObject? in
-//        if (resultTask.error != nil) {
-//          print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
-//        }
-//        
-//        if (resultTask.exception != nil) {
-//          print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
-//        }
-//        
-//        if (resultTask.result == nil) {
-//          print ("DYNAMODB ADD PROFILE result is nil....: ")
-//        } else if (resultTask.error == nil) {
-//          // If successful save
-//          print ("DynamoDB add profile success. ", resultTask.result)
-//          
-//          // Refresh something...
-//        }
-//        return nil
-//    })
-//    
+    let dynamoDBDevice = Device()
+    dynamoDBDevice.username = currentUser
+    debugPrint("updateDeviceIDDynamoDB: dynamoDBDevice.username = ", currentUser)
+    dynamoDBDevice.deviceid = currentDeviceID
+    debugPrint("updateDeviceIDDynamoDB: dynamoDBDevice.deviceid = ", currentDeviceID)
+    
+    dynamoDBObjectMapper.save(dynamoDBDevice).continueWithBlock(
+      { (resultTask) -> AnyObject? in
+        if (resultTask.error != nil) {
+          print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
+        }
+        
+        if (resultTask.exception != nil) {
+          print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
+        }
+        
+        if (resultTask.result == nil) {
+          print ("DYNAMODB ADD PROFILE result is nil....: ")
+        } else if (resultTask.error == nil) {
+          // If successful save
+          print ("DynamoDB add profile success. ", resultTask.result)
+          
+          // Refresh something...
+        }
+        return nil
+    })
+    */
   }
     
     override func viewDidLoad() {

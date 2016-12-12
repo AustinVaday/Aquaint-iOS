@@ -10,6 +10,7 @@ import Foundation
 import AWSCognitoIdentityProvider
 import AWSS3
 import AWSDynamoDB
+import AWSLambda
 
 // Set up AWS service config (default log-in/sign-up)
 func getAWSCognitoIdentityUserPool() -> AWSCognitoIdentityUserPool
@@ -432,5 +433,13 @@ func updateCurrentUserProfilesDynamoDB(currentUserProfiles: NSMutableDictionary!
     
 }
 
+func warmUpLambda()
+{
+    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+    let parameters = ["action":"doIFollow", "target": "", "me": ""]
+    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+        return nil
+    }
+}
 
 
