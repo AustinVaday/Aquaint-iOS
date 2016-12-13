@@ -20,14 +20,20 @@ import KLCPopup
 // Begin using Firebase framework
 import Firebase
 
+protocol RegisterPushNotificationsProtocol {
+  func uploadDeviceToDynamo()
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
-
+  var notificationDelegate : RegisterPushNotificationsProtocol?
   override init() {
     // Firebase Init
     //FIRDatabase.database().persistenceEnabled = true
     FIRApp.configure()
+    
+    
   }
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -161,10 +167,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   // Apple Push Notifications
   func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-    print("didRegisterForRemoteNotificationsWithDeviceToken: \(deviceToken)")
+    print("CORRECT - didRegisterForRemoteNotificationsWithDeviceToken: \(deviceToken)")
     //let deviceTokenStr = String(data: deviceToken, encoding: NSUTF8StringEncoding);
     //print("didRegisterForRemoteNotificationsWithDeviceToken: \(deviceTokenStr)")
-    setCurrentCachedDeviceID(deviceToken)
+    //let deviceTokenStr = deviceToken.base64EncodedDataWithOptions([])
+    //print("didRegisterForRemoteNotificationsWithDeviceToken: ", deviceTokenStr)
+    var deviceTokenStr = "\(deviceToken)"
+    deviceTokenStr.removeAtIndex(deviceTokenStr.endIndex.predecessor())
+    deviceTokenStr.removeAtIndex(deviceTokenStr.startIndex)
+    deviceTokenStr = deviceTokenStr.stringByReplacingOccurrencesOfString(" ", withString: "")
+    
+    print("didRegisterForRemoteNotificationsWithDeviceToken: ", deviceTokenStr)
+    setCurrentCachedDeviceID(deviceTokenStr)
+    notificationDelegate?.uploadDeviceToDynamo()
   }
   
   
