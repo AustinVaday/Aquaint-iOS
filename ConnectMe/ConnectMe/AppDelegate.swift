@@ -20,14 +20,10 @@ import KLCPopup
 // Begin using Firebase framework
 import Firebase
 
-protocol RegisterPushNotificationsProtocol {
-    func uploadDeviceToDynamo()
-}
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
-  var notificationDelegate : RegisterPushNotificationsProtocol?
+  let deviceIdNotificationKey = "com.aquaintapp.deviceIdNotificationKey"
   
   override init() {
     // Firebase Init
@@ -180,7 +176,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     print("didRegisterForRemoteNotificationsWithDeviceToken: ", deviceTokenStr)
     setCurrentCachedDeviceID(deviceTokenStr)
-    notificationDelegate?.uploadDeviceToDynamo()
+    
+    // Problem: We need username before we store user's device ID on server. So we have to submit this info in another view controller. 
+    // The app delegate functions may finish AFTER our view controller is instantiated, so we want to create an NS notification
+    // in order to prevent any race conditions
+    NSNotificationCenter.defaultCenter().postNotification(NSNotification.init(name: deviceIdNotificationKey, object: nil, userInfo: nil))
   }
   
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {

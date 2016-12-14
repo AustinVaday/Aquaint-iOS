@@ -11,7 +11,7 @@ import Firebase
 import ReachabilitySwift
 import AWSDynamoDB
 
-class MainContainerViewController: UIViewController, UIPageViewControllerDelegate, MainPageSectionUnderLineViewDelegate, RegisterPushNotificationsProtocol {
+class MainContainerViewController: UIViewController, UIPageViewControllerDelegate, MainPageSectionUnderLineViewDelegate {
     
     @IBOutlet weak var sectionUnderlineView0: UIView!
     @IBOutlet weak var sectionUnderlineView1: UIView!
@@ -37,7 +37,9 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     // This is our child (container) view controller that holds all our pages
     var mainPageViewController: MainPageViewController!
 
-    
+    let deviceIdNotificationKey = "com.aquaintapp.deviceIdNotificationKey"
+
+  
     // Hides all the section bars for the section underline view/bars under the footer icons
     func hideAllSectionUnderlineViews()
     {
@@ -47,13 +49,10 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         sectionUnderlineView3.hidden = true
     }
   
-    func uploadDeviceToDynamo() {
-      print("uploadDeviceToDynamo() CALLED")
-      self.updateDeviceIDDynamoDB()
-    }
   
   // upload current user's device ID to dynamoDB database
   func updateDeviceIDDynamoDB() {
+    print("TRIGGERED")
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
     let currentUser = getCurrentCachedUser()
     let currentDeviceID = getCurrentCachedDeviceID()
@@ -116,29 +115,33 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
       
 //        debugPrint("Adding deviceID to dynamoDB table...");
 //        updateDeviceIDDynamoDB()
+      
+      // This is triggered by AppDelegate once we finally have user's Device ID. Then we can upload it to the server
+      NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainContainerViewController.updateDeviceIDDynamoDB), name: deviceIdNotificationKey, object: nil)
         
     }
-    
+  
+  override func viewDidDisappear(animated: Bool) {
+    NSNotificationCenter.defaultCenter().removeObserver(self)
+
+  }
+  
     override func viewDidAppear(animated: Bool) {
         // Set up notifications for determining whether to display the "No Internet" Banner.
-        do
-        {
-            reachability = try Reachability(hostname: "www.google.com")
+        do {
+          reachability = try Reachability(hostname: "www.google.com")
         }
-        catch
-        {
-            print("Could not create reachability object to www.google.com")
+        catch {
+          print("Could not create reachability object to www.google.com")
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: reachability)
         
-        do
-        {
-            try reachability.startNotifier()
+        do {
+          try reachability.startNotifier()
         }
-        catch
-        {
-            print("Could not start reachability notifier...")
+        catch {
+          print("Could not start reachability notifier...")
         }
     }
     
