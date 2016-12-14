@@ -565,7 +565,7 @@ func setCurrentCachedFullName(userFullName: String)
 
 }
 
-func setCurrentCachedDeviceID(deviceID: NSData) {
+func setCurrentCachedDeviceID(deviceID: String) {
   let defaults = NSUserDefaults.standardUserDefaults()
   defaults.setObject(deviceID, forKey: "deviceID")
   print("Cache deviceID success: ", deviceID)
@@ -647,10 +647,10 @@ func getCurrentCachedFullName() -> String!
 }
 
 // Get the current user's device IDs, used for sending out push notification on server
-func getCurrentCachedDeviceID() -> NSData! {
+func getCurrentCachedDeviceID() -> String! {
   let defaults = NSUserDefaults.standardUserDefaults()
   
-  let currentDeviceID = defaults.dataForKey("deviceID")
+  let currentDeviceID = defaults.stringForKey("deviceID")
   
   if currentDeviceID == nil {
     print("Uh oh, no cached deviceID available.")

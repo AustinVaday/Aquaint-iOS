@@ -20,10 +20,15 @@ import KLCPopup
 // Begin using Firebase framework
 import Firebase
 
+protocol RegisterPushNotificationsProtocol {
+    func uploadDeviceToDynamo()
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
-
+  var notificationDelegate : RegisterPushNotificationsProtocol?
+  
   override init() {
     // Firebase Init
     //FIRDatabase.database().persistenceEnabled = true
@@ -134,14 +139,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       didFinishLaunchingWithOptions: launchOptions
     )
     
-    /* NOT READY YET
     // Apple Push Notification initialization
     let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
     let pushNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
     application.registerUserNotificationSettings(pushNotificationSettings)
     application.registerForRemoteNotifications()
- 
-     */
+    
+    print("YOZZ AWS APP DELEGATE")
     
     return AWSMobileClient.sharedInstance.didFinishLaunching(
       application,
@@ -162,15 +166,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return handled
   }
   
-/* NOT READY YET
   // Apple Push Notifications
   func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-    print("didRegisterForRemoteNotificationsWithDeviceToken: \(deviceToken)")
+    print("CORRECT - didRegisterForRemoteNotificationsWithDeviceToken: \(deviceToken)")
     //let deviceTokenStr = String(data: deviceToken, encoding: NSUTF8StringEncoding);
     //print("didRegisterForRemoteNotificationsWithDeviceToken: \(deviceTokenStr)")
-    setCurrentCachedDeviceID(deviceToken)
+    //let deviceTokenStr = deviceToken.base64EncodedDataWithOptions([])
+    //print("didRegisterForRemoteNotificationsWithDeviceToken: ", deviceTokenStr)
+    var deviceTokenStr = "\(deviceToken)"
+    deviceTokenStr.removeAtIndex(deviceTokenStr.endIndex.predecessor())
+    deviceTokenStr.removeAtIndex(deviceTokenStr.startIndex)
+    deviceTokenStr = deviceTokenStr.stringByReplacingOccurrencesOfString(" ", withString: "")
+    
+    print("didRegisterForRemoteNotificationsWithDeviceToken: ", deviceTokenStr)
+    setCurrentCachedDeviceID(deviceTokenStr)
+    notificationDelegate?.uploadDeviceToDynamo()
   }
-*/
   
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     print("Failed to register for remote notification: ", error)

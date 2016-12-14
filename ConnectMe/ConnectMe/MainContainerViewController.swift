@@ -11,7 +11,7 @@ import Firebase
 import ReachabilitySwift
 import AWSDynamoDB
 
-class MainContainerViewController: UIViewController, UIPageViewControllerDelegate, MainPageSectionUnderLineViewDelegate {
+class MainContainerViewController: UIViewController, UIPageViewControllerDelegate, MainPageSectionUnderLineViewDelegate, RegisterPushNotificationsProtocol {
     
     @IBOutlet weak var sectionUnderlineView0: UIView!
     @IBOutlet weak var sectionUnderlineView1: UIView!
@@ -47,9 +47,13 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         sectionUnderlineView3.hidden = true
     }
   
+    func uploadDeviceToDynamo() {
+      print("uploadDeviceToDynamo() CALLED")
+      self.updateDeviceIDDynamoDB()
+    }
+  
   // upload current user's device ID to dynamoDB database
   func updateDeviceIDDynamoDB() {
-    /* NOT READY YET -- notifications
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
     let currentUser = getCurrentCachedUser()
     let currentDeviceID = getCurrentCachedDeviceID()
@@ -80,9 +84,8 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         }
         return nil
     })
-    */
   }
-    
+      
     override func viewDidLoad() {
 
         // Get the mainPageViewController, this holds all our pages!
@@ -111,8 +114,8 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         // Set banner hidden by default
         noInternetBanner.hidden = true
       
-        debugPrint("Adding deviceID to dynamoDB table...");
-        updateDeviceIDDynamoDB()
+//        debugPrint("Adding deviceID to dynamoDB table...");
+//        updateDeviceIDDynamoDB()
         
     }
     
