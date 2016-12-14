@@ -33,7 +33,7 @@ class User : AWSDynamoDBObjectModel
 // AWS DynamoDB database to store device ID of each user
 class Device : AWSDynamoDBObjectModel {
   var username: String!
-  var deviceid: String!
+  var deviceidlist: Array<String>!
   
   class func dynamoDBTableName() -> String {
     return "aquaint-devices"
