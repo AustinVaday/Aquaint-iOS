@@ -231,14 +231,16 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             print("content size is ", scrollView.contentSize.height)
             if location >= scrollView.contentSize.height
             {
-                // Load data only if more data is not loading.
-                if !isNewDataLoading
+                // Load data only if more data is not loading and if we actually have data to search
+                if !isNewDataLoading && selectorSearchText != nil && !selectorSearchText.isEmpty
                 {
                     isNewDataLoading = true
                     addTableViewFooterSpinner()
                     //Note: newsfeedPageNum will keep being incremented
                     currentSearchBegin = currentSearchBegin + searchOffset
                     currentSearchEnd = currentSearchEnd + searchOffset
+                  
+                 
                     performSimpleSearch(selectorSearchText, start: currentSearchBegin, end: currentSearchEnd)
                 }
             }
