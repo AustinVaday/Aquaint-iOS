@@ -19,6 +19,8 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     @IBOutlet weak var socialMediaCollectionView: UICollectionView!
     @IBOutlet weak var cellAddButton: UIButton!
     @IBOutlet weak var cellDeleteButton: UIButton!
+    @IBOutlet weak var noProfilesLinkedLabel: UITextField!
+  
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
     var me: String!
@@ -49,10 +51,12 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                     if resultUser.accounts != nil
                     {
                         self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts)
+                        self.noProfilesLinkedLabel.hidden = true
                     }
                     else
                     {
                         self.keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
+                        self.noProfilesLinkedLabel.hidden = false
                     }
                 
                 })
@@ -78,7 +82,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                         // Fill the dictionary of all social media names (key) with an image (val).
                         // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
                         self.socialMediaImageDictionary = getAllPossibleSocialMediaImages()
-                        
+                                              
                         self.socialMediaCollectionView.reloadData()
                     })
                 })
