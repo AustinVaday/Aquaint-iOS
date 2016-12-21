@@ -120,7 +120,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
       }
       
     override func viewDidLoad() {
-
+      
         // Get the mainPageViewController, this holds all our pages!
         mainPageViewController = self.childViewControllers.last as! MainPageViewController
 

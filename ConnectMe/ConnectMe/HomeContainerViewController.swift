@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import FBSDKLoginKit
+import FBSDKCoreKit
 
 class HomeContainerViewController: UIViewController, UIPageViewControllerDelegate, HomePageSectionUnderLineViewDelegate {
     
@@ -42,10 +44,52 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
 
     }
     
+  @IBAction func didFindFriendButtonClicked(sender: AnyObject) {
     
+    let login = FBSDKLoginManager.init()
+    login.logOut()
     
-    override func viewDidLoad() {
+    // Open in app instead of web browser!
+    login.loginBehavior = FBSDKLoginBehavior.Native
+    
+    // Request basic profile permissions just to get user ID
+    login.logInWithReadPermissions(["public_profile", "user_friends"], fromViewController: self) { (result, error) in
+      // If no error, store facebook user ID
+      if (error == nil && result != nil) {
+        print("SUCCESS LOG IN!", result.debugDescription)
+        print(result.description)
         
+        print("RESULTOO: ", result)
+        
+        if (FBSDKAccessToken.currentAccessToken() != nil) {
+          
+          print("Current access user id: ", FBSDKAccessToken.currentAccessToken().userID)
+          
+          let request = FBSDKGraphRequest(graphPath: "/me/friends", parameters: nil)
+          request.startWithCompletionHandler { (connection, result, error) in
+            if error == nil {
+              print("My **FB Friends using this app are: ", result)
+            } else {
+              print("Error getting **FB friends", error)
+            }
+          }
+        }
+      } else if (result == nil && error != nil) {
+        print ("ERROR IS: ", error)
+      } else {
+        print("FAIL LOG IN")
+      }
+    }
+    
+    
+    
+    print("YOLOGINYO")
+
+  }
+  
+  
+    override func viewDidLoad() {
+      
         // Get the mainPageViewController, this holds all our pages!
         homePageViewController = self.childViewControllers.last as! HomePageViewController
                 

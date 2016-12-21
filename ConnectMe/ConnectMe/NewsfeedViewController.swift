@@ -10,6 +10,8 @@ import UIKit
 import AWSDynamoDB
 import AWSLambda
 import FRHyperLabel
+import FBSDKLoginKit
+import FBSDKCoreKit
 
 class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, SponsoredProfileButtonDelegate {
 
@@ -59,7 +61,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Animate one of our embles out
         addSingleEmblemAnimation(self.view.frame.width)
     }
-    
+      
     override func viewDidLoad() {
         makeViewShine(emblemButton.imageView!)
 
