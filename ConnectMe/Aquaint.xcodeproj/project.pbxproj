@@ -34,6 +34,7 @@
 		FF63316E1D286D4300967266 /* AWSMobileHubHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF63316C1D286D4300967266 /* AWSMobileHubHelper.framework */; };
 		FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF65D31C1C1E0BFC0015C99F /* Main.storyboard */; };
 		FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF65D3211C1EA3D60015C99F /* SignUpController.swift */; };
+		FF6813F21E0B7D1D007930BA /* AddSocialContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6813F11E0B7D1D007930BA /* AddSocialContactsViewController.swift */; };
 		FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */; };
 		FF7878401C26A0A900354936 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF78783F1C26A0A900354936 /* MenuController.swift */; };
 		FF7878421C26A0CC00354936 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7878411C26A0CC00354936 /* CameraController.swift */; };
@@ -138,6 +139,7 @@
 		FF63316C1D286D4300967266 /* AWSMobileHubHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSMobileHubHelper.framework; sourceTree = "<group>"; };
 		FF65D31D1C1E0BFC0015C99F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FF65D3211C1EA3D60015C99F /* SignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignUpController.swift; path = ../SignUpController.swift; sourceTree = "<group>"; };
+		FF6813F11E0B7D1D007930BA /* AddSocialContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSocialContactsViewController.swift; sourceTree = "<group>"; };
 		FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialMediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		FF78783F1C26A0A900354936 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		FF7878411C26A0CC00354936 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 				FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */,
 				FF7878761C34EC4A00354936 /* RecentConnections.swift */,
 				FF78783F1C26A0A900354936 /* MenuController.swift */,
+				FF6813F11E0B7D1D007930BA /* AddSocialContactsViewController.swift */,
 				FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */,
 				FF23A13C1D9340480062E9A0 /* PrivacyPolicyViewController.swift */,
 				FF8420251D30A138002D2927 /* AddSocialMediaProfilesController.swift */,
@@ -785,6 +788,7 @@
 				FF23A12F1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift in Sources */,
 				FFBDD75F1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift in Sources */,
 				FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */,
+				FF6813F21E0B7D1D007930BA /* AddSocialContactsViewController.swift in Sources */,
 				FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */,
 				FF23A1311D9326E40062E9A0 /* AquaintsContainerViewController.swift in Sources */,
 				FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */,

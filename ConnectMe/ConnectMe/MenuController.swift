@@ -73,7 +73,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var keyValSocialMediaPairList : Array<KeyValSocialMediaPair>!
     var tableViewSectionsList : Array<SectionTitleAndCountPair>!
     var refreshControl : UIRefreshControl!
-
+  
+    var listOfFBUserIDs = Set<String>()
+    var transitionToAddSocialContactsController = false
     // AWS credentials provider
     let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
     
@@ -116,6 +118,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // When user pulls, this function will be called
         refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
         settingsTableView.addSubview(refreshControl)
+    
+      
     }
     
     /*=======================================================
@@ -132,7 +136,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // in viewWillAppear, then we'll keep uploading the same info to dynamo
         newUserAccountsForNewsfeed = NSMutableDictionary()
     }
-    
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
@@ -206,7 +209,16 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
     }
-    
+  
+  override func viewDidAppear(animated: Bool) {
+    // After FBSDK returns from getting user contacts, we call the segue here in order to prevent warning where
+    // one cannot perform sugue due to hierarchy of view controllers
+    if transitionToAddSocialContactsController {
+      self.performSegueWithIdentifier("toAddSocialContactsViewController", sender: self)
+      transitionToAddSocialContactsController = false
+    }
+  }
+  
     // KEYBOARD shift-up buttons functionality
     func registerForKeyboardNotifications()
     {
@@ -1062,10 +1074,20 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             print("Current access user id: ", FBSDKAccessToken.currentAccessToken().userID)
             
-            let request = FBSDKGraphRequest(graphPath: "/me/friends", parameters: nil)
+            let request = FBSDKGraphRequest(graphPath: "/me/friends?fields=id", parameters: nil)
             request.startWithCompletionHandler { (connection, result, error) in
               if error == nil {
-                print("My **FB Friends using this app are: ", result)
+                let resultMap = result as! Dictionary<String, AnyObject>
+                let resultIds = resultMap["data"] as! Array<Dictionary<String, String>>
+                
+                for object in resultIds {
+                  print("Id is: ", object["id"]! as String)
+                  let id = object["id"]! as String
+                  self.listOfFBUserIDs.insert(id)
+                }
+                
+                self.transitionToAddSocialContactsController = true
+                
               } else {
                 print("Error getting **FB friends", error)
               }
@@ -1601,6 +1623,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             let vc = segue.destinationViewController as! AddSocialMediaProfilesController
             vc.delegate = self
         }
+        else if segue.identifier == "toAddSocialContactsViewController"
+        {
+          let vc = segue.destinationViewController as! AddSocialContactsViewController
+          vc.listOfFBUserIDs = self.listOfFBUserIDs
+        }
+      
     }
     
     
