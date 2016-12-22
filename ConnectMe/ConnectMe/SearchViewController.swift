@@ -9,6 +9,7 @@
 import UIKit
 import AWSDynamoDB
 import AWSLambda
+import FRHyperLabel
 
 class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate, SearchTableViewCellDelegate {
 
@@ -340,10 +341,18 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             }
             
         }
+      
+        // Set up hyperlink
+        let handler = {
+          (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
+          showPopupForUser(userName, me: self.userName)
+        }
+      
+        cell.cellName.clearActionDictionary()
         cell.cellName.text = userFullName
+        cell.cellName.setLinkForSubstring(userFullName, withLinkHandler: handler)
         cell.cellUserName.text = userName
-        
-        
+      
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
         

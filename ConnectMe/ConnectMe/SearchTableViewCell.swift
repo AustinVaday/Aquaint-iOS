@@ -9,6 +9,7 @@
 
 import UIKit
 import AWSLambda
+import FRHyperLabel
 
 protocol SearchTableViewCellDelegate
 {
@@ -19,7 +20,7 @@ protocol SearchTableViewCellDelegate
 class SearchTableViewCell: UITableViewCell {
     
     @IBOutlet weak var cellImage: UIImageView!
-    @IBOutlet weak var cellName: UILabel!
+    @IBOutlet weak var cellName: FRHyperLabel!
     @IBOutlet weak var cellAddButton: UIButton!
 //    @IBOutlet weak var cellAddPendingButton: UIButton!
     @IBOutlet weak var cellDeleteButton: UIButton!
@@ -27,6 +28,19 @@ class SearchTableViewCell: UITableViewCell {
     
     var searchDelegate : SearchTableViewCellDelegate?
 
+    // Set default FRHyperLabel for this app. Set it here so that we
+    // do not have to set it later (if not, user might see default hyperlink while this is loading)
+    override func awakeFromNib() {
+      // UI Color for #0F7A9D (www.uicolor.xyz)
+      cellName.numberOfLines = 0
+      
+      let aquaBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
+      let attributes = [NSForegroundColorAttributeName: aquaBlue,
+                        NSFontAttributeName: UIFont.boldSystemFontOfSize(cellName.font.pointSize)]
+      cellName.linkAttributeDefault = attributes
+      
+    }
+  
     func hideAllButtons()
     {
         // Deactivate the pending button
