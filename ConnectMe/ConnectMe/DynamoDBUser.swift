@@ -30,6 +30,24 @@ class User : AWSDynamoDBObjectModel
     
 }
 
+// AWS DynamoDB database to store FB UID of each user (for find friends using FB feature)
+class UserFBObjectModel : AWSDynamoDBObjectModel
+{
+  var username : String!
+  var fbuid : String!
+  
+  class func dynamoDBTableName() -> String {
+    
+    return "aquaint-users"
+  }
+  
+  class func hashKeyAttribute() -> String {
+    
+    return "username"
+  }
+  
+}
+
 // AWS DynamoDB database to store device ID of each user
 class Device : AWSDynamoDBObjectModel {
   var username: String!

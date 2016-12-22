@@ -109,8 +109,8 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
         // Open in app instead of web browser!
         login.loginBehavior = FBSDKLoginBehavior.Native
 
-        // Request basic profile permissions just to get user ID
-        login.logInWithReadPermissions(["public_profile"], fromViewController: self) { (result, error) in
+        // Request basic profile permissions just to get user ID. UPDATE: also get friends list for 'find friends via facebook' feature
+        login.logInWithReadPermissions(["public_profile", "user_friends"], fromViewController: self) { (result, error) in
           // If no error, store facebook user ID
           if (error == nil && result != nil) {
             print("SUCCESS LOG IN!", result.debugDescription)
@@ -121,6 +121,12 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
             if (FBSDKAccessToken.currentAccessToken() != nil) {
               print("FBSDK userID is:", FBSDKAccessToken.currentAccessToken().userID)
 
+              let fbUID = FBSDKAccessToken.currentAccessToken().userID
+              let currentUserName = getCurrentCachedUser()
+              
+              // Needed for 'find friends via facebook' feature
+              self.uploadUserFBUIDToDynamo(currentUserName, fbUID: fbUID)
+              
               socialMediaName = FBSDKAccessToken.currentAccessToken().userID
 
               if self.delegate != nil {
@@ -635,6 +641,8 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
   //
   //        return cell
   //    }
+  
+  
 
   @IBAction func backButtonClicked(sender: AnyObject) {
     /* It's good to dismiss it, but in this case we want to
@@ -738,6 +746,39 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
       circleIconImage: alertViewIcon,
       animationStyle: .BottomToTop
     )
+  }
+  
+  
+  private func uploadUserFBUIDToDynamo(userName: String, fbUID: String)
+  {
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+
+    // Upload user DATA to DynamoDB
+    let dynamoDBUser = UserFBObjectModel()
+    
+    dynamoDBUser.username = userName
+    dynamoDBUser.fbuid = fbUID
+    
+    dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock(
+      { (resultTask) -> AnyObject? in
+        if (resultTask.error != nil) {
+          print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
+        }
+        
+        if (resultTask.exception != nil) {
+          print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
+        }
+        
+        if (resultTask.result == nil) {
+          print ("DYNAMODB ADD PROFILE result is nil....: ")
+        } else if (resultTask.error == nil) {
+          // If successful save
+          print ("DYNAMODB ADD PROFILE SUCCESS: ", resultTask.result)
+        }
+        return nil
+      }
+    )
+    
   }
 
 

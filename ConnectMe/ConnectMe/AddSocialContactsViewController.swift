@@ -14,8 +14,8 @@ import AWSDynamoDB
 class AddSocialContactsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SearchTableViewCellDelegate {
 
   @IBOutlet weak var friendsTableView: UITableView!
-  @IBOutlet weak var numberOfFriendsText: UITextField!
-  
+  @IBOutlet weak var numberOfFriendsText: UILabel!
+    
   var isNewDataLoading = false
   var defaultImage : UIImage!
   var followeesMapping : [String: Int]!
@@ -189,6 +189,7 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
   }
 
   func scrollViewDidScroll(scrollView: UIScrollView) {
+    /*
     if scrollView == friendsTableView
     {
       let location = scrollView.contentOffset.y + scrollView.frame.size.height
@@ -212,6 +213,7 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
       }
       
     }
+     */
   }
 
   
@@ -224,8 +226,6 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
     
     var userFullName : String!
     var userName : String!
-    var userImage : UIImage!
-    
 
     userFullName = users[indexPath.item].realname
     userName     = users[indexPath.item].username
@@ -293,142 +293,75 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
   
   func generateData(start: Int, end: Int)
   {
-    if start != 0 && end != self.searchOffset
-    {
-      addTableViewFooterSpinner()
-    }
-    else
-    {
-//      spinner.startAnimating()
-    }
-    
-    // FILL users<User> list here from the IDs of FB friends generated
-    
-    print("YOLOFBLIST: ", self.listOfFBUserIDs)
-    
-    
-//    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-//    let parameters = ["action":"simplesearch", "target": searchText, "start": start, "end": end]
-//    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-//      if resultTask.error != nil
-//      {
-//        print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-//      }
-//      else if resultTask.exception != nil
-//      {
-//        print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-//        
-//      }
-//      else if resultTask.result != nil
-//      {
-//        
-//        print("RESULTO ARRAY IS:", resultTask.result)
-//        
-//        let searchResultArray = resultTask.result as! Array<String>
-//        
-//        if searchResultArray.count == 0 && start == 0
-//        {
-//          
-//          dispatch_async(dispatch_get_main_queue(), {
-//            self.spinner.stopAnimating()
-//            self.noSearchResultsView.hidden = false
-//            self.filteredUsers = Array<User>()
-//            self.searchTableView.reloadData()
-//            
-//          })
-//        }
-//        else if searchResultArray.count == 0 && start != 0
-//        {
-//          self.isNewDataLoading = false
-//          dispatch_async(dispatch_get_main_queue(), {
-//            self.removeTableViewFooterSpinner()
-//          })
-//          
-//        }
-//        else if start == 0
-//        {
-//          dispatch_async(dispatch_get_main_queue(), {
-//            self.noSearchResultsView.hidden = true
-//          })
-//        }
-//        
-//        
-//        
-//        var runningRequests = 0
-//        var newFilteredUsersList = Array<User>()
-//        
-//        // If lists are not equal, we need to fetch data from the servers
-//        // and re-propagate the list
-//        for searchUser in searchResultArray
-//        {
-//          
-//          runningRequests = runningRequests + 1
-//          getUserDynamoData(searchUser, completion: { (result, error) in
-//            if error == nil && result != nil
-//            {
-//              
-//              let resultUser = result! as User
-//              
-//              newFilteredUsersList.append(resultUser)
-//              
-//              getUserS3Image(searchUser, completion: { (result, error) in
-//                
-//                if (result != nil)
-//                {
-//                  // Cache user image so we don't have to reload it next time
-//                  self.imageCache.setObject(result! as UIImage, forKey: searchUser)
-//                  
-//                }
-//                
-//                runningRequests = runningRequests - 1
-//                
-//                if runningRequests == 0
-//                {
-//                  // Update UI when no more running requests! (last async call finished)
-//                  // Update UI on main thread
-//                  dispatch_async(dispatch_get_main_queue(), {
-//                    self.spinner.stopAnimating()
-//                    
-//                    // Initial fetch, just store entire array
-//                    if start == 0 && end == self.searchOffset
-//                    {
-//                      self.filteredUsers = newFilteredUsersList
-//                    }
-//                    else // append to current filtered users list
-//                    {
-//                      self.removeTableViewFooterSpinner()
-//                      self.isNewDataLoading = false
-//                      self.filteredUsers.appendContentsOf(newFilteredUsersList)
-//                      
-//                    }
-//                    
-//                    self.searchTableView.reloadData()
-//                    
-//                  })
-//                  
-//                }
-//              })
-//            }
-//          })
-//        }
-//        
-//      }
-//      else
-//      {
-//        print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-//        
-//      }
-//      
-//      return nil
-//      
+//    if start != 0 && end != self.searchOffset
+//    {
+//      addTableViewFooterSpinner()
 //    }
-//    
-//    // Reload table view with new results
-//    friendsTableView.reloadData()
+//    else
+//    {
+//      spinner.startAnimating()
+//    }
+    
+    // No pagination just yet..
+    for fbUID in self.listOfFBUserIDs {
+      print("Processing fbUID: ", fbUID)
+      fetchDynamoUserDataFromFBUID(fbUID)
+      
+    }
     
   }
 
 
+  private func fetchDynamoUserDataFromFBUID(fbUID: String) {
+    let dynamoDB = AWSDynamoDB.defaultDynamoDB()
+    let scanInput = AWSDynamoDBScanInput()
+    scanInput.tableName = "aquaint-users"
+    scanInput.limit = 100
+    scanInput.exclusiveStartKey = nil
+    
+    let userNameValue = AWSDynamoDBAttributeValue()
+    userNameValue.S = "herion"
+    let userNameCondition = AWSDynamoDBCondition()
+    userNameCondition.comparisonOperator = AWSDynamoDBComparisonOperator.EQ
+    userNameCondition.attributeValueList = [userNameValue]
+  
+    let UIDValue = AWSDynamoDBAttributeValue()
+    UIDValue.S = fbUID
+    
+    scanInput.expressionAttributeValues = [":val" : UIDValue]
+    scanInput.filterExpression = "fbuid = :val"
+    
+    
+    dynamoDB.scan(scanInput).continueWithBlock { (resultTask) -> AnyObject? in
+      if resultTask.result != nil && resultTask.error == nil
+      {
+        print("DB QUERY SUCCESS:", resultTask.result)
+        let results = resultTask.result as! AWSDynamoDBScanOutput
+        for result in results.items! {
+          print("RESULT IS: ", result)
+          
+          let user = User()
+          user.realname = (result["realname"]?.S)! as String
+          user.username = (result["username"]?.S)! as String
+          
+          self.users.append(user)
+          
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), {
+          self.friendsTableView.reloadData()
+        })
+
+      }
+      else
+      {
+        print("DB QUERY FAILURE:", resultTask.error)
+      }
+      return nil
+    }
+  }
+  
+  
   // Implement delegate actions for SearchTableViewCellDelegate
   func addedUser(username: String) {
     // When user is added from tableview cell

@@ -103,7 +103,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableViewSectionsList = Array<SectionTitleAndCountPair>()
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Linked Profiles", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "My Information", sectionCount: 3))
-        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Social Actions", sectionCount: 1))
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Discover Friends", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Notification Settings", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 2))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Account Actions", sectionCount: 2))
@@ -924,7 +924,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
           switch (indexPath.item)
           {
           case 0: // button
-            cell.menuButtonLabel.text = "Find Faceook friends to follow"
+            cell.menuButtonLabel.text = "Find Facebook friends"
             break;
             
           default: //Default
