@@ -10,8 +10,6 @@ import UIKit
 import AWSDynamoDB
 import AWSLambda
 import FRHyperLabel
-import FBSDKLoginKit
-import FBSDKCoreKit
 
 class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, SponsoredProfileButtonDelegate {
 

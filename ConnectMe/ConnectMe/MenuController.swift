@@ -14,12 +14,15 @@ import AWSDynamoDB
 import AWSS3
 import AWSLambda
 import SCLAlertView
+import FBSDKLoginKit
+import FBSDKCoreKit
 
 class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     enum MenuData: Int {
         case LINKED_PROFILES
         case MY_INFORMATION
+        case SOCIAL_ACTIONS
         case NOTIFICATION_SETTINGS
         case PRIVACY_SETTINGS
         case ACTIONS
@@ -98,6 +101,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableViewSectionsList = Array<SectionTitleAndCountPair>()
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Linked Profiles", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "My Information", sectionCount: 3))
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Social Actions", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Notification Settings", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 2))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Account Actions", sectionCount: 2))
@@ -805,6 +809,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case MenuData.LINKED_PROFILES.rawValue:
             returnHeight = defaultTableViewCellHeight
             break;
+        case MenuData.SOCIAL_ACTIONS.rawValue:
+            returnHeight = CGFloat(50)
+          break;
         case MenuData.MY_INFORMATION.rawValue:
             returnHeight = defaultTableViewCellHeight
             break;
@@ -898,6 +905,24 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             }
             return cell
             break;
+        case MenuData.SOCIAL_ACTIONS.rawValue:
+          // return regular button cell
+          let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
+          
+          switch (indexPath.item)
+          {
+          case 0: // button
+            cell.menuButtonLabel.text = "Find Faceook friends to follow"
+            break;
+            
+          default: //Default
+            cell.menuButtonLabel.text = ""
+            
+          }
+          
+          return cell
+          
+          break;
         case MenuData.NOTIFICATION_SETTINGS.rawValue:
             // return regular button cell
             let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
@@ -993,7 +1018,18 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 logUserOut()
             }
         }
-        
+      
+        if (indexPath.section == MenuData.SOCIAL_ACTIONS.rawValue)
+        {
+          // Find facebook friends to follow button
+          if (indexPath.item == 0)
+          {
+//            performSegueWithIdentifier("toResetPasswordViewController", sender: self)
+              getFacebookFriendsUsingApp()
+          }
+          
+        }
+      
         if (indexPath.section == MenuData.PRIVACY_SETTINGS.rawValue)
         {
             // Go to privacy page
@@ -1004,7 +1040,49 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     
     }
-    
+  
+    func getFacebookFriendsUsingApp()
+    {
+      let login = FBSDKLoginManager.init()
+      login.logOut()
+      
+      // Open in app instead of web browser!
+      login.loginBehavior = FBSDKLoginBehavior.Native
+      
+      // Request basic profile permissions just to get user ID
+      login.logInWithReadPermissions(["public_profile", "user_friends"], fromViewController: self) { (result, error) in
+        // If no error, store facebook user ID
+        if (error == nil && result != nil) {
+          print("SUCCESS LOG IN!", result.debugDescription)
+          print(result.description)
+          
+          print("RESULTOO: ", result)
+          
+          if (FBSDKAccessToken.currentAccessToken() != nil) {
+            
+            print("Current access user id: ", FBSDKAccessToken.currentAccessToken().userID)
+            
+            let request = FBSDKGraphRequest(graphPath: "/me/friends", parameters: nil)
+            request.startWithCompletionHandler { (connection, result, error) in
+              if error == nil {
+                print("My **FB Friends using this app are: ", result)
+              } else {
+                print("Error getting **FB friends", error)
+              }
+            }
+          }
+        } else if (result == nil && error != nil) {
+          print ("ERROR IS: ", error)
+        } else {
+          print("FAIL LOG IN")
+        }
+      }
+      
+      
+      
+      print("YOLOGINYO")
+      
+    }
     
     func logUserOut()
     {
