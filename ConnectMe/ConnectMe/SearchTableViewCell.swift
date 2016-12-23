@@ -13,8 +13,8 @@ import FRHyperLabel
 
 protocol SearchTableViewCellDelegate
 {
-    func addedUser(username: String)
-    func removedUser(username: String)
+  func addedUser(username: String, isPrivate: Bool)
+  func removedUser(username: String, isPrivate: Bool)
 }
 
 class SearchTableViewCell: UITableViewCell {
@@ -22,11 +22,12 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var cellName: FRHyperLabel!
     @IBOutlet weak var cellAddButton: UIButton!
-//    @IBOutlet weak var cellAddPendingButton: UIButton!
+    @IBOutlet weak var cellAddPendingButton: UIButton!
     @IBOutlet weak var cellDeleteButton: UIButton!
     @IBOutlet weak var cellUserName: UILabel!
     
     var searchDelegate : SearchTableViewCellDelegate?
+    var displayPrivate = false
 
     // Set default FRHyperLabel for this app. Set it here so that we
     // do not have to set it later (if not, user might see default hyperlink while this is loading)
@@ -46,7 +47,7 @@ class SearchTableViewCell: UITableViewCell {
         // Deactivate the pending button
         cellAddButton.hidden  = true
         cellDeleteButton.hidden  = true
-//        cellAddPendingButton.hidden = true
+        cellAddPendingButton.hidden = true
     }
     
     func unHideAllButtons()
@@ -54,36 +55,23 @@ class SearchTableViewCell: UITableViewCell {
         // Deactivate the pending button
         cellAddButton.hidden  = false
         cellDeleteButton.hidden  = false
-//        cellAddPendingButton.hidden = false
+        cellAddPendingButton.hidden = false
     }
     
     func activateAddButton()
     {
-        // Activate the pending button
-//        cellAddButton.hidden  = false
-//        cellAddButton.userInteractionEnabled = true
-//        cellAddPendingButton.hidden  = true
-//        cellAddPendingButton.userInteractionEnabled = false
-//        cellDeleteButton.hidden = true
-//        cellDeleteButton.userInteractionEnabled = false
-        
         cellAddButton.superview?.bringSubviewToFront(cellAddButton)
-        
     }
     
     func activateDeleteButton()
     {
-        
         cellDeleteButton.superview?.bringSubviewToFront(cellDeleteButton)
-
     }
     
-//    func activatePendingButton()
-//    {
-//        // Activate the pending button
-//        cellAddPendingButton.superview?.bringSubviewToFront(cellAddPendingButton)
-//
-//    }
+    func activatePendingButton()
+    {
+        cellAddPendingButton.superview?.bringSubviewToFront(cellAddPendingButton)
+    }
 
     @IBAction func onAddConnectionButtonClicked(sender: UIButton) {
         
@@ -93,9 +81,16 @@ class SearchTableViewCell: UITableViewCell {
         // If currentUser is not trying to add themselves
         if (currentUserName != cellUserName.text!)
         {
+            var targetAction : String!
+            if displayPrivate {
+              targetAction = "followRequest"
+            } else {
+              targetAction = "follow"
+            }
+          
             // Call lambda to store user connectons in database!
             let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-            let parameters = ["action": "follow", "target": cellUserName.text!, "me": currentUserName]
+            let parameters = ["action": targetAction, "target": cellUserName.text!, "me": currentUserName]
             
             lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
                 
@@ -110,12 +105,19 @@ class SearchTableViewCell: UITableViewCell {
                 }
                 else if resultTask.result != nil
                 {
-                    // Perform update on UI on main thread
+                  if self.displayPrivate {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.activateDeleteButton()
+                      self.activatePendingButton()
+                    })
+                  }
+                  else {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.activateDeleteButton()
                     })
                     
-                    self.searchDelegate?.addedUser(self.cellUserName.text!)
+                  }
+                  
+                  self.searchDelegate?.addedUser(self.cellUserName.text!, isPrivate: self.displayPrivate)
 
                 }
                 else
@@ -167,9 +169,16 @@ class SearchTableViewCell: UITableViewCell {
         // If currentUser is not trying to add themselves
         if (currentUserName != cellUserName.text!)
         {
+            var targetAction : String!
+            if displayPrivate {
+              targetAction = "unfollowRequest"
+            } else {
+              targetAction = "unfollow"
+            }
+
             // Call lambda to store user connectons in database!
             let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-            let parameters = ["action": "unfollow", "target": cellUserName.text!, "me": currentUserName]
+            let parameters = ["action": targetAction, "target": cellUserName.text!, "me": currentUserName]
             
             lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
                 
@@ -188,9 +197,9 @@ class SearchTableViewCell: UITableViewCell {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.activateAddButton()
                     })
-                    
-                    self.searchDelegate?.removedUser(self.cellUserName.text!)
-
+                  
+                    self.searchDelegate?.removedUser(self.cellUserName.text!, isPrivate: self.displayPrivate)
+                  
                     
                 }
                 else

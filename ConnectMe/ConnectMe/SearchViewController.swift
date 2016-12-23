@@ -23,12 +23,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var userName : String!
     var userId   : String!
     var selectorSearchText : String!
-    var filteredUsers: Array<User>!
+    var filteredUsers: Array<UserPrivacyObjectModel>!
     var shouldShowSearchResults = false
     var isTypingSearch = false
     var isNewDataLoading = false
     var defaultImage : UIImage!
     var followeesMapping : [String: Int]!
+    var followeeRequestsMapping : [String: Int]!
     var recentUsernameAdds : NSMutableDictionary!
     var animatedObjects : Array<UIView>!
     var currentSearchBegin = 0
@@ -38,8 +39,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
 
     override func viewDidLoad(){
-        filteredUsers = Array<User>()
+        filteredUsers = Array<UserPrivacyObjectModel>()
         followeesMapping = [String: Int]()
+        followeeRequestsMapping = [String: Int]()
         recentUsernameAdds = NSMutableDictionary()
         animatedObjects = Array<UIView>()
         
@@ -52,7 +54,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action":"getFolloweesDict", "target": userName]
+        var parameters = ["action":"getFolloweesDict", "target": userName]
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
             if resultTask.error != nil
             {
@@ -79,9 +81,38 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             return nil
             
         }
+      
+        parameters = ["action":"getFolloweeRequestsDict", "target": userName]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+          if resultTask.error != nil
+          {
+            print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+          }
+          else if resultTask.exception != nil
+          {
+            print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+            
+          }
+          else if resultTask.result != nil
+          {
+            
+            print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT (REQUESTS): ", resultTask.result)
+            self.followeeRequestsMapping = resultTask.result! as! [String: Int]
+            
+          }
+          else
+          {
+            print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+            
+          }
+          
+          return nil
+          
+        }
+
 
     }
-    
+  
     override func viewDidAppear(animated: Bool) {
 
         // If this is not here, then we will upload same user events to dynamo every time.
@@ -262,7 +293,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         shouldShowSearchResults = false
         
         // Should wipe array
-        filteredUsers = Array<User>()
+        filteredUsers = Array<UserPrivacyObjectModel>()
         setUpAnimations(self)
         resetCurrentSearchOffsets()
         
@@ -304,8 +335,18 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         {
             userFullName = filteredUsers[indexPath.item].realname
             userName     = filteredUsers[indexPath.item].username
+          
+            // Check if private account
+            if filteredUsers[indexPath.item].isprivate != nil && filteredUsers[indexPath.item].isprivate == 1 {
+              cell.displayPrivate = true
+            }
+            else {
+              cell.displayPrivate = false
+            }
         }
 
+      
+      
         let image = imageCache.objectForKey(userName) as? UIImage
         
         if image != nil
@@ -317,7 +358,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         {
             cell.cellImage.image = self.defaultImage
         }
-        
         
         // Do not let user add him/herself
         if (userName == self.userName)
@@ -335,6 +375,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 cell.activateDeleteButton()
             }
             // If no relationship, show add button
+            else if (followeeRequestsMapping[userName] != nil)
+            {
+                cell.activatePendingButton()
+            }
             else
             {
                 cell.activateAddButton()
@@ -482,7 +526,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                     dispatch_async(dispatch_get_main_queue(), {
                         self.spinner.stopAnimating()
                         self.noSearchResultsView.hidden = false
-                        self.filteredUsers = Array<User>()
+                        self.filteredUsers = Array<UserPrivacyObjectModel>()
                         self.searchTableView.reloadData()
                         
                     })
@@ -505,7 +549,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 
                 var runningRequests = 0
-                var newFilteredUsersList = Array<User>()
+                var newFilteredUsersList = Array<UserPrivacyObjectModel>()
                 
                 // If lists are not equal, we need to fetch data from the servers
                 // and re-propagate the list
@@ -517,7 +561,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                         if error == nil && result != nil
                         {
                             
-                            let resultUser = result! as User
+                            let resultUser = result! as UserPrivacyObjectModel
                             
                             newFilteredUsersList.append(resultUser)
                             
@@ -660,24 +704,33 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     
     // Implement delegate actions for SearchTableViewCellDelegate
-    func addedUser(username: String) {
-        // When user is added from tableview cell
-        // Add to set to keep track of recently added users
-        recentUsernameAdds.setObject(getTimestampAsInt(), forKey: username)
-        followeesMapping[username] = getTimestampAsInt()
-        print("OKOK. USER ADDED: ", username)
+  func addedUser(username: String, isPrivate: Bool) {
+      if !isPrivate {
+          // When user is added from tableview cell
+          // Add to set to keep track of recently added users
+          recentUsernameAdds.setObject(getTimestampAsInt(), forKey: username)
+          followeesMapping[username] = getTimestampAsInt()
+          print("OKOK. USER ADDED: ", username)
+      }
+      else {
+        followeeRequestsMapping[username] = getTimestampAsInt()
+      }
     }
     
-    func removedUser(username: String) {
-        // When user is removed from tableview cell
-        if recentUsernameAdds.objectForKey(username) != nil
-        {
-            recentUsernameAdds.removeObjectForKey(username)
-        }
-        
-        followeesMapping.removeValueForKey(username)
-        
-        print("OKOK. USER REMOVED: ", username)
+  func removedUser(username: String, isPrivate: Bool) {
+      if !isPrivate {
+          // When user is removed from tableview cell
+          if recentUsernameAdds.objectForKey(username) != nil
+          {
+              recentUsernameAdds.removeObjectForKey(username)
+          }
+          
+          followeesMapping.removeValueForKey(username)
+          
+          print("OKOK. USER REMOVED: ", username)
+      } else {
+        followeeRequestsMapping.removeValueForKey(username)
+      }
 
     }
     

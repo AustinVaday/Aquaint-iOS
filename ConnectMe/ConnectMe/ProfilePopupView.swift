@@ -19,8 +19,9 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     @IBOutlet weak var socialMediaCollectionView: UICollectionView!
     @IBOutlet weak var cellAddButton: UIButton!
     @IBOutlet weak var cellDeleteButton: UIButton!
+    @IBOutlet weak var cellPendingButton: UIButton!
+  
     @IBOutlet weak var noProfilesLinkedLabel: UITextField!
-    @IBOutlet weak var profilesLockedIcon: UIImageView!
   
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
@@ -50,14 +51,27 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
           {
             
               let doIFollow = resultTask.result as? Int
-              if (doIFollow == 1)
-              {
+              if doIFollow == 1 {
                 // Update UI on main thread
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                   self.activateDeleteButton()
                 })
               }
             
+            
+            parameters = ["action":"didISendFollowRequest", "me": self.me, "target": username]
+            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+              if resultTask.error == nil && resultTask.result != nil {
+                let didISendRequest = resultTask.result as? Int
+                if didISendRequest == 1 {
+                  // Update UI on main thread
+                  dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.activatePendingButton()
+                  })
+                }
+              }
+              return nil
+            }
             
             // Get data from Dynamo
             getUserDynamoData(username) { (result, error) in
@@ -70,18 +84,10 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                     doIFollow != 1 && resultUser.username != getCurrentCachedUser() {
                   //TODO: Display a different UI
                   self.displayPrivate = true
-                  dispatch_async(dispatch_get_main_queue(), {
-                    self.profilesLockedIcon.hidden = false
-                  })
                 }
                 else {
                   // User is public, continue as normal
                   self.displayPrivate = false
-                  
-                  dispatch_async(dispatch_get_main_queue(), {
-                    self.profilesLockedIcon.hidden = true
-                  })
-                  
                 }
                 
                 // Update UI on main thread
@@ -184,9 +190,17 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         // If currentUser is not trying to add themselves
         if (currentUserName != userNameLabel.text!)
         {
-            // Call lambda to store user connectons in database!
+            // Call lambda to store user connectons in database! If private account, we store in follow_requests. If public, we 
+            // store in follows
+            var targetAction : String!
+            if displayPrivate {
+              targetAction = "followRequest"
+            } else {
+              targetAction = "follow"
+            }
+          
             let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-            let parameters = ["action": "follow", "target": userNameLabel.text!, "me": currentUserName]
+            let parameters = ["action": targetAction, "target": userNameLabel.text!, "me": currentUserName]
             
             lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
                 
@@ -203,7 +217,11 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                 {
                     // Perform update on UI on main thread
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                      if self.displayPrivate {
+                        self.activatePendingButton()
+                      } else {
                         self.activateDeleteButton()
+                      }
                     })
                 }
                 else
@@ -219,6 +237,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
 
     }
 
+    // Note: We also link pending button to this method as well. Very functionality
     @IBAction func onDeleteConnectionButtonClicked(sender: AnyObject) {
         // Fetch current user from NSUserDefaults
         let currentUserName = me
@@ -226,9 +245,18 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         // If currentUser is not trying to add themselves
         if (currentUserName != userNameLabel.text!)
         {
+            // Call lambda to store user connectons in database! If private account, we store in follow_requests. If public, we
+            // store in follows
+            var targetAction : String!
+            if displayPrivate {
+              targetAction = "unfollowRequest"
+            } else {
+              targetAction = "unfollow"
+            }
+
             // Call lambda to store user connectons in database!
             let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-            let parameters = ["action": "unfollow", "target": userNameLabel.text!, "me": currentUserName]
+            let parameters = ["action": targetAction, "target": userNameLabel.text!, "me": currentUserName]
             
             lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
                 
@@ -288,8 +316,10 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             // Create a faded emblem if private account
             if displayPrivate {
                 cell.emblemImage.alpha = 0.25
+                cell.profilesLockedIcon.hidden = false
             } else {
               cell.emblemImage.alpha = 1
+              cell.profilesLockedIcon.hidden = true
             }
         }
         
@@ -329,6 +359,10 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     cellDeleteButton.superview?.bringSubviewToFront(cellDeleteButton)
   }
 
+  private func activatePendingButton()
+  {
+    cellDeleteButton.superview?.bringSubviewToFront(cellPendingButton)
+  }
 
   
   

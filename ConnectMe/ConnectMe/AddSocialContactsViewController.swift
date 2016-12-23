@@ -363,14 +363,14 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
   
   
   // Implement delegate actions for SearchTableViewCellDelegate
-  func addedUser(username: String) {
+  func addedUser(username: String, isPrivate: Bool) {
     // When user is added from tableview cell
     // Add to set to keep track of recently added users
     recentUsernameAdds.setObject(getTimestampAsInt(), forKey: username)
     followeesMapping[username] = getTimestampAsInt()
   }
   
-  func removedUser(username: String) {
+  func removedUser(username: String, isPrivate: Bool) {
     // When user is removed from tableview cell
     if recentUsernameAdds.objectForKey(username) != nil
     {
