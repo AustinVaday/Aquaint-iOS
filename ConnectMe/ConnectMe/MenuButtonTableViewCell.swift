@@ -9,7 +9,17 @@
 import UIKit
 
 class MenuButtonTableViewCell: UITableViewCell {
-    
-    @IBOutlet weak var menuButtonLabel: UITextField!
+  enum ToggleType: Int {
+    case PRIVATE_PROFILE
+  }
 
+  @IBOutlet weak var menuButtonLabel: UITextField!
+  @IBOutlet weak var menuToggleSwitch: UISwitch!
+  var toggleType : ToggleType!
+  
+  @IBAction func toggleButtonToggled(sender: AnyObject) {
+    if toggleType == ToggleType.PRIVATE_PROFILE {
+      print ("toggle for private profile initiated")
+    }
+  }
 }

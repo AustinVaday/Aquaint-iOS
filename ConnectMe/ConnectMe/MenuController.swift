@@ -960,9 +960,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             switch (indexPath.item)
             {
             case 0: //Link to privacy policy page
-                cell.menuButtonLabel.text = "Privacy Policy"
+                cell.menuButtonLabel.text = "Private Account"
+                cell.menuToggleSwitch.hidden = false
+                cell.menuToggleSwitch.on = false
+                cell.toggleType = MenuButtonTableViewCell.ToggleType.PRIVATE_PROFILE
+            
             case 1: //Log out button
-                cell.menuButtonLabel.text = "More Coming Soon!"
+                cell.menuButtonLabel.text = "Privacy Policy"
                 break;
                 
             default: //Default
@@ -1045,7 +1049,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         if (indexPath.section == MenuData.PRIVACY_SETTINGS.rawValue)
         {
             // Go to privacy page
-            if (indexPath.item == 0)
+            if (indexPath.item == 1)
             {
                 performSegueWithIdentifier("toPrivacyPolicyViewController", sender: self)
             }
