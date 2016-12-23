@@ -20,10 +20,13 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     @IBOutlet weak var cellAddButton: UIButton!
     @IBOutlet weak var cellDeleteButton: UIButton!
     @IBOutlet weak var noProfilesLinkedLabel: UITextField!
+    @IBOutlet weak var profilesLockedIcon: UIImageView!
   
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
     var me: String!
+    var displayPrivate = false
+
   
     /*
     // Only override drawRect: if you perform custom drawing.
@@ -38,89 +41,103 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         userNameLabel.text = username
         self.me = me
       
-        // Get data from Dynamo
-        getUserDynamoData(username) { (result, error) in
-            if error == nil && result != nil
-            {
-                let resultUser = result! as UserPrivacyObjectModel
-              
-              // CHECK IF USER IS PRIVATE.
-              if resultUser.isprivate != nil && resultUser.isprivate == 1 {
-                //TODO: Display a different UI
-              }
-              else {
-                // User is public, continue as normal
-              }
-              
-                // Update UI on main thread
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.realNameTextFieldLabel.text = resultUser.realname
-                    
-                    if resultUser.accounts != nil
-                    {
-                        self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts)
-                        self.noProfilesLinkedLabel.hidden = true
-                    }
-                    else
-                    {
-                        self.keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
-                        self.noProfilesLinkedLabel.hidden = false
-                    }
-                
-                })
-                // Get image data asynchronously (why is this in getUserDynamoData? IF we want to wait for all data to complete before displaying anything)
-                getUserS3Image(username, completion: { (result, error) in
-                    if error == nil
-                    {
-                        if result != nil
-                        {
-                            // Update UI on main thread
-                            dispatch_async(dispatch_get_main_queue(), {
-                                self.profileImageView.image = result! as UIImage
-                                self.profileImageView.layer.cornerRadius = self.profileImageView.frame.width / 2
-                            })
-
-                        }
-                    }
-                    
-                    
-                    // Update UI on main thread
-                    dispatch_async(dispatch_get_main_queue(), {
-                        // Generate dictionary
-                        // Fill the dictionary of all social media names (key) with an image (val).
-                        // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
-                        self.socialMediaImageDictionary = getAllPossibleSocialMediaImages()
-                                              
-                        self.socialMediaCollectionView.reloadData()
-                    })
-                })
-            }
-            
-        }
-        
         // Determine whether "me" follows user or not
         var lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
         var parameters = ["action":"doIFollow", "me": self.me, "target": username]
+      
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-            if resultTask.error == nil && resultTask.result != nil
-            {
+          if resultTask.error == nil && resultTask.result != nil
+          {
+            
+              let doIFollow = resultTask.result as? Int
+              if (doIFollow == 1)
+              {
                 // Update UI on main thread
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    let doIFollow = resultTask.result as? Int
-                    if (doIFollow == 1)
-                    {
-                        self.activateDeleteButton()
-                    }
-//                    else
-//                    {
-//                        self.activateAddButton()
-//                    }
+                  self.activateDeleteButton()
                 })
+              }
+            
+            
+            // Get data from Dynamo
+            getUserDynamoData(username) { (result, error) in
+              if error == nil && result != nil
+              {
+                let resultUser = result! as UserPrivacyObjectModel
                 
+                // CHECK IF USER IS PRIVATE and if we do not follow user (and if we are not that user)
+                if resultUser.isprivate != nil && resultUser.isprivate == 1 &&
+                    doIFollow != 1 && resultUser.username != getCurrentCachedUser() {
+                  //TODO: Display a different UI
+                  self.displayPrivate = true
+                  dispatch_async(dispatch_get_main_queue(), {
+                    self.profilesLockedIcon.hidden = false
+                  })
+                }
+                else {
+                  // User is public, continue as normal
+                  self.displayPrivate = false
+                  
+                  dispatch_async(dispatch_get_main_queue(), {
+                    self.profilesLockedIcon.hidden = true
+                  })
+                  
+                }
+                
+                // Update UI on main thread
+                dispatch_async(dispatch_get_main_queue(), {
+                  self.realNameTextFieldLabel.text = resultUser.realname
+                  
+                  if resultUser.accounts != nil
+                  {
+                    self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts)
+                    self.noProfilesLinkedLabel.hidden = true
+                  }
+                  else
+                  {
+                    self.keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
+                    self.noProfilesLinkedLabel.hidden = false
+                  }
+                  
+                })
+                // Get image data asynchronously (why is this in getUserDynamoData? IF we want to wait for all data to complete before displaying anything)
+                getUserS3Image(username, completion: { (result, error) in
+                  if error == nil
+                  {
+                    if result != nil
+                    {
+                      // Update UI on main thread
+                      dispatch_async(dispatch_get_main_queue(), {
+                        self.profileImageView.image = result! as UIImage
+                        self.profileImageView.layer.cornerRadius = self.profileImageView.frame.width / 2
+                      })
+                      
+                    }
+                  }
+                  
+                  
+                  // Update UI on main thread
+                  dispatch_async(dispatch_get_main_queue(), {
+                    // Generate dictionary
+                    // Fill the dictionary of all social media names (key) with an image (val).
+                    // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
+                    self.socialMediaImageDictionary = getAllPossibleSocialMediaImages()
+                    
+                    self.socialMediaCollectionView.reloadData()
+                  })
+                })
+              }
+              
             }
-            return nil
+
+            
+          }
+          return nil
         }
-        
+
+      
+      
+      
         // Fetch num followers from lambda
         lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
         parameters = ["action":"getNumFollowers", "target": username]
@@ -267,6 +284,13 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             cell.socialMediaType = socialMediaType // facebook, snapchat, etc
             
             cell.emblemImage.layer.cornerRadius = cell.emblemImage.frame.width / 2
+          
+            // Create a faded emblem if private account
+            if displayPrivate {
+                cell.emblemImage.alpha = 0.25
+            } else {
+              cell.emblemImage.alpha = 1
+            }
         }
         
         return cell
@@ -274,6 +298,9 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
+      
+      // Do not let users click on profiles if private setting
+      if !displayPrivate {
         print("SELECTED ITEM AT ", indexPath.item)
         
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
@@ -287,6 +314,8 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         {
             UIApplication.sharedApplication().openURL(socialMediaURL)
         }
+      }
+      
     }
   
   private func activateAddButton()
