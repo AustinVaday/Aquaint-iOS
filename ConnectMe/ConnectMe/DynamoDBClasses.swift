@@ -30,6 +30,26 @@ class User : AWSDynamoDBObjectModel
     
 }
 
+// Derive class to adhere to new privacy model
+class UserPrivacyObjectModel : User {
+  var isprivate : NSNumber!
+}
+
+// AWS DynamoDB minimal object model to just upload privacy settings
+class UserPrivacyMinimalObjectModel : AWSDynamoDBObjectModel {
+  var username: String!
+  var isprivate: NSNumber!
+  
+  class func dynamoDBTableName() -> String {
+    return "aquaint-users"
+  }
+  
+  class func hashKeyAttribute() -> String {
+    return "username"
+  }
+  
+}
+
 // AWS DynamoDB database to store FB UID of each user (for find friends using FB feature)
 class UserFBObjectModel : AWSDynamoDBObjectModel
 {
@@ -37,12 +57,10 @@ class UserFBObjectModel : AWSDynamoDBObjectModel
   var fbuid : String!
   
   class func dynamoDBTableName() -> String {
-    
     return "aquaint-users"
   }
   
   class func hashKeyAttribute() -> String {
-    
     return "username"
   }
   

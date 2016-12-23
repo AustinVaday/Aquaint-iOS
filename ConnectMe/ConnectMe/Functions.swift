@@ -571,6 +571,16 @@ func setCurrentCachedDeviceID(deviceID: String) {
   print("Cache deviceID success: ", deviceID)
 }
 
+func setCurrentCachedPrivacyStatus(privacyStatus: String) {
+  if privacyStatus != "public" && privacyStatus != "private" {
+    print("ERROR. Attempting to cache unnaceptable privacy status. Must be either private or public: ", privacyStatus)
+    return
+  }
+  let defaults = NSUserDefaults.standardUserDefaults()
+  defaults.setObject(privacyStatus, forKey: "privacyStatus")
+  print("Cache deviceID success: ", privacyStatus)
+}
+
 func setCurrentCachedUserEmail(email: String)
 {
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -659,6 +669,21 @@ func getCurrentCachedDeviceID() -> String! {
   
   return currentDeviceID
 }
+
+// Get the current user's privacy setting status, used to determine whether to show follow requests or not.
+func getCurrentCachedPrivacyStatus() -> String! {
+  let defaults = NSUserDefaults.standardUserDefaults()
+  
+  let currentPrivacyStatus = defaults.stringForKey("privacyStatus")
+  
+  if currentPrivacyStatus == nil {
+    print("Uh oh, no cached privacy status available.")
+    return nil
+  }
+  
+  return currentPrivacyStatus
+}
+
 
 // Get the current user email that is signed into the app
 func getCurrentCachedEmail() -> String!

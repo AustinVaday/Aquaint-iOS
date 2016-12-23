@@ -42,8 +42,16 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         getUserDynamoData(username) { (result, error) in
             if error == nil && result != nil
             {
-                let resultUser = result! as User
-                
+                let resultUser = result! as UserPrivacyObjectModel
+              
+              // CHECK IF USER IS PRIVATE.
+              if resultUser.isprivate != nil && resultUser.isprivate == 1 {
+                //TODO: Display a different UI
+              }
+              else {
+                // User is public, continue as normal
+              }
+              
                 // Update UI on main thread
                 dispatch_async(dispatch_get_main_queue(), {
                     self.realNameTextFieldLabel.text = resultUser.realname

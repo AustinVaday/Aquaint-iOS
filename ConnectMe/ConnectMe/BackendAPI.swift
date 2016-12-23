@@ -28,7 +28,7 @@ func setCachedUserFromAWS(userName: String!)
     ********************************************/
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
     
-    dynamoDBObjectMapper.load(User.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.load(UserPrivacyObjectModel.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
         if (resultTask.error != nil)
         {
             print("Error caching user from dynamoDB: ", resultTask.error)
@@ -43,11 +43,17 @@ func setCachedUserFromAWS(userName: String!)
         }
         else
         {
-            let user = resultTask.result as! User
+            let user = resultTask.result as! UserPrivacyObjectModel
             
             setCurrentCachedUserName(userName)
             setCurrentCachedFullName(user.realname)
-            
+            if (user.isprivate != nil && user.isprivate == 1) {
+              setCurrentCachedPrivacyStatus("private")
+            }
+            else {
+              setCurrentCachedPrivacyStatus("public")
+            }
+          
             if user.accounts != nil
             {
                 setCurrentCachedUserProfiles(user.accounts as NSMutableDictionary)
@@ -114,7 +120,7 @@ func setCachedUserFromAWS(userName: String!)
     
 }
 
-func getUserDynamoData(userName: String!, completion: (result: User?, error: NSError?)->())
+func getUserDynamoData(userName: String!, completion: (result: UserPrivacyObjectModel?, error: NSError?)->())
 {
     
     /*******************************************
@@ -122,7 +128,7 @@ func getUserDynamoData(userName: String!, completion: (result: User?, error: NSE
      ********************************************/
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
     
-    dynamoDBObjectMapper.load(User.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.load(UserPrivacyObjectModel.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
         if (resultTask.error != nil)
         {
             print("Error getting user from dynamoDB: ", resultTask.error)
@@ -143,7 +149,7 @@ func getUserDynamoData(userName: String!, completion: (result: User?, error: NSE
         }
         else
         {
-            let user = resultTask.result as! User
+            let user = resultTask.result as! UserPrivacyObjectModel
             
             completion(result: user, error: nil)
         }

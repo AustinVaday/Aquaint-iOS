@@ -58,7 +58,7 @@
 		FF84201E1D299A5E002D2927 /* SignUpVerificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF84201D1D299A5E002D2927 /* SignUpVerificationController.swift */; };
 		FF8420201D299A9C002D2927 /* SignUpFetchMoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF84201F1D299A9C002D2927 /* SignUpFetchMoreDataController.swift */; };
 		FF8420221D29B59F002D2927 /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8420211D29B59F002D2927 /* BackendAPI.swift */; };
-		FF8420241D2B42A0002D2927 /* DynamoDBUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8420231D2B42A0002D2927 /* DynamoDBUser.swift */; };
+		FF8420241D2B42A0002D2927 /* DynamoDBClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8420231D2B42A0002D2927 /* DynamoDBClasses.swift */; };
 		FF8420261D30A138002D2927 /* AddSocialMediaProfilesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8420251D30A138002D2927 /* AddSocialMediaProfilesController.swift */; };
 		FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C341C01AC63001B2634 /* AppDelegate.swift */; };
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
@@ -79,7 +79,6 @@
 		FFBDD75F1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD75E1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift */; };
 		FFBDD7611CD5B6190007A188 /* NewsfeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7601CD5B6190007A188 /* NewsfeedTableViewCell.swift */; };
 		FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */; };
-		FFF2A3501CA891E200C08E38 /* ServerFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */; };
 		FFF3A2A71D488F12009EF4F2 /* MenuProfilesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3A2A61D488F12009EF4F2 /* MenuProfilesCell.swift */; };
 		FFF3A2A91D49BF18009EF4F2 /* MenuButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3A2A81D49BF18009EF4F2 /* MenuButtonTableViewCell.swift */; };
 		FFF3A2AB1D4EBC08009EF4F2 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3A2AA1D4EBC08009EF4F2 /* ContactsTableViewCell.swift */; };
@@ -163,7 +162,7 @@
 		FF84201D1D299A5E002D2927 /* SignUpVerificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpVerificationController.swift; sourceTree = "<group>"; };
 		FF84201F1D299A9C002D2927 /* SignUpFetchMoreDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpFetchMoreDataController.swift; sourceTree = "<group>"; };
 		FF8420211D29B59F002D2927 /* BackendAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendAPI.swift; sourceTree = "<group>"; };
-		FF8420231D2B42A0002D2927 /* DynamoDBUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamoDBUser.swift; sourceTree = "<group>"; };
+		FF8420231D2B42A0002D2927 /* DynamoDBClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamoDBClasses.swift; sourceTree = "<group>"; };
 		FF8420251D30A138002D2927 /* AddSocialMediaProfilesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSocialMediaProfilesController.swift; sourceTree = "<group>"; };
 		FF897C311C01AC63001B2634 /* Aquaint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aquaint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C341C01AC63001B2634 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -189,7 +188,6 @@
 		FFBDD7601CD5B6190007A188 /* NewsfeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsfeedTableViewCell.swift; sourceTree = "<group>"; };
 		FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionClass.swift; sourceTree = "<group>"; };
 		FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Aquaint-Bridging-Header.h"; path = "ConnectMe/Aquaint-Bridging-Header.h"; sourceTree = "<group>"; };
-		FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerFunctions.swift; sourceTree = "<group>"; };
 		FFF3A2A61D488F12009EF4F2 /* MenuProfilesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuProfilesCell.swift; sourceTree = "<group>"; };
 		FFF3A2A81D49BF18009EF4F2 /* MenuButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButtonTableViewCell.swift; sourceTree = "<group>"; };
 		FFF3A2AA1D4EBC08009EF4F2 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
@@ -302,7 +300,6 @@
 				FF84201F1D299A9C002D2927 /* SignUpFetchMoreDataController.swift */,
 				FF84201D1D299A5E002D2927 /* SignUpVerificationController.swift */,
 				FF7878601C3010E600354936 /* LogInController.swift */,
-				FF8420231D2B42A0002D2927 /* DynamoDBUser.swift */,
 				FF23A12E1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift */,
 			);
 			name = Login/Signup;
@@ -325,9 +322,9 @@
 				FF0E82D51D95FB28003E87A1 /* NewsfeedEntryClass.swift */,
 				FF83A4DE1CC59A3800AFB26B /* RBResizer.swift */,
 				FFF442351C4B2244007651DE /* Functions.swift */,
-				FFF2A34F1CA891E200C08E38 /* ServerFunctions.swift */,
 				FF8420211D29B59F002D2927 /* BackendAPI.swift */,
 				FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */,
+				FF8420231D2B42A0002D2927 /* DynamoDBClasses.swift */,
 			);
 			name = HelperFunctions;
 			sourceTree = "<group>";
@@ -767,7 +764,6 @@
 				FFBDD7581CD59A0B0007A188 /* NewsfeedViewController.swift in Sources */,
 				FFBDD7541CD58F910007A188 /* HomeContainerViewController.swift in Sources */,
 				FF1660071D4323F400900686 /* DropDownTableViewFunctions.swift in Sources */,
-				FFF2A3501CA891E200C08E38 /* ServerFunctions.swift in Sources */,
 				FF7878421C26A0CC00354936 /* CameraController.swift in Sources */,
 				FF7878401C26A0A900354936 /* MenuController.swift in Sources */,
 				FF0BF0251CB6DCB3005188DA /* SearchViewController.swift in Sources */,
@@ -802,7 +798,7 @@
 				FFF3A2A91D49BF18009EF4F2 /* MenuButtonTableViewCell.swift in Sources */,
 				FFF3A2A71D488F12009EF4F2 /* MenuProfilesCell.swift in Sources */,
 				FF3834D51D6D529500FC9F2A /* ProfilePopupView.swift in Sources */,
-				FF8420241D2B42A0002D2927 /* DynamoDBUser.swift in Sources */,
+				FF8420241D2B42A0002D2927 /* DynamoDBClasses.swift in Sources */,
 				FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */,
 				FF83A4DF1CC59A3900AFB26B /* RBResizer.swift in Sources */,
 				FF23A1371D9327290062E9A0 /* FollowingViewController.swift in Sources */,

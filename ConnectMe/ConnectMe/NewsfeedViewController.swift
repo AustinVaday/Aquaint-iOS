@@ -579,10 +579,17 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                         getUserDynamoData(getImageAndProfilesForUser, completion: { (result, error) in
                             if result != nil && error == nil
                             {
-                                let user = result! as User
+                                let user = result! as! UserPrivacyObjectModel
                                 newAquaintsNewsfeed[index].displayProfiles = user.accounts
-                                
-                                
+                              
+//                                // CHECK IF USER IS PRIVATE. 
+//                                if user.isprivate != nil && user.isprivate {
+//                                    //TODO: Display a different UI
+//                                }
+//                                else {
+//                                  // User is public, continue as normal
+//                                }
+                              
                                 // Now, get S3 image and profiles for necessary user
                                 print("getImageUser 5 is: ", getImageAndProfilesForUser)
                                 getUserS3Image(getImageAndProfilesForUser, completion: { (result, error) in
