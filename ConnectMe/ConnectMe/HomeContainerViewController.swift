@@ -15,12 +15,12 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
     
     
     @IBOutlet weak var userNameLabel: UILabel!
-    
     @IBOutlet weak var sectionUnderlineView0: UILabel!
     @IBOutlet weak var sectionUnderlineView1: UILabel!
-
     @IBOutlet weak var aquaintsButton: UIButton!
     @IBOutlet weak var youButton: UIButton!
+    @IBOutlet weak var followRequestsView: UIView!
+    @IBOutlet weak var numberRequestsLabel: UILabel!
     
     var connectionRequestList : Array<String>! // MAKE IT Connection type LATER
     var firebaseRootRef : FIRDatabaseReference!
@@ -61,6 +61,12 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         
         // Get current user from NSUserDefaults
         userName = getCurrentCachedUser()
+      
+      if getCurrentCachedPrivacyStatus() == "private" {
+        followRequestsView.hidden = false
+      } else {
+        followRequestsView.hidden = true
+      }
         
         connectionRequestList = Array<String>()
         
@@ -90,7 +96,9 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
 //        hideAllSectionUnderlineViews()
 //        sectionUnderlineView1.hidden = false
     }
-    
+  
+  
+  
     func updateSectionUnderLineView(newViewNum: Int) {
         
         hideAllSectionUnderlineViews()
@@ -113,4 +121,5 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         controller.sectionDelegate = self
     }
 
+  
 }
