@@ -389,7 +389,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         // Set up hyperlink
         let handler = {
           (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-          showPopupForUser(userName, me: self.userName)
+          showPopupForUser(userName, me: self.userName, searchConsistencyDelegate: cell)
         }
       
         cell.cellName.clearActionDictionary()
@@ -701,8 +701,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         animatedObjects.removeAll()
     }
 
-    
-    
     // Implement delegate actions for SearchTableViewCellDelegate
   func addedUser(username: String, isPrivate: Bool) {
       if !isPrivate {

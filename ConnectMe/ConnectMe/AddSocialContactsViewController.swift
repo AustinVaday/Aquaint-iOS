@@ -297,7 +297,7 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
     // Set up hyperlink
     let handler = {
       (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-      showPopupForUser(userName, me: self.userName)
+      showPopupForUser(userName, me: self.userName, searchConsistencyDelegate: cell)
     }
     
     cell.cellName.clearActionDictionary()

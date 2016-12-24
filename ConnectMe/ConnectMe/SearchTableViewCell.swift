@@ -17,7 +17,7 @@ protocol SearchTableViewCellDelegate
   func removedUser(username: String, isPrivate: Bool)
 }
 
-class SearchTableViewCell: UITableViewCell {
+class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDelegate {
     
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var cellName: FRHyperLabel!
@@ -217,5 +217,19 @@ class SearchTableViewCell: UITableViewCell {
         print("You connected", currentUserName ,"and", cellName.text)
 
     }
+  
+  // Implement delegate actions for ProfilePopupSearchCellConsistencyDelegate
+  func profilePopupUserAdded() {
+    if self.displayPrivate {
+      self.activatePendingButton()
+    } else {
+      self.activateDeleteButton()
+    }
+  }
+  
+  func profilePopupUserDeleted() {
+    self.activateAddButton()
+  }
+
     
 }

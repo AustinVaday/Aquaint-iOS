@@ -9,6 +9,12 @@
 import UIKit
 import AWSLambda
 
+// Used to enforce consistency of buttons between popup and search table view cell
+protocol ProfilePopupSearchCellConsistencyDelegate {
+  func profilePopupUserAdded()
+  func profilePopupUserDeleted()
+}
+
 class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSource{
 
     @IBOutlet weak var realNameTextFieldLabel: UITextField!
@@ -20,13 +26,13 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     @IBOutlet weak var cellAddButton: UIButton!
     @IBOutlet weak var cellDeleteButton: UIButton!
     @IBOutlet weak var cellPendingButton: UIButton!
-  
     @IBOutlet weak var noProfilesLinkedLabel: UITextField!
   
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
     var me: String!
     var displayPrivate = false
+    var popupSearchConsistencyDelegate : ProfilePopupSearchCellConsistencyDelegate?
 
   
     /*
@@ -222,6 +228,8 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                       } else {
                         self.activateDeleteButton()
                       }
+                      
+                      self.popupSearchConsistencyDelegate?.profilePopupUserAdded()
                     })
                 }
                 else
@@ -273,8 +281,10 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                 {
                     // Perform update on UI on main thread
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.activateAddButton()
-                    })  
+                      self.activateAddButton()
+                      self.popupSearchConsistencyDelegate?.profilePopupUserDeleted()
+
+                    })
                 }
                 else
                 {

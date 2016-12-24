@@ -834,9 +834,25 @@ func clearCookies (domain: String)
 
 func showPopupForUser(username: String, me: String)
 {
+  let popup = getProfilePopup()
+  let view = popup.contentView as! ProfilePopupView
+  view.setDataForUser(username, me: me)
+  popup.contentView = view
+  popup.show()
+}
+
+
+func showPopupForUser(username: String, me: String, searchConsistencyDelegate: SearchTableViewCell!)
+{
     let popup = getProfilePopup()
     let view = popup.contentView as! ProfilePopupView
     view.setDataForUser(username, me: me)
+  
+    // Used to enforce consistency between search table view cell and popup
+    if searchConsistencyDelegate != nil {
+        view.popupSearchConsistencyDelegate = searchConsistencyDelegate
+    }
+  
     popup.contentView = view
     popup.show()
 }
