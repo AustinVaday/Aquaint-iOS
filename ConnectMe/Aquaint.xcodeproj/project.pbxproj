@@ -35,6 +35,8 @@
 		FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF65D31C1C1E0BFC0015C99F /* Main.storyboard */; };
 		FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF65D3211C1EA3D60015C99F /* SignUpController.swift */; };
 		FF6813F21E0B7D1D007930BA /* AddSocialContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6813F11E0B7D1D007930BA /* AddSocialContactsViewController.swift */; };
+		FF6813F41E0DF1F0007930BA /* FollowRequestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6813F31E0DF1F0007930BA /* FollowRequestsViewController.swift */; };
+		FF6813F61E0DF60D007930BA /* FollowRequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6813F51E0DF60D007930BA /* FollowRequestsTableViewCell.swift */; };
 		FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */; };
 		FF7878401C26A0A900354936 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF78783F1C26A0A900354936 /* MenuController.swift */; };
 		FF7878421C26A0CC00354936 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7878411C26A0CC00354936 /* CameraController.swift */; };
@@ -139,6 +141,8 @@
 		FF65D31D1C1E0BFC0015C99F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FF65D3211C1EA3D60015C99F /* SignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignUpController.swift; path = ../SignUpController.swift; sourceTree = "<group>"; };
 		FF6813F11E0B7D1D007930BA /* AddSocialContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSocialContactsViewController.swift; sourceTree = "<group>"; };
+		FF6813F31E0DF1F0007930BA /* FollowRequestsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequestsViewController.swift; sourceTree = "<group>"; };
+		FF6813F51E0DF60D007930BA /* FollowRequestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequestsTableViewCell.swift; sourceTree = "<group>"; };
 		FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialMediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		FF78783F1C26A0A900354936 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		FF7878411C26A0CC00354936 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
@@ -289,6 +293,7 @@
 				FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */,
 				FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */,
 				FFF3A2AA1D4EBC08009EF4F2 /* ContactsTableViewCell.swift */,
+				FF6813F51E0DF60D007930BA /* FollowRequestsTableViewCell.swift */,
 			);
 			name = TableViewCells;
 			sourceTree = "<group>";
@@ -384,6 +389,7 @@
 				FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */,
 				FF23A13C1D9340480062E9A0 /* PrivacyPolicyViewController.swift */,
 				FF8420251D30A138002D2927 /* AddSocialMediaProfilesController.swift */,
+				FF6813F31E0DF1F0007930BA /* FollowRequestsViewController.swift */,
 				FF897C401C01AC63001B2634 /* Info.plist */,
 			);
 			name = Aquaint;
@@ -762,6 +768,7 @@
 			files = (
 				FF47274D1D48750F0065F418 /* SectionHeaderCell.swift in Sources */,
 				FFBDD7581CD59A0B0007A188 /* NewsfeedViewController.swift in Sources */,
+				FF6813F61E0DF60D007930BA /* FollowRequestsTableViewCell.swift in Sources */,
 				FFBDD7541CD58F910007A188 /* HomeContainerViewController.swift in Sources */,
 				FF1660071D4323F400900686 /* DropDownTableViewFunctions.swift in Sources */,
 				FF7878421C26A0CC00354936 /* CameraController.swift in Sources */,
@@ -807,6 +814,7 @@
 				FF23A13B1D9327990062E9A0 /* AquaintsPageViewController.swift in Sources */,
 				FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */,
 				FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */,
+				FF6813F41E0DF1F0007930BA /* FollowRequestsViewController.swift in Sources */,
 				FF8420261D30A138002D2927 /* AddSocialMediaProfilesController.swift in Sources */,
 				FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */,
 				FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */,

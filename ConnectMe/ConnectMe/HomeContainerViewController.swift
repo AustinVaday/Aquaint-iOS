@@ -115,10 +115,17 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
+      
+      if segue.identifier == "toHomePageViewController" {
         let controller = segue.destinationViewController as! HomePageViewController
-        
         controller.sectionDelegate = self
+      }
+    }
+  
+    // Use to go back to previous VC at ease.
+    @IBAction func unwindBackToHome(segue: UIStoryboardSegue)
+    {
+      print("CALLED UNWIND VC")
     }
 
   
