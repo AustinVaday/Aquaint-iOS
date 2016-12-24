@@ -328,8 +328,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         var userFullName : String!
         var userName : String!
-        var userImage : UIImage!
-        
+      
         // Get applicable user from applicable array
         if (shouldShowSearchResults)
         {
@@ -374,11 +373,12 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             {
                 cell.activateDeleteButton()
             }
-            // If no relationship, show add button
+            // If already pending follow request, display pending button
             else if (followeeRequestsMapping[userName] != nil)
             {
                 cell.activatePendingButton()
             }
+            // If no relationship, show add button
             else
             {
                 cell.activateAddButton()

@@ -17,6 +17,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
   
   @IBOutlet weak var followRequestsTableView: UITableView!
   @IBOutlet weak var spinner: UIActivityIndicatorView!
+  @IBOutlet weak var noContentView: UIView!
   
   var currentUserName : String!
   var socialMediaImageDictionary: Dictionary<String, UIImage>!
@@ -209,6 +210,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
             self.spinner.hidden = true
             self.spinner.stopAnimating()
             self.followerRequestList = Array<Connection>()
+            self.noContentView.hidden = false
             self.followRequestsTableView.reloadData()
             print("RELOADED 0 COUNT DATA")
           })
@@ -223,7 +225,11 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
           })
           
         }
-        
+        else {
+          dispatch_async(dispatch_get_main_queue(), {
+            self.noContentView.hidden = true
+          })
+        }
         // Propogate local data structure -- helps us prevent needing to
         // fetch more data and prevents race conditions later too
         for userData in connectionsFetchedList

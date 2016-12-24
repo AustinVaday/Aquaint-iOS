@@ -10,21 +10,24 @@ import UIKit
 import AWSLambda
 import AWSS3
 import AWSDynamoDB
+import FRHyperLabel
 
 class AddSocialContactsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SearchTableViewCellDelegate {
 
   @IBOutlet weak var friendsTableView: UITableView!
   @IBOutlet weak var numberOfFriendsText: UILabel!
-    
+  @IBOutlet weak var spinner: UIActivityIndicatorView!
+  
   var isNewDataLoading = false
   var defaultImage : UIImage!
   var followeesMapping : [String: Int]!
+  var followeeRequestsMapping : [String: Int]!
   var recentUsernameAdds : NSMutableDictionary!
   var currentSearchBegin = 0
   var currentSearchEnd = 15
   let searchOffset = 15
   let imageCache = NSCache()
-  var users: Array<User>!
+  var users: Array<UserPrivacyObjectModel>!
   var userName: String!
 
   
@@ -32,8 +35,9 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
   var listOfFBUserIDs = Set<String>()
   
   override func viewDidLoad() {
-    users = Array<User>()
+    users = Array<UserPrivacyObjectModel>()
     followeesMapping = [String: Int]()
+    followeeRequestsMapping = [String: Int]()
     recentUsernameAdds = NSMutableDictionary()
 
     userName = getCurrentCachedUser()
@@ -44,7 +48,7 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
     numberOfFriendsText.text = numFriendsFoundStr
     
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-    let parameters = ["action":"getFolloweesDict", "target": userName]
+    var parameters = ["action":"getFolloweesDict", "target": userName]
     lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
       if resultTask.result != nil && resultTask.error == nil
       {
@@ -54,6 +58,18 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
       return nil
       
     }
+    
+    parameters = ["action":"getFolloweeRequestsDict", "target": userName]
+    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+      if resultTask.result != nil && resultTask.error == nil
+      {
+        self.followeeRequestsMapping = resultTask.result! as! [String: Int]
+      }
+      
+      return nil
+      
+    }
+
     
     generateData(self.currentSearchBegin, end: self.currentSearchEnd)
 
@@ -230,6 +246,14 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
     userFullName = users[indexPath.item].realname
     userName     = users[indexPath.item].username
 
+    // Check if private account
+    if users[indexPath.item].isprivate != nil && users[indexPath.item].isprivate == 1 {
+      cell.displayPrivate = true
+    }
+    else {
+      cell.displayPrivate = false
+    }
+    
     let image = imageCache.objectForKey(userName) as? UIImage
     
     if image != nil
@@ -257,17 +281,30 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
       {
         cell.activateDeleteButton()
       }
-        // If no relationship, show add button
+      // If already pending follow request, display pending button
+      else if (followeeRequestsMapping[userName] != nil)
+      {
+        cell.activatePendingButton()
+      }
+      // If no relationship, show add button
       else
       {
         cell.activateAddButton()
       }
       
     }
+    
+    // Set up hyperlink
+    let handler = {
+      (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
+      showPopupForUser(userName, me: self.userName)
+    }
+    
+    cell.cellName.clearActionDictionary()
     cell.cellName.text = userFullName
+    cell.cellName.setLinkForSubstring(userFullName, withLinkHandler: handler)
     cell.cellUserName.text = userName
-    
-    
+
     // Ensure that internal cellImage is circular
     cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
     
@@ -302,12 +339,17 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
 //      spinner.startAnimating()
 //    }
     
+    
+    spinner.startAnimating()
+
     // No pagination just yet..
     for fbUID in self.listOfFBUserIDs {
       print("Processing fbUID: ", fbUID)
       fetchDynamoUserDataFromFBUID(fbUID)
       
     }
+    
+    spinner.stopAnimating()
     
   }
 
@@ -340,18 +382,34 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
         for result in results.items! {
           print("RESULT IS: ", result)
           
-          let user = User()
+          let user = UserPrivacyObjectModel()
           user.realname = (result["realname"]?.S)! as String
           user.username = (result["username"]?.S)! as String
+          if result["isprivate"] != nil {
+            let isprivateString = (result["isprivate"]?.N)! as String
+            user.isprivate = Int(isprivateString)! as NSNumber
+          }
           
           self.users.append(user)
+
+          getUserS3Image(user.username, completion: { (result, error) in
+            
+            if (result != nil)
+            {
+              // Cache user image so we don't have to reload it next time
+              self.imageCache.setObject(result! as UIImage, forKey: user.username)
+              dispatch_async(dispatch_get_main_queue(), {
+                self.friendsTableView.reloadData()
+              })
+
+            }
+            
+          })
+          
           
         }
         
-        dispatch_async(dispatch_get_main_queue(), {
-          self.friendsTableView.reloadData()
-        })
-
+        
       }
       else
       {
