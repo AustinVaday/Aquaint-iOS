@@ -8,6 +8,7 @@
 
 import UIKit
 import FRHyperLabel
+import AWSLambda
 
 class FollowRequestsTableViewCell: UITableViewCell {
   @IBOutlet weak var cellImage: UIImageView!
@@ -31,13 +32,46 @@ class FollowRequestsTableViewCell: UITableViewCell {
   
   @IBAction func onAcceptButtonClicked(sender: AnyObject) {
     print("Ouch rejected..")
+    let follower = cellUserName.text!
+    let currentUser = getCurrentCachedUser()
+    removeFollowRequest(follower, followee: currentUser)
+    createFollow(follower, followee: currentUser)
+    self.cellDeleteButton.hidden = true
+    
   }
   
   @IBAction func onDeleteButtonClicked(sender: AnyObject) {
     print("Woot accepted!")
+    removeFollowRequest(cellUserName.text!, followee: getCurrentCachedUser())
+    self.cellAcceptButton.hidden = true
   }
   
   
+  func removeFollowRequest(follower: String, followee: String) {
+    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+    let parameters = ["action":"unfollowRequest", "me": follower, "target": followee]
+    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+      if resultTask.result != nil && resultTask.error == nil
+      {
+        // Do some animation
+      }
+      
+      return nil
+    }
+  }
+  
+  func createFollow(follower: String, followee: String) {
+    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+    let parameters = ["action":"follow", "me": follower, "target": followee]
+    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+      if resultTask.result != nil && resultTask.error == nil
+      {
+        // Do some animation
+      }
+      
+      return nil
+    }
+  }
 
   
 }

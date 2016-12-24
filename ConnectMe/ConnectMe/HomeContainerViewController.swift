@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import Firebase
 import FBSDKLoginKit
 import FBSDKCoreKit
+import AWSLambda
 
 class HomeContainerViewController: UIViewController, UIPageViewControllerDelegate, HomePageSectionUnderLineViewDelegate {
     
@@ -22,8 +22,6 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
     @IBOutlet weak var followRequestsView: UIView!
     @IBOutlet weak var numberRequestsLabel: UILabel!
     
-    var connectionRequestList : Array<String>! // MAKE IT Connection type LATER
-    var firebaseRootRef : FIRDatabaseReference!
     var userName : String!
     
     // This is our child (container) view controller that holds all our pages
@@ -56,26 +54,27 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         // Show only the bar for the aquaints icon
         sectionUnderlineView0.hidden = false
         
-        // Set up Firebase
-        firebaseRootRef = FIRDatabase.database().reference()
-        
         // Get current user from NSUserDefaults
         userName = getCurrentCachedUser()
       
-      if getCurrentCachedPrivacyStatus() == "private" {
-        followRequestsView.hidden = false
-      } else {
-        followRequestsView.hidden = true
-      }
-        
-        connectionRequestList = Array<String>()
-        
         // Set username label 
         userNameLabel.text = userName
         
 
     }
+  
+  override func viewDidAppear(animated: Bool) {
     
+    if getCurrentCachedPrivacyStatus() == "private" {
+      followRequestsView.hidden = false
+      getAndDisplayNumberRequests()
+    } else {
+      followRequestsView.hidden = true
+    }
+
+    
+  }
+  
     // BUTTONS TO CHANGE THE PAGE
     
         
@@ -98,6 +97,28 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
     }
   
   
+    func getAndDisplayNumberRequests() {
+      let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+      let parameters = ["action":"getNumFollowRequests", "target": userName]
+      lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+        if resultTask.result != nil && resultTask.error == nil
+        {
+          let num = resultTask.result as! Int
+          
+          dispatch_async(dispatch_get_main_queue(), {
+            if num < 100 {
+              self.numberRequestsLabel.text = String(num)
+            } else {
+              self.numberRequestsLabel.text = "99+"
+            }
+          })
+        }
+        
+        return nil
+        
+      }
+      
+    }
   
     func updateSectionUnderLineView(newViewNum: Int) {
         
