@@ -10,6 +10,7 @@ import UIKit
 import FBSDKLoginKit
 import FBSDKCoreKit
 import AWSLambda
+import AWSDynamoDB
 
 class HomeContainerViewController: UIViewController, UIPageViewControllerDelegate, HomePageSectionUnderLineViewDelegate {
     
@@ -65,7 +66,9 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
   
   override func viewDidAppear(animated: Bool) {
     
-    if getCurrentCachedPrivacyStatus() == "private" {
+    let privacyStatus = getCurrentCachedPrivacyStatus()
+    
+    if privacyStatus != nil && privacyStatus == "private" {
       followRequestsView.hidden = false
       getAndDisplayNumberRequests()
     } else {

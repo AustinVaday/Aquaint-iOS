@@ -168,7 +168,6 @@ class SignUpFetchMoreDataController: UIViewController {
     }
 
     @IBAction func onFinishButtonClicked(sender: UIButton) {
-    
         // Disable button so that user cannot click on it twice (this is how errors happen)
         self.nextButton.enabled = false
         
@@ -270,12 +269,13 @@ class SignUpFetchMoreDataController: UIViewController {
                     {
 
                         self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                        // Disable button so that user cannot click on it twice (this is how errors happen)
+                        self.nextButton.enabled = true
 
                     }
 
                     self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
-                    // Disable button so that user cannot click on it twice (this is how errors happen)
-                    self.nextButton.enabled = true
+                  
                 })
 
 
@@ -309,12 +309,13 @@ class SignUpFetchMoreDataController: UIViewController {
                             {
                                 
                                 self.performSegueWithIdentifier(self.segueDestination, sender: nil)
-                                
+                                // Disable button so that user cannot click on it twice (this is how errors happen)
+                                self.nextButton.enabled = true
+
                             }
+                          
                             
                             self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
-                            // Disable button so that user cannot click on it twice (this is how errors happen)
-                            self.nextButton.enabled = true
                         })
 
                     

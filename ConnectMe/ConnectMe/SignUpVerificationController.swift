@@ -243,6 +243,7 @@ class SignUpVerificationController: UIViewController {
                             setCurrentCachedFullName(self.userFullName)
                             setCurrentCachedUserEmail(self.userEmail)
                             setCurrentCachedUserPhone(self.userPhone)
+                            setCurrentCachedPrivacyStatus("public")
                             
                             /*********************
                             *  UPLOAD PHOTO TO S3
