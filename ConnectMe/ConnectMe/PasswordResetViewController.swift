@@ -76,8 +76,8 @@ class PasswordResetViewController: UIViewController {
     // KEYBOARD shift-up buttons functionality
     func registerForKeyboardNotifications()
     {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PasswordResetViewController.keyboardWasShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PasswordResetViewController.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
         
     }
     

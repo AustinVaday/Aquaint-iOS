@@ -62,6 +62,7 @@
 		FF8420221D29B59F002D2927 /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8420211D29B59F002D2927 /* BackendAPI.swift */; };
 		FF8420241D2B42A0002D2927 /* DynamoDBClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8420231D2B42A0002D2927 /* DynamoDBClasses.swift */; };
 		FF8420261D30A138002D2927 /* AddSocialMediaProfilesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8420251D30A138002D2927 /* AddSocialMediaProfilesController.swift */; };
+		FF89728E1E10A44800A4D9C4 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF89728D1E10A44800A4D9C4 /* ForgotPasswordViewController.swift */; };
 		FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C341C01AC63001B2634 /* AppDelegate.swift */; };
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
@@ -168,6 +169,7 @@
 		FF8420211D29B59F002D2927 /* BackendAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendAPI.swift; sourceTree = "<group>"; };
 		FF8420231D2B42A0002D2927 /* DynamoDBClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamoDBClasses.swift; sourceTree = "<group>"; };
 		FF8420251D30A138002D2927 /* AddSocialMediaProfilesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSocialMediaProfilesController.swift; sourceTree = "<group>"; };
+		FF89728D1E10A44800A4D9C4 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		FF897C311C01AC63001B2634 /* Aquaint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aquaint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C341C01AC63001B2634 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FF897C361C01AC63001B2634 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				FF84201D1D299A5E002D2927 /* SignUpVerificationController.swift */,
 				FF7878601C3010E600354936 /* LogInController.swift */,
 				FF23A12E1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift */,
+				FF89728D1E10A44800A4D9C4 /* ForgotPasswordViewController.swift */,
 			);
 			name = Login/Signup;
 			sourceTree = "<group>";
@@ -813,6 +816,7 @@
 				FFBDD75A1CD59A2D0007A188 /* WorldNotificationsViewController.swift in Sources */,
 				FF23A13B1D9327990062E9A0 /* AquaintsPageViewController.swift in Sources */,
 				FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */,
+				FF89728E1E10A44800A4D9C4 /* ForgotPasswordViewController.swift in Sources */,
 				FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */,
 				FF6813F41E0DF1F0007930BA /* FollowRequestsViewController.swift in Sources */,
 				FF8420261D30A138002D2927 /* AddSocialMediaProfilesController.swift in Sources */,

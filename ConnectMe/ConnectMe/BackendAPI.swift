@@ -18,6 +18,7 @@ func getAWSCognitoIdentityUserPool() -> AWSCognitoIdentityUserPool
     let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: nil)
     let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "41v7gese46ar214saeurloufe7", clientSecret: "1lr1abieg6g8fpq06hngo9edqg4qtf63n3cql1rgsvomc11jvs9b", poolId: "us-east-1_yyImSiaeD")
     AWSCognitoIdentityUserPool.registerCognitoIdentityUserPoolWithConfiguration(serviceConfiguration, userPoolConfiguration: userPoolConfiguration, forKey: "UserPool")
+  
     return AWSCognitoIdentityUserPool(forKey: "UserPool")
 }
 
@@ -263,18 +264,17 @@ func getUserPoolData(userName: String!, completion: (result: UserPoolData?, erro
     var userData = UserPoolData()
     // Get AWS UserPool
     let pool:AWSCognitoIdentityUserPool = getAWSCognitoIdentityUserPool()
-    
     //Fetch UserPool Data
     pool.getUser(userName).getDetails().continueWithBlock { (resultTask) -> AnyObject? in
         
         if resultTask.error != nil
         {
-            print("User Pool fetch data in Settings Error:", resultTask.error)
+            print("User Pool fetch data Error:", resultTask.error)
             completion(result: nil, error: resultTask.error)
         }
         else if resultTask.result == nil
         {
-            print("User Pool fetch data in Settings IS NIL...")
+            print("User Pool fetch data IS NIL...")
             completion(result: nil, error: nil)
 
         }
