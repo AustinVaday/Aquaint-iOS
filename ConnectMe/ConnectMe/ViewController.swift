@@ -60,10 +60,65 @@ class ViewController: UIViewController {
     }
     **/
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+ 
+  override func didReceiveMemoryWarning() {
+      super.didReceiveMemoryWarning()
+      // Dispose of any resources that can be recreated.
+  }
+  
+  @IBAction func loginWithFacebookButtonClicked(sender: AnyObject) {
+    let login = FBSDKLoginManager.init()
+    login.logOut()
+    
+    // Open in app instead of web browser!
+    login.loginBehavior = FBSDKLoginBehavior.Native
+    
+    // Request basic profile permissions just to get user ID
+    login.logInWithReadPermissions(["public_profile", "user_friends", "email"], fromViewController: self) { (result, error) in
+      // If no error, store facebook user ID
+      if (error == nil && result != nil) {
+        if (FBSDKAccessToken.currentAccessToken() != nil) {
+          print("Current access user id: ", FBSDKAccessToken.currentAccessToken().userID)
+          print("RESULTOO: ", result)
+
+//          let fbUID = FBSDKAccessToken.currentAccessToken().userID
+          
+          
+          let request = FBSDKGraphRequest(graphPath: "/me?locale=en_US&fields=name,email", parameters: nil)
+          request.startWithCompletionHandler { (connection, result, error) in
+            if error == nil {
+              print("Result is FB!!: ", result)
+              let resultMap = result as! Dictionary<String, String>
+
+              let userFullName = resultMap["name"]
+              let userEmail = resultMap["email"]
+              let fbUID = resultMap["id"]
+
+              
+              let a = "a"
+              
+            } else {
+              print("Error getting **FB friends", error)
+            }
+          }
+
+          
+          // Attempt to find user
+          
+          
+//          let currentUserName = getCurrentCachedUser()
+//          uploadUserFBUIDToDynamo(currentUserName, fbUID: fbUID)
+        }
+      } else if (result == nil && error != nil) {
+        print ("ERROR IS: ", error)
+      } else {
+        print("FAIL LOG IN")
+      }
     }
+
+  }
+  
+  
 
 
 }

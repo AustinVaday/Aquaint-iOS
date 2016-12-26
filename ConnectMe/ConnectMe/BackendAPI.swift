@@ -439,6 +439,38 @@ func updateCurrentUserProfilesDynamoDB(currentUserProfiles: NSMutableDictionary!
     
 }
 
+func uploadUserFBUIDToDynamo(userName: String, fbUID: String)
+{
+  let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+  
+  // Upload user DATA to DynamoDB
+  let dynamoDBUser = UserFBObjectModel()
+  
+  dynamoDBUser.username = userName
+  dynamoDBUser.fbuid = fbUID
+  
+  dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock(
+    { (resultTask) -> AnyObject? in
+      if (resultTask.error != nil) {
+        print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
+      }
+      
+      if (resultTask.exception != nil) {
+        print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
+      }
+      
+      if (resultTask.result == nil) {
+        print ("DYNAMODB ADD PROFILE result is nil....: ")
+      } else if (resultTask.error == nil) {
+        // If successful save
+        print ("DYNAMODB ADD PROFILE SUCCESS: ", resultTask.result)
+      }
+      return nil
+    }
+  )
+  
+}
+
 func warmUpLambda()
 {
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()

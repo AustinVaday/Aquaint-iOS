@@ -125,7 +125,7 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
               let currentUserName = getCurrentCachedUser()
               
               // Needed for 'find friends via facebook' feature
-              self.uploadUserFBUIDToDynamo(currentUserName, fbUID: fbUID)
+              uploadUserFBUIDToDynamo(currentUserName, fbUID: fbUID)
               
               socialMediaName = FBSDKAccessToken.currentAccessToken().userID
 
@@ -747,40 +747,6 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
       animationStyle: .BottomToTop
     )
   }
-  
-  
-  private func uploadUserFBUIDToDynamo(userName: String, fbUID: String)
-  {
-    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-
-    // Upload user DATA to DynamoDB
-    let dynamoDBUser = UserFBObjectModel()
-    
-    dynamoDBUser.username = userName
-    dynamoDBUser.fbuid = fbUID
-    
-    dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock(
-      { (resultTask) -> AnyObject? in
-        if (resultTask.error != nil) {
-          print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
-        }
-        
-        if (resultTask.exception != nil) {
-          print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
-        }
-        
-        if (resultTask.result == nil) {
-          print ("DYNAMODB ADD PROFILE result is nil....: ")
-        } else if (resultTask.error == nil) {
-          // If successful save
-          print ("DYNAMODB ADD PROFILE SUCCESS: ", resultTask.result)
-        }
-        return nil
-      }
-    )
-    
-  }
-
 
   // The below function is too specific -- see general one
   private func updateProfilesDynamoDB(socialMediaType: String!, socialMediaName: String!) {
