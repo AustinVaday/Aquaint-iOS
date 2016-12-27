@@ -962,8 +962,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             case 0: //Link to privacy policy page
                 cell.menuButtonLabel.text = "Private Account"
                 cell.menuToggleSwitch.hidden = false
-
-                if getCurrentCachedPrivacyStatus() == "private" {
+                
+                let privacyStatus = getCurrentCachedPrivacyStatus()
+                if privacyStatus != nil && privacyStatus == "private" {
                   cell.menuToggleSwitch.on = true
                 } else {
                   cell.menuToggleSwitch.on = false

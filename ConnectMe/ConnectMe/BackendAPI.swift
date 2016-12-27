@@ -11,15 +11,29 @@ import AWSCognitoIdentityProvider
 import AWSS3
 import AWSDynamoDB
 import AWSLambda
+import FBSDKCoreKit
+import FBSDKLoginKit
+
+class FacebookProvider: NSObject, AWSIdentityProviderManager {
+  func logins() -> AWSTask {
+    let token = FBSDKAccessToken.currentAccessToken()
+    if token != nil {
+      return AWSTask(result: [AWSIdentityProviderFacebook:token])
+    }
+    return AWSTask(error:NSError(domain: "Facebook Login", code: -1 , userInfo: ["Facebook" : "No current Facebook access token"]))
+  }
+}
 
 // Set up AWS service config (default log-in/sign-up)
 func getAWSCognitoIdentityUserPool() -> AWSCognitoIdentityUserPool
 {
-    let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: nil)
-    let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "41v7gese46ar214saeurloufe7", clientSecret: "1lr1abieg6g8fpq06hngo9edqg4qtf63n3cql1rgsvomc11jvs9b", poolId: "us-east-1_yyImSiaeD")
-    AWSCognitoIdentityUserPool.registerCognitoIdentityUserPoolWithConfiguration(serviceConfiguration, userPoolConfiguration: userPoolConfiguration, forKey: "UserPool")
+//    let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: nil)
+//    let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "41v7gese46ar214saeurloufe7", clientSecret: "1lr1abieg6g8fpq06hngo9edqg4qtf63n3cql1rgsvomc11jvs9b", poolId: "us-east-1_yyImSiaeD")
+//    AWSCognitoIdentityUserPool.registerCognitoIdentityUserPoolWithConfiguration(serviceConfiguration, userPoolConfiguration: userPoolConfiguration, forKey: "UserPool")
+//  
+//    return AWSCognitoIdentityUserPool(forKey: "UserPool")
   
-    return AWSCognitoIdentityUserPool(forKey: "UserPool")
+  return userPool
 }
 
 func setCachedUserFromAWS(userName: String!)
@@ -103,7 +117,7 @@ func setCachedUserFromAWS(userName: String!)
         
         if (error != nil)
         {
-            print("CACHE: COULD NOT GET USER POOLS")
+            print("CACHE: COULD NOT GET USER POOLS \(error)")
 
         }
         

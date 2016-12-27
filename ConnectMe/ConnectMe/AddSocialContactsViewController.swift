@@ -360,13 +360,7 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
     scanInput.tableName = "aquaint-users"
     scanInput.limit = 100
     scanInput.exclusiveStartKey = nil
-    
-    let userNameValue = AWSDynamoDBAttributeValue()
-    userNameValue.S = "herion"
-    let userNameCondition = AWSDynamoDBCondition()
-    userNameCondition.comparisonOperator = AWSDynamoDBComparisonOperator.EQ
-    userNameCondition.attributeValueList = [userNameValue]
-  
+      
     let UIDValue = AWSDynamoDBAttributeValue()
     UIDValue.S = fbUID
     

@@ -14,7 +14,7 @@ import AWSCognitoIdentityProvider
 import AWSMobileHubHelper
 
 
-class LogInController: UIViewController {
+class LogInController: UIViewController, AWSCognitoIdentityPasswordAuthentication {
         
     @IBOutlet weak var userName: UITextField!
     @IBOutlet weak var userPassword: UITextField!
@@ -326,4 +326,15 @@ class LogInController: UIViewController {
         logInButton.enabled = true
         
     }
+  
+  func getPasswordAuthenticationDetails(authenticationInput: AWSCognitoIdentityPasswordAuthenticationInput, passwordAuthenticationCompletionSource: AWSTaskCompletionSource) {
+    
+  }
+    
+  
+  
+  func didCompletePasswordAuthenticationStepWithError(error: NSError) {
+    
+  }
+
 }
