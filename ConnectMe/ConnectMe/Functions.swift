@@ -857,3 +857,16 @@ func showPopupForUser(username: String, me: String, searchConsistencyDelegate: S
     popup.show()
 }
 
+func registerToReceivePushNotifications()
+{
+  
+  // Apple Push Notification initialization
+  let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
+  let pushNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
+  
+  let application = UIApplication.sharedApplication()
+  application.registerUserNotificationSettings(pushNotificationSettings)
+  application.registerForRemoteNotifications()
+
+}
+

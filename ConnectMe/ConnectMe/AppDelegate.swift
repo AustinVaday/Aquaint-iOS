@@ -154,16 +154,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     
     userPool.delegate = self
     
-    
-    // Apple Push Notification initialization
-    let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
-    let pushNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
-    application.registerUserNotificationSettings(pushNotificationSettings)
-    application.registerForRemoteNotifications()
-    
-    print("YOZZ AWS APP DELEGATE")
-    
-    
     return AWSMobileClient.sharedInstance.didFinishLaunching(
       application,
       withOptions: launchOptions
@@ -210,10 +200,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     print("didRegisterForRemoteNotificationsWithDeviceToken: ", deviceTokenStr)
     setCurrentCachedDeviceID(deviceTokenStr)
     
-    // Problem: We need username before we store user's device ID on server. So we have to submit this info in another view controller. 
-    // The app delegate functions may finish AFTER our view controller is instantiated, so we want to create an NS notification
-    // in order to prevent any race conditions
-    NSNotificationCenter.defaultCenter().postNotification(NSNotification.init(name: deviceIdNotificationKey, object: nil, userInfo: nil))
+    uploadDeviceIDDynamoDB(deviceTokenStr)
   }
   
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
