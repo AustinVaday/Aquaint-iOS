@@ -21,7 +21,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
   
   var currentUserName : String!
   var socialMediaImageDictionary: Dictionary<String, UIImage>!
-  var refreshControl : UIRefreshControl!
+  var refreshControl : CustomRefreshControl!
   var followerRequestList : Array<Connection>!
   var defaultImage : UIImage!
   var defaultCollectionViewLayout : UICollectionViewLayout!
@@ -47,7 +47,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
     
     
     // Set up refresh control for when user drags for a refresh.
-    refreshControl = UIRefreshControl()
+    refreshControl = CustomRefreshControl()
     
     // When user pulls, this function will be called
     refreshControl.addTarget(self, action: #selector(FollowRequestsViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
@@ -65,6 +65,8 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
   // Function that is called when user drags/pulls table with intention of refreshing it
   func refreshTable(sender:AnyObject)
   {
+    self.refreshControl.beginRefreshing()
+    
     // Regenerate data
     currentBegin = 0
     currentEnd = offset

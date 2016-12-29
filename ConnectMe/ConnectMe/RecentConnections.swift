@@ -16,7 +16,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     @IBOutlet weak var recentConnTableView: UITableView!
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
-    var refreshControl : UIRefreshControl!
+    var refreshControl : CustomRefreshControl!
     var connectionList : Array<Connection>!
     var expansionObj:CellExpansion!
     var defaultImage : UIImage!
@@ -41,7 +41,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         
         
         // Set up refresh control for when user drags for a refresh.
-        refreshControl = UIRefreshControl()
+        refreshControl = CustomRefreshControl()
 
         // When user pulls, this function will be called
         refreshControl.addTarget(self, action: #selector(RecentConnections.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
@@ -56,12 +56,15 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
+        self.refreshControl.beginRefreshing()
         
         // Clear table (not needed)
 //        connectionList = Array<Connection>()
 //        recentConnTableView.reloadData()
 //        recentConnTableView.layoutIfNeeded()
 
+        self.refreshControl.beginRefreshing()
+      
         // Regenerate data
         generateData()
         

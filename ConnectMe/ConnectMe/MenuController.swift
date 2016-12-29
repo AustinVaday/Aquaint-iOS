@@ -72,7 +72,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var keyValSocialMediaPairList : Array<KeyValSocialMediaPair>!
     var tableViewSectionsList : Array<SectionTitleAndCountPair>!
-    var refreshControl : UIRefreshControl!
+    var refreshControl : CustomRefreshControl!
   
     var listOfFBUserIDs = Set<String>()
     var transitionToAddSocialContactsController = false
@@ -113,7 +113,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         generateData()
 
         // Set up refresh control for when user drags for a refresh.
-        refreshControl = UIRefreshControl()
+        refreshControl = CustomRefreshControl()
         
         // When user pulls, this function will be called
         refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
@@ -1323,8 +1323,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
-//        self.settingsTableView.reloadData()
-
+        self.refreshControl.beginRefreshing()
         generateData()
         
         // Need to end refreshing
@@ -1332,7 +1331,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         {
             self.refreshControl.endRefreshing()
             print("REFRESH CONTROL!")
-//            self.viewDidLoad()
             
         }
 

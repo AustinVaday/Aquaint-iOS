@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="mXh-me-IKn">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YtK-Zp-hh8">
+                    <rect key="frame" x="280" y="10" width="40" height="40"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Emblem" translatesAutoresizingMaskIntoConstraints="NO" id="XNf-Up-RWh">
+                            <rect key="frame" x="3" y="2" width="35" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="35" id="1FR-Sf-MFn"/>
+                                <constraint firstAttribute="height" constant="35" id="RKz-wB-I4K"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="63l-t2-Jpa"/>
+                        <constraint firstItem="XNf-Up-RWh" firstAttribute="centerX" secondItem="YtK-Zp-hh8" secondAttribute="centerX" id="ANE-aG-31j"/>
+                        <constraint firstItem="XNf-Up-RWh" firstAttribute="centerY" secondItem="YtK-Zp-hh8" secondAttribute="centerY" id="G1k-eE-JYT"/>
+                        <constraint firstAttribute="height" constant="40" id="bqz-IP-NkM"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.61960784310000006" green="0.96862745100000003" blue="0.98431372549999996" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="YtK-Zp-hh8" firstAttribute="centerX" secondItem="mXh-me-IKn" secondAttribute="centerX" id="1bY-5b-5ru"/>
+                <constraint firstItem="YtK-Zp-hh8" firstAttribute="centerY" secondItem="mXh-me-IKn" secondAttribute="centerY" id="K8y-jN-HA3"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Emblem" width="362" height="361"/>
+    </resources>
+</document>

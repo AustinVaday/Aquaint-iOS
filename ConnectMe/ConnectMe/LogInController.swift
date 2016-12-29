@@ -267,7 +267,8 @@ class LogInController: UIViewController, AWSCognitoIdentityPasswordAuthenticatio
                     {
                         
                         self.performSegueWithIdentifier(self.segueDestination, sender: nil)
-                        
+                        // Enable the log-in button again
+                        self.logInButton.enabled = true
                     }
                     
                     self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
@@ -308,7 +309,10 @@ class LogInController: UIViewController, AWSCognitoIdentityPasswordAuthenticatio
                         showAlert("Please try again...", message: "The username and password do not match.", buttonTitle: "Try again", sender: self)
                         
                     }
-                    
+                  
+                    // Enable the log-in button again
+                    self.logInButton.enabled = true
+                      
                     // Stop showing activity indicator (spinner)
                     self.spinner.stopAnimating()
                     
@@ -320,10 +324,7 @@ class LogInController: UIViewController, AWSCognitoIdentityPasswordAuthenticatio
             
             return nil
         })
-        
-
-        // Enable the log-in button again
-        logInButton.enabled = true
+      
         
     }
   

@@ -63,6 +63,8 @@
 		FF8420241D2B42A0002D2927 /* DynamoDBClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8420231D2B42A0002D2927 /* DynamoDBClasses.swift */; };
 		FF8420261D30A138002D2927 /* AddSocialMediaProfilesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8420251D30A138002D2927 /* AddSocialMediaProfilesController.swift */; };
 		FF89728E1E10A44800A4D9C4 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF89728D1E10A44800A4D9C4 /* ForgotPasswordViewController.swift */; };
+		FF8972921E14ACB400A4D9C4 /* RefreshContents.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF8972911E14ACB400A4D9C4 /* RefreshContents.xib */; };
+		FF8972941E14B10C00A4D9C4 /* CustomRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8972931E14B10C00A4D9C4 /* CustomRefreshControl.swift */; };
 		FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C341C01AC63001B2634 /* AppDelegate.swift */; };
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
@@ -170,6 +172,8 @@
 		FF8420231D2B42A0002D2927 /* DynamoDBClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamoDBClasses.swift; sourceTree = "<group>"; };
 		FF8420251D30A138002D2927 /* AddSocialMediaProfilesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSocialMediaProfilesController.swift; sourceTree = "<group>"; };
 		FF89728D1E10A44800A4D9C4 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
+		FF8972911E14ACB400A4D9C4 /* RefreshContents.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RefreshContents.xib; sourceTree = "<group>"; };
+		FF8972931E14B10C00A4D9C4 /* CustomRefreshControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomRefreshControl.swift; sourceTree = "<group>"; };
 		FF897C311C01AC63001B2634 /* Aquaint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aquaint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C341C01AC63001B2634 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FF897C361C01AC63001B2634 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -337,6 +341,24 @@
 			name = HelperFunctions;
 			sourceTree = "<group>";
 		};
+		FF8972951E14B27300A4D9C4 /* Custom Refresh Control */ = {
+			isa = PBXGroup;
+			children = (
+				FF8972931E14B10C00A4D9C4 /* CustomRefreshControl.swift */,
+				FF8972911E14ACB400A4D9C4 /* RefreshContents.xib */,
+			);
+			name = "Custom Refresh Control";
+			sourceTree = "<group>";
+		};
+		FF8972961E14B2A900A4D9C4 /* Popup Profiles */ = {
+			isa = PBXGroup;
+			children = (
+				FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */,
+				FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */,
+			);
+			name = "Popup Profiles";
+			sourceTree = "<group>";
+		};
 		FF897C281C01AC63001B2634 = {
 			isa = PBXGroup;
 			children = (
@@ -368,19 +390,19 @@
 			isa = PBXGroup;
 			children = (
 				FF63316F1D286D5100967266 /* AmazonAWS */,
+				FF7C0A491D13A29200C1502D /* Archived/Unused */,
 				FF897C3B1C01AC63001B2634 /* Assets.xcassets */,
 				FF65D31C1C1E0BFC0015C99F /* Main.storyboard */,
 				FFF442391C4C2B21007651DE /* Launch Screen.storyboard */,
-				FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */,
 				FF897C341C01AC63001B2634 /* AppDelegate.swift */,
 				FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */,
 				FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */,
 				FF23A1391D93273C0062E9A0 /* Aquaints-Followers/Following */,
-				FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */,
-				FF7C0A491D13A29200C1502D /* Archived/Unused */,
+				FF8972961E14B2A900A4D9C4 /* Popup Profiles */,
 				FF7C0A4A1D13A2A800C1502D /* HelperFunctions */,
 				FFBDD75B1CD59A390007A188 /* Newsfeed */,
 				FF7C0A481D13A24200C1502D /* Login/Signup */,
+				FF8972951E14B27300A4D9C4 /* Custom Refresh Control */,
 				FF9BFCD61D3F3C3000987D78 /* Custom Search Bars */,
 				FF7C0A471D13A20700C1502D /* TableViewCells */,
 				FF897C361C01AC63001B2634 /* ViewController.swift */,
@@ -606,6 +628,7 @@
 				FFF419B11D23752C00DE4352 /* GoogleService-Info.plist in Resources */,
 				FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */,
 				FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */,
+				FF8972921E14ACB400A4D9C4 /* RefreshContents.xib in Resources */,
 				FF3834D31D6D483E00FC9F2A /* PopUpAlert.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -779,6 +802,7 @@
 				FF0BF0251CB6DCB3005188DA /* SearchViewController.swift in Sources */,
 				FF0E82D61D95FB29003E87A1 /* NewsfeedEntryClass.swift in Sources */,
 				FF84201E1D299A5E002D2927 /* SignUpVerificationController.swift in Sources */,
+				FF8972941E14B10C00A4D9C4 /* CustomRefreshControl.swift in Sources */,
 				FF9BFCD31D3F308A00987D78 /* CustomSearchBar.swift in Sources */,
 				FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */,
 				FF7878461C281A2500354936 /* FriendRequestsController.swift in Sources */,

@@ -17,7 +17,7 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
-    var refreshControl : UIRefreshControl!
+    var refreshControl : CustomRefreshControl!
     var connectionList : Array<Connection>!
     var expansionObj:CellExpansion!
     var defaultImage : UIImage!
@@ -46,7 +46,7 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
         
         
         // Set up refresh control for when user drags for a refresh.
-        refreshControl = UIRefreshControl()
+        refreshControl = CustomRefreshControl()
         
         // When user pulls, this function will be called
         refreshControl.addTarget(self, action: #selector(RecentConnections.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
@@ -64,6 +64,8 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
+        self.refreshControl.beginRefreshing()
+      
         // Regenerate data
         currentBegin = 0
         currentEnd = offset

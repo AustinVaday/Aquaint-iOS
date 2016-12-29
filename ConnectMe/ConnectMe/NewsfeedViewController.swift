@@ -21,7 +21,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     var aquaintNewsfeed : Array<NewsfeedEntry>!
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
-    var refreshControl : UIRefreshControl!
+    var refreshControl : CustomRefreshControl!
     var defaultImage : UIImage!
     var newsfeedList : NSArray! // Array of dictionary to hold all newsfeed data
     var expansionObj:CellExpansion!
@@ -82,8 +82,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         // Set up refresh control for when user drags for a refresh.
-        refreshControl = UIRefreshControl()
-        
+        refreshControl = CustomRefreshControl()
+      
         // When user pulls, this function will be called
         refreshControl.addTarget(self, action: #selector(NewsfeedViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
         newsfeedTableView.addSubview(refreshControl)
@@ -99,14 +99,14 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
-        
         userDidRefreshTable = true
+        self.refreshControl.beginRefreshing()
 
         generateData(0)
         newsfeedPageNum = 0
         
         // Need to end refreshing
-        delay(1)
+        delay(1.5)
         {
             self.refreshControl.endRefreshing()
         }

@@ -23,7 +23,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     var firebaseLinkedAccountsRef: FIRDatabaseReference!
     var firebaseConnectionsRef: FIRDatabaseReference!
     var firebaseUserImagesRef: FIRDatabaseReference!
-    var refreshControl : UIRefreshControl!
+    var refreshControl : CustomRefreshControl!
     var connectionList : Array<Connection>!
     var defaultImage : UIImage!
     
@@ -192,7 +192,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         
         
         // Set up refresh control for when user drags for a refresh.
-        refreshControl = UIRefreshControl()
+        refreshControl = CustomRefreshControl()
         //        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         // When user pulls, this function will be called
         refreshControl.addTarget(self, action: #selector(WorldNotificationsViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
@@ -205,6 +205,8 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
+        self.refreshControl.beginRefreshing()
+      
         worldConnectionsTableView.reloadData()
         
         // Need to end refreshing

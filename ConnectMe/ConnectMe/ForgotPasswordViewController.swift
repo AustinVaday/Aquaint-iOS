@@ -170,7 +170,7 @@ class ForgotPasswordViewController: UIViewController {
   
   @IBAction func onFinishButtonClicked(sender: UIButton) {
     // Disable button so that user cannot click on it twice (this is how errors happen)
-//    self.nextButton.enabled = false
+    self.nextButton.enabled = false
     
     let userNameString:String = userName.text!
     let userPasswordString:String = userPassword.text!
@@ -243,6 +243,7 @@ class ForgotPasswordViewController: UIViewController {
               // Popup - say that we sent code to a number. Enter code here
               dispatch_async(dispatch_get_main_queue(), {
                 self.showAndProcessUsernameAlert(poolUser, password: userPasswordString)
+                self.nextButton.enabled = true
               })
             }
             else {

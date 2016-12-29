@@ -869,4 +869,3 @@ func registerToReceivePushNotifications()
   application.registerForRemoteNotifications()
 
 }
-
