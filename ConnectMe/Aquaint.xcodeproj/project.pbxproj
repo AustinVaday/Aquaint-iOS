@@ -65,6 +65,8 @@
 		FF89728E1E10A44800A4D9C4 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF89728D1E10A44800A4D9C4 /* ForgotPasswordViewController.swift */; };
 		FF8972921E14ACB400A4D9C4 /* RefreshContents.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF8972911E14ACB400A4D9C4 /* RefreshContents.xib */; };
 		FF8972941E14B10C00A4D9C4 /* CustomRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8972931E14B10C00A4D9C4 /* CustomRefreshControl.swift */; };
+		FF8972981E198FF000A4D9C4 /* FollowerListView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF8972971E198FF000A4D9C4 /* FollowerListView.storyboard */; };
+		FF89729A1E1991D500A4D9C4 /* FollowerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8972991E1991D500A4D9C4 /* FollowerListViewController.swift */; };
 		FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C341C01AC63001B2634 /* AppDelegate.swift */; };
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
@@ -174,6 +176,8 @@
 		FF89728D1E10A44800A4D9C4 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		FF8972911E14ACB400A4D9C4 /* RefreshContents.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RefreshContents.xib; sourceTree = "<group>"; };
 		FF8972931E14B10C00A4D9C4 /* CustomRefreshControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomRefreshControl.swift; sourceTree = "<group>"; };
+		FF8972971E198FF000A4D9C4 /* FollowerListView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FollowerListView.storyboard; sourceTree = "<group>"; };
+		FF8972991E1991D500A4D9C4 /* FollowerListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowerListViewController.swift; sourceTree = "<group>"; };
 		FF897C311C01AC63001B2634 /* Aquaint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aquaint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C341C01AC63001B2634 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FF897C361C01AC63001B2634 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -268,10 +272,12 @@
 		FF23A1391D93273C0062E9A0 /* Aquaints-Followers/Following */ = {
 			isa = PBXGroup;
 			children = (
+				FF8972971E198FF000A4D9C4 /* FollowerListView.storyboard */,
 				FF23A1301D9326E40062E9A0 /* AquaintsContainerViewController.swift */,
 				FF23A1341D9327170062E9A0 /* FollowersViewController.swift */,
 				FF23A1361D9327290062E9A0 /* FollowingViewController.swift */,
 				FF23A13A1D9327990062E9A0 /* AquaintsPageViewController.swift */,
+				FF8972991E1991D500A4D9C4 /* FollowerListViewController.swift */,
 			);
 			name = "Aquaints-Followers/Following";
 			sourceTree = "<group>";
@@ -344,8 +350,8 @@
 		FF8972951E14B27300A4D9C4 /* Custom Refresh Control */ = {
 			isa = PBXGroup;
 			children = (
-				FF8972931E14B10C00A4D9C4 /* CustomRefreshControl.swift */,
 				FF8972911E14ACB400A4D9C4 /* RefreshContents.xib */,
+				FF8972931E14B10C00A4D9C4 /* CustomRefreshControl.swift */,
 			);
 			name = "Custom Refresh Control";
 			sourceTree = "<group>";
@@ -624,6 +630,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF8972981E198FF000A4D9C4 /* FollowerListView.storyboard in Resources */,
 				FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */,
 				FFF419B11D23752C00DE4352 /* GoogleService-Info.plist in Resources */,
 				FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */,
@@ -806,6 +813,7 @@
 				FF9BFCD31D3F308A00987D78 /* CustomSearchBar.swift in Sources */,
 				FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */,
 				FF7878461C281A2500354936 /* FriendRequestsController.swift in Sources */,
+				FF89729A1E1991D500A4D9C4 /* FollowerListViewController.swift in Sources */,
 				FF7878771C34EC4A00354936 /* RecentConnections.swift in Sources */,
 				FF0BF0231CB6DC78005188DA /* ProfileViewController.swift in Sources */,
 				FF90CFF61CD08DE8003DEA18 /* HomeViewController.swift in Sources */,
