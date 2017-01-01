@@ -30,6 +30,10 @@ class CustomRefreshControl: UIRefreshControl {
     let refreshContents = NSBundle.mainBundle().loadNibNamed("RefreshContents", owner: self, options: nil)
     customView = refreshContents[0] as! UIView
     spinnerImageView = customView.subviews.first! as UIView
+    
+    // Hide on initial load
+    spinnerImageView.hidden = true
+    
     customView.bounds = self.bounds
     customView.frame = self.frame
     self.addSubview(customView)
