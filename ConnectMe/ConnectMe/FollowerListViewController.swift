@@ -120,6 +120,26 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     }
   }
   
+  func changeUser(newUserName: String) {
+    self.currentUserName = newUserName
+    
+    // Regenerate data
+    currentBegin = 0
+    currentEnd = offset
+    isNewDataLoading = false
+    generateData(false, start: currentBegin, end: currentEnd)
+  }
+  
+  func changeLambdaAction(newLambdaAction: String) {
+    self.lambdaAction = newLambdaAction
+    
+    // Regenerate data
+    currentBegin = 0
+    currentEnd = offset
+    isNewDataLoading = false
+    generateData(false, start: currentBegin, end: currentEnd)
+  }
+  
   
   
   // TABLE VIEW
@@ -305,7 +325,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     
     // Get array of connections from Lambda -- RDS
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-    let parameters = ["action":"getFollowers", "target": currentUserName, "start": start, "end": end]
+    let parameters = ["action": lambdaAction, "target": currentUserName, "start": start, "end": end]
     
     lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
       if resultTask.error != nil
