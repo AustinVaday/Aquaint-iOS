@@ -841,6 +841,12 @@ func showPopupForUser(username: String, me: String)
   popup.show()
 }
 
+func showPopupForUserWithView(view: ProfilePopupView)
+{
+  let popup = getProfilePopup()
+  popup.contentView = view
+  popup.show()
+}
 
 func showPopupForUser(username: String, me: String, searchConsistencyDelegate: SearchTableViewCell!)
 {

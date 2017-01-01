@@ -67,6 +67,7 @@
 		FF8972941E14B10C00A4D9C4 /* CustomRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8972931E14B10C00A4D9C4 /* CustomRefreshControl.swift */; };
 		FF8972981E198FF000A4D9C4 /* FollowerListView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF8972971E198FF000A4D9C4 /* FollowerListView.storyboard */; };
 		FF89729A1E1991D500A4D9C4 /* FollowerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8972991E1991D500A4D9C4 /* FollowerListViewController.swift */; };
+		FF89729C1E19B34B00A4D9C4 /* AquaintsSingleFollowerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF89729B1E19B34B00A4D9C4 /* AquaintsSingleFollowerListViewController.swift */; };
 		FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C341C01AC63001B2634 /* AppDelegate.swift */; };
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
@@ -178,6 +179,7 @@
 		FF8972931E14B10C00A4D9C4 /* CustomRefreshControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomRefreshControl.swift; sourceTree = "<group>"; };
 		FF8972971E198FF000A4D9C4 /* FollowerListView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FollowerListView.storyboard; sourceTree = "<group>"; };
 		FF8972991E1991D500A4D9C4 /* FollowerListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowerListViewController.swift; sourceTree = "<group>"; };
+		FF89729B1E19B34B00A4D9C4 /* AquaintsSingleFollowerListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintsSingleFollowerListViewController.swift; sourceTree = "<group>"; };
 		FF897C311C01AC63001B2634 /* Aquaint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aquaint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C341C01AC63001B2634 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FF897C361C01AC63001B2634 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 			children = (
 				FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */,
 				FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */,
+				FF89729B1E19B34B00A4D9C4 /* AquaintsSingleFollowerListViewController.swift */,
 			);
 			name = "Popup Profiles";
 			sourceTree = "<group>";
@@ -805,6 +808,7 @@
 				FFBDD7541CD58F910007A188 /* HomeContainerViewController.swift in Sources */,
 				FF1660071D4323F400900686 /* DropDownTableViewFunctions.swift in Sources */,
 				FF7878421C26A0CC00354936 /* CameraController.swift in Sources */,
+				FF89729C1E19B34B00A4D9C4 /* AquaintsSingleFollowerListViewController.swift in Sources */,
 				FF7878401C26A0A900354936 /* MenuController.swift in Sources */,
 				FF0BF0251CB6DCB3005188DA /* SearchViewController.swift in Sources */,
 				FF0E82D61D95FB29003E87A1 /* NewsfeedEntryClass.swift in Sources */,

@@ -374,6 +374,34 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     cellDeleteButton.superview?.bringSubviewToFront(cellPendingButton)
   }
 
+  @IBAction func viewFollowersButtonClicked(sender: AnyObject) {
+    showViewController("getFollowers")
+  }
+  
+  @IBAction func viewFollowingButtonClicked(sender: AnyObject) {
+    showViewController("getFollowees")
+  }
+  
+  func showViewController(lambdaAction: String) {
+    // Let's use a re-usable view just for viewing user follows/followings!
+    let storyboard = UIStoryboard(name: "PopUpAlert", bundle: nil)
+    let viewController = storyboard.instantiateViewControllerWithIdentifier("AquaintsSingleFollowerListViewController") as! AquaintsSingleFollowerListViewController
+    viewController.currentUserName = self.userNameLabel.text
+    viewController.lambdaAction = lambdaAction
+    viewController.profilePopupView = self
+    
+    // Fetch VC on top view
+    var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+    while ((topVC!.presentedViewController) != nil) {
+      topVC = topVC!.presentedViewController
+    }
+    
+    // Note: Need to dismiss this popup so we can display another VC. We will restore the popup later,
+    // which is why we pass in this class and it's data to the next view controller. 
+    self.dismissPresentingPopup()
+    topVC?.presentViewController(viewController, animated: true, completion: nil)
+
+  }
   
   
 }

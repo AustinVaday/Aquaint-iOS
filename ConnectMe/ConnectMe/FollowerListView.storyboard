@@ -94,7 +94,7 @@
                                                                             <constraint firstAttribute="width" constant="32" id="t58-u1-kc2"/>
                                                                             <constraint firstAttribute="height" constant="32" id="zLz-Se-eAk"/>
                                                                         </constraints>
-                                                                        <state key="normal" image="ED915386-DC51-44CA-A208-D2C164983A88"/>
+                                                                        <state key="normal" image="957418DD-1402-45CC-94E8-802476CF6AD5"/>
                                                                     </button>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="eCx-4K-lAb">
                                                                         <rect key="frame" x="-1" y="-1" width="38" height="38"/>
@@ -170,11 +170,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="lsc-iT-yhE" firstAttribute="centerX" secondItem="whf-oD-yNw" secondAttribute="centerX" id="0j4-Fa-NWp"/>
                             <constraint firstItem="whf-oD-yNw" firstAttribute="centerY" secondItem="i1i-2A-QBp" secondAttribute="centerY" constant="-51.5" id="AdF-23-8Ga"/>
-                            <constraint firstItem="lsc-iT-yhE" firstAttribute="centerX" secondItem="i1i-2A-QBp" secondAttribute="centerX" id="BeD-lK-uMr"/>
-                            <constraint firstItem="lsc-iT-yhE" firstAttribute="bottom" secondItem="dg8-pf-bSs" secondAttribute="top" id="Ilq-Ki-fff"/>
-                            <constraint firstItem="lsc-iT-yhE" firstAttribute="leading" secondItem="i1i-2A-QBp" secondAttribute="leading" id="dGf-K1-J6h"/>
-                            <constraint firstItem="lsc-iT-yhE" firstAttribute="centerY" secondItem="i1i-2A-QBp" secondAttribute="centerY" id="gsp-XH-Zyr"/>
+                            <constraint firstItem="lsc-iT-yhE" firstAttribute="top" secondItem="i1i-2A-QBp" secondAttribute="top" id="JPx-us-Ls2"/>
+                            <constraint firstItem="lsc-iT-yhE" firstAttribute="bottom" secondItem="dg8-pf-bSs" secondAttribute="top" id="UIA-rG-jjV"/>
+                            <constraint firstItem="lsc-iT-yhE" firstAttribute="leading" secondItem="i1i-2A-QBp" secondAttribute="leading" id="mxC-XM-66y"/>
                             <constraint firstItem="whf-oD-yNw" firstAttribute="centerX" secondItem="i1i-2A-QBp" secondAttribute="centerX" id="y2a-gR-2xs"/>
                         </constraints>
                     </view>
@@ -189,7 +189,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ED915386-DC51-44CA-A208-D2C164983A88" width="32" height="32">
+        <image name="957418DD-1402-45CC-94E8-802476CF6AD5" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
