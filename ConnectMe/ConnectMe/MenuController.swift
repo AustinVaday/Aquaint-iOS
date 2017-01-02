@@ -920,7 +920,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case MenuData.SOCIAL_ACTIONS.rawValue:
           // return regular button cell
           let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
-          
+          cell.menuToggleSwitch.hidden = true
+
           switch (indexPath.item)
           {
           case 0: // button
@@ -938,7 +939,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case MenuData.NOTIFICATION_SETTINGS.rawValue:
             // return regular button cell
             let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
-            
+            cell.menuToggleSwitch.hidden = true
+
             switch (indexPath.item)
             {
             case 0: // button
@@ -956,7 +958,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case MenuData.PRIVACY_SETTINGS.rawValue:
             // return regular button cell
             let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
-            
+            cell.menuToggleSwitch.hidden = true
+
             switch (indexPath.item)
             {
             case 0: //Link to privacy policy page
@@ -987,7 +990,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case MenuData.ACTIONS.rawValue:
             // return regular button cell
             let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
-            
+            cell.menuToggleSwitch.hidden = true
+
             switch (indexPath.item)
             {
             case 0:
