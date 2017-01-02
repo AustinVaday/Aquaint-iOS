@@ -31,7 +31,7 @@ class FollowRequestsTableViewCell: UITableViewCell {
   }
   
   @IBAction func onAcceptButtonClicked(sender: AnyObject) {
-    print("Ouch rejected..")
+    print("Woot accepted!")
     let follower = cellUserName.text!
     let currentUser = getCurrentCachedUser()
     removeFollowRequest(follower, followee: currentUser)
@@ -41,7 +41,7 @@ class FollowRequestsTableViewCell: UITableViewCell {
   }
   
   @IBAction func onDeleteButtonClicked(sender: AnyObject) {
-    print("Woot accepted!")
+    print("Ouch rejected..")
     removeFollowRequest(cellUserName.text!, followee: getCurrentCachedUser())
     self.cellAcceptButton.hidden = true
   }
@@ -62,7 +62,7 @@ class FollowRequestsTableViewCell: UITableViewCell {
   
   func createFollow(follower: String, followee: String) {
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-    let parameters = ["action":"follow", "me": follower, "target": followee]
+    let parameters = ["action":"follow", "me": follower, "target": followee, "userapproved": 1]
     lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
       if resultTask.result != nil && resultTask.error == nil
       {
