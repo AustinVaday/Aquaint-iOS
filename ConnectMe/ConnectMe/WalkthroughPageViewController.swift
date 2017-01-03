@@ -8,16 +8,17 @@
 
 import UIKit
 
+protocol WalkthroughPageViewDelegate {
+  func didHitLastPage()
+  func didLeaveLastPage()
+}
+
 class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
   
   var arrayOfViewControllers: Array<UIViewController>!
   var currentPageIndex = 0 //UPDATED in changePage and didFinishAnimating methods
-  // Delegating properties
-  //    weak var pageDelegate:MainPageViewControllerDelegate?
-  // Protocol properties
-  
-  
-  var sectionDelegate : MainPageSectionUnderLineViewDelegate?
+  let numPages = 4
+  var pageDelegate : WalkthroughPageViewDelegate?
   
   
   override func viewDidLoad() {
@@ -85,6 +86,7 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     
     if viewController.restorationIdentifier == "Walkthrough3"
     {
+      pageDelegate?.didLeaveLastPage()
       return arrayOfViewControllers[2]
     }
 
@@ -99,14 +101,14 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     // Only show the updated section underline if the transition is completed.
     // Previously, we did not check this, so if the user would "fake" a swipe to the left,
     // the section underline would be changed (improper behavior). This is now fixed!
-    if completed
+    if completed && currentPageIndex == numPages - 1
     {
-      sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
+      pageDelegate?.didHitLastPage()
     }
   }
   
   func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
-    return 4
+    return numPages
   }
   
   func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
@@ -135,9 +137,27 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     if nextViewController.restorationIdentifier == "Walkthrough3"
     {
       currentPageIndex = 3
+      pageDelegate?.didHitLastPage()
     }
     
     print(currentPageIndex)
+    
+  }
+  
+  func goToNextPage() {
+    let direction = UIPageViewControllerNavigationDirection.Forward
+    
+    if currentPageIndex < numPages - 1 {
+      currentPageIndex = currentPageIndex + 1
+      let destinationVC = arrayOfViewControllers[currentPageIndex]
+      setViewControllers([destinationVC], direction: direction, animated: true, completion: nil)
+      
+      // If last page
+      if currentPageIndex == numPages - 1 {
+        pageDelegate?.didHitLastPage()
+      }
+
+    }
     
   }
 //  

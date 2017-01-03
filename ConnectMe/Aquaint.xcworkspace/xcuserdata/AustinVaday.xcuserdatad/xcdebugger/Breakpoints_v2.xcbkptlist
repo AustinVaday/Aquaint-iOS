@@ -74,7 +74,7 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/ViewController.swift"
-                  timestampString = "504675871.514892"
+                  timestampString = "505099030.099136"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "89"
@@ -89,7 +89,7 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/ViewController.swift"
-                  timestampString = "504675871.515298"
+                  timestampString = "505099030.099357"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "91"
@@ -170,7 +170,7 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/ViewController.swift"
-                  timestampString = "504675871.519388"
+                  timestampString = "505099030.147542"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "80"
@@ -185,7 +185,7 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/ViewController.swift"
-                  timestampString = "504675871.519631"
+                  timestampString = "505099030.147692"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "81"
@@ -208,6 +208,38 @@
             startingLineNumber = "50"
             endingLineNumber = "50"
             landmarkName = "beginRefreshing()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ConnectMe/WalkthroughContainerViewController.swift"
+            timestampString = "505099019.213096"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "didHitLastPage()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ConnectMe/WalkthroughPageViewController.swift"
+            timestampString = "505099427.384896"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
+            landmarkName = "pageViewController(_:willTransitionToViewControllers:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

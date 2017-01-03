@@ -8,28 +8,40 @@
 
 import UIKit
 
-class WalkthroughContainerViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+class WalkthroughContainerViewController: UIViewController, WalkthroughPageViewDelegate {
 
-        // Do any additional setup after loading the view.
-    }
+  @IBOutlet weak var footerButton: UIButton!
+  
+  // This is our child (container) view controller that holds all our pages
+  var walkthroughPageViewController: WalkthroughPageViewController!
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
-    /*
-    // MARK: - Navigation
+    // Get the walkthroughPageViewController, this holds all our pages!
+    walkthroughPageViewController = self.childViewControllers.last as! WalkthroughPageViewController
+    walkthroughPageViewController.pageDelegate = self
+      // Do any additional setup after loading the view.
+  }
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+  override func didReceiveMemoryWarning() {
+      super.didReceiveMemoryWarning()
+      // Dispose of any resources that can be recreated.
+  }
+  
+  func didHitLastPage() {
+    footerButton.setTitle("LINK PROFILES", forState: UIControlState.Normal)
+  }
+  
+  func didLeaveLastPage() {
+    footerButton.setTitle("NEXT", forState: UIControlState.Normal)
+
+  }
+
+  @IBAction func onNextButtonClicked(sender: AnyObject) {
+    walkthroughPageViewController.goToNextPage()
+  }
+   
 
 }
