@@ -59,7 +59,13 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Animate one of our embles out
         addSingleEmblemAnimation(self.view.frame.width)
     }
-      
+
+  @IBAction func onFindFacebookFriendsButtonClicked(sender: AnyObject) {
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    let findFBFriendsVC = storyboard.instantiateViewControllerWithIdentifier("AddSocialContactsViewController") as! AddSocialContactsViewController
+    self.presentViewController(findFBFriendsVC, animated: true, completion: nil)
+  }
+  
     override func viewDidLoad() {
         makeViewShine(emblemButton.imageView!)
 
@@ -434,6 +440,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             UIApplication.sharedApplication().openURL(socialMediaURL)
         }
     }
+  
+  
     
     private func generateData(pageNum: Int)
     {

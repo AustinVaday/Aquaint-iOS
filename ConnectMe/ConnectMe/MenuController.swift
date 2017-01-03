@@ -1051,8 +1051,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
           // Find facebook friends to follow button
           if (indexPath.item == 0)
           {
-//            performSegueWithIdentifier("toResetPasswordViewController", sender: self)
-              getFacebookFriendsUsingApp()
+            performSegueWithIdentifier("toAddSocialContactsViewController", sender: self)
+//              getFacebookFriendsUsingApp()
           }
           
         }
@@ -1068,59 +1068,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     }
   
-    func getFacebookFriendsUsingApp()
-    {
-      let login = FBSDKLoginManager.init()
-      login.logOut()
-      
-      // Open in app instead of web browser!
-      login.loginBehavior = FBSDKLoginBehavior.Native
-      
-      // Request basic profile permissions just to get user ID
-      login.logInWithReadPermissions(["public_profile", "user_friends"], fromViewController: self) { (result, error) in
-        // If no error, store facebook user ID
-        if (error == nil && result != nil) {
-          print("SUCCESS LOG IN!", result.debugDescription)
-          print(result.description)
-          
-          print("RESULTOO: ", result)
-          
-          if (FBSDKAccessToken.currentAccessToken() != nil) {
-            
-            print("Current access user id: ", FBSDKAccessToken.currentAccessToken().userID)
-            
-            let request = FBSDKGraphRequest(graphPath: "/me/friends?fields=id", parameters: nil)
-            request.startWithCompletionHandler { (connection, result, error) in
-              if error == nil {
-                let resultMap = result as! Dictionary<String, AnyObject>
-                let resultIds = resultMap["data"] as! Array<Dictionary<String, String>>
-                
-                for object in resultIds {
-                  print("Id is: ", object["id"]! as String)
-                  let id = object["id"]! as String
-                  self.listOfFBUserIDs.insert(id)
-                }
-                
-                self.transitionToAddSocialContactsController = true
-                
-              } else {
-                print("Error getting **FB friends", error)
-              }
-            }
-          }
-        } else if (result == nil && error != nil) {
-          print ("ERROR IS: ", error)
-        } else {
-          print("FAIL LOG IN")
-        }
-      }
-      
-      
-      
-      print("YOLOGINYO")
-      
-    }
-    
+  
     func logUserOut()
     {
         
@@ -1636,11 +1584,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             let vc = segue.destinationViewController as! AddSocialMediaProfilesController
             vc.delegate = self
         }
-        else if segue.identifier == "toAddSocialContactsViewController"
-        {
-          let vc = segue.destinationViewController as! AddSocialContactsViewController
-          vc.listOfFBUserIDs = self.listOfFBUserIDs
-        }
+//        else if segue.identifier == "toAddSocialContactsViewController"
+//        {
+//          let vc = segue.destinationViewController as! AddSocialContactsViewController
+//          vc.listOfFBUserIDs = self.listOfFBUserIDs
+//        }
       
     }
     

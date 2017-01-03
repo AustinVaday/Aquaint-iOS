@@ -465,7 +465,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         customSearchController = CustomSearchController(searchResultsController: self, searchBarFrame: frame, searchBarFont: font, searchBarTextColor: textColor, searchBarTintColor: tintColor)
         
-        customSearchController.customSearchBar.placeholder = "Search for friends"
+        customSearchController.customSearchBar.placeholder = "Search for people"
         
         
         customSearchController.customDelegate = self

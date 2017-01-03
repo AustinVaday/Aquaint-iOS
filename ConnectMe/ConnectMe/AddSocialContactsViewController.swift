@@ -11,6 +11,8 @@ import AWSLambda
 import AWSS3
 import AWSDynamoDB
 import FRHyperLabel
+import FBSDKLoginKit
+
 
 class AddSocialContactsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SearchTableViewCellDelegate {
 
@@ -30,8 +32,6 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
   var users: Array<UserPrivacyObjectModel>!
   var userName: String!
 
-  
-  // Data retrieved from previous VC
   var listOfFBUserIDs = Set<String>()
   
   override func viewDidLoad() {
@@ -42,10 +42,6 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
 
     userName = getCurrentCachedUser()
     defaultImage = UIImage(imageLiteral: "Person Icon Black")
-    
-    let numFriendsFound = listOfFBUserIDs.count
-    let numFriendsFoundStr = "We found " + String(numFriendsFound) + " of your Facebook friends on Aquaint."
-    numberOfFriendsText.text = numFriendsFoundStr
     
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
     var parameters = ["action":"getFolloweesDict", "target": userName]
@@ -70,8 +66,25 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
       
     }
 
+    dispatch_async(dispatch_get_main_queue()) { 
+      self.getFacebookFriendsUsingApp { (error) in
+        if error == nil {
+          
+          let numFriendsFound = self.listOfFBUserIDs.count
+//          let numFriendsFoundStr = "You have " + String(numFriendsFound) + " friends on Facebook that use Aquaint."
+          // Use arbirtary indicator until we can be certain that the numFriendsFound number is consistent with
+          // the number of cells that it displays. Right now, it is not.
+          let numFriendsFoundStr = "We found some of your Facebook friends on Aquaint!"
+          dispatch_async(dispatch_get_main_queue(), {
+            self.numberOfFriendsText.text = numFriendsFoundStr
+            self.numberOfFriendsText.hidden = false
+          })
+          
+          self.generateData(self.currentSearchBegin, end: self.currentSearchEnd)
+        }
+      }
+    }
     
-    generateData(self.currentSearchBegin, end: self.currentSearchEnd)
 
   }
   
@@ -204,6 +217,10 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
     
   }
 
+  @IBAction func backButtonClicked(sender: AnyObject) {
+    self.dismissViewControllerAnimated(true, completion: nil)
+  }
+  
   func scrollViewDidScroll(scrollView: UIScrollView) {
     /*
     if scrollView == friendsTableView
@@ -353,6 +370,58 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
     
   }
 
+
+  func getFacebookFriendsUsingApp(completion: (error: NSError?)->())
+  {
+    let login = FBSDKLoginManager.init()
+//    login.logOut()
+    
+    // Open in app instead of web browser!
+    login.loginBehavior = FBSDKLoginBehavior.Native
+    
+    // Request basic profile permissions just to get user ID
+    login.logInWithReadPermissions(["public_profile", "user_friends"], fromViewController: self) { (result, error) in
+      // If no error, store facebook user ID
+      if (error == nil && result != nil) {
+        print("SUCCESS LOG IN!", result.debugDescription)
+        print(result.description)
+        
+        print("RESULTOO: ", result)
+        
+        if (FBSDKAccessToken.currentAccessToken() != nil) {
+          
+          print("Current access user id: ", FBSDKAccessToken.currentAccessToken().userID)
+          
+          let request = FBSDKGraphRequest(graphPath: "/me/friends?fields=id", parameters: nil)
+          request.startWithCompletionHandler { (connection, result, error) in
+            if error == nil {
+              let resultMap = result as! Dictionary<String, AnyObject>
+              let resultIds = resultMap["data"] as! Array<Dictionary<String, String>>
+              
+              for object in resultIds {
+                print("Id is: ", object["id"]! as String)
+                let id = object["id"]! as String
+                self.listOfFBUserIDs.insert(id)
+              }
+              
+              completion(error: nil)
+              
+            } else {
+              print("Error getting **FB friends", error)
+              completion(error: error)
+            }
+          }
+        }
+      } else {
+        completion(error: error)
+      }
+    }
+    
+    
+    
+    print("YOLOGINYO")
+    
+  }
 
   private func fetchDynamoUserDataFromFBUID(fbUID: String) {
     let dynamoDB = AWSDynamoDB.defaultDynamoDB()
