@@ -40,8 +40,8 @@ class SignUpVerificationController: UIViewController {
     var userPhone: String!
     var userEmail: String!
     
-    let segueDestination = "toMainContainerViewController"
-    
+    let segueDestination = "toWalkthroughContainerViewController"
+  
     override func viewDidLoad() {
         super.viewDidLoad()
         
