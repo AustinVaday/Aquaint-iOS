@@ -18,6 +18,11 @@ class WalkthroughContainerViewController: UIViewController, WalkthroughPageViewD
   var walkthroughPageViewController: WalkthroughPageViewController!
   var animatedObjects : Array<UIView>!
   var socialMediaImages : Array<UIImage>!
+  
+  let nextModeString = "NEXT"
+  let transitionModeString = "LINK PROFILES"
+  let segueDestionation = "toMainContainerViewController"
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -49,16 +54,28 @@ class WalkthroughContainerViewController: UIViewController, WalkthroughPageViewD
   }
   
   func didHitLastPage() {
-    footerButton.setTitle("LINK PROFILES", forState: UIControlState.Normal)
+    footerButton.setTitle(transitionModeString, forState: UIControlState.Normal)
   }
   
   func didLeaveLastPage() {
-    footerButton.setTitle("NEXT", forState: UIControlState.Normal)
-
+    footerButton.setTitle(nextModeString, forState: UIControlState.Normal)
   }
 
   @IBAction func onNextButtonClicked(sender: AnyObject) {
-    walkthroughPageViewController.goToNextPage()
+    
+    if footerButton.titleLabel?.text == nextModeString {
+      walkthroughPageViewController.goToNextPage()
+    } else {
+      performSegueWithIdentifier(segueDestionation, sender: self)
+    }
+  }
+  
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    
+    if segue.identifier == segueDestionation {
+      let nextVC = segue.destinationViewController as! MainContainerViewController
+      nextVC.arrivedFromWalkthrough = true
+    }
   }
   
   private func setUpAnimations(viewController: UIViewController, subView: UIView)

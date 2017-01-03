@@ -33,7 +33,8 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     var firebaseRootRef : FIRDatabaseReference!
     var userName : String!
     var reachability: Reachability!
-
+    var arrivedFromWalkthrough = false
+  
     // This is our child (container) view controller that holds all our pages
     var mainPageViewController: MainPageViewController!
 
@@ -50,7 +51,6 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     }
       
     override func viewDidLoad() {
-      
         // Get the mainPageViewController, this holds all our pages!
         mainPageViewController = self.childViewControllers.last as! MainPageViewController
 
@@ -76,6 +76,27 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         
         // Set banner hidden by default
         noInternetBanner.hidden = true
+
+        // Make user add profiles if they just signed up
+        if arrivedFromWalkthrough {
+          // Go to settings page
+          let dummyButton = UIButton()
+          self.goToPage3(dummyButton)
+          
+          // Take user to AddSocialMediaProfilesController so they can add in profiles
+          let storyboard = UIStoryboard(name: "Main", bundle: nil)
+          let addSocialMediaVC = storyboard.instantiateViewControllerWithIdentifier("AddSocialMediaProfilesController") as! AddSocialMediaProfilesController
+          
+          let menuVC = mainPageViewController.childViewControllers.last as! MenuController
+  
+          // This is important. If we do not set delegate, user cannot add in profiles properly.
+          addSocialMediaVC.delegate = menuVC
+
+          dispatch_async(dispatch_get_main_queue(), {
+            self.presentViewController(addSocialMediaVC, animated: true, completion: nil)
+          })
+          
+        }
       
 //        debugPrint("Adding deviceID to dynamoDB table...");
 //        updateDeviceIDDynamoDB()
