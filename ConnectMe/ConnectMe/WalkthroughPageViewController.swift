@@ -105,6 +105,12 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     {
       pageDelegate?.didHitLastPage()
     }
+    
+    // If we're at the second-to-last-page, always configure this.
+    // Note this is not entirely correct, but suffices for our implementation
+    if completed && currentPageIndex == numPages - 2 {
+      pageDelegate?.didLeaveLastPage()
+    }
   }
   
   func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
