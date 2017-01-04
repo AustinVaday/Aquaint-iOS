@@ -40,8 +40,8 @@ class SignUpVerificationController: UIViewController {
     var userPhone: String!
     var userEmail: String!
     
-    let segueDestination = "toMainContainerViewController"
-    
+    let segueDestination = "toWalkthroughContainerViewController"
+  
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -243,6 +243,7 @@ class SignUpVerificationController: UIViewController {
                             setCurrentCachedFullName(self.userFullName)
                             setCurrentCachedUserEmail(self.userEmail)
                             setCurrentCachedUserPhone(self.userPhone)
+                            setCurrentCachedPrivacyStatus("public")
                             
                             /*********************
                             *  UPLOAD PHOTO TO S3

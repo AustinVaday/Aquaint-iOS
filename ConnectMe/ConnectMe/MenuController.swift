@@ -14,12 +14,15 @@ import AWSDynamoDB
 import AWSS3
 import AWSLambda
 import SCLAlertView
+import FBSDKLoginKit
+import FBSDKCoreKit
 
 class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     enum MenuData: Int {
         case LINKED_PROFILES
         case MY_INFORMATION
+        case SOCIAL_ACTIONS
         case NOTIFICATION_SETTINGS
         case PRIVACY_SETTINGS
         case ACTIONS
@@ -69,8 +72,10 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var keyValSocialMediaPairList : Array<KeyValSocialMediaPair>!
     var tableViewSectionsList : Array<SectionTitleAndCountPair>!
-    var refreshControl : UIRefreshControl!
-
+    var refreshControl : CustomRefreshControl!
+  
+    var listOfFBUserIDs = Set<String>()
+    var transitionToAddSocialContactsController = false
     // AWS credentials provider
     let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
     
@@ -98,6 +103,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableViewSectionsList = Array<SectionTitleAndCountPair>()
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Linked Profiles", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "My Information", sectionCount: 3))
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Discover Friends", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Notification Settings", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 2))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Account Actions", sectionCount: 2))
@@ -107,11 +113,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         generateData()
 
         // Set up refresh control for when user drags for a refresh.
-        refreshControl = UIRefreshControl()
+        refreshControl = CustomRefreshControl()
         
         // When user pulls, this function will be called
         refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
         settingsTableView.addSubview(refreshControl)
+    
+      
     }
     
     /*=======================================================
@@ -128,7 +136,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // in viewWillAppear, then we'll keep uploading the same info to dynamo
         newUserAccountsForNewsfeed = NSMutableDictionary()
     }
-    
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
@@ -202,7 +209,16 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
     }
-    
+  
+  override func viewDidAppear(animated: Bool) {
+    // After FBSDK returns from getting user contacts, we call the segue here in order to prevent warning where
+    // one cannot perform sugue due to hierarchy of view controllers
+    if transitionToAddSocialContactsController {
+      self.performSegueWithIdentifier("toAddSocialContactsViewController", sender: self)
+      transitionToAddSocialContactsController = false
+    }
+  }
+  
     // KEYBOARD shift-up buttons functionality
     func registerForKeyboardNotifications()
     {
@@ -805,6 +821,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case MenuData.LINKED_PROFILES.rawValue:
             returnHeight = defaultTableViewCellHeight
             break;
+        case MenuData.SOCIAL_ACTIONS.rawValue:
+            returnHeight = CGFloat(50)
+          break;
         case MenuData.MY_INFORMATION.rawValue:
             returnHeight = defaultTableViewCellHeight
             break;
@@ -898,10 +917,30 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             }
             return cell
             break;
+        case MenuData.SOCIAL_ACTIONS.rawValue:
+          // return regular button cell
+          let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
+          cell.menuToggleSwitch.hidden = true
+
+          switch (indexPath.item)
+          {
+          case 0: // button
+            cell.menuButtonLabel.text = "Find Facebook friends"
+            break;
+            
+          default: //Default
+            cell.menuButtonLabel.text = ""
+            
+          }
+          
+          return cell
+          
+          break;
         case MenuData.NOTIFICATION_SETTINGS.rawValue:
             // return regular button cell
             let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
-            
+            cell.menuToggleSwitch.hidden = true
+
             switch (indexPath.item)
             {
             case 0: // button
@@ -919,13 +958,25 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case MenuData.PRIVACY_SETTINGS.rawValue:
             // return regular button cell
             let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
-            
+            cell.menuToggleSwitch.hidden = true
+
             switch (indexPath.item)
             {
             case 0: //Link to privacy policy page
-                cell.menuButtonLabel.text = "Privacy Policy"
+                cell.menuButtonLabel.text = "Private Account"
+                cell.menuToggleSwitch.hidden = false
+                
+                let privacyStatus = getCurrentCachedPrivacyStatus()
+                if privacyStatus != nil && privacyStatus == "private" {
+                  cell.menuToggleSwitch.on = true
+                } else {
+                  cell.menuToggleSwitch.on = false
+                }
+                
+                cell.toggleType = MenuButtonTableViewCell.ToggleType.PRIVATE_PROFILE
+            
             case 1: //Log out button
-                cell.menuButtonLabel.text = "More Coming Soon!"
+                cell.menuButtonLabel.text = "Privacy Policy"
                 break;
                 
             default: //Default
@@ -939,7 +990,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         case MenuData.ACTIONS.rawValue:
             // return regular button cell
             let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
-            
+            cell.menuToggleSwitch.hidden = true
+
             switch (indexPath.item)
             {
             case 0:
@@ -993,19 +1045,30 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                 logUserOut()
             }
         }
-        
+      
+        if (indexPath.section == MenuData.SOCIAL_ACTIONS.rawValue)
+        {
+          // Find facebook friends to follow button
+          if (indexPath.item == 0)
+          {
+            performSegueWithIdentifier("toAddSocialContactsViewController", sender: self)
+//              getFacebookFriendsUsingApp()
+          }
+          
+        }
+      
         if (indexPath.section == MenuData.PRIVACY_SETTINGS.rawValue)
         {
             // Go to privacy page
-            if (indexPath.item == 0)
+            if (indexPath.item == 1)
             {
                 performSegueWithIdentifier("toPrivacyPolicyViewController", sender: self)
             }
         }
     
     }
-    
-    
+  
+  
     func logUserOut()
     {
         
@@ -1212,8 +1275,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {
-//        self.settingsTableView.reloadData()
-
+        self.refreshControl.beginRefreshing()
         generateData()
         
         // Need to end refreshing
@@ -1221,7 +1283,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         {
             self.refreshControl.endRefreshing()
             print("REFRESH CONTROL!")
-//            self.viewDidLoad()
             
         }
 
@@ -1523,6 +1584,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             let vc = segue.destinationViewController as! AddSocialMediaProfilesController
             vc.delegate = self
         }
+//        else if segue.identifier == "toAddSocialContactsViewController"
+//        {
+//          let vc = segue.destinationViewController as! AddSocialContactsViewController
+//          vc.listOfFBUserIDs = self.listOfFBUserIDs
+//        }
+      
     }
     
     

@@ -109,8 +109,8 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
         // Open in app instead of web browser!
         login.loginBehavior = FBSDKLoginBehavior.Native
 
-        // Request basic profile permissions just to get user ID
-        login.logInWithReadPermissions(["public_profile"], fromViewController: self) { (result, error) in
+        // Request basic profile permissions just to get user ID. UPDATE: also get friends list for 'find friends via facebook' feature
+        login.logInWithReadPermissions(["public_profile", "user_friends"], fromViewController: self) { (result, error) in
           // If no error, store facebook user ID
           if (error == nil && result != nil) {
             print("SUCCESS LOG IN!", result.debugDescription)
@@ -121,6 +121,12 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
             if (FBSDKAccessToken.currentAccessToken() != nil) {
               print("FBSDK userID is:", FBSDKAccessToken.currentAccessToken().userID)
 
+              let fbUID = FBSDKAccessToken.currentAccessToken().userID
+              let currentUserName = getCurrentCachedUser()
+              
+              // Needed for 'find friends via facebook' feature
+              uploadUserFBUIDToDynamo(currentUserName, fbUID: fbUID)
+              
               socialMediaName = FBSDKAccessToken.currentAccessToken().userID
 
               if self.delegate != nil {
@@ -635,6 +641,8 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
   //
   //        return cell
   //    }
+  
+  
 
   @IBAction func backButtonClicked(sender: AnyObject) {
     /* It's good to dismiss it, but in this case we want to
@@ -648,7 +656,7 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
     let usernameString = textField.text?.lowercaseString
     textField.text = removeAllNonAlphaNumeric(
       usernameString!,
-      charactersToKeep: "_-"
+      charactersToKeep: "_-."
     )
   }
 
@@ -739,7 +747,6 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
       animationStyle: .BottomToTop
     )
   }
-
 
   // The below function is too specific -- see general one
   private func updateProfilesDynamoDB(socialMediaType: String!, socialMediaName: String!) {

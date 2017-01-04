@@ -11,7 +11,7 @@ import Firebase
 import ReachabilitySwift
 import AWSDynamoDB
 
-class MainContainerViewController: UIViewController, UIPageViewControllerDelegate, RegisterPushNotificationsProtocol, MainPageSectionUnderLineViewDelegate {
+class MainContainerViewController: UIViewController, UIPageViewControllerDelegate, MainPageSectionUnderLineViewDelegate {
     
     @IBOutlet weak var sectionUnderlineView0: UIView!
     @IBOutlet weak var sectionUnderlineView1: UIView!
@@ -33,11 +33,14 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     var firebaseRootRef : FIRDatabaseReference!
     var userName : String!
     var reachability: Reachability!
-
+    var arrivedFromWalkthrough = false
+  
     // This is our child (container) view controller that holds all our pages
     var mainPageViewController: MainPageViewController!
 
-    
+    let deviceIdNotificationKey = "com.aquaintapp.deviceIdNotificationKey"
+
+  
     // Hides all the section bars for the section underline view/bars under the footer icons
     func hideAllSectionUnderlineViews()
     {
@@ -46,51 +49,8 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         sectionUnderlineView2.hidden = true
         sectionUnderlineView3.hidden = true
     }
-  
-  func uploadDeviceToDynamo() {
-    print("uploadDeviceToDynamo()")
-    self.updateDeviceIDDynamoDB()
-  }
-  
-  // upload current user's device ID to dynamoDB database
-  func updateDeviceIDDynamoDB() {
-    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-   
-      let currentUser = getCurrentCachedUser()
-      let currentDeviceID = getCurrentCachedDeviceID()
       
-      let dynamoDBDevice = Device()
-      dynamoDBDevice.username = currentUser
-      debugPrint("updateDeviceIDDynamoDB: dynamoDBDevice.username = ", currentUser)
-      dynamoDBDevice.deviceid = currentDeviceID
-      debugPrint("updateDeviceIDDynamoDB: dynamoDBDevice.deviceid = ", currentDeviceID)
-      
-      
-      dynamoDBObjectMapper.save(dynamoDBDevice).continueWithBlock(
-        { (resultTask) -> AnyObject? in
-          if (resultTask.error != nil) {
-            print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
-          }
-          
-          if (resultTask.exception != nil) {
-            print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
-          }
-          
-          if (resultTask.result == nil) {
-            print ("DYNAMODB ADD PROFILE result is nil....: ")
-          } else if (resultTask.error == nil) {
-            // If successful save
-            print ("DynamoDB add profile success. ", resultTask.result)
-            
-            // Refresh something...
-          }
-          return nil
-      })
-    
-  }
-    
     override func viewDidLoad() {
-
         // Get the mainPageViewController, this holds all our pages!
         mainPageViewController = self.childViewControllers.last as! MainPageViewController
 
@@ -116,32 +76,60 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         
         // Set banner hidden by default
         noInternetBanner.hidden = true
+
+        // Make user add profiles if they just signed up
+        if arrivedFromWalkthrough {
+          // Go to settings page
+          let dummyButton = UIButton()
+          self.goToPage3(dummyButton)
+          
+          // Take user to AddSocialMediaProfilesController so they can add in profiles
+          let storyboard = UIStoryboard(name: "Main", bundle: nil)
+          let addSocialMediaVC = storyboard.instantiateViewControllerWithIdentifier("AddSocialMediaProfilesController") as! AddSocialMediaProfilesController
+          
+          let menuVC = mainPageViewController.childViewControllers.last as! MenuController
+  
+          // This is important. If we do not set delegate, user cannot add in profiles properly.
+          addSocialMediaVC.delegate = menuVC
+
+          dispatch_async(dispatch_get_main_queue(), {
+            self.presentViewController(addSocialMediaVC, animated: true, completion: nil)
+          })
+          
+        }
       
-        //debugPrint("Adding deviceID to dynamoDB table...");
-        //updateDeviceIDDynamoDB()
-        
+//        debugPrint("Adding deviceID to dynamoDB table...");
+//        updateDeviceIDDynamoDB()
+      
+      // This is triggered by AppDelegate once we finally have user's Device ID. Then we can upload it to the server
+//      NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainContainerViewController.updateDeviceIDDynamoDB), name: deviceIdNotificationKey, object: nil)
+      
+        registerToReceivePushNotifications()
+//        updateDeviceIDDynamoDB()
+      
     }
-    
+  
+  override func viewDidDisappear(animated: Bool) {
+//    NSNotificationCenter.defaultCenter().removeObserver(self)
+
+  }
+  
     override func viewDidAppear(animated: Bool) {
         // Set up notifications for determining whether to display the "No Internet" Banner.
-        do
-        {
-            reachability = try Reachability(hostname: "www.google.com")
+        do {
+          reachability = try Reachability(hostname: "www.google.com")
         }
-        catch
-        {
-            print("Could not create reachability object to www.google.com")
+        catch {
+          print("Could not create reachability object to www.google.com")
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: reachability)
         
-        do
-        {
-            try reachability.startNotifier()
+        do {
+          try reachability.startNotifier()
         }
-        catch
-        {
-            print("Could not start reachability notifier...")
+        catch {
+          print("Could not start reachability notifier...")
         }
     }
     
@@ -236,5 +224,5 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         controller.sectionDelegate = self
 
     }
-    
+  
 }

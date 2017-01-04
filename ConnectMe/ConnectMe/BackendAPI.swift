@@ -10,14 +10,30 @@ import Foundation
 import AWSCognitoIdentityProvider
 import AWSS3
 import AWSDynamoDB
+import AWSLambda
+import FBSDKCoreKit
+import FBSDKLoginKit
+
+class FacebookProvider: NSObject, AWSIdentityProviderManager {
+  func logins() -> AWSTask {
+    let token = FBSDKAccessToken.currentAccessToken()
+    if token != nil {
+      return AWSTask(result: [AWSIdentityProviderFacebook:token])
+    }
+    return AWSTask(error:NSError(domain: "Facebook Login", code: -1 , userInfo: ["Facebook" : "No current Facebook access token"]))
+  }
+}
 
 // Set up AWS service config (default log-in/sign-up)
 func getAWSCognitoIdentityUserPool() -> AWSCognitoIdentityUserPool
 {
-    let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: nil)
-    let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "41v7gese46ar214saeurloufe7", clientSecret: "1lr1abieg6g8fpq06hngo9edqg4qtf63n3cql1rgsvomc11jvs9b", poolId: "us-east-1_yyImSiaeD")
-    AWSCognitoIdentityUserPool.registerCognitoIdentityUserPoolWithConfiguration(serviceConfiguration, userPoolConfiguration: userPoolConfiguration, forKey: "UserPool")
-    return AWSCognitoIdentityUserPool(forKey: "UserPool")
+//    let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: nil)
+//    let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "41v7gese46ar214saeurloufe7", clientSecret: "1lr1abieg6g8fpq06hngo9edqg4qtf63n3cql1rgsvomc11jvs9b", poolId: "us-east-1_yyImSiaeD")
+//    AWSCognitoIdentityUserPool.registerCognitoIdentityUserPoolWithConfiguration(serviceConfiguration, userPoolConfiguration: userPoolConfiguration, forKey: "UserPool")
+//  
+//    return AWSCognitoIdentityUserPool(forKey: "UserPool")
+  
+  return userPool
 }
 
 func setCachedUserFromAWS(userName: String!)
@@ -27,7 +43,7 @@ func setCachedUserFromAWS(userName: String!)
     ********************************************/
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
     
-    dynamoDBObjectMapper.load(User.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.load(UserPrivacyObjectModel.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
         if (resultTask.error != nil)
         {
             print("Error caching user from dynamoDB: ", resultTask.error)
@@ -42,11 +58,17 @@ func setCachedUserFromAWS(userName: String!)
         }
         else
         {
-            let user = resultTask.result as! User
+            let user = resultTask.result as! UserPrivacyObjectModel
             
             setCurrentCachedUserName(userName)
             setCurrentCachedFullName(user.realname)
-            
+            if (user.isprivate != nil && user.isprivate == 1) {
+              setCurrentCachedPrivacyStatus("private")
+            }
+            else {
+              setCurrentCachedPrivacyStatus("public")
+            }
+          
             if user.accounts != nil
             {
                 setCurrentCachedUserProfiles(user.accounts as NSMutableDictionary)
@@ -95,7 +117,7 @@ func setCachedUserFromAWS(userName: String!)
         
         if (error != nil)
         {
-            print("CACHE: COULD NOT GET USER POOLS")
+            print("CACHE: COULD NOT GET USER POOLS \(error)")
 
         }
         
@@ -113,7 +135,7 @@ func setCachedUserFromAWS(userName: String!)
     
 }
 
-func getUserDynamoData(userName: String!, completion: (result: User?, error: NSError?)->())
+func getUserDynamoData(userName: String!, completion: (result: UserPrivacyObjectModel?, error: NSError?)->())
 {
     
     /*******************************************
@@ -121,7 +143,7 @@ func getUserDynamoData(userName: String!, completion: (result: User?, error: NSE
      ********************************************/
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
     
-    dynamoDBObjectMapper.load(User.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.load(UserPrivacyObjectModel.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
         if (resultTask.error != nil)
         {
             print("Error getting user from dynamoDB: ", resultTask.error)
@@ -142,7 +164,7 @@ func getUserDynamoData(userName: String!, completion: (result: User?, error: NSE
         }
         else
         {
-            let user = resultTask.result as! User
+            let user = resultTask.result as! UserPrivacyObjectModel
             
             completion(result: user, error: nil)
         }
@@ -256,18 +278,17 @@ func getUserPoolData(userName: String!, completion: (result: UserPoolData?, erro
     var userData = UserPoolData()
     // Get AWS UserPool
     let pool:AWSCognitoIdentityUserPool = getAWSCognitoIdentityUserPool()
-    
     //Fetch UserPool Data
     pool.getUser(userName).getDetails().continueWithBlock { (resultTask) -> AnyObject? in
         
         if resultTask.error != nil
         {
-            print("User Pool fetch data in Settings Error:", resultTask.error)
+            print("User Pool fetch data Error:", resultTask.error)
             completion(result: nil, error: resultTask.error)
         }
         else if resultTask.result == nil
         {
-            print("User Pool fetch data in Settings IS NIL...")
+            print("User Pool fetch data IS NIL...")
             completion(result: nil, error: nil)
 
         }
@@ -432,5 +453,112 @@ func updateCurrentUserProfilesDynamoDB(currentUserProfiles: NSMutableDictionary!
     
 }
 
+func uploadUserFBUIDToDynamo(userName: String, fbUID: String)
+{
+  let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+  
+  // Upload user DATA to DynamoDB
+  let dynamoDBUser = UserFBObjectModel()
+  
+  dynamoDBUser.username = userName
+  dynamoDBUser.fbuid = fbUID
+  
+  dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock(
+    { (resultTask) -> AnyObject? in
+      if (resultTask.error != nil) {
+        print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
+      }
+      
+      if (resultTask.exception != nil) {
+        print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
+      }
+      
+      if (resultTask.result == nil) {
+        print ("DYNAMODB ADD PROFILE result is nil....: ")
+      } else if (resultTask.error == nil) {
+        // If successful save
+        print ("DYNAMODB ADD PROFILE SUCCESS: ", resultTask.result)
+      }
+      return nil
+    }
+  )
+  
+}
+
+// upload current user's device ID to dynamoDB database
+// First attempt to get user's corresponding device ID list from dynamo.
+// If no list, create a new one and upload to dynamo
+// If it has a list already, append to that list and upload back to dynamo (ensure no duplicates)
+func uploadDeviceIDDynamoDB(currentDeviceID: String) {
+  
+  let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+  let currentUser = getCurrentCachedUser()
+//  let currentDeviceID = getCurrentCachedDeviceID()
+  
+  dynamoDBObjectMapper.load(Device.self, hashKey: currentUser, rangeKey: nil).continueWithBlock { (
+    resultTask) -> AnyObject? in
+    
+    if (resultTask.error != nil) {
+      return nil
+    }
+    
+    if (resultTask.exception != nil) {
+      return nil
+    }
+    
+    var listOfDeviceIDs = Array<String>()
+    
+    // NEED TO TEST THE BELOW MORE (WITH ACTUAL MULTIPLE DEVICES)
+    if (resultTask.result == nil) {
+      listOfDeviceIDs = [currentDeviceID]
+      print("ADDING NEW DEVICE ID -- LIST DOES NOT EXIST")
+    } else if (resultTask.error == nil) {
+      let userDeviceInfo = resultTask.result as! Device
+      listOfDeviceIDs = userDeviceInfo.deviceidlist
+      print("ADDING NEW DEVICE ID -- LIST EXISTS")
+      // Add device ID to list if not in list already
+      if !listOfDeviceIDs.contains(currentDeviceID) {
+        listOfDeviceIDs.append(currentDeviceID)
+      }
+    }
+    
+    // Now we upload to dynamo
+    let dynamoDBDevice = Device()
+    dynamoDBDevice.username = currentUser
+    debugPrint("updateDeviceIDDynamoDB: dynamoDBDevice.username = ", currentUser)
+    dynamoDBDevice.deviceidlist = listOfDeviceIDs
+    debugPrint("updateDeviceIDDynamoDB: dynamoDBDevice.deviceid = ", currentDeviceID)
+    
+    dynamoDBObjectMapper.save(dynamoDBDevice).continueWithBlock(
+      { (resultTask) -> AnyObject? in
+        if (resultTask.error != nil) {
+        }
+        
+        if (resultTask.exception != nil) {
+        }
+        
+        if (resultTask.result == nil) {
+        } else if (resultTask.error == nil) {
+          print("DYNAMO DB UPDATE DEVICE ID SUCCESS")
+          // If successful save
+        }
+        return nil
+    })
+    
+    return nil
+  }
+  
+  
+  
+}
+
+func warmUpLambda()
+{
+    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+    let parameters = ["action":"doIFollow", "target": "", "me": ""]
+    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+        return nil
+    }
+}
 
 

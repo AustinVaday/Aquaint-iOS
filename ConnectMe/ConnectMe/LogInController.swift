@@ -14,7 +14,7 @@ import AWSCognitoIdentityProvider
 import AWSMobileHubHelper
 
 
-class LogInController: UIViewController {
+class LogInController: UIViewController, AWSCognitoIdentityPasswordAuthentication {
         
     @IBOutlet weak var userName: UITextField!
     @IBOutlet weak var userPassword: UITextField!
@@ -267,7 +267,8 @@ class LogInController: UIViewController {
                     {
                         
                         self.performSegueWithIdentifier(self.segueDestination, sender: nil)
-                        
+                        // Enable the log-in button again
+                        self.logInButton.enabled = true
                     }
                     
                     self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
@@ -308,7 +309,10 @@ class LogInController: UIViewController {
                         showAlert("Please try again...", message: "The username and password do not match.", buttonTitle: "Try again", sender: self)
                         
                     }
-                    
+                  
+                    // Enable the log-in button again
+                    self.logInButton.enabled = true
+                      
                     // Stop showing activity indicator (spinner)
                     self.spinner.stopAnimating()
                     
@@ -320,10 +324,18 @@ class LogInController: UIViewController {
             
             return nil
         })
-        
-
-        // Enable the log-in button again
-        logInButton.enabled = true
+      
         
     }
+  
+  func getPasswordAuthenticationDetails(authenticationInput: AWSCognitoIdentityPasswordAuthenticationInput, passwordAuthenticationCompletionSource: AWSTaskCompletionSource) {
+    
+  }
+    
+  
+  
+  func didCompletePasswordAuthenticationStepWithError(error: NSError) {
+    
+  }
+
 }

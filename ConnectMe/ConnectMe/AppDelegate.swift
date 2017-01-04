@@ -13,6 +13,7 @@ import FBSDKLoginKit
 import SimpleAuth
 import AWSCore
 import AWSCognito
+import AWSCognitoIdentityProvider
 import AWSLambda
 import AWSDynamoDB
 import KLCPopup
@@ -20,20 +21,19 @@ import KLCPopup
 // Begin using Firebase framework
 import Firebase
 
-protocol RegisterPushNotificationsProtocol {
-  func uploadDeviceToDynamo()
-}
+var userPool : AWSCognitoIdentityUserPool!
+var credentialsProvider: AWSCognitoCredentialsProvider?
+
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInteractiveAuthenticationDelegate {
   var window: UIWindow?
-  var notificationDelegate : RegisterPushNotificationsProtocol?
+  let deviceIdNotificationKey = "com.aquaintapp.deviceIdNotificationKey"
+  
   override init() {
     // Firebase Init
     //FIRDatabase.database().persistenceEnabled = true
     FIRApp.configure()
-    
-    
   }
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -85,9 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = defaultServiceConfiguration */
 
-    // Get credentials provider
-    let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
-
+    
     /* If cached users, then they are logged in already
        Note we do not use credentialsProvider for login persistance, as we are unable
        to properly log users out using credentialsProvider.clearKeychain() */
@@ -127,6 +125,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       return nil
     } */
 
+    
+    FBSDKApplicationDelegate.sharedInstance().application(
+      application,
+      didFinishLaunchingWithOptions: launchOptions
+    )
+    
+    
+
+    
+    let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: nil)
+    let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "41v7gese46ar214saeurloufe7", clientSecret: "1lr1abieg6g8fpq06hngo9edqg4qtf63n3cql1rgsvomc11jvs9b", poolId: "us-east-1_yyImSiaeD")
+    
+    AWSCognitoIdentityUserPool.registerCognitoIdentityUserPoolWithConfiguration(serviceConfiguration, userPoolConfiguration: userPoolConfiguration, forKey: "UserPool")
+    
+    userPool =  AWSCognitoIdentityUserPool(forKey: "UserPool")
+    
+    // Get credentials provider
+    credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e", identityProviderManager: userPool)
+    
     // Initialize Amazon Cognito Credentials Provider
     // let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
     let configuration = AWSServiceConfiguration(
@@ -134,17 +151,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       credentialsProvider: credentialsProvider
     )
     AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
-
-    FBSDKApplicationDelegate.sharedInstance().application(
-      application,
-      didFinishLaunchingWithOptions: launchOptions
-    )
     
-    // Apple Push Notification initialization
-    let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
-    let pushNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
-    application.registerUserNotificationSettings(pushNotificationSettings)
-    application.registerForRemoteNotifications()
+    userPool.delegate = self
     
     return AWSMobileClient.sharedInstance.didFinishLaunching(
       application,
@@ -152,6 +160,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     )
   }
 
+  func startPasswordAuthentication() -> AWSCognitoIdentityPasswordAuthentication {
+    
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    let controller = storyboard.instantiateViewControllerWithIdentifier("loginController") as! LogInController
+    
+    dispatch_async(dispatch_get_main_queue()) {
+      self.window?.rootViewController?.presentViewController(controller, animated: true, completion: nil)
+    }
+    
+      return controller
+  }
+  
   // Process results & set up for Facebook API integration
   func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
     let handled = FBSDKApplicationDelegate.sharedInstance().application(
@@ -179,9 +199,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     print("didRegisterForRemoteNotificationsWithDeviceToken: ", deviceTokenStr)
     setCurrentCachedDeviceID(deviceTokenStr)
-    notificationDelegate?.uploadDeviceToDynamo()
+    
+    uploadDeviceIDDynamoDB(deviceTokenStr)
   }
-  
   
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     print("Failed to register for remote notification: ", error)

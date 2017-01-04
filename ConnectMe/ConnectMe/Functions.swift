@@ -571,6 +571,16 @@ func setCurrentCachedDeviceID(deviceID: String) {
   print("Cache deviceID success: ", deviceID)
 }
 
+func setCurrentCachedPrivacyStatus(privacyStatus: String) {
+  if privacyStatus != "public" && privacyStatus != "private" {
+    print("ERROR. Attempting to cache unnaceptable privacy status. Must be either private or public: ", privacyStatus)
+    return
+  }
+  let defaults = NSUserDefaults.standardUserDefaults()
+  defaults.setObject(privacyStatus, forKey: "privacyStatus")
+  print("Cache deviceID success: ", privacyStatus)
+}
+
 func setCurrentCachedUserEmail(email: String)
 {
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -659,6 +669,21 @@ func getCurrentCachedDeviceID() -> String! {
   
   return currentDeviceID
 }
+
+// Get the current user's privacy setting status, used to determine whether to show follow requests or not.
+func getCurrentCachedPrivacyStatus() -> String! {
+  let defaults = NSUserDefaults.standardUserDefaults()
+  
+  let currentPrivacyStatus = defaults.stringForKey("privacyStatus")
+  
+  if currentPrivacyStatus == nil {
+    print("Uh oh, no cached privacy status available.")
+    return nil
+  }
+  
+  return currentPrivacyStatus
+}
+
 
 // Get the current user email that is signed into the app
 func getCurrentCachedEmail() -> String!
@@ -809,10 +834,44 @@ func clearCookies (domain: String)
 
 func showPopupForUser(username: String, me: String)
 {
+  let popup = getProfilePopup()
+  let view = popup.contentView as! ProfilePopupView
+  view.setDataForUser(username, me: me)
+  popup.contentView = view
+  popup.show()
+}
+
+func showPopupForUserWithView(view: ProfilePopupView)
+{
+  let popup = getProfilePopup()
+  popup.contentView = view
+  popup.show()
+}
+
+func showPopupForUser(username: String, me: String, searchConsistencyDelegate: SearchTableViewCell!)
+{
     let popup = getProfilePopup()
     let view = popup.contentView as! ProfilePopupView
     view.setDataForUser(username, me: me)
+  
+    // Used to enforce consistency between search table view cell and popup
+    if searchConsistencyDelegate != nil {
+        view.popupSearchConsistencyDelegate = searchConsistencyDelegate
+    }
+  
     popup.contentView = view
     popup.show()
 }
 
+func registerToReceivePushNotifications()
+{
+  
+  // Apple Push Notification initialization
+  let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
+  let pushNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
+  
+  let application = UIApplication.sharedApplication()
+  application.registerUserNotificationSettings(pushNotificationSettings)
+  application.registerForRemoteNotifications()
+
+}
