@@ -131,9 +131,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       didFinishLaunchingWithOptions: launchOptions
     )
     
-    
-
-    
     let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: nil)
     let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "41v7gese46ar214saeurloufe7", clientSecret: "1lr1abieg6g8fpq06hngo9edqg4qtf63n3cql1rgsvomc11jvs9b", poolId: "us-east-1_yyImSiaeD")
     
@@ -153,6 +150,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
     
     userPool.delegate = self
+    
+    /*
+    print("application(didFinishLaunchingWithOptions) called. ")
+    if let payload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary, identifier = payload["identifier"] as? String {
+      print("Handling push notification in application(didFinishLaunchingWithOptions). ")
+      let storyboard = UIStoryboard(name: "Main", bundle: nil)
+      let vc = storyboard.instantiateViewControllerWithIdentifier(identifier)
+      window?.rootViewController = vc
+    }
+    */
+    // handling push notificiations when app is killed and relaunched
+    if let payload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary, identifier = payload["identifier"] as? String {
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vcMain = storyboard.instantiateViewControllerWithIdentifier("MainContainerViewController")
+        
+        window?.rootViewController = vcMain
+        
+        if let mainViewController = vcMain as? MainContainerViewController {
+          if identifier == "newFollower" {
+            mainViewController.goToPage2OfSection(0)
+          } else if identifier == "followRequestAcceptance" {
+            mainViewController.goToPage2OfSection(1)
+          }
+        }
+    }
     
     return AWSMobileClient.sharedInstance.didFinishLaunching(
       application,
@@ -202,14 +225,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     
     uploadDeviceIDDynamoDB(deviceTokenStr)
   }
-  
+
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     print("Failed to register for remote notification: ", error)
   }
   
   func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
     print("didReceiveRemoteNotification", userInfo)
-  }
+    
+    // handle push notifications when app is in foreground or background
+    let PNContent = userInfo["aps"]!
+    print(PNContent)
+    
+    if let aps = userInfo["aps"] as? NSDictionary {
+      if let identifier = aps["identifier"] as? NSString {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vcMain = storyboard.instantiateViewControllerWithIdentifier("MainContainerViewController")
+        
+        window?.rootViewController = vcMain
+        
+        if let mainViewController = vcMain as? MainContainerViewController {
+          if identifier == "newFollower" {
+            mainViewController.goToPage2OfSection(0)
+          } else if identifier == "followRequestAcceptance" {
+            mainViewController.goToPage2OfSection(1)
+          }
+        }
+        /*
+        let vcFollow = storyboard.instantiateViewControllerWithIdentifier(identifier as String)
+        window?.rootViewController = vcFollow
+        
+        if let followViewController = vcFollow as? AquaintsContainerViewController {
+          let dummyButton = UIButton()
+          followViewController.goToPage1(dummyButton)
+        }
+        */
+      }
+    }
+ }
 
   func applicationWillResignActive(application: UIApplication) {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -232,4 +285,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
   func applicationWillTerminate(application: UIApplication) {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
+  
+  // Called when a notification is delivered to a foreground app. iOS 10+ only
+  /*
+  optional func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    completionHandler(UNNotificationPresentationOptions.alert)
+  }
+  */
 }

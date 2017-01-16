@@ -186,7 +186,15 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         hideAllSectionUnderlineViews()
         sectionUnderlineView2.hidden = false
     }
-    
+  
+    // a special case for goToPage2() used for push notification handling. Displaying Followers or Following section in AquaintsContainerViewController
+    func goToPage2OfSection(section: Int) {
+      mainPageViewController.changePageToFollows(section)
+      
+      hideAllSectionUnderlineViews()
+      sectionUnderlineView2.hidden = false
+    }
+  
     @IBAction func goToPage3(sender: UIButton) {
     
         mainPageViewController.changePage(3)
