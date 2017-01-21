@@ -173,6 +173,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
             mainViewController.goToPage2OfSection(0)
           } else if identifier == "followRequestAcceptance" {
             mainViewController.goToPage2OfSection(1)
+          } else if identifier == "newFollowRequests" {
+            
+            let vcFollowRequests = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController")
+            window?.rootViewController = vcFollowRequests
           }
         }
     }
@@ -249,6 +253,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
             mainViewController.goToPage2OfSection(0)
           } else if identifier == "followRequestAcceptance" {
             mainViewController.goToPage2OfSection(1)
+          } else if identifier == "newFollowRequests" {
+            
+            /*
+            let vcFollowRequests = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController") as? FollowRequestsViewController
+            window?.rootViewController = vcFollowRequests
+             
+            mainViewController.presentViewController(vcFollowRequests!, animated: true, completion: nil)
+            */
+            
+            let vc = self.window?.rootViewController as! MainContainerViewController
+            /*
+            if (vc!.isKindOfClass(MainContainerViewController)) {
+              debugPrint("rootViewController 1")
+            } else if (vc!.isKindOfClass(MainPageViewController)) {
+              debugPrint("rootViewController 2")
+            } else if (vc!.isKindOfClass(HomeContainerViewController)) {
+              debugPrint("rootViewController 3")
+            } else {
+              debugPrint("rootViewController 4")
+            }
+            */
+            let vcHome = vc.mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
+            //vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vc)
+            
+            let vcFollowRequest = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController")
+            //vcHome.presentViewController(vcFollowRequest, animated: true, completion: nil)
+            vcHome.showViewController(vcFollowRequest, sender: vcHome)
           }
         }
         /*
