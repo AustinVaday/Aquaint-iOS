@@ -35,6 +35,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     //FIRDatabase.database().persistenceEnabled = true
     FIRApp.configure()
   }
+  
+  /*
+  func presentSectionfromPushNotification(withIdentifier identifier: String) {
+    
+    
+  }
+ */
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     SimpleAuth.configuration()["facebook"] = [
@@ -160,7 +167,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       window?.rootViewController = vc
     }
     */
-    // handling push notificiations when app is killed and relaunched
+    // handle push notificiations when app is killed and relaunched
     if let payload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary, identifier = payload["identifier"] as? String {
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -243,26 +250,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     
     if let aps = userInfo["aps"] as? NSDictionary {
       if let identifier = aps["identifier"] as? NSString {
+        /* Debug note: never instantiating a new MainContainerViewController to present!
+         This works with "newFollower" and "followRequestAcceptance", but triggers "fatal error: unexpectedly found nil when unwrapping an optional value" in "newFollowRequests", when performing segue/presenting "FollowRequestsViewController"
+         */
+        /*
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vcMain = storyboard.instantiateViewControllerWithIdentifier("MainContainerViewController")
         
         window?.rootViewController = vcMain
+        */
         
-        if let mainViewController = vcMain as? MainContainerViewController {
+        if let mainViewController = self.window?.rootViewController as? MainContainerViewController {
+          
           if identifier == "newFollower" {
             mainViewController.goToPage2OfSection(0)
+            
           } else if identifier == "followRequestAcceptance" {
             mainViewController.goToPage2OfSection(1)
+            
           } else if identifier == "newFollowRequests" {
             
-            /*
+            let vcHome = mainViewController.mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
+            vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
+            
+            /* approach #1: directly presenting FollowRequestsViewController
             let vcFollowRequests = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController") as? FollowRequestsViewController
             window?.rootViewController = vcFollowRequests
              
             mainViewController.presentViewController(vcFollowRequests!, animated: true, completion: nil)
             */
             
-            let vc = self.window?.rootViewController as! MainContainerViewController
+            /* approach #2: presenting FollowRequestsViewController from HomeContainerViewController
+            let vcHome = vc.mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
+            let vcFollowRequest = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController")
+             
+             vcHome.presentViewController(vcFollowRequest, animated: true, completion: nil)
+             vcHome.showViewController(vcFollowRequest, sender: vcHome)
+             */
+            
             /*
             if (vc!.isKindOfClass(MainContainerViewController)) {
               debugPrint("rootViewController 1")
@@ -274,14 +299,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
               debugPrint("rootViewController 4")
             }
             */
-            let vcHome = vc.mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
-            //vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vc)
             
-            let vcFollowRequest = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController")
-            //vcHome.presentViewController(vcFollowRequest, animated: true, completion: nil)
-            vcHome.showViewController(vcFollowRequest, sender: vcHome)
           }
+        } else {
+          print("Push notification not handled correctly: self.window?.rootViewController is not of type MainContainerViewController. This might be caused by the app displaying some uncommon View Controller right now.")
         }
+        
         /*
         let vcFollow = storyboard.instantiateViewControllerWithIdentifier(identifier as String)
         window?.rootViewController = vcFollow

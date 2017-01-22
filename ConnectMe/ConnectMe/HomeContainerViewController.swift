@@ -27,7 +27,17 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
     
     // This is our child (container) view controller that holds all our pages
     var homePageViewController: HomePageViewController!
+
+  @IBAction func followRequestsButtonClicked(sender: UIButton) {
+    /*
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    let vcFollowRequest = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController")
+    self.presentViewController(vcFollowRequest, animated: true, completion: nil)
+    */
+    self.performSegueWithIdentifier("toFollowRequestsViewController", sender: self)
     
+  }
+  
     // Self-added protocol for MainPageViewControllerDelegate
     func didTransitionPage(sender: MainPageViewController) {
         
@@ -75,6 +85,8 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
       followRequestsView.hidden = true
     }
 
+    // TESTING
+    //self.performSegueWithIdentifier("toFollowRequestsViewController", sender: self)
     
   }
   
