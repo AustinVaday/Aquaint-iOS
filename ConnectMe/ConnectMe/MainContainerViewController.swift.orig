@@ -11,7 +11,7 @@ import Firebase
 import ReachabilitySwift
 import AWSDynamoDB
 
-class MainContainerViewController: UIViewController, UIPageViewControllerDelegate, MainPageSectionUnderLineViewDelegate {
+class MainContainerViewController: UIViewController, UIPageViewControllerDelegate, RegisterPushNotificationsProtocol, MainPageSectionUnderLineViewDelegate {
     
     @IBOutlet weak var sectionUnderlineView0: UIView!
     @IBOutlet weak var sectionUnderlineView1: UIView!
@@ -49,7 +49,53 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         sectionUnderlineView2.hidden = true
         sectionUnderlineView3.hidden = true
     }
+<<<<<<< HEAD
+  
+  func uploadDeviceToDynamo() {
+    print("uploadDeviceToDynamo()")
+    self.updateDeviceIDDynamoDB()
+  }
+  
+  // upload current user's device ID to dynamoDB database
+  func updateDeviceIDDynamoDB() {
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+   
+      let currentUser = getCurrentCachedUser()
+      let currentDeviceID = getCurrentCachedDeviceID()
       
+      let dynamoDBDevice = Device()
+      dynamoDBDevice.username = currentUser
+      debugPrint("updateDeviceIDDynamoDB: dynamoDBDevice.username = ", currentUser)
+      dynamoDBDevice.deviceid = currentDeviceID
+      debugPrint("updateDeviceIDDynamoDB: dynamoDBDevice.deviceid = ", currentDeviceID)
+      
+      
+      dynamoDBObjectMapper.save(dynamoDBDevice).continueWithBlock(
+        { (resultTask) -> AnyObject? in
+          if (resultTask.error != nil) {
+            print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
+          }
+          
+          if (resultTask.exception != nil) {
+            print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
+          }
+          
+          if (resultTask.result == nil) {
+            print ("DYNAMODB ADD PROFILE result is nil....: ")
+          } else if (resultTask.error == nil) {
+            // If successful save
+            print ("DynamoDB add profile success. ", resultTask.result)
+            
+            // Refresh something...
+          }
+          return nil
+      })
+    
+  }
+    
+=======
+      
+>>>>>>> fe58eff74ab9254ac06357546f013a2ae469d616
     override func viewDidLoad() {
         // Get the mainPageViewController, this holds all our pages!
         mainPageViewController = self.childViewControllers.last as! MainPageViewController
@@ -107,6 +153,12 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         registerToReceivePushNotifications()
 //        updateDeviceIDDynamoDB()
       
+<<<<<<< HEAD
+        //debugPrint("Adding deviceID to dynamoDB table...");
+        //updateDeviceIDDynamoDB()
+        
+=======
+>>>>>>> fe58eff74ab9254ac06357546f013a2ae469d616
     }
   
   override func viewDidDisappear(animated: Bool) {
@@ -186,15 +238,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         hideAllSectionUnderlineViews()
         sectionUnderlineView2.hidden = false
     }
-  
-    // a special case for goToPage2() used for push notification handling. Displaying Followers or Following section in AquaintsContainerViewController
-    func goToPage2OfSection(section: Int) {
-      mainPageViewController.changePageToFollows(section)
-      
-      hideAllSectionUnderlineViews()
-      sectionUnderlineView2.hidden = false
-    }
-  
+    
     @IBAction func goToPage3(sender: UIButton) {
     
         mainPageViewController.changePage(3)
@@ -225,13 +269,12 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     
     // Prepare for segues and set up delegates so we can get information back
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-      if segue.identifier == "toMainPageViewController" {
         
         let controller = segue.destinationViewController as! MainPageViewController
         
         // IMPORTANT!!!! If we don't have this we can't get data back.
         controller.sectionDelegate = self
-      }
+
     }
   
 }

@@ -21,89 +21,32 @@ import KLCPopup
 // Begin using Firebase framework
 import Firebase
 
+<<<<<<< HEAD
+protocol RegisterPushNotificationsProtocol {
+  func uploadDeviceToDynamo()
+}
+=======
 var userPool : AWSCognitoIdentityUserPool!
 var credentialsProvider: AWSCognitoCredentialsProvider?
 
+>>>>>>> fe58eff74ab9254ac06357546f013a2ae469d616
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInteractiveAuthenticationDelegate {
   var window: UIWindow?
+<<<<<<< HEAD
+  var notificationDelegate : RegisterPushNotificationsProtocol?
+=======
   let deviceIdNotificationKey = "com.aquaintapp.deviceIdNotificationKey"
   
+>>>>>>> fe58eff74ab9254ac06357546f013a2ae469d616
   override init() {
     // Firebase Init
     //FIRDatabase.database().persistenceEnabled = true
     FIRApp.configure()
-  }
-  
-  // wrapper function for push notification handling
-  func presentSectionfromPushNotification(withIdentifier identifier: NSString) {
-    /* Debug note: never instantiating a new MainContainerViewController to present!
-     This works with "newFollower" and "followRequestAcceptance", but triggers "fatal error: unexpectedly found nil when unwrapping an optional value" in "newFollowRequests", when performing segue/presenting "FollowRequestsViewController"
-     */
-    /*
-     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-     let vcMain = storyboard.instantiateViewControllerWithIdentifier("MainContainerViewController")
-     
-     window?.rootViewController = vcMain
-     */
     
-    if let mainViewController = self.window?.rootViewController as? MainContainerViewController {
-      
-      if identifier == "newFollower" {
-        mainViewController.goToPage2OfSection(0)
-        
-      } else if identifier == "followRequestAcceptance" {
-        mainViewController.goToPage2OfSection(1)
-        
-      } else if identifier == "newFollowRequests" {
-        
-        let vcHome = mainViewController.mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
-        vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
-        
-        /* approach #1: directly presenting FollowRequestsViewController
-         let vcFollowRequests = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController") as? FollowRequestsViewController
-         window?.rootViewController = vcFollowRequests
-         
-         mainViewController.presentViewController(vcFollowRequests!, animated: true, completion: nil)
-         */
-        
-        /* approach #2: presenting FollowRequestsViewController from HomeContainerViewController
-         let vcHome = vc.mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
-         let vcFollowRequest = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController")
-         
-         vcHome.presentViewController(vcFollowRequest, animated: true, completion: nil)
-         vcHome.showViewController(vcFollowRequest, sender: vcHome)
-         */
-        
-        /*
-         if (vc!.isKindOfClass(MainContainerViewController)) {
-         debugPrint("rootViewController 1")
-         } else if (vc!.isKindOfClass(MainPageViewController)) {
-         debugPrint("rootViewController 2")
-         } else if (vc!.isKindOfClass(HomeContainerViewController)) {
-         debugPrint("rootViewController 3")
-         } else {
-         debugPrint("rootViewController 4")
-         }
-         */
-        
-      }
-    } else {
-      print("Push notification not handled correctly: self.window?.rootViewController is not of type MainContainerViewController. This might be caused by the app displaying some uncommon View Controller right now.")
-    }
     
-    /*
-     let vcFollow = storyboard.instantiateViewControllerWithIdentifier(identifier as String)
-     window?.rootViewController = vcFollow
-     
-     if let followViewController = vcFollow as? AquaintsContainerViewController {
-     let dummyButton = UIButton()
-     followViewController.goToPage1(dummyButton)
-     }
-     */
   }
- 
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     SimpleAuth.configuration()["facebook"] = [
@@ -200,6 +143,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       didFinishLaunchingWithOptions: launchOptions
     )
     
+    
+
+    
     let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: nil)
     let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "41v7gese46ar214saeurloufe7", clientSecret: "1lr1abieg6g8fpq06hngo9edqg4qtf63n3cql1rgsvomc11jvs9b", poolId: "us-east-1_yyImSiaeD")
     
@@ -219,14 +165,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
     
     userPool.delegate = self
-    
-
-    // handle push notificiations when app is killed and relaunched
-    if let payload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary, identifier = payload["identifier"] as? NSString {
-        print("application(didFinishLaunchingWithOptions): with RemoteNotificaitonKey: ", payload)
-      
-        presentSectionfromPushNotification(withIdentifier: identifier)
-    }
     
     return AWSMobileClient.sharedInstance.didFinishLaunching(
       application,
@@ -273,28 +211,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     
     print("didRegisterForRemoteNotificationsWithDeviceToken: ", deviceTokenStr)
     setCurrentCachedDeviceID(deviceTokenStr)
+<<<<<<< HEAD
+    notificationDelegate?.uploadDeviceToDynamo()
+=======
     
     uploadDeviceIDDynamoDB(deviceTokenStr)
+>>>>>>> fe58eff74ab9254ac06357546f013a2ae469d616
   }
-
+  
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
     print("Failed to register for remote notification: ", error)
   }
   
   func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-    
-    print("application(didReceiveRemoteNotification): ", userInfo)
-    
-    // handle push notifications when app is in foreground or background
-    let state: UIApplicationState = UIApplication.sharedApplication().applicationState
-    if state == .Active {
-      if let aps = userInfo["aps"] as? NSDictionary {
-        if let identifier = aps["identifier"] as? NSString {
-          presentSectionfromPushNotification(withIdentifier: identifier)
-        }
-      }
-    }
- }
+    print("didReceiveRemoteNotification", userInfo)
+  }
 
   func applicationWillResignActive(application: UIApplication) {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -317,11 +248,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
   func applicationWillTerminate(application: UIApplication) {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
-  
-  // Called when a notification is delivered to a foreground app. iOS 10+ only
-  /*
-  optional func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-    completionHandler(UNNotificationPresentationOptions.alert)
-  }
-  */
 }

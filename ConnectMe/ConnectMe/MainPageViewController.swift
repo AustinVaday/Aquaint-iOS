@@ -201,4 +201,34 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         }
 
     }
+
+  // a special case of changePage(pageIndex: 2) used for push notification handling. Displaying Followers or Following section in AquaintsContainerViewController
+  func changePageToFollows(subpageIndex: Int) {  // 0 for Followers, 1 for Following
+    let pageIndex = 2
+    
+    let destinationViewController = arrayOfViewControllers[pageIndex]
+    
+    var direction : UIPageViewControllerNavigationDirection!
+    
+    if (pageIndex < currentPageIndex) {
+      direction = UIPageViewControllerNavigationDirection.Reverse
+    }
+    else {
+      direction = UIPageViewControllerNavigationDirection.Forward
+    }
+    
+    setViewControllers([destinationViewController], direction: direction, animated: true, completion: nil)
+    
+    let vcFollow = destinationViewController as? AquaintsContainerViewController
+    let dummyButton = UIButton();
+    if (subpageIndex == 0) {
+      vcFollow?.goToPage0(dummyButton)
+    } else if (subpageIndex == 1) {
+      vcFollow?.goToPage1(dummyButton)
+    }
+    
+    currentPageIndex = pageIndex
+
+  }
+  
 }
