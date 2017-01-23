@@ -34,9 +34,8 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
   var status : String!
   override func viewDidLoad() {
     
-    debugPrint("FollowRequestsViewController viewDidLoad() called. ")
+    print("FollowRequestsViewController viewDidLoad() called.")
     
-  
     // Fetch the user's username
     currentUserName = getCurrentCachedUser()
     
@@ -58,7 +57,6 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
     
     // Call all lambda functions and AWS-needed stuff
     generateData(true, start: currentBegin, end: currentEnd)
-    
 
   }
   

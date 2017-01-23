@@ -286,9 +286,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     print("application(didReceiveRemoteNotification): ", userInfo)
     
     // handle push notifications when app is in foreground or background
-    if let aps = userInfo["aps"] as? NSDictionary {
-      if let identifier = aps["identifier"] as? NSString {
-        presentSectionfromPushNotification(withIdentifier: identifier)
+    let state: UIApplicationState = UIApplication.sharedApplication().applicationState
+    if state == .Active {
+      if let aps = userInfo["aps"] as? NSDictionary {
+        if let identifier = aps["identifier"] as? NSString {
+          presentSectionfromPushNotification(withIdentifier: identifier)
+        }
       }
     }
  }
