@@ -225,12 +225,13 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     
     // Prepare for segues and set up delegates so we can get information back
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+      if segue.identifier == "toMainPageViewController" {
         
         let controller = segue.destinationViewController as! MainPageViewController
         
         // IMPORTANT!!!! If we don't have this we can't get data back.
         controller.sectionDelegate = self
-
+      }
     }
   
 }
