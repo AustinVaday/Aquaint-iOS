@@ -259,7 +259,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     return handled
   }
   
-  // Apple Push Notifications
+  // Apple Push Notifications  
   func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
     
     /* previous attempts at deviceToken parsing
@@ -268,12 +268,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     let deviceTokenStr = deviceToken.base64EncodedDataWithOptions([])
     print("didRegisterForRemoteNotificationsWithDeviceToken: ", deviceTokenStr)
     */
+    
     var deviceTokenStr = "\(deviceToken)"
     deviceTokenStr.removeAtIndex(deviceTokenStr.endIndex.predecessor())
     deviceTokenStr.removeAtIndex(deviceTokenStr.startIndex)
     deviceTokenStr = deviceTokenStr.stringByReplacingOccurrencesOfString(" ", withString: "")
     
-    print("application(didRegisterForRemoteNotificationsWithDeviceToken): ", deviceTokenStr)
+    print("application(didRegisterForRemoteNotificationsWithDeviceToken): deviceToken = ", deviceTokenStr)
     
     setCurrentCachedDeviceID(deviceTokenStr)
     uploadDeviceIDDynamoDB(deviceTokenStr)
