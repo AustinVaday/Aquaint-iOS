@@ -32,6 +32,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
   var defaultCollectionViewLayout : UICollectionViewLayout!
   var collectionViewClearDataRequest = false
   var isNewDataLoading = false
+  var alphabeticalOrder = false
   var currentBegin = 0
   var currentEnd = 20
   let offset = 20
@@ -44,7 +45,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     
     // Get lambda action to perform (getFollowers) or (getFollowees)
     lambdaAction = dataDelegate?.lambdaActionForUser()
-    
+  
 //    if currentUserName == nil {
 //    }
 //    
@@ -325,7 +326,13 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     
     // Get array of connections from Lambda -- RDS
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-    let parameters = ["action": lambdaAction, "target": currentUserName, "start": start, "end": end]
+    var parameters = ["action": lambdaAction, "target": currentUserName, "start": start, "end": end]
+    
+    // TODO:  ****** ACTUALLY IMPLEMENT BACKEND FOR THIS *******
+  /*  if alphabeticalOrder {
+       parameters = ["action": lambdaAction, "target": currentUserName, "start": start, "end": end, "order": "abc"]
+    } */
+    // TODO: ABOVE
     
     lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
       if resultTask.error != nil

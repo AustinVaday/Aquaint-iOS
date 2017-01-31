@@ -33,6 +33,8 @@ class AquaintsSingleFollowerListViewController: UIViewController, FollowerListSe
     let storyboard = UIStoryboard(name: "FollowerListView", bundle: nil)
     let viewController = storyboard.instantiateViewControllerWithIdentifier("FollowerListViewController") as! FollowerListViewController
     viewController.dataDelegate = self
+    // TODO: Implement functionality for this
+    viewController.alphabeticalOrder = true
     
     viewController.view.frame = dataView.frame
     viewController.view.frame.origin = CGPointMake(0, 20)
