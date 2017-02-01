@@ -70,11 +70,11 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
           print("askUserForPushNotificationPermission: user chooses NOT to enable push notification. ")
         }
         
-        notificationAlert.addAction(yesAction)
         notificationAlert.addAction(noAction)
+        notificationAlert.addAction(yesAction)
         
         dispatch_async(dispatch_get_main_queue()) {
-                  self.presentViewController(notificationAlert, animated: true, completion: nil)
+          self.presentViewController(notificationAlert, animated: true, completion: nil)
         }
         
       } else {
@@ -133,17 +133,15 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
           
         }
       
-//        debugPrint("Adding deviceID to dynamoDB table...");
-//        updateDeviceIDDynamoDB()
+        askUserForPushNotificationPermission()
+      /*
+      print("Adding deviceID to dynamoDB table...");
+      updateDeviceIDDynamoDB()
       
       // This is triggered by AppDelegate once we finally have user's Device ID. Then we can upload it to the server
-//      NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainContainerViewController.updateDeviceIDDynamoDB), name: deviceIdNotificationKey, object: nil)
-      
-
-      askUserForPushNotificationPermission()
-
-//        updateDeviceIDDynamoDB()
-      
+      NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainContainerViewController.updateDeviceIDDynamoDB), name: deviceIdNotificationKey, object: nil)
+      updateDeviceIDDynamoDB()
+      */
     }
   
   override func viewDidDisappear(animated: Bool) {
