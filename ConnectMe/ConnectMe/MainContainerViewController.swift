@@ -49,7 +49,42 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         sectionUnderlineView2.hidden = true
         sectionUnderlineView3.hidden = true
     }
+  
+    // prompt the user if he wants to enable app push notification. If yes, register system-level remote notification
+    func askUserForPushNotificationPermission() {
+      if UIApplication.sharedApplication().isRegisteredForRemoteNotifications() == false {
+        let alertTitle = "Enable Push Notification"
+        let alertMessage = "Aquaint will notify you when you have new followers, new follow requests or your follow requests to others get accepted! "
+        let notificationAlert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .Alert)
+        
+        let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) {
+          UIAlertAction in
+          
+          print("askUserForPushNotificationPermission: user chooses to enable push notification. ")
+          registerToReceivePushNotifications()
+        }
+        
+        let noAction = UIAlertAction(title: "Not Now", style: UIAlertActionStyle.Default) {
+          UIAlertAction in
+          
+          print("askUserForPushNotificationPermission: user chooses NOT to enable push notification. ")
+        }
+        
+        notificationAlert.addAction(noAction)
+        notificationAlert.addAction(yesAction)
+        
+        dispatch_async(dispatch_get_main_queue()) {
+          self.presentViewController(notificationAlert, animated: true, completion: nil)
+        }
+        
+      } else {
+        // app has registered system-level push notification service before.
+        // register with APN server every time the app launches, to check any update on deviceToken
+        registerToReceivePushNotifications()
+      }
       
+    }
+  
     override func viewDidLoad() {
         // Get the mainPageViewController, this holds all our pages!
         mainPageViewController = self.childViewControllers.last as! MainPageViewController
@@ -98,15 +133,15 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
           
         }
       
-//        debugPrint("Adding deviceID to dynamoDB table...");
-//        updateDeviceIDDynamoDB()
+        askUserForPushNotificationPermission()
+      /*
+      print("Adding deviceID to dynamoDB table...");
+      updateDeviceIDDynamoDB()
       
       // This is triggered by AppDelegate once we finally have user's Device ID. Then we can upload it to the server
-//      NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainContainerViewController.updateDeviceIDDynamoDB), name: deviceIdNotificationKey, object: nil)
-      
-        registerToReceivePushNotifications()
-//        updateDeviceIDDynamoDB()
-      
+      NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MainContainerViewController.updateDeviceIDDynamoDB), name: deviceIdNotificationKey, object: nil)
+      updateDeviceIDDynamoDB()
+      */
     }
   
   override func viewDidDisappear(animated: Bool) {

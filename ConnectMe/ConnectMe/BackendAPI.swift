@@ -485,7 +485,7 @@ func uploadUserFBUIDToDynamo(userName: String, fbUID: String)
   
 }
 
-// upload current user's device ID to dynamoDB database
+// Upload current user's device ID to dynamoDB database
 // First attempt to get user's corresponding device ID list from dynamo.
 // If no list, create a new one and upload to dynamo
 // If it has a list already, append to that list and upload back to dynamo (ensure no duplicates)
@@ -493,29 +493,26 @@ func uploadDeviceIDDynamoDB(currentDeviceID: String) {
   
   let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
   let currentUser = getCurrentCachedUser()
-//  let currentDeviceID = getCurrentCachedDeviceID()
   
   dynamoDBObjectMapper.load(Device.self, hashKey: currentUser, rangeKey: nil).continueWithBlock { (
     resultTask) -> AnyObject? in
     
-    if (resultTask.error != nil) {
+    if (resultTask.error != nil || resultTask.exception != nil) {
       return nil
     }
     
-    if (resultTask.exception != nil) {
-      return nil
-    }
-    
+    // Tested for a user registering his first device, and a user adding his second device
     var listOfDeviceIDs = Array<String>()
     
-    // NEED TO TEST THE BELOW MORE (WITH ACTUAL MULTIPLE DEVICES)
     if (resultTask.result == nil) {
       listOfDeviceIDs = [currentDeviceID]
-      print("ADDING NEW DEVICE ID -- LIST DOES NOT EXIST")
+      print("Adding new device ID to dynamoDB -- List doesn't exist")
+      
     } else if (resultTask.error == nil) {
       let userDeviceInfo = resultTask.result as! Device
       listOfDeviceIDs = userDeviceInfo.deviceidlist
-      print("ADDING NEW DEVICE ID -- LIST EXISTS")
+      print("Adding new device ID to dynamoDB -- List exists")
+      
       // Add device ID to list if not in list already
       if !listOfDeviceIDs.contains(currentDeviceID) {
         listOfDeviceIDs.append(currentDeviceID)
@@ -525,31 +522,25 @@ func uploadDeviceIDDynamoDB(currentDeviceID: String) {
     // Now we upload to dynamo
     let dynamoDBDevice = Device()
     dynamoDBDevice.username = currentUser
-    debugPrint("updateDeviceIDDynamoDB: dynamoDBDevice.username = ", currentUser)
+    print("uploadDeviceIDDynamoDB: dynamoDBDevice.username = ", currentUser)
     dynamoDBDevice.deviceidlist = listOfDeviceIDs
-    debugPrint("updateDeviceIDDynamoDB: dynamoDBDevice.deviceid = ", currentDeviceID)
+    print("uploadDeviceIDDynamoDB: dynamoDBDevice.deviceidlist = ", listOfDeviceIDs)
     
     dynamoDBObjectMapper.save(dynamoDBDevice).continueWithBlock(
       { (resultTask) -> AnyObject? in
-        if (resultTask.error != nil) {
+        if (resultTask.error != nil || resultTask.exception != nil) {
+          print("uploadDeviceIDDynamoDB: error or exception during upload.")
         }
         
-        if (resultTask.exception != nil) {
+        if (resultTask.result != nil && resultTask.error == nil) {
+          print("uploadDeviceIDDynamoDB: upload successful.")
         }
         
-        if (resultTask.result == nil) {
-        } else if (resultTask.error == nil) {
-          print("DYNAMO DB UPDATE DEVICE ID SUCCESS")
-          // If successful save
-        }
         return nil
     })
     
     return nil
   }
-  
-  
-  
 }
 
 func warmUpLambda()

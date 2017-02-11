@@ -259,21 +259,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     return handled
   }
   
-  // Apple Push Notifications
+  // Apple Push Notifications  
   func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-    print("CORRECT - didRegisterForRemoteNotificationsWithDeviceToken: \(deviceToken)")
-    //let deviceTokenStr = String(data: deviceToken, encoding: NSUTF8StringEncoding);
-    //print("didRegisterForRemoteNotificationsWithDeviceToken: \(deviceTokenStr)")
-    //let deviceTokenStr = deviceToken.base64EncodedDataWithOptions([])
-    //print("didRegisterForRemoteNotificationsWithDeviceToken: ", deviceTokenStr)
+    
+    /* previous attempts at deviceToken parsing
+    let deviceTokenStr = String(data: deviceToken, encoding: NSUTF8StringEncoding);
+    print("didRegisterForRemoteNotificationsWithDeviceToken: \(deviceTokenStr)")
+    let deviceTokenStr = deviceToken.base64EncodedDataWithOptions([])
+    print("didRegisterForRemoteNotificationsWithDeviceToken: ", deviceTokenStr)
+    */
+    
     var deviceTokenStr = "\(deviceToken)"
     deviceTokenStr.removeAtIndex(deviceTokenStr.endIndex.predecessor())
     deviceTokenStr.removeAtIndex(deviceTokenStr.startIndex)
     deviceTokenStr = deviceTokenStr.stringByReplacingOccurrencesOfString(" ", withString: "")
     
-    print("didRegisterForRemoteNotificationsWithDeviceToken: ", deviceTokenStr)
-    setCurrentCachedDeviceID(deviceTokenStr)
+    print("application(didRegisterForRemoteNotificationsWithDeviceToken): deviceToken = ", deviceTokenStr)
     
+    setCurrentCachedDeviceID(deviceTokenStr)
     uploadDeviceIDDynamoDB(deviceTokenStr)
   }
 
