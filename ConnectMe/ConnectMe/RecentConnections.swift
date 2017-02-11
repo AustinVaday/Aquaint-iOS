@@ -18,7 +18,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var refreshControl : CustomRefreshControl!
     var connectionList : Array<Connection>!
-    var expansionObj:CellExpansion!
     var defaultImage : UIImage!
     var defaultCollectionViewLayout : UICollectionViewLayout!
     var collectionViewClearDataRequest = false
@@ -30,8 +29,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         currentUserName = getCurrentCachedUser()
 
         connectionList = Array<Connection>()
-        expansionObj = CellExpansion()
-        
+      
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
 
         
@@ -124,29 +122,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         cell.cellUserName.text = connectedUser.userName
         cell.cellImage.image = connectedUser.userImage
         cell.cellTimeConnected.text = connectedUser.computeTimeDiff()
-        cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
-
-        // Reset UICollectionViewLayout
-        
-        // So, turns out that iOS will re-use collection views. Imagine the following scenario:
-        // Joe is at row 6, he has 4 social media profiles linked.
-        // The page is refreshed, and Joe now is pushed to row 7 of the table.
-        // Jill, who has 2 social media profiles, is now at row 6.
-        // iOS will still assume that row 6's collectionView has 4 social media profiles,
-        // and thus.. the app will search out of the proper index range and CRASH.
-        // To fix this, we need to clear our data source, reload, and then reload with
-        // applicable data. Shown as follows:
-//        let temporaryList = connectionList[indexPath.row].keyValSocialMediaPairList
-//        connectionList[indexPath.row].keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
-//        cell.collectionView.reloadData()
-//        
-//        // Perform reloadData actions immediately instead of later
-//        cell.collectionView.layoutIfNeeded()
-//        
-//        connectionList[indexPath.row].keyValSocialMediaPairList = temporaryList
-        cell.collectionView.collectionViewLayout.invalidateLayout()
-        cell.collectionView.reloadData()
-        
         
         return cell
         
@@ -154,25 +129,17 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+      
         if !tableView.dragging && !tableView.tracking
         {
-            // Set the new selectedRowIndex
-            updateCurrentlyExpandedRow(&expansionObj, currentRow: indexPath.row)
-            
-            print  ("Index path BRUH: ", indexPath.row)
-            // Update UI with animation
-            
-//            status = "userTouch"
-            tableView.beginUpdates()
-            tableView.endUpdates()
-           
+          let connectedUser = connectionList[indexPath.row]
+          showPopupForUser(connectedUser.userName, me: self.currentUserName)
         }
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         // Return height computed by our special function
-        return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
+        return 60
     }
     
     // COLLECTION VIEW

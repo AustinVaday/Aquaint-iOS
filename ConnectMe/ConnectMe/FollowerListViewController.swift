@@ -15,7 +15,7 @@ protocol FollowerListSetUserAndActionDelegate {
   func lambdaActionForUser() -> String
 }
 
-class FollowerListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
+class FollowerListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
   
   @IBOutlet weak var userTableView: UITableView!
   @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -27,14 +27,11 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
   var socialMediaImageDictionary: Dictionary<String, UIImage>!
   var refreshControl : CustomRefreshControl!
   var connectionList : Array<Connection>!
-  var expansionObj:CellExpansion!
   var defaultImage : UIImage!
-  var defaultCollectionViewLayout : UICollectionViewLayout!
-  var collectionViewClearDataRequest = false
   var isNewDataLoading = false
   var currentBegin = 0
-  var currentEnd = 20
-  let offset = 20
+  var currentEnd = 10
+  let offset = 10
   
   var status : String!
   override func viewDidLoad() {
@@ -52,7 +49,6 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
 //    }
     
     connectionList = Array<Connection>()
-    expansionObj = CellExpansion()
     
     defaultImage = UIImage(imageLiteral: "Person Icon Black")
     
@@ -183,29 +179,6 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     cell.cellUserName.text = connectedUser.userName
     cell.cellImage.image = connectedUser.userImage
     cell.cellTimeConnected.text = connectedUser.computeTimeDiff()
-    cell.collectionView.tag = /*(connectionList.count - 1) - */ indexPath.row
-    
-    // Reset UICollectionViewLayout
-    
-    // So, turns out that iOS will re-use collection views. Imagine the following scenario:
-    // Joe is at row 6, he has 4 social media profiles linked.
-    // The page is refreshed, and Joe now is pushed to row 7 of the table.
-    // Jill, who has 2 social media profiles, is now at row 6.
-    // iOS will still assume that row 6's collectionView has 4 social media profiles,
-    // and thus.. the app will search out of the proper index range and CRASH.
-    // To fix this, we need to clear our data source, reload, and then reload with
-    // applicable data. Shown as follows:
-    //        let temporaryList = connectionList[indexPath.row].keyValSocialMediaPairList
-    //        connectionList[indexPath.row].keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
-    //        cell.collectionView.reloadData()
-    //
-    //        // Perform reloadData actions immediately instead of later
-    //        cell.collectionView.layoutIfNeeded()
-    //
-    //        connectionList[indexPath.row].keyValSocialMediaPairList = temporaryList
-    cell.collectionView.collectionViewLayout.invalidateLayout()
-    cell.collectionView.reloadData()
-    
     
     return cell
     
@@ -216,93 +189,14 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     
     if !tableView.dragging && !tableView.tracking
     {
-      // Set the new selectedRowIndex
-      updateCurrentlyExpandedRow(&expansionObj, currentRow: indexPath.row)
-      
-      // Update UI with animation
-      tableView.beginUpdates()
-      tableView.endUpdates()
+      let connectedUser = connectionList[indexPath.row]
+      showPopupForUser(connectedUser.userName, me: self.currentUserName)
       
     }
   }
   
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    // Return height computed by our special function
-    return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
-  }
-  
-  // COLLECTION VIEW
-  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    
-    if connectionList.count == 0
-    {
-      return 0
-    }
-    
-    
-    print("RETURNING content for index: ", collectionView.tag)
-    print("Size is of collectionview should be...: ", connectionList[collectionView.tag].keyValSocialMediaPairList.count)
-    return connectionList[collectionView.tag].keyValSocialMediaPairList.count
-  }
-  
-  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
-    
-    
-    // Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
-    // an array so that we can easily get the social media mediums that the user has (i.e. facebook, twitter, etc).
-    let keyValSocialMediaPairList = connectionList[collectionView.tag].keyValSocialMediaPairList
-    
-    if (!keyValSocialMediaPairList.isEmpty)
-    {
-      let socialMediaPair = keyValSocialMediaPairList[indexPath.item % keyValSocialMediaPairList.count]
-      let socialMediaType = socialMediaPair.socialMediaType
-      let socialMediaUserName = socialMediaPair.socialMediaUserName
-      
-      // Generate a UI image for the respective social media type
-      cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
-      
-      cell.socialMediaName = socialMediaUserName // username
-      cell.socialMediaType = socialMediaType // facebook, snapchat, etc
-      
-      // We will delay the image assignment to prevent buggy race conditions
-      // (Check to see what happens when the delay is not set... then you'll understand)
-      // Probable cause: tableView.beginUpdates() and tableView.endUpdates() in tableView(didSelectIndexPath) method
-      delay(0) { () -> () in
-        
-        dispatch_async(dispatch_get_main_queue(), {
-          // Generate a UI image for the respective social media type
-          cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
-          
-          cell.socialMediaType = socialMediaType //i.e. facebook, twitter, ..
-          cell.socialMediaName = socialMediaUserName //i.e. austinvaday, avtheman, ..
-        })
-        
-      }
-      
-    }
-    
-    // Make cell image circular
-    cell.layer.cornerRadius = cell.frame.width / 2
-    
-    return cell
-  }
-  
-  func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
-    
-    let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
-    let socialMediaUserName = cell.socialMediaName // username..
-    let socialMediaType = cell.socialMediaType // "facebook", "snapchat", etc..
-    
-    let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
-    
-    // Perform the request, go to external application and let the user do whatever they want!
-    if socialMediaURL != nil
-    {
-      UIApplication.sharedApplication().openURL(socialMediaURL)
-    }
-    
+    return 60
   }
   
   private func generateData(showSpinner: Bool, start: Int, end: Int)
