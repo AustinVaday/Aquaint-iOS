@@ -11,7 +11,7 @@ import AWSDynamoDB
 import AWSLambda
 import FRHyperLabel
 
-class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, SponsoredProfileButtonDelegate {
+class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SponsoredProfileButtonDelegate {
 
     let cellIdentifier = "newsfeedCell"
     @IBOutlet weak var newsfeedTableView: UITableView!
@@ -24,7 +24,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     var refreshControl : CustomRefreshControl!
     var defaultImage : UIImage!
     var newsfeedList : NSArray! // Array of dictionary to hold all newsfeed data
-    var expansionObj:CellExpansion!
     var animatedObjects : Array<UIView>!
     var shouldShowAnimations = false
     var userDidRefreshTable = false
@@ -81,9 +80,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Fetch the user's username
         currentUserName = getCurrentCachedUser()
-        
-        expansionObj = CellExpansion()
-
+      
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
         
         
@@ -182,9 +179,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             cell.cellImage.image = defaultImage
         }
         
-        // Set a tag on the collection view so we know which table row we're at when dealing with the collection view later on
-        cell.collectionView.tag = indexPath.row
-        
         // Set time dif of event on the cell
         cell.cellTimeConnected.text = computeTimeDiffFromNow(newsfeedObject.timestamp)
         
@@ -268,9 +262,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.sponsoredProfileImageName = newsfeedObject.socialMediaName
                 cell.sponsoredProfileImageButton.hidden = false
                 cell.cellTimeConnected.hidden = true
-                
-                print ("Image dict is: ", socialMediaImageDictionary)
-                
+                                
                 cell.sponsoredProfileImageButton.setBackgroundImage(socialMediaImageDictionary[newsfeedObject.socialMediaType], forState: .Normal)
                 break;
             
@@ -281,8 +273,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         
 //        cell.cellMessage.
         
-        cell.collectionView.collectionViewLayout.invalidateLayout()
-        cell.collectionView.reloadData()
         
         return cell
         
@@ -291,7 +281,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        
+        /*
         if !tableView.dragging && !tableView.tracking
         {
             // Updates the index of the currently expanded row
@@ -301,11 +291,11 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             tableView.beginUpdates()
             tableView.endUpdates()
         }
+        */
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        // Return height computed by our special function
-        return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
+       return 60
     }
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -356,91 +346,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
 //        }
 //    }
     
-    // COLLECTION VIEW
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if aquaintNewsfeed == nil || aquaintNewsfeed.count == 0
-        {
-            return 0
-        }
-        
-        // Use the tag to know which tableView row we're at
-        let profiles = aquaintNewsfeed[collectionView.tag].displayProfiles
-        
-        if profiles == nil
-        {
-            return 0
-        }
-        else
-        {
-            let keyValSocialMediaPairs = convertDictionaryToSocialMediaKeyValPairList(profiles as! NSMutableDictionary)
-            return keyValSocialMediaPairs.count
-        }
-       
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        print("COLLECTIONVIEW 2")
-        
-        
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
-
-        
-        // Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
-        // an array so that we can easily get the social media mediums that the user has (i.e. facebook, twitter, etc).
-        var keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(aquaintNewsfeed[collectionView.tag].displayProfiles as! NSMutableDictionary)
-        
-        if (!keyValSocialMediaPairList.isEmpty)
-        {
-            let socialMediaPair = keyValSocialMediaPairList[indexPath.item]
-            let socialMediaType = socialMediaPair.socialMediaType
-            let socialMediaUserName = socialMediaPair.socialMediaUserName
-            
-//            // Generate a UI image for the respective social media type
-//            cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
-//            
-//            cell.socialMediaName = socialMediaUserName // username
-//            cell.socialMediaType = socialMediaType // facebook, snapchat, etc
-//            
-            // We will delay the image assignment to prevent buggy race conditions
-            // (Check to see what happens when the delay is not set... then you'll understand)
-            // Probable cause: tableView.beginUpdates() and tableView.endUpdates() in tableView(didSelectIndexPath) method
-            delay(0) { () -> () in
-                
-                dispatch_async(dispatch_get_main_queue(), {
-                    // Generate a UI image for the respective social media type
-                    cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
-                    
-                    cell.socialMediaType = socialMediaType //i.e. facebook, twitter, ..
-                    cell.socialMediaName = socialMediaUserName //i.e. austinvaday, avtheman, ..
-                })
-                
-            }
-        }
-        
-
-        // Make cell image circular
-        cell.layer.cornerRadius = cell.frame.width / 2
-        
-        return cell
-    }
-
-    
-    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
-        
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
-        let socialMediaUserName = cell.socialMediaName // username..
-        let socialMediaType = cell.socialMediaType // "facebook", "snapchat", etc..
-        
-        let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
-        
-        // Perform the request, go to external application and let the user do whatever they want!
-        if socialMediaURL != nil
-        {
-            UIApplication.sharedApplication().openURL(socialMediaURL)
-        }
-    }
-  
   
     
     private func generateData(pageNum: Int)
@@ -588,15 +493,38 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                             if result != nil && error == nil
                             {
                                 let user = result! as! UserPrivacyObjectModel
-                                newAquaintsNewsfeed[index].displayProfiles = user.accounts
-                              
-//                                // CHECK IF USER IS PRIVATE. 
-//                                if user.isprivate != nil && user.isprivate {
-//                                    //TODO: Display a different UI
-//                                }
-//                                else {
-//                                  // User is public, continue as normal
-//                                }
+
+                              // Update UI when no more running requests! (last async call finished)
+                              // Update UI on main thread
+                              dispatch_async(dispatch_get_main_queue(), {
+                                
+                                
+                                if pageNum == 0
+                                {
+                                  self.aquaintNewsfeed = newAquaintsNewsfeed
+                                }
+                                else // if pageNum is anything other than 0 (1, 2, etc).. append to current newsfeed
+                                {
+                                  
+                                  runningRequests = runningRequests - 1
+                                  
+                                  if runningRequests == 0 {
+                                    self.aquaintNewsfeed.appendContentsOf(newAquaintsNewsfeed)
+                                    self.removeTableViewFooterSpinner()
+                                    // Note: possible race condition below
+                                    self.isNewDataLoading = false
+                            
+                                  }
+                                }
+                                
+                                self.shouldShowAnimations = false
+                                self.spinner.stopAnimating()
+                                self.spinner.hidden = true
+                                self.newsfeedTableView.reloadData()
+                                self.newsfeedTableView.layoutIfNeeded()
+                                
+                              })
+
                               
                                 // Now, get S3 image and profiles for necessary user
                                 print("getImageUser 5 is: ", getImageAndProfilesForUser)
@@ -605,41 +533,27 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                                     {
                                         print("Success got image!")
                                         newAquaintsNewsfeed[index].displayImage = result! as UIImage
+                                        dispatch_async(dispatch_get_main_queue(), {
+                                          
+                                          
+                                          self.newsfeedTableView.reloadData()
+                                          self.newsfeedTableView.layoutIfNeeded()
+                                          
+                                        })
                                     }
                                     
-                                    runningRequests = runningRequests - 1
-                                    
-                                    if runningRequests == 0
-                                    {
+//                                    runningRequests = runningRequests - 1
+//                                  
+//                                    if runningRequests == 0
+//                                    {
                                         // Update UI when no more running requests! (last async call finished)
                                         // Update UI on main thread
-                                        dispatch_async(dispatch_get_main_queue(), {
-                                            
-                                            
-                                            if pageNum == 0
-                                            {
-                                                self.aquaintNewsfeed = newAquaintsNewsfeed
-                                            }
-                                            else // if pageNum is anything other than 0 (1, 2, etc).. append to current newsfeed
-                                            {
-                                                self.aquaintNewsfeed.appendContentsOf(newAquaintsNewsfeed)
-                                                self.removeTableViewFooterSpinner()
-                                                // Note: possible race condition below
-                                                self.isNewDataLoading = false
-                                            }
-                                            
-                                            self.shouldShowAnimations = false
-                                            self.spinner.stopAnimating()
-                                            self.spinner.hidden = true
-                                            self.newsfeedTableView.reloadData()
-                                            self.newsfeedTableView.layoutIfNeeded()
-                                            
-                                        })
+                                  
                                         
-                                    }
+//                                    }
 
                                 })
-                                
+                              
                               
                             }
                             
