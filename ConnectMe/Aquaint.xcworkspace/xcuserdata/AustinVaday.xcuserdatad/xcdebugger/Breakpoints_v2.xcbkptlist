@@ -65,38 +65,6 @@
             endingLineNumber = "87"
             landmarkName = "loginWithFacebookButtonClicked(_:)"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Aquaint.ViewController.(loginWithFacebookButtonClicked (Swift.AnyObject) -&gt; ()).(closure #1)"
-                  moduleName = "Aquaint"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/ViewController.swift"
-                  timestampString = "508489423.766882"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "89"
-                  endingLineNumber = "89"
-                  offsetFromSymbolStart = "2932">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Aquaint.ViewController.(loginWithFacebookButtonClicked (Swift.AnyObject) -&gt; ()).(closure #1).(closure #3)"
-                  moduleName = "Aquaint"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/ViewController.swift"
-                  timestampString = "508489423.767244"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "91"
-                  endingLineNumber = "91"
-                  offsetFromSymbolStart = "15">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -170,7 +138,7 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/ViewController.swift"
-                  timestampString = "508489423.771893"
+                  timestampString = "508533777.5827"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "80"
@@ -185,7 +153,7 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/ViewController.swift"
-                  timestampString = "508489423.772064"
+                  timestampString = "508533777.582944"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "81"

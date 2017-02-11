@@ -493,15 +493,38 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                             if result != nil && error == nil
                             {
                                 let user = result! as! UserPrivacyObjectModel
-//                                newAquaintsNewsfeed[index].displayProfiles = user.accounts
-                              
-//                                // CHECK IF USER IS PRIVATE. 
-//                                if user.isprivate != nil && user.isprivate {
-//                                    //TODO: Display a different UI
-//                                }
-//                                else {
-//                                  // User is public, continue as normal
-//                                }
+
+                              // Update UI when no more running requests! (last async call finished)
+                              // Update UI on main thread
+                              dispatch_async(dispatch_get_main_queue(), {
+                                
+                                
+                                if pageNum == 0
+                                {
+                                  self.aquaintNewsfeed = newAquaintsNewsfeed
+                                }
+                                else // if pageNum is anything other than 0 (1, 2, etc).. append to current newsfeed
+                                {
+                                  
+                                  runningRequests = runningRequests - 1
+                                  
+                                  if runningRequests == 0 {
+                                    self.aquaintNewsfeed.appendContentsOf(newAquaintsNewsfeed)
+                                    self.removeTableViewFooterSpinner()
+                                    // Note: possible race condition below
+                                    self.isNewDataLoading = false
+                            
+                                  }
+                                }
+                                
+                                self.shouldShowAnimations = false
+                                self.spinner.stopAnimating()
+                                self.spinner.hidden = true
+                                self.newsfeedTableView.reloadData()
+                                self.newsfeedTableView.layoutIfNeeded()
+                                
+                              })
+
                               
                                 // Now, get S3 image and profiles for necessary user
                                 print("getImageUser 5 is: ", getImageAndProfilesForUser)
@@ -510,41 +533,27 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                                     {
                                         print("Success got image!")
                                         newAquaintsNewsfeed[index].displayImage = result! as UIImage
+                                        dispatch_async(dispatch_get_main_queue(), {
+                                          
+                                          
+                                          self.newsfeedTableView.reloadData()
+                                          self.newsfeedTableView.layoutIfNeeded()
+                                          
+                                        })
                                     }
                                     
-                                    runningRequests = runningRequests - 1
-                                    
-                                    if runningRequests == 0
-                                    {
+//                                    runningRequests = runningRequests - 1
+//                                  
+//                                    if runningRequests == 0
+//                                    {
                                         // Update UI when no more running requests! (last async call finished)
                                         // Update UI on main thread
-                                        dispatch_async(dispatch_get_main_queue(), {
-                                            
-                                            
-                                            if pageNum == 0
-                                            {
-                                                self.aquaintNewsfeed = newAquaintsNewsfeed
-                                            }
-                                            else // if pageNum is anything other than 0 (1, 2, etc).. append to current newsfeed
-                                            {
-                                                self.aquaintNewsfeed.appendContentsOf(newAquaintsNewsfeed)
-                                                self.removeTableViewFooterSpinner()
-                                                // Note: possible race condition below
-                                                self.isNewDataLoading = false
-                                            }
-                                            
-                                            self.shouldShowAnimations = false
-                                            self.spinner.stopAnimating()
-                                            self.spinner.hidden = true
-                                            self.newsfeedTableView.reloadData()
-                                            self.newsfeedTableView.layoutIfNeeded()
-                                            
-                                        })
+                                  
                                         
-                                    }
+//                                    }
 
                                 })
-                                
+                              
                               
                             }
                             
