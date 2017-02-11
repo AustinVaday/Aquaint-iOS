@@ -17,7 +17,6 @@ class NewsfeedTableViewCell: UITableViewCell {
     
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var cellMessage: FRHyperLabel!
-    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var cellUserName: UILabel!
     @IBOutlet weak var cellTimeConnected: UILabel!
     @IBOutlet weak var caretImageView: UIImageView!

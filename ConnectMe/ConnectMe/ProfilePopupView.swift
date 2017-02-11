@@ -27,6 +27,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     @IBOutlet weak var cellDeleteButton: UIButton!
     @IBOutlet weak var cellPendingButton: UIButton!
     @IBOutlet weak var noProfilesLinkedLabel: UITextField!
+    @IBOutlet weak var privateProfileView: UIView!
   
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
@@ -326,10 +327,12 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             // Create a faded emblem if private account
             if displayPrivate {
                 cell.emblemImage.alpha = 0.25
-                cell.profilesLockedIcon.hidden = false
+                self.socialMediaCollectionView.hidden = true
+                self.privateProfileView.hidden = false
             } else {
               cell.emblemImage.alpha = 1
-              cell.profilesLockedIcon.hidden = true
+              self.socialMediaCollectionView.hidden = false
+              self.privateProfileView.hidden = true
             }
         }
         

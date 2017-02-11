@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -120,7 +121,7 @@
                                                                 <constraint firstAttribute="height" constant="32" id="bp3-U0-Ei3"/>
                                                                 <constraint firstAttribute="width" constant="32" id="ucN-BE-Dnd"/>
                                                             </constraints>
-                                                            <state key="normal" image="BB1EFDC5-8E25-42F9-88AF-3C246F9A8E48"/>
+                                                            <state key="normal" image="4928F373-4F82-41F5-9863-61B8F43856F9"/>
                                                         </button>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Password Icon Black" translatesAutoresizingMaskIntoConstraints="NO" id="Vk3-pm-Jmg">
                                                             <rect key="frame" x="13" y="14" width="18" height="18"/>
@@ -130,23 +131,31 @@
                                                 </view>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
+                                                    <constraint firstItem="acQ-m5-SkP" firstAttribute="top" secondItem="snn-D2-ESO" secondAttribute="top" id="1lg-Q3-9Rh"/>
+                                                    <constraint firstItem="acQ-m5-SkP" firstAttribute="centerY" secondItem="snn-D2-ESO" secondAttribute="centerY" id="67B-Q4-xn8"/>
+                                                    <constraint firstItem="acQ-m5-SkP" firstAttribute="centerY" secondItem="snn-D2-ESO" secondAttribute="centerY" id="7DL-vn-tSL"/>
                                                     <constraint firstItem="kal-DT-7fr" firstAttribute="centerY" secondItem="snn-D2-ESO" secondAttribute="centerY" id="CFj-55-ihb"/>
                                                     <constraint firstItem="acQ-m5-SkP" firstAttribute="centerX" secondItem="snn-D2-ESO" secondAttribute="centerX" id="NoA-MJ-zsr"/>
+                                                    <constraint firstAttribute="trailing" secondItem="acQ-m5-SkP" secondAttribute="trailing" id="QYa-a0-MLf"/>
                                                     <constraint firstItem="Vk3-pm-Jmg" firstAttribute="centerX" secondItem="acQ-m5-SkP" secondAttribute="centerX" id="Si5-zI-Zr1"/>
+                                                    <constraint firstItem="acQ-m5-SkP" firstAttribute="top" secondItem="snn-D2-ESO" secondAttribute="top" id="Xzh-vo-lkS"/>
+                                                    <constraint firstAttribute="trailing" secondItem="acQ-m5-SkP" secondAttribute="trailing" id="axK-Nj-agD"/>
                                                     <constraint firstItem="kal-DT-7fr" firstAttribute="centerX" secondItem="snn-D2-ESO" secondAttribute="centerX" id="cgL-hQ-q2W"/>
                                                     <constraint firstItem="Vk3-pm-Jmg" firstAttribute="leading" secondItem="snn-D2-ESO" secondAttribute="leadingMargin" constant="5" id="f7F-sE-Ro5"/>
                                                     <constraint firstItem="acQ-m5-SkP" firstAttribute="centerY" secondItem="snn-D2-ESO" secondAttribute="centerY" id="g7p-E4-eCN"/>
+                                                    <constraint firstItem="acQ-m5-SkP" firstAttribute="centerX" secondItem="snn-D2-ESO" secondAttribute="centerX" id="iJy-li-dau"/>
                                                     <constraint firstItem="Vk3-pm-Jmg" firstAttribute="centerY" secondItem="acQ-m5-SkP" secondAttribute="centerY" id="m2f-0G-on1"/>
                                                     <constraint firstItem="Vk3-pm-Jmg" firstAttribute="top" secondItem="snn-D2-ESO" secondAttribute="topMargin" constant="6" id="sR2-Li-Khd"/>
+                                                    <constraint firstItem="acQ-m5-SkP" firstAttribute="centerX" secondItem="snn-D2-ESO" secondAttribute="centerX" id="xyb-lT-nLt"/>
                                                 </constraints>
                                                 <variation key="default">
                                                     <mask key="subviews">
                                                         <exclude reference="kal-DT-7fr"/>
+                                                        <exclude reference="Vk3-pm-Jmg"/>
                                                     </mask>
                                                 </variation>
                                                 <connections>
                                                     <outlet property="emblemImage" destination="acQ-m5-SkP" id="UG8-1V-MWK"/>
-                                                    <outlet property="profilesLockedIcon" destination="Vk3-pm-Jmg" id="gdQ-0r-IBb"/>
                                                 </connections>
                                             </collectionViewCell>
                                         </cells>
@@ -180,7 +189,7 @@
                                         <rect key="frame" x="21" y="113" width="545" height="41"/>
                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="textColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="15"/>
+                                        <fontDescription key="fontDescription" name="Avenir-BookOblique" family="Avenir" pointSize="15"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TgB-LA-yNH">
@@ -203,6 +212,27 @@
                                             <action selector="viewFollowingButtonClicked:" destination="tsq-9T-u5i" eventType="touchUpInside" id="I4d-ak-Vis"/>
                                         </connections>
                                     </button>
+                                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q7V-GT-8vk">
+                                        <rect key="frame" x="0.0" y="92" width="586" height="81"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Password Icon Black" translatesAutoresizingMaskIntoConstraints="NO" id="sWf-ey-hqH">
+                                                <rect key="frame" x="23" y="21" width="35" height="35"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Follow to request access to profiles." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q5j-Vi-azj">
+                                                <rect key="frame" x="81" y="29" width="272" height="41"/>
+                                                <fontDescription key="fontDescription" name="Avenir-BookOblique" family="Avenir" pointSize="14"/>
+                                                <color key="textColor" red="0.52724358969999996" green="0.52724358969999996" blue="0.52724358969999996" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="This account is private!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uKk-vA-JBI">
+                                                <rect key="frame" x="82" y="10" width="272" height="41"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
+                                                <color key="textColor" red="0.52724358969999996" green="0.52724358969999996" blue="0.52724358969999996" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -277,6 +307,7 @@
                             <outlet property="noProfilesLinkedLabel" destination="PV2-Gh-ACA" id="FDC-u3-0uf"/>
                             <outlet property="numFollowersLabel" destination="NiO-W9-d44" id="92O-Hj-mbN"/>
                             <outlet property="numFollowsLabel" destination="Pzu-lF-L4k" id="c0f-Cc-E21"/>
+                            <outlet property="privateProfileView" destination="q7V-GT-8vk" id="C3x-5R-Kvg"/>
                             <outlet property="profileImageView" destination="LoX-uc-zI4" id="ISw-DI-Gie"/>
                             <outlet property="realNameTextFieldLabel" destination="f3w-UU-48a" id="UPW-jP-tfN"/>
                             <outlet property="socialMediaCollectionView" destination="a2I-Tn-IxB" id="AH6-ek-tbP"/>
@@ -375,10 +406,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add People Gray" width="60" height="58"/>
-        <image name="Add People Pending" width="60" height="57"/>
-        <image name="Add People Success Light Blue" width="60" height="58"/>
-        <image name="BB1EFDC5-8E25-42F9-88AF-3C246F9A8E48" width="32" height="32">
+        <image name="4928F373-4F82-41F5-9863-61B8F43856F9" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -497,6 +525,9 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
+        <image name="Add People Gray" width="60" height="58"/>
+        <image name="Add People Pending" width="60" height="57"/>
+        <image name="Add People Success Light Blue" width="60" height="58"/>
         <image name="Back Arrow" width="50" height="50"/>
         <image name="Line Separator Black" width="753" height="4"/>
         <image name="Password Icon Black" width="50" height="50"/>
