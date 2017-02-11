@@ -17,7 +17,7 @@ class SocialMediaCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var emblemImage: UIImageView!
     @IBOutlet weak var deleteSocialMediaButton: UIButton!
-    @IBOutlet weak var profilesLockedIcon: UIImageView!
+//    @IBOutlet weak var profilesLockedIcon: UIImageView!
   
     var socialMediaName: String!// I.e. austinvaday, samsung, etc...
     var socialMediaType: String!// I.e. Facebook, IG, Snapchat...
