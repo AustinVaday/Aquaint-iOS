@@ -1029,7 +1029,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+      
+        if (indexPath.section == MenuData.MY_INFORMATION.rawValue)
+        {
+          self.onEditInformationButtonClicked(self)
+        }
         
         if (indexPath.section == MenuData.ACTIONS.rawValue)
         {
