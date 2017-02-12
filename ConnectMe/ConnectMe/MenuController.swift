@@ -278,8 +278,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 //    }
     
     // Go to edit mode
-    
-    if (editMod)
     self.onEditInformationButtonClicked(self)
   }
   
