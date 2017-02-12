@@ -17,7 +17,7 @@ import SCLAlertView
 import FBSDKLoginKit
 import FBSDKCoreKit
 
-class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate {
     
     enum MenuData: Int {
         case LINKED_PROFILES
@@ -118,7 +118,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // When user pulls, this function will be called
         refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
         settingsTableView.addSubview(refreshControl)
-    
       
     }
     
@@ -269,6 +268,25 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     /*=======================================================
      * END : Keyboard/Button Animations
      =======================================================*/
+  
+  /*=======================================================
+   * BEGIN : Detect long press on collection view
+   =======================================================*/
+  func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
+//    if gestureRecognizer.state != UIGestureRecognizerState.Ended {
+//      return
+//    }
+    
+    // Go to edit mode
+    
+    if (editMod)
+    self.onEditInformationButtonClicked(self)
+  }
+  
+  /*=======================================================
+   * End : Detect long press on collection view
+   =======================================================*/
+  
   
     @IBAction func onAddSocialMediaProfileButtonClicked(sender: AnyObject) {
         
@@ -859,6 +877,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             let cell = tableView.dequeueReusableCellWithIdentifier("menuProfilesCell") as! MenuProfilesCell!
             
             cell.profilesCollectionView.reloadData()
+            
+            // Add long press gesture recognizer to collection view
+            let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(MenuController.handleLongPress(_:)))
+            lpgr.minimumPressDuration = 0.8
+            lpgr.delaysTouchesBegan = true
+            lpgr.delegate = self
+            cell.profilesCollectionView.addGestureRecognizer(lpgr)
             
             // Show delete buttons if editing is enabled.
             if (enableEditing)
