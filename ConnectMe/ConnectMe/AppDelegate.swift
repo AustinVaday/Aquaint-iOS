@@ -281,7 +281,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
   }
 
   func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-    print("Failed to register for remote notification: ", error)
+    print("application(didFailToRegisterForRemoteNotificationsWithError): ", error)
   }
   
   func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
@@ -290,11 +290,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     
     // handle push notifications when app is in foreground or background
     let state: UIApplicationState = UIApplication.sharedApplication().applicationState
-    if state == .Active {
-      if let aps = userInfo["aps"] as? NSDictionary {
-        if let identifier = aps["identifier"] as? NSString {
-          presentSectionfromPushNotification(withIdentifier: identifier)
-        }
+    if (state == .Active) || (state == .Inactive) {
+      if let identifier = userInfo["identifier"] as? NSString {
+        presentSectionfromPushNotification(withIdentifier: identifier)
       }
     }
  }

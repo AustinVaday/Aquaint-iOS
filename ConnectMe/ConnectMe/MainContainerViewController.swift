@@ -52,6 +52,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
   
     // prompt the user if he wants to enable app push notification. If yes, register system-level remote notification
     func askUserForPushNotificationPermission() {
+      // TODO: if user disables notification permission in system Settings later, the prompt would still show up but cannot register for push notification. Have to distinguish "Declined" or "Uninitialized"
       if UIApplication.sharedApplication().isRegisteredForRemoteNotifications() == false {
         let alertTitle = "Enable Push Notification"
         let alertMessage = "Aquaint will notify you when you have new followers, new follow requests or your follow requests to others get accepted! "
