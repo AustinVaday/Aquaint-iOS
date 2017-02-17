@@ -35,6 +35,12 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     var reachability: Reachability!
     var arrivedFromWalkthrough = false
   
+  let NO_NOTIFICATION = 0
+  let NEW_FOLLOWER = 1
+  let FOLLOW_REQUEST_ACCEPTANCE = 2
+  let NEW_FOLLOW_REQUESTS = 3
+  var arrivedFromPushNotification = 0
+  
     // This is our child (container) view controller that holds all our pages
     var mainPageViewController: MainPageViewController!
 
@@ -132,6 +138,24 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
           self.presentViewController(addSocialMediaVC, animated: true, completion: nil)
         })
         
+      }
+      
+      switch arrivedFromPushNotification {
+      case NEW_FOLLOWER:
+        goToPage2OfSection(0)
+        break
+        
+      case FOLLOW_REQUEST_ACCEPTANCE:
+        goToPage2OfSection(1)
+        break
+        
+      case NEW_FOLLOW_REQUESTS:
+        let vcHome = mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
+        vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
+        break
+        
+      default:
+        break
       }
     
       askUserForPushNotificationPermission()

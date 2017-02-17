@@ -175,8 +175,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
 
       let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
       let viewControllerIdentifier = "MainContainerViewController"
+      
+      let vcMainContainer = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier) as! MainContainerViewController
+      
+      // handle push notificiations when app is killed and relaunched
+      if let payload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary, identifier = payload["identifier"] as? NSString {
+        print("application(didFinishLaunchingWithOptions): with RemoteNotificaitonKey: ", payload)
+        
+          if identifier == "newFollower" {
+            vcMainContainer.arrivedFromPushNotification = vcMainContainer.NEW_FOLLOWER
+            
+          } else if identifier == "followRequestAcceptance" {
+            vcMainContainer.arrivedFromPushNotification = vcMainContainer.FOLLOW_REQUEST_ACCEPTANCE
+            
+          } else if identifier == "newFollowRequests" {
+            vcMainContainer.arrivedFromPushNotification = vcMainContainer.NEW_FOLLOW_REQUESTS
+          }
+        
+        // clear all badges from previous notifications on the app icon
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+      }
+
       // Go to home page, as if user was logged in already!
-      self.window?.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
+      self.window?.rootViewController = vcMainContainer
       print("user already logged in")
     }
 
@@ -227,19 +248,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
     
     userPool.delegate = self
-    
-
-    // handle push notificiations when app is killed and relaunched
-    if let payload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary, identifier = payload["identifier"] as? NSString {
-      print("application(didFinishLaunchingWithOptions): with RemoteNotificaitonKey: ", payload)
-    
-      /* TODO
-      presentSectionfromPushNotification(withIdentifier: identifier)
-      */
-      
-      // clear all badges from previous notifications on the app icon
-      UIApplication.sharedApplication().applicationIconBadgeNumber = 0
-    }
     
     return AWSMobileClient.sharedInstance.didFinishLaunching(
       application,
