@@ -57,10 +57,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
         mainViewController.goToPage2OfSection(1)
         
       } else if identifier == "newFollowRequests" {
+        // TODO: only works when app is left at the first tab (timeline view)
+        let dummyButton = UIButton()
+        mainViewController.goToPage0(dummyButton)
+        //NSThread.sleepForTimeInterval(2)
         
         let vcHome = mainViewController.mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
         vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
-        
+        /*
+        dispatch_async(dispatch_get_main_queue()) {
+          vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
+        }
+        */
         /* approach #1: directly presenting FollowRequestsViewController
          let vcFollowRequests = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController") as? FollowRequestsViewController
          window?.rootViewController = vcFollowRequests
@@ -223,9 +231,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
 
     // handle push notificiations when app is killed and relaunched
     if let payload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary, identifier = payload["identifier"] as? NSString {
-        print("application(didFinishLaunchingWithOptions): with RemoteNotificaitonKey: ", payload)
+      print("application(didFinishLaunchingWithOptions): with RemoteNotificaitonKey: ", payload)
+    
+      /* TODO
+      presentSectionfromPushNotification(withIdentifier: identifier)
+      */
       
-        presentSectionfromPushNotification(withIdentifier: identifier)
+      // clear all badges from previous notifications on the app icon
+      UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
     return AWSMobileClient.sharedInstance.didFinishLaunching(
@@ -295,6 +308,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
         presentSectionfromPushNotification(withIdentifier: identifier)
       }
     }
+    
+    UIApplication.sharedApplication().applicationIconBadgeNumber = 0
  }
 
   func applicationWillResignActive(application: UIApplication) {
