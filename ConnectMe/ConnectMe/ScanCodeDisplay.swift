@@ -11,11 +11,20 @@ import UIKit
 class ScanCodeDisplay: UIViewController {
   
   @IBOutlet weak var scanCodeImageView: UIImageView!
-  
+  var animatedObjects = Array<UIView>()
+
   override func viewDidLoad() {
     super.viewDidLoad()
     
     fetchUserScanCode()
+  }
+  
+  override func viewDidAppear(animated: Bool) {
+    setUpSocialMediaAnimations(self, subView: self.view, animatedObjects: &animatedObjects, animationLocation: AnimationLocation.Bottom, theme: AnimationAquaintEmblemTheme.DarkTheme)
+  }
+  
+  override func viewDidDisappear(animated: Bool) {
+    clearUpSocialMediaAnimations(&animatedObjects)
   }
   
   override func didReceiveMemoryWarning() {

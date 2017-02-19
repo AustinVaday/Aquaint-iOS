@@ -31,6 +31,7 @@
 		FF61979C1E5998EB00B94618 /* ScanCodeDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61979A1E5998EB00B94618 /* ScanCodeDisplay.swift */; };
 		FF61979F1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61979E1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift */; };
 		FF6197A11E599C3E00B94618 /* ScanCodeDisplay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF6197A01E599C3E00B94618 /* ScanCodeDisplay.storyboard */; };
+		FF6197A31E59B4DA00B94618 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6197A21E59B4D900B94618 /* Animations.swift */; };
 		FF6331681D286BAB00967266 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6331671D286BAB00967266 /* AddressBook.framework */; };
 		FF63316A1D286BB200967266 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6331691D286BB200967266 /* SafariServices.framework */; };
 		FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF63316B1D286D4300967266 /* AWSMobileClient.swift */; };
@@ -148,6 +149,7 @@
 		FF61979A1E5998EB00B94618 /* ScanCodeDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCodeDisplay.swift; sourceTree = "<group>"; };
 		FF61979E1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCodeDisplayStoryboardViewController.swift; sourceTree = "<group>"; };
 		FF6197A01E599C3E00B94618 /* ScanCodeDisplay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ScanCodeDisplay.storyboard; sourceTree = "<group>"; };
+		FF6197A21E59B4D900B94618 /* Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		FF6331671D286BAB00967266 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		FF6331691D286BB200967266 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		FF63316B1D286D4300967266 /* AWSMobileClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSMobileClient.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 				FF8420211D29B59F002D2927 /* BackendAPI.swift */,
 				FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */,
 				FF8420231D2B42A0002D2927 /* DynamoDBClasses.swift */,
+				FF6197A21E59B4D900B94618 /* Animations.swift */,
 			);
 			name = HelperFunctions;
 			sourceTree = "<group>";
@@ -836,6 +839,7 @@
 			files = (
 				FF47274D1D48750F0065F418 /* SectionHeaderCell.swift in Sources */,
 				FF61979C1E5998EB00B94618 /* ScanCodeDisplay.swift in Sources */,
+				FF6197A31E59B4DA00B94618 /* Animations.swift in Sources */,
 				FFBDD7581CD59A0B0007A188 /* NewsfeedViewController.swift in Sources */,
 				FF6813F61E0DF60D007930BA /* FollowRequestsTableViewCell.swift in Sources */,
 				FFBDD7541CD58F910007A188 /* HomeContainerViewController.swift in Sources */,
