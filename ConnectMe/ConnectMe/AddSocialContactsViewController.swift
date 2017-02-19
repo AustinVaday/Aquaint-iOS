@@ -455,7 +455,7 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
           
           self.users.append(user)
 
-          getUserS3Image(user.username, completion: { (result, error) in
+          getUserS3Image(user.username, extraPath: nil, completion: { (result, error) in
             
             if (result != nil)
             {

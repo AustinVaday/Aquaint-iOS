@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Scan Code Display-->
+        <scene sceneID="hvy-Xd-fSf">
+            <objects>
+                <viewController storyboardIdentifier="ScanCodeDisplayViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JFp-Qt-ONj" customClass="ScanCodeDisplay" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="El0-ur-vkf"/>
+                        <viewControllerLayoutGuide type="bottom" id="Rae-Ju-IF9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="k0J-cX-TJp">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Emblem" translatesAutoresizingMaskIntoConstraints="NO" id="T0e-4W-zzY">
+                                <rect key="frame" x="200" y="79" width="200" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="083-le-Fck"/>
+                                    <constraint firstAttribute="width" constant="200" id="elB-Xm-jil"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2TT-of-IVn">
+                                <rect key="frame" x="277" y="308" width="46" height="30"/>
+                                <state key="normal" title="Export"/>
+                                <connections>
+                                    <action selector="onExportButtonClicked:" destination="JFp-Qt-ONj" eventType="touchUpInside" id="fjo-Wc-am9"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="T0e-4W-zzY" firstAttribute="centerX" secondItem="2TT-of-IVn" secondAttribute="centerX" id="Du9-8s-cHq"/>
+                            <constraint firstItem="T0e-4W-zzY" firstAttribute="top" secondItem="El0-ur-vkf" secondAttribute="bottom" constant="59" id="IiI-JT-6R8"/>
+                            <constraint firstItem="T0e-4W-zzY" firstAttribute="centerX" secondItem="k0J-cX-TJp" secondAttribute="centerX" id="fOx-Xd-kAj"/>
+                            <constraint firstItem="2TT-of-IVn" firstAttribute="top" secondItem="T0e-4W-zzY" secondAttribute="bottom" constant="29" id="h49-kC-p8H"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="scanCodeImageView" destination="T0e-4W-zzY" id="AKv-Pe-cs2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vAX-KG-i9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="436" y="231"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Emblem" width="362" height="361"/>
+    </resources>
+</document>

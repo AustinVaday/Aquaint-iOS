@@ -528,7 +528,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                               
                                 // Now, get S3 image and profiles for necessary user
                                 print("getImageUser 5 is: ", getImageAndProfilesForUser)
-                                getUserS3Image(getImageAndProfilesForUser, completion: { (result, error) in
+                                getUserS3Image(getImageAndProfilesForUser, extraPath: nil, completion: { (result, error) in
                                     if result != nil && error == nil
                                     {
                                         print("Success got image!")

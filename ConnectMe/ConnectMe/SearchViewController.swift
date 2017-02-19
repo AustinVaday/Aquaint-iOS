@@ -565,7 +565,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                             
                             newFilteredUsersList.append(resultUser)
                             
-                            getUserS3Image(searchUser, completion: { (result, error) in
+                            getUserS3Image(searchUser, extraPath: nil, completion: { (result, error) in
                                 
                                 if (result != nil)
                                 {

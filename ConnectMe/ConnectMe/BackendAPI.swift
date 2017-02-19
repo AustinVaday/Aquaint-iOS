@@ -174,8 +174,13 @@ func getUserDynamoData(userName: String!, completion: (result: UserPrivacyObject
 
 }
 
-func getUserS3Image(userName: String!, completion: (result: UIImage?, error: NSError?)->())
+func getUserS3Image(userName: String!, extraPath: String!, completion: (result: UIImage?, error: NSError?)->())
 {
+    var imgPath = "public/"
+    if extraPath != nil
+    {
+      imgPath = imgPath + extraPath
+    }
     
     /*******************************************
      * user image from S3
@@ -188,7 +193,7 @@ func getUserS3Image(userName: String!, completion: (result: UIImage?, error: NSE
     let downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath)
     let downloadRequest = AWSS3TransferManagerDownloadRequest()
     downloadRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
-    downloadRequest.key = "public/" + userName
+    downloadRequest.key = imgPath + userName
     downloadRequest.downloadingFileURL = downloadingFileURL
     
     let transferManager = AWSS3TransferManager.defaultS3TransferManager()
@@ -212,7 +217,6 @@ func getUserS3Image(userName: String!, completion: (result: UIImage?, error: NSE
         {
             print("fetch s3 user image: ERROR FILE DOWNLOAD: ", resultTask.error)
             
-//            try! NSFileManager.defaultManager().removeItemAtPath(downloadingFilePath)
             completion(result: nil, error: resultTask.error)
         }
         

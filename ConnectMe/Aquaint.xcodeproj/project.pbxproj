@@ -28,6 +28,9 @@
 		FF47274D1D48750F0065F418 /* SectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */; };
 		FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */; };
 		FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */; };
+		FF61979C1E5998EB00B94618 /* ScanCodeDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61979A1E5998EB00B94618 /* ScanCodeDisplay.swift */; };
+		FF61979F1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61979E1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift */; };
+		FF6197A11E599C3E00B94618 /* ScanCodeDisplay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF6197A01E599C3E00B94618 /* ScanCodeDisplay.storyboard */; };
 		FF6331681D286BAB00967266 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6331671D286BAB00967266 /* AddressBook.framework */; };
 		FF63316A1D286BB200967266 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6331691D286BB200967266 /* SafariServices.framework */; };
 		FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF63316B1D286D4300967266 /* AWSMobileClient.swift */; };
@@ -142,6 +145,9 @@
 		FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderCell.swift; sourceTree = "<group>"; };
 		FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsTableViewCell.swift; sourceTree = "<group>"; };
+		FF61979A1E5998EB00B94618 /* ScanCodeDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCodeDisplay.swift; sourceTree = "<group>"; };
+		FF61979E1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCodeDisplayStoryboardViewController.swift; sourceTree = "<group>"; };
+		FF6197A01E599C3E00B94618 /* ScanCodeDisplay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ScanCodeDisplay.storyboard; sourceTree = "<group>"; };
 		FF6331671D286BAB00967266 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		FF6331691D286BB200967266 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		FF63316B1D286D4300967266 /* AWSMobileClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSMobileClient.swift; sourceTree = "<group>"; };
@@ -288,6 +294,16 @@
 			name = "Aquaints-Followers/Following";
 			sourceTree = "<group>";
 		};
+		FF6197991E59979B00B94618 /* ScanCode */ = {
+			isa = PBXGroup;
+			children = (
+				FF61979A1E5998EB00B94618 /* ScanCodeDisplay.swift */,
+				FF61979E1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift */,
+				FF6197A01E599C3E00B94618 /* ScanCodeDisplay.storyboard */,
+			);
+			name = ScanCode;
+			sourceTree = "<group>";
+		};
 		FF63316F1D286D5100967266 /* AmazonAWS */ = {
 			isa = PBXGroup;
 			children = (
@@ -419,6 +435,7 @@
 				FF897C341C01AC63001B2634 /* AppDelegate.swift */,
 				FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */,
 				FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */,
+				FF6197991E59979B00B94618 /* ScanCode */,
 				FF8972A31E1B22FA00A4D9C4 /* Walkthrough */,
 				FF23A1391D93273C0062E9A0 /* Aquaints-Followers/Following */,
 				FF8972961E14B2A900A4D9C4 /* Popup Profiles */,
@@ -654,6 +671,7 @@
 				FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */,
 				FF8972921E14ACB400A4D9C4 /* RefreshContents.xib in Resources */,
 				FF3834D31D6D483E00FC9F2A /* PopUpAlert.storyboard in Resources */,
+				FF6197A11E599C3E00B94618 /* ScanCodeDisplay.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -817,6 +835,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF47274D1D48750F0065F418 /* SectionHeaderCell.swift in Sources */,
+				FF61979C1E5998EB00B94618 /* ScanCodeDisplay.swift in Sources */,
 				FFBDD7581CD59A0B0007A188 /* NewsfeedViewController.swift in Sources */,
 				FF6813F61E0DF60D007930BA /* FollowRequestsTableViewCell.swift in Sources */,
 				FFBDD7541CD58F910007A188 /* HomeContainerViewController.swift in Sources */,
@@ -869,6 +888,7 @@
 				FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */,
 				FF89728E1E10A44800A4D9C4 /* ForgotPasswordViewController.swift in Sources */,
 				FF8972A21E1B22F400A4D9C4 /* WalkthroughPageViewController.swift in Sources */,
+				FF61979F1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift in Sources */,
 				FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */,
 				FF6813F41E0DF1F0007930BA /* FollowRequestsViewController.swift in Sources */,
 				FF8420261D30A138002D2927 /* AddSocialMediaProfilesController.swift in Sources */,

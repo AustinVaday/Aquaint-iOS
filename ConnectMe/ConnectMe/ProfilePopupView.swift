@@ -114,7 +114,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                   
                 })
                 // Get image data asynchronously (why is this in getUserDynamoData? IF we want to wait for all data to complete before displaying anything)
-                getUserS3Image(username, completion: { (result, error) in
+                getUserS3Image(username, extraPath: nil, completion: { (result, error) in
                   if error == nil
                   {
                     if result != nil

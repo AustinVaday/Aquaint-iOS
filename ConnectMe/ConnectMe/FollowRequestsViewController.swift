@@ -266,7 +266,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
                 userConnection.keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
               }
               
-              getUserS3Image(userConnection.userName, completion: { (result, error) in
+              getUserS3Image(userConnection.userName, extraPath: nil, completion: { (result, error) in
                 if error == nil && result != nil
                 {
                   userConnection.userImage = result! as UIImage

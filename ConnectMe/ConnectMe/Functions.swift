@@ -613,6 +613,24 @@ func setCurrentCachedUserImage(userImage: UIImage!)
     defaults.setURL(imageFileURL, forKey: "userimage")
 }
 
+func setCurrentCachedUserScanCode(scanCode: UIImage!)
+{
+  let defaults = NSUserDefaults.standardUserDefaults()
+
+  // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
+  let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("tempUserScanCode"))
+  
+  // Force PNG format
+  let data = UIImagePNGRepresentation(scanCode)
+  
+  // Write image data to the created url
+  try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+  
+  defaults.setURL(imageFileURL, forKey: "userscancode")
+
+}
+
+
 func setCurrentCachedUserProfiles(userProfiles: NSMutableDictionary)
 {
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -750,6 +768,37 @@ func getCurrentCachedUserImage() -> UIImage!
     return currentUserImage
     
 }
+
+func getCurrentCachedUserScanCode() -> UIImage!
+{
+  
+  // Get the user defaults set previously in the program (username of user)
+  let defaults = NSUserDefaults.standardUserDefaults()
+  
+  // Fetch cached image URL
+  let imageURL = defaults.URLForKey("userscancode")
+  
+  if (imageURL == nil)
+  {
+    print("Uh oh, no cached scan code available.")
+    return nil
+  }
+  // Get data of image
+  let data = NSData(contentsOfURL: imageURL!)
+  
+  if (data == nil)
+  {
+    print("Uh oh, no cached scan code available -- data is nil.")
+    return nil
+  }
+  
+  // Generate image from data
+  let currentScanCode = UIImage(data: data!)
+  
+  return currentScanCode
+  
+}
+
 // Get the current user that is signed into the app
 func getCurrentCachedUserProfiles() -> NSMutableDictionary!
 {
