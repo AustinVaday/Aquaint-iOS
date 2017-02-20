@@ -15,13 +15,14 @@ protocol MainPageSectionUnderLineViewDelegate
 
 class MainPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    let HOME = 0
+    let NEWSFEED = 0
     let SEARCH = 1
-    let CONNECTIONS = 2
-    let MENU = 3
+    let SCANCODE = 2
+    let CONNECTIONS = 3
+    let MENU = 4
     
     var arrayOfViewControllers: Array<UIViewController>!
-    var currentPageIndex = 0 //UPDATED in changePage and didFinishAnimating methods
+    var currentPageIndex = 2 //UPDATED in changePage and didFinishAnimating methods
     // Delegating properties
 //    weak var pageDelegate:MainPageViewControllerDelegate?
     // Protocol properties
@@ -38,11 +39,12 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         arrayOfViewControllers = Array<UIViewController>()
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeContainerViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("SearchViewController"))!)
+      arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("ScanCodeDisplayStoryboardViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("AquaintsContainerViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))!)
         
-        let firstViewController = arrayOfViewControllers[HOME]
-        currentPageIndex = HOME
+        let firstViewController = arrayOfViewControllers[SCANCODE]
+        currentPageIndex = SCANCODE
         
         setViewControllers([firstViewController], direction: .Forward, animated: true, completion: nil)
         
@@ -54,8 +56,13 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         {
             return arrayOfViewControllers[SEARCH]
         }
-        
+      
         if viewController.isKindOfClass(SearchViewController)
+        {
+          return arrayOfViewControllers[SCANCODE]
+        }
+      
+        if viewController.isKindOfClass(ScanCodeDisplayStoryboardViewController)
         {
             return arrayOfViewControllers[CONNECTIONS]
         }
@@ -84,12 +91,17 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         if viewController.isKindOfClass(SearchViewController)
         {
-            return arrayOfViewControllers[HOME]
+            return arrayOfViewControllers[NEWSFEED]
         }
-        
+      
+        if viewController.isKindOfClass(ScanCodeDisplayStoryboardViewController)
+        {
+          return arrayOfViewControllers[SEARCH]
+        }
+      
         if viewController.isKindOfClass(AquaintsContainerViewController)
         {
-            return arrayOfViewControllers[SEARCH]
+            return arrayOfViewControllers[SCANCODE]
         }
         
         if viewController.isKindOfClass(MenuController)
@@ -130,9 +142,14 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         else if nextViewController.isKindOfClass(HomeContainerViewController)
         {
-            currentPageIndex = HOME
+            currentPageIndex = NEWSFEED
         }
         
+        else if nextViewController.isKindOfClass(ScanCodeDisplayStoryboardViewController)
+        {
+          currentPageIndex = SCANCODE
+        }
+          
         else if nextViewController.isKindOfClass(SearchViewController)
         {
             currentPageIndex = SEARCH
@@ -144,7 +161,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
 
     func goToFollowersPage()
     {
-        changePage(2)
+        changePage(CONNECTIONS)
         let aquaintsVC = arrayOfViewControllers[CONNECTIONS] as! AquaintsContainerViewController
         let dummyButton = UIButton()
         aquaintsVC.goToPage0(dummyButton) // Send in random button
@@ -155,7 +172,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     
     func goToFollowingPage()
     {
-        changePage(2)
+        changePage(CONNECTIONS)
         let aquaintsVC = arrayOfViewControllers[CONNECTIONS] as! AquaintsContainerViewController
         let dummyButton = UIButton()
         aquaintsVC.goToPage1(dummyButton) // Send in random button
@@ -204,7 +221,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
 
   // a special case of changePage(pageIndex: 2) used for push notification handling. Displaying Followers or Following section in AquaintsContainerViewController
   func changePageToFollows(subpageIndex: Int) {  // 0 for Followers, 1 for Following
-    let pageIndex = 2
+    let pageIndex = CONNECTIONS
     
     let destinationViewController = arrayOfViewControllers[pageIndex]
     

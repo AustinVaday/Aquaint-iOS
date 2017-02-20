@@ -17,16 +17,19 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     @IBOutlet weak var sectionUnderlineView1: UIView!
     @IBOutlet weak var sectionUnderlineView2: UIView!
     @IBOutlet weak var sectionUnderlineView3: UIView!
-    
+    @IBOutlet weak var sectionUnderlineView4: UIView!
 
-    @IBOutlet weak var homeButton: UIButton!
+  
+
+    @IBOutlet weak var newsfeedButton: UIButton!
     @IBOutlet weak var searchButton: UIButton!
+    @IBOutlet weak var homeButton: UIButton!
     @IBOutlet weak var connectionsButton: UIButton!
     @IBOutlet weak var menuButton: UIButton!
     
     
-    @IBOutlet weak var notificationView: UIView!
-    @IBOutlet weak var notificationViewLabel: UILabel!
+//    @IBOutlet weak var notificationView: UIView!
+//    @IBOutlet weak var notificationViewLabel: UILabel!
     @IBOutlet weak var noInternetBanner: UIView!
     
     var connectionRequestList : Array<String>! // MAKE IT Connection type LATER
@@ -48,6 +51,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         sectionUnderlineView1.hidden = true
         sectionUnderlineView2.hidden = true
         sectionUnderlineView3.hidden = true
+        sectionUnderlineView4.hidden = true
     }
   
     // prompt the user if he wants to enable app push notification. If yes, register system-level remote notification
@@ -90,24 +94,24 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         mainPageViewController = self.childViewControllers.last as! MainPageViewController
 
         
-        // SET UP NOTIFICATIONS
+        // SET UP NUM NOTIFICATIONS
         // ----------------------------------------------
-        // Hide notificationView (if no notifications)
-        notificationView.hidden = true
-        
-        // Set notificationViewLabel with value 0
-        notificationViewLabel.text = "0"
-        
-        // Make notificationView circular
-        notificationView.layer.cornerRadius = notificationView.frame.size.width / 2
-        
+//        // Hide notificationView (if no notifications)
+//        notificationView.hidden = true
+//        
+//        // Set notificationViewLabel with value 0
+//        notificationViewLabel.text = "0"
+//        
+//        // Make notificationView circular
+//        notificationView.layer.cornerRadius = notificationView.frame.size.width / 2
+      
         
         // SET UP CONTROL BAR (FOOTER)
         // ----------------------------------------------
         hideAllSectionUnderlineViews()
         
         // Show only the bar for the home icon
-        sectionUnderlineView0.hidden = false
+        sectionUnderlineView2.hidden = false
         
         // Set banner hidden by default
         noInternetBanner.hidden = true
@@ -116,7 +120,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         if arrivedFromWalkthrough {
           // Go to settings page
           let dummyButton = UIButton()
-          self.goToPage3(dummyButton)
+          self.goToPage4(dummyButton)
           
           // Take user to AddSocialMediaProfilesController so they can add in profiles
           let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -222,20 +226,29 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         sectionUnderlineView2.hidden = false
     }
   
-    // a special case for goToPage2() used for push notification handling. Displaying Followers or Following section in AquaintsContainerViewController
-    func goToPage2OfSection(section: Int) {
+  @IBAction func goToPage3(sender: UIButton) {
+    
+    mainPageViewController.changePage(3)
+    
+    hideAllSectionUnderlineViews()
+    sectionUnderlineView3.hidden = false
+  }
+
+  @IBAction func goToPage4(sender: AnyObject) {
+    
+    mainPageViewController.changePage(4)
+    
+    hideAllSectionUnderlineViews()
+    sectionUnderlineView4.hidden = false
+  }
+  
+    // NOTE: Previous page 2 is NOW PAGE 3.
+    // a special case for goToPage3() used for push notification handling. Displaying Followers or Following section in AquaintsContainerViewController
+    func goToPage3OfSection(section: Int) {
       mainPageViewController.changePageToFollows(section)
       
       hideAllSectionUnderlineViews()
-      sectionUnderlineView2.hidden = false
-    }
-  
-    @IBAction func goToPage3(sender: UIButton) {
-    
-        mainPageViewController.changePage(3)
-        
-        hideAllSectionUnderlineViews()
-        sectionUnderlineView3.hidden = false
+      sectionUnderlineView3.hidden = false
     }
     
     func updateSectionUnderLineView(newViewNum: Int) {
@@ -253,7 +266,9 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         break;
         case 3: sectionUnderlineView3.hidden = false
         break;
-        default: sectionUnderlineView0.hidden = false
+        case 4: sectionUnderlineView4.hidden = false
+        break;
+        default: sectionUnderlineView2.hidden = false
         }
 
     }

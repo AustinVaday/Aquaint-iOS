@@ -51,10 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     if let mainViewController = self.window?.rootViewController as? MainContainerViewController {
       
       if identifier == "newFollower" {
-        mainViewController.goToPage2OfSection(0)
+        mainViewController.goToPage3OfSection(0)
         
       } else if identifier == "followRequestAcceptance" {
-        mainViewController.goToPage2OfSection(1)
+        mainViewController.goToPage3OfSection(1)
         
       } else if identifier == "newFollowRequests" {
         

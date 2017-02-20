@@ -10,8 +10,17 @@ import UIKit
 
 class ScanCodeDisplayStoryboardViewController: UIViewController {
 
+  @IBOutlet weak var displayView: UIView!
+  @IBOutlet weak var userNameLabel: UILabel!
+  
     override func viewDidLoad() {
         super.viewDidLoad()
+      
+      let currentUser = getCurrentCachedUser()
+      
+      if currentUser != nil {
+        userNameLabel.text = currentUser
+      }
 
       dispatch_async(dispatch_get_main_queue()) { 
         // Get our special popup design from the XIB
@@ -19,7 +28,7 @@ class ScanCodeDisplayStoryboardViewController: UIViewController {
         let viewController = storyboard.instantiateViewControllerWithIdentifier("ScanCodeDisplayViewController")
         
         self.addChildViewController(viewController)
-        self.view.addSubview(viewController.view)
+        self.displayView.addSubview(viewController.view)
         viewController.didMoveToParentViewController(self)
         
         // Set popup's content view to be what we just fetched

@@ -17,13 +17,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2TT-of-IVn">
-                                <rect key="frame" x="407" y="160" width="46" height="30"/>
-                                <state key="normal" title="Export"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2TT-of-IVn">
+                                <rect key="frame" x="391" y="149" width="25" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="25" id="n1r-CM-cFk"/>
+                                    <constraint firstAttribute="height" constant="31" id="sxW-Q5-EIM"/>
+                                </constraints>
+                                <state key="normal" title="Export" image="Export Icon Gray"/>
                                 <connections>
                                     <action selector="onExportButtonClicked:" destination="JFp-Qt-ONj" eventType="touchUpInside" id="fjo-Wc-am9"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Emblem" translatesAutoresizingMaskIntoConstraints="NO" id="T0e-4W-zzY">
+                                <rect key="frame" x="210" y="75" width="180" height="180"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="3Bc-IQ-Sfk"/>
+                                    <constraint firstAttribute="height" constant="180" id="Ogb-Im-90E"/>
+                                    <constraint firstAttribute="width" constant="180" id="asx-p9-T7u"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="3Bc-IQ-Sfk"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AQUA SCANS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GUU-HV-5Pa">
                                 <rect key="frame" x="238" y="320" width="125" height="30"/>
                                 <constraints>
@@ -51,30 +68,17 @@
                                     <constraint firstAttribute="height" constant="3" id="kTa-mV-F1Y"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Emblem" translatesAutoresizingMaskIntoConstraints="NO" id="T0e-4W-zzY">
-                                <rect key="frame" x="199" y="75" width="200" height="200"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="3Bc-IQ-Sfk"/>
-                                    <constraint firstAttribute="height" constant="200" id="Ogb-Im-90E"/>
-                                    <constraint firstAttribute="width" constant="200" id="asx-p9-T7u"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="3Bc-IQ-Sfk"/>
-                                    </mask>
-                                </variation>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="T0e-4W-zzY" firstAttribute="centerX" secondItem="k0J-cX-TJp" secondAttribute="centerX" constant="-1" id="AFi-ik-nQN"/>
+                            <constraint firstItem="T0e-4W-zzY" firstAttribute="centerX" secondItem="k0J-cX-TJp" secondAttribute="centerX" id="AFi-ik-nQN"/>
                             <constraint firstItem="GUU-HV-5Pa" firstAttribute="top" secondItem="LRp-H8-XN9" secondAttribute="bottom" constant="1" id="DW4-EY-qMg"/>
                             <constraint firstItem="LkV-W9-HUq" firstAttribute="centerX" secondItem="k0J-cX-TJp" secondAttribute="centerX" id="Rl5-LI-KuK"/>
+                            <constraint firstItem="2TT-of-IVn" firstAttribute="leading" secondItem="T0e-4W-zzY" secondAttribute="trailing" constant="1" id="ajI-3b-SBx"/>
+                            <constraint firstItem="T0e-4W-zzY" firstAttribute="top" secondItem="2TT-of-IVn" secondAttribute="bottom" constant="-105" id="caV-ip-bOb"/>
                             <constraint firstItem="LRp-H8-XN9" firstAttribute="centerX" secondItem="k0J-cX-TJp" secondAttribute="centerX" id="dzP-MD-Gwf"/>
-                            <constraint firstItem="2TT-of-IVn" firstAttribute="centerX" secondItem="k0J-cX-TJp" secondAttribute="centerX" constant="130" id="e6Z-z8-4Wy"/>
-                            <constraint firstItem="T0e-4W-zzY" firstAttribute="centerY" secondItem="k0J-cX-TJp" secondAttribute="centerY" constant="-125" id="jd3-MF-ydd"/>
+                            <constraint firstItem="T0e-4W-zzY" firstAttribute="centerY" secondItem="k0J-cX-TJp" secondAttribute="centerY" constant="-135" id="jd3-MF-ydd"/>
                             <constraint firstItem="LRp-H8-XN9" firstAttribute="centerY" secondItem="k0J-cX-TJp" secondAttribute="centerY" id="l0a-KY-ZD2"/>
-                            <constraint firstItem="2TT-of-IVn" firstAttribute="centerY" secondItem="k0J-cX-TJp" secondAttribute="centerY" constant="-125" id="l8H-mX-0Ty"/>
                             <constraint firstItem="GUU-HV-5Pa" firstAttribute="centerX" secondItem="k0J-cX-TJp" secondAttribute="centerX" id="qGs-XP-4RK"/>
                             <constraint firstItem="LkV-W9-HUq" firstAttribute="top" secondItem="GUU-HV-5Pa" secondAttribute="bottom" constant="-3" id="qok-Fz-yBK"/>
                         </constraints>
@@ -90,6 +94,7 @@
     </scenes>
     <resources>
         <image name="Emblem" width="362" height="361"/>
+        <image name="Export Icon Gray" width="38" height="42"/>
         <image name="Line Separator Black" width="753" height="4"/>
     </resources>
 </document>
