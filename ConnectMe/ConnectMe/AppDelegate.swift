@@ -57,13 +57,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
         mainViewController.goToPage2OfSection(1)
         
       } else if identifier == "newFollowRequests" {
-        // TODO: only works when app is left at the first tab (timeline view)
+
         let dummyButton = UIButton()
+        mainViewController.goToPage0AndShowFollowRequests()
+        
+        /* TODO: only works when app is left at the first tab (timeline view)
         mainViewController.goToPage0(dummyButton)
         //NSThread.sleepForTimeInterval(2)
         
         let vcHome = mainViewController.mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
         vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
+        */
+        
         /*
         dispatch_async(dispatch_get_main_queue()) {
           vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)

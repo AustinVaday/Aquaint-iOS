@@ -234,7 +234,21 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         hideAllSectionUnderlineViews()
         sectionUnderlineView0.hidden = false
     }
+  
+  func goToPage0AndShowFollowRequests() {
+    let dummyButton = UIButton()
+    /*
+    goToPage0(dummyButton)
     
+    let vcHome = mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
+    vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
+    */
+    mainPageViewController.changePageToFollowRequests()
+    
+    hideAllSectionUnderlineViews()
+    sectionUnderlineView0.hidden = false
+  }
+  
     @IBAction func goToPage1(sender: UIButton) {
 
         mainPageViewController.changePage(1)
