@@ -10,11 +10,18 @@ import UIKit
 
 class ScanCodeDisplay: UIViewController {
   
+  @IBOutlet weak var userNameLabel: UILabel!
   @IBOutlet weak var scanCodeImageView: UIImageView!
   var animatedObjects = Array<UIView>()
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    let currentUser = getCurrentCachedUser()
+    
+    if currentUser != nil {
+      userNameLabel.text = currentUser
+    }
     
     fetchUserScanCode()
   }
@@ -99,5 +106,22 @@ class ScanCodeDisplay: UIViewController {
     }
     
   }
+  
+  @IBAction func onCameraButtonClicked(sender: AnyObject) {
+    // Perform update on UI on main thread
+    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      UIView.transitionWithView(self.scanCodeImageView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+          self.scanCodeImageView.hidden = true
+        
+        }, completion: { (status) in
+          // Show camera view
+          
+        })
+
+    })
+
+  }
+  
+  
 
 }

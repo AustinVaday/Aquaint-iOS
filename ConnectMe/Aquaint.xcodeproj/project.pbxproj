@@ -15,6 +15,7 @@
 		FF0E82D61D95FB29003E87A1 /* NewsfeedEntryClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0E82D51D95FB28003E87A1 /* NewsfeedEntryClass.swift */; };
 		FF1001ED1C80374A00B53F8B /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */; };
 		FF1660071D4323F400900686 /* DropDownTableViewFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */; };
+		FF1BE1D61E6271720043C6E6 /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1BE1D51E6271720043C6E6 /* QRScannerController.swift */; };
 		FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */; };
 		FF23A12F1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A12E1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift */; };
 		FF23A1311D9326E40062E9A0 /* AquaintsContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A1301D9326E40062E9A0 /* AquaintsContainerViewController.swift */; };
@@ -134,6 +135,7 @@
 		FF0E82D51D95FB28003E87A1 /* NewsfeedEntryClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsfeedEntryClass.swift; sourceTree = "<group>"; };
 		FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownTableViewFunctions.swift; sourceTree = "<group>"; };
+		FF1BE1D51E6271720043C6E6 /* QRScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerController.swift; sourceTree = "<group>"; };
 		FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetViewController.swift; sourceTree = "<group>"; };
 		FF23A12E1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSocialMediaPageTableViewCell.swift; sourceTree = "<group>"; };
 		FF23A1301D9326E40062E9A0 /* AquaintsContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintsContainerViewController.swift; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 				FF61979A1E5998EB00B94618 /* ScanCodeDisplay.swift */,
 				FF61979E1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift */,
 				FF6197A01E599C3E00B94618 /* ScanCodeDisplay.storyboard */,
+				FF1BE1D51E6271720043C6E6 /* QRScannerController.swift */,
 			);
 			name = ScanCode;
 			sourceTree = "<group>";
@@ -854,6 +857,7 @@
 				FF8972941E14B10C00A4D9C4 /* CustomRefreshControl.swift in Sources */,
 				FF9BFCD31D3F308A00987D78 /* CustomSearchBar.swift in Sources */,
 				FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */,
+				FF1BE1D61E6271720043C6E6 /* QRScannerController.swift in Sources */,
 				FF7878461C281A2500354936 /* FriendRequestsController.swift in Sources */,
 				FF89729A1E1991D500A4D9C4 /* FollowerListViewController.swift in Sources */,
 				FF7878771C34EC4A00354936 /* RecentConnections.swift in Sources */,
