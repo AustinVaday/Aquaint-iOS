@@ -79,6 +79,7 @@
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
 		FF90CFF61CD08DE8003DEA18 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */; };
+		FF9896991E628900009E7DCD /* CutTransparentHoleInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9896981E628900009E7DCD /* CutTransparentHoleInView.swift */; };
 		FF9BFCD31D3F308A00987D78 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9BFCD21D3F308A00987D78 /* CustomSearchBar.swift */; };
 		FF9BFCD51D3F389500987D78 /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9BFCD41D3F389500987D78 /* CustomSearchController.swift */; };
 		FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */; };
@@ -202,6 +203,7 @@
 		FF897C451C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C501C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		FF9896981E628900009E7DCD /* CutTransparentHoleInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CutTransparentHoleInView.swift; sourceTree = "<group>"; };
 		FF9BFCD21D3F308A00987D78 /* CustomSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		FF9BFCD41D3F389500987D78 /* CustomSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
 		FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 				FF61979E1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift */,
 				FF6197A01E599C3E00B94618 /* ScanCodeDisplay.storyboard */,
 				FF1BE1D51E6271720043C6E6 /* QRScannerController.swift */,
+				FF9896981E628900009E7DCD /* CutTransparentHoleInView.swift */,
 			);
 			name = ScanCode;
 			sourceTree = "<group>";
@@ -900,6 +903,7 @@
 				FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */,
 				FF6813F41E0DF1F0007930BA /* FollowRequestsViewController.swift in Sources */,
 				FF8420261D30A138002D2927 /* AddSocialMediaProfilesController.swift in Sources */,
+				FF9896991E628900009E7DCD /* CutTransparentHoleInView.swift in Sources */,
 				FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */,
 				FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */,
 			);
