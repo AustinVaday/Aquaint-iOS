@@ -15,7 +15,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
 
   @IBOutlet weak var scanCountLabel: UILabel!
   @IBOutlet weak var scanCountNumber: UILabel!
-  @IBOutlet weak var cameraView: CutTransparentHoleInView!
+  @IBOutlet weak var maskView: CutTransparentHoleInView!
+  @IBOutlet weak var cameraView: UIView!
   @IBOutlet weak var userNameLabel: UILabel!
   @IBOutlet weak var scanCodeImageView: UIImageView!
   @IBOutlet weak var lineSeparator: UIImageView!
@@ -46,8 +47,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    cameraView.transparentHoleView = self.scanCodeImageView
-    cameraView.drawRect(cameraView.frame)
+    maskView.transparentHoleView = self.scanCodeImageView
+    maskView.drawRect(maskView.frame)
     
     let currentUser = getCurrentCachedUser()
     
@@ -56,8 +57,6 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     }
     
     fetchUserScanCode()
-    
-    
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -84,33 +83,12 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
    }
    */
   @IBAction func onExportButtonClicked(sender: AnyObject) {
-    let actionSheet = UIAlertController(title: "Export options", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-    
     let shareItems = [self.scanCodeImageView.image!]
     let activityVC = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
-    
-//    let saveAction = UIAlertAction(title: "Save to phone", style: UIAlertActionStyle.Default) { (action) in
-//      dispatch_async(dispatch_get_main_queue(), { 
-//        UIImageWriteToSavedPhotosAlbum(self.scanCodeImageView.image!, nil, nil, nil)
-//      })
-//    }
-//    let shareAction = UIAlertAction(title: "Share with friends", style: UIAlertActionStyle.Default) { (action) in
-//      //
-//    }
-//    let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (action) in
-//      //
-//    }
-//
-//    actionSheet.addAction(saveAction)
-//    actionSheet.addAction(shareAction)
-//    actionSheet.addAction(cancelAction)
     
     dispatch_async(dispatch_get_main_queue()) { 
       self.presentViewController(activityVC, animated: true, completion: nil)
     }
-    
-    
-  
   }
   
   func fetchUserScanCode()
@@ -146,7 +124,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     dispatch_async(dispatch_get_main_queue(), { () -> Void in
       UIView.transitionWithView(self.scanCodeImageView, duration: 1, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
           self.scanCodeImageView.hidden = true
-          self.cameraView.hidden = false
+          self.maskView.hidden = false
           self.exportButton.hidden = true
           self.scanCountNumber.textColor = UIColor.whiteColor()
           self.scanCountLabel.textColor = UIColor.whiteColor()
@@ -167,7 +145,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   
   @IBAction func onExitButtonClicked(sender: AnyObject) {
     self.scanCodeImageView.hidden = false
-    self.cameraView.hidden = true
+    self.maskView.hidden = true
     self.exportButton.hidden = false
     self.scanCountNumber.textColor = self.aquaBlue
     self.scanCountLabel.textColor = self.aquaBlue
@@ -203,9 +181,9 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
       // Initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
       videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
       videoPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
-      videoPreviewLayer?.frame = view.layer.bounds
+      videoPreviewLayer?.frame = cameraView.layer.bounds
 
-      view.layer.addSublayer(videoPreviewLayer!)
+      cameraView.layer.addSublayer(videoPreviewLayer!)
       
       // Start video capture.
       captureSession?.startRunning()
@@ -234,7 +212,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     // Check if the metadataObjects array is not nil and it contains at least one object.
     if metadataObjects == nil || metadataObjects.count == 0 {
       qrCodeFrameView?.frame = CGRect.zero
-      //      messageLabel.text = "No QR/barcode is detected"
+      print("Nothing detected yet")
       return
     }
     
@@ -245,10 +223,36 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
       // If the found metadata is equal to the QR code metadata then update the status label's text and set the bounds
       let barCodeObject = videoPreviewLayer?.transformedMetadataObjectForMetadataObject(metadataObj)
       qrCodeFrameView?.frame = barCodeObject!.bounds
-      
-      //      if metadataObj.stringValue != nil {
-      //        messageLabel.text = metadataObj.stringValue
-      //      }
+    
+      if metadataObj.stringValue != nil {
+        
+        //GOAL: PARSE www.aquaint.us/user/[DATA]
+        //NOTE: This has been tested and should work.
+        let scancodeString = metadataObj.stringValue
+        let url = NSURL(string: scancodeString)
+        var userName: String!
+        
+        print("URL HOST: ", url?.host)
+        print("URL PATH: ", url?.path)
+        print("URL PATH COMPONENTS: ", url?.pathComponents)
+        print("URL LAST PATH COMP:", url?.lastPathComponent)
+        
+        // Check if host of QR code is ours, else we do not process
+        if url?.host == "aquaint.us" || url?.pathComponents![0] == "www.aquaint.us" {
+          userName = url?.lastPathComponent
+          
+          // Check if extracted username is a valid aquaint username
+          if verifyUserNameFormat(userName) && verifyUserNameLength(userName) {
+            dispatch_async(dispatch_get_main_queue(), { 
+              showPopupForUser(userName, me: getCurrentCachedUser())
+            })
+          } else {
+            print ("Error, could not verify proper username format")
+          }
+          
+        }
+        
+      }
     }
   }
 
