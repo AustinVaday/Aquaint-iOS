@@ -150,8 +150,11 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         break
         
       case NEW_FOLLOW_REQUESTS:
+        /*
         let vcHome = mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
         vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
+        */
+        goToPage0AndShowFollowRequests()
         break
         
       default:
