@@ -59,7 +59,22 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     // prompt the user if he wants to enable app push notification. If yes, register system-level remote notification
     func askUserForPushNotificationPermission() {
       // TODO: if user disables notification permission in system Settings later, the prompt would still show up but cannot register for push notification. Have to distinguish "Declined" or "Uninitialized"
-      if UIApplication.sharedApplication().isRegisteredForRemoteNotifications() == false {
+      let timeIntervalThreshold = 604800.0  // setting to one week (in seconds)
+      var willRemindUser = 1
+      
+      let lastNotificationDate = getCurrentNotificationTimestamp()
+      let currentDate = NSDate()
+      if let lastNotification = lastNotificationDate {
+        let timeInterval = currentDate.timeIntervalSinceDate(lastNotification)
+        // if we have reminded user to enable push notification before (a timestamp entry exists in NSUserDefaults), in less than a week, we don't ask again
+        if timeInterval < timeIntervalThreshold {
+          willRemindUser = 0
+        }
+      }
+      
+      let isRegisteredForNotification = UIApplication.sharedApplication().isRegisteredForRemoteNotifications()
+      if (isRegisteredForNotification == false  && (willRemindUser == 1)) {
+        
         let alertTitle = "Enable Push Notification"
         let alertMessage = "Aquaint will notify you when you have new followers, new follow requests or your follow requests to others get accepted! "
         let notificationAlert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .Alert)
@@ -75,6 +90,9 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
           UIAlertAction in
           
           print("askUserForPushNotificationPermission: user chooses NOT to enable push notification. ")
+          
+          let currentDate = NSDate.init()
+          setCurrentNotificationTimestamp(currentDate)
         }
         
         notificationAlert.addAction(noAction)
@@ -84,7 +102,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
           self.presentViewController(notificationAlert, animated: true, completion: nil)
         }
         
-      } else {
+      } else if (isRegisteredForNotification == true) {
         // app has registered system-level push notification service before.
         // register with APN server every time the app launches, to check any update on deviceToken
         registerToReceivePushNotifications()

@@ -194,6 +194,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
             vcMainContainer.arrivedFromPushNotification = vcMainContainer.FOLLOW_REQUEST_ACCEPTANCE
             
           } else if identifier == "newFollowRequests" {
+            // TODO: app only goes to the first page (timeline) when it re-launches
             vcMainContainer.arrivedFromPushNotification = vcMainContainer.NEW_FOLLOW_REQUESTS
           }
         
@@ -316,10 +317,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     
     // handle push notifications when app is in foreground or background
     let state: UIApplicationState = UIApplication.sharedApplication().applicationState
-    if (state == .Active) || (state == .Inactive) {
+    if (state == .Background) || (state == .Inactive) {
       if let identifier = userInfo["identifier"] as? NSString {
         presentSectionfromPushNotification(withIdentifier: identifier)
       }
+    } else {
+      print("\(state): application not in Background or Inactive, not doing anything.")
     }
     
     UIApplication.sharedApplication().applicationIconBadgeNumber = 0
