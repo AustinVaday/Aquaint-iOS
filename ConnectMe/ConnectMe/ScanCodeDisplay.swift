@@ -159,6 +159,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   func setUpCameraDisplay() {
     // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video as the media type parameter.
     let captureDevice = AVCaptureDevice.devices().filter({ $0.position == .Back }).first as? AVCaptureDevice
+    //let captureDevice = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo).first as? AVCaptureDevice
     
     do {
       // Get an instance of the AVCaptureDeviceInput class using the previous device object.
@@ -207,7 +208,9 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
 
   }
   
-  func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+
+
+  func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
     
     // Check if the metadataObjects array is not nil and it contains at least one object.
     if metadataObjects == nil || metadataObjects.count == 0 {
