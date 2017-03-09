@@ -44,6 +44,10 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
                             AVMetadataObjectTypePDF417Code,
                             AVMetadataObjectTypeQRCode]
 
+  // scan code requests are only processed every 5 seconds, to avoid duplicate profile popups
+  var lastScanCodeProcessedTime: NSDate?
+  let SCAN_CODE_PROCESSING_INTERVAL = 5.0
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -202,7 +206,6 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     } catch {
       // If any error occurs, simply print it out and don't continue any more.
       print(error)
-      
       return
     }
 
@@ -228,7 +231,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
       qrCodeFrameView?.frame = barCodeObject!.bounds
     
       if metadataObj.stringValue != nil {
-        
+      
         //GOAL: PARSE www.aquaint.us/user/[DATA]
         //NOTE: This has been tested and should work.
         let scancodeString = metadataObj.stringValue
@@ -241,7 +244,21 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
         print("URL LAST PATH COMP:", url?.lastPathComponent)
         
         // Check if host of QR code is ours, else we do not process
-        if url?.host == "aquaint.us" || url?.pathComponents![0] == "www.aquaint.us" {
+        if url?.host == "www.aquaint.us" {
+          // check if the scan code should be processed now, to avoid duplicate processes
+          if let scanCodeProcessedTime = lastScanCodeProcessedTime {
+            let currentDate = NSDate.init()
+            if (currentDate.timeIntervalSinceDate(scanCodeProcessedTime) <= SCAN_CODE_PROCESSING_INTERVAL) {
+              print("scanCodeDisplay(): scan code is already processed; ignore current request.")
+              return;
+            } else {
+              lastScanCodeProcessedTime = NSDate.init()
+              print("scanCodeDisplay(): processing current scan code...")
+            }
+          } else {
+            lastScanCodeProcessedTime = NSDate.init()
+          }
+          
           userName = url?.lastPathComponent
           
           // Check if extracted username is a valid aquaint username
@@ -253,6 +270,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
             print ("Error, could not verify proper username format")
           }
           
+        } else {
+          print("scanCodeDisplay(): scanCode is already processed; ignore current request.")
         }
         
       }
