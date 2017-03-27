@@ -97,6 +97,8 @@
 		FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */; };
 		FFF335901E899EFD00E8B70F /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFF3358F1E899EFD00E8B70F /* libGoogleAnalyticsServices.a */; };
 		FFF335921E89A38600E8B70F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFF335911E89A38600E8B70F /* GoogleService-Info.plist */; };
+		FFF335991E89AC9600E8B70F /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFF335981E89AC9600E8B70F /* Stripe.framework */; };
+		FFF3359B1E89ACA700E8B70F /* Stripe.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FFF3359A1E89ACA700E8B70F /* Stripe.bundle */; };
 		FFF3A2A71D488F12009EF4F2 /* MenuProfilesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3A2A61D488F12009EF4F2 /* MenuProfilesCell.swift */; };
 		FFF3A2A91D49BF18009EF4F2 /* MenuButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3A2A81D49BF18009EF4F2 /* MenuButtonTableViewCell.swift */; };
 		FFF3A2AB1D4EBC08009EF4F2 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3A2AA1D4EBC08009EF4F2 /* ContactsTableViewCell.swift */; };
@@ -233,6 +235,8 @@
 		FFF3358E1E899EEC00E8B70F /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
 		FFF3358F1E899EFD00E8B70F /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
 		FFF335911E89A38600E8B70F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FFF335981E89AC9600E8B70F /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stripe.framework; sourceTree = "<group>"; };
+		FFF3359A1E89ACA700E8B70F /* Stripe.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Stripe.bundle; sourceTree = "<group>"; };
 		FFF3A2A61D488F12009EF4F2 /* MenuProfilesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuProfilesCell.swift; sourceTree = "<group>"; };
 		FFF3A2A81D49BF18009EF4F2 /* MenuButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButtonTableViewCell.swift; sourceTree = "<group>"; };
 		FFF3A2AA1D4EBC08009EF4F2 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
@@ -262,6 +266,7 @@
 				FFBB872C1C5307F500500FAD /* FBSDKCoreKit.framework in Frameworks */,
 				FF7878731C3026BB00354936 /* Bolts.framework in Frameworks */,
 				FF78785E1C30009900354936 /* libsqlite3.tbd in Frameworks */,
+				FFF335991E89AC9600E8B70F /* Stripe.framework in Frameworks */,
 				FF7878751C3026C200354936 /* Parse.framework in Frameworks */,
 				FF78785C1C30008C00354936 /* libz.tbd in Frameworks */,
 				FF29BB1D9643BB46054B3871 /* Pods_Aquaint.framework in Frameworks */,
@@ -425,17 +430,7 @@
 				FFF335911E89A38600E8B70F /* GoogleService-Info.plist */,
 				FFBDD7551CD599690007A188 /* HomePageViewController.swift */,
 				FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */,
-				FFF335851E899EEC00E8B70F /* GAI.h */,
-				FFF335861E899EEC00E8B70F /* GAIDictionaryBuilder.h */,
-				FFF335871E899EEC00E8B70F /* GAIEcommerceFields.h */,
-				FFF335881E899EEC00E8B70F /* GAIEcommerceProduct.h */,
-				FFF335891E899EEC00E8B70F /* GAIEcommerceProductAction.h */,
-				FFF3358A1E899EEC00E8B70F /* GAIEcommercePromotion.h */,
-				FFF3358B1E899EEC00E8B70F /* GAIFields.h */,
-				FFF3358C1E899EEC00E8B70F /* GAILogger.h */,
-				FFF3358D1E899EEC00E8B70F /* GAITrackedViewController.h */,
-				FFF3358E1E899EEC00E8B70F /* GAITracker.h */,
-				FFF3358F1E899EFD00E8B70F /* libGoogleAnalyticsServices.a */,
+				FFF335931E89AB2900E8B70F /* Google Analytics */,
 				FFB8602D1C4C390400CFB621 /* AquaintTestCases */,
 				FFB8602C1C4C38F800CFB621 /* AquaintUITestCases */,
 				FFBB87251C5307B700500FAD /* Frameworks */,
@@ -531,6 +526,8 @@
 		FFBB87251C5307B700500FAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FFF3359A1E89ACA700E8B70F /* Stripe.bundle */,
+				FFF335981E89AC9600E8B70F /* Stripe.framework */,
 				FF6331691D286BB200967266 /* SafariServices.framework */,
 				FF6331671D286BAB00967266 /* AddressBook.framework */,
 				FFBB87281C5307DA00500FAD /* Facebook Frameworks */,
@@ -576,6 +573,24 @@
 				FFBDD7531CD58F910007A188 /* HomeContainerViewController.swift */,
 			);
 			name = Newsfeed;
+			sourceTree = "<group>";
+		};
+		FFF335931E89AB2900E8B70F /* Google Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				FFF335851E899EEC00E8B70F /* GAI.h */,
+				FFF335861E899EEC00E8B70F /* GAIDictionaryBuilder.h */,
+				FFF335871E899EEC00E8B70F /* GAIEcommerceFields.h */,
+				FFF335881E899EEC00E8B70F /* GAIEcommerceProduct.h */,
+				FFF335891E899EEC00E8B70F /* GAIEcommerceProductAction.h */,
+				FFF3358A1E899EEC00E8B70F /* GAIEcommercePromotion.h */,
+				FFF3358B1E899EEC00E8B70F /* GAIFields.h */,
+				FFF3358C1E899EEC00E8B70F /* GAILogger.h */,
+				FFF3358D1E899EEC00E8B70F /* GAITrackedViewController.h */,
+				FFF3358E1E899EEC00E8B70F /* GAITracker.h */,
+				FFF3358F1E899EFD00E8B70F /* libGoogleAnalyticsServices.a */,
+			);
+			name = "Google Analytics";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -697,6 +712,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF8972981E198FF000A4D9C4 /* FollowerListView.storyboard in Resources */,
+				FFF3359B1E89ACA700E8B70F /* Stripe.bundle in Resources */,
 				FFF335921E89A38600E8B70F /* GoogleService-Info.plist in Resources */,
 				FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */,
 				FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */,

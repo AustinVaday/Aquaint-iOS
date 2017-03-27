@@ -17,6 +17,7 @@ import AWSCognitoIdentityProvider
 import AWSLambda
 import AWSDynamoDB
 import KLCPopup
+import Stripe
 
 // Begin using Firebase framework
 //import Firebase
@@ -106,16 +107,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
  
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+
+    // Configure Stripe for payments
+    STPPaymentConfiguration.sharedConfiguration().publishableKey = ""
     
-    
-    // Configure tracker from GoogleService-Info.plist.
-//    var configureError: NSError?
-//    GGLContext.sharedInstance().configureWithError(&configureError)
-//    assert(configureError == nil, "Error configuring Google services: \(configureError)")
-  
-    
-    
-    // Optional: configure GAI options.
+    // Configure Google Analytics
     guard let gai = GAI.sharedInstance() else {
       assert(false, "Google Analytics not configured correctly")
     }
