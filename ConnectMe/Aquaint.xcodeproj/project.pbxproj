@@ -95,10 +95,11 @@
 		FFBDD75F1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD75E1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift */; };
 		FFBDD7611CD5B6190007A188 /* NewsfeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7601CD5B6190007A188 /* NewsfeedTableViewCell.swift */; };
 		FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */; };
+		FFF335901E899EFD00E8B70F /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFF3358F1E899EFD00E8B70F /* libGoogleAnalyticsServices.a */; };
+		FFF335921E89A38600E8B70F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFF335911E89A38600E8B70F /* GoogleService-Info.plist */; };
 		FFF3A2A71D488F12009EF4F2 /* MenuProfilesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3A2A61D488F12009EF4F2 /* MenuProfilesCell.swift */; };
 		FFF3A2A91D49BF18009EF4F2 /* MenuButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3A2A81D49BF18009EF4F2 /* MenuButtonTableViewCell.swift */; };
 		FFF3A2AB1D4EBC08009EF4F2 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3A2AA1D4EBC08009EF4F2 /* ContactsTableViewCell.swift */; };
-		FFF419B11D23752C00DE4352 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFF419B01D23752C00DE4352 /* GoogleService-Info.plist */; };
 		FFF442361C4B2244007651DE /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF442351C4B2244007651DE /* Functions.swift */; };
 		FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFF442391C4C2B21007651DE /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
@@ -220,10 +221,21 @@
 		FFBDD7601CD5B6190007A188 /* NewsfeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsfeedTableViewCell.swift; sourceTree = "<group>"; };
 		FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionClass.swift; sourceTree = "<group>"; };
 		FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Aquaint-Bridging-Header.h"; path = "ConnectMe/Aquaint-Bridging-Header.h"; sourceTree = "<group>"; };
+		FFF335851E899EEC00E8B70F /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
+		FFF335861E899EEC00E8B70F /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
+		FFF335871E899EEC00E8B70F /* GAIEcommerceFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceFields.h; sourceTree = "<group>"; };
+		FFF335881E899EEC00E8B70F /* GAIEcommerceProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProduct.h; sourceTree = "<group>"; };
+		FFF335891E899EEC00E8B70F /* GAIEcommerceProductAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProductAction.h; sourceTree = "<group>"; };
+		FFF3358A1E899EEC00E8B70F /* GAIEcommercePromotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommercePromotion.h; sourceTree = "<group>"; };
+		FFF3358B1E899EEC00E8B70F /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
+		FFF3358C1E899EEC00E8B70F /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
+		FFF3358D1E899EEC00E8B70F /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
+		FFF3358E1E899EEC00E8B70F /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
+		FFF3358F1E899EFD00E8B70F /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
+		FFF335911E89A38600E8B70F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FFF3A2A61D488F12009EF4F2 /* MenuProfilesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuProfilesCell.swift; sourceTree = "<group>"; };
 		FFF3A2A81D49BF18009EF4F2 /* MenuButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButtonTableViewCell.swift; sourceTree = "<group>"; };
 		FFF3A2AA1D4EBC08009EF4F2 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
-		FFF419B01D23752C00DE4352 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FFF442351C4B2244007651DE /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		FFF442391C4C2B21007651DE /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -236,6 +248,7 @@
 				FF63316E1D286D4300967266 /* AWSMobileHubHelper.framework in Frameworks */,
 				FF7878711C30268C00354936 /* SystemConfiguration.framework in Frameworks */,
 				FF78786F1C30268500354936 /* StoreKit.framework in Frameworks */,
+				FFF335901E899EFD00E8B70F /* libGoogleAnalyticsServices.a in Frameworks */,
 				FF63316A1D286BB200967266 /* SafariServices.framework in Frameworks */,
 				FF6331681D286BAB00967266 /* AddressBook.framework in Frameworks */,
 				FFBB872E1C5307F500500FAD /* FBSDKShareKit.framework in Frameworks */,
@@ -409,9 +422,20 @@
 		FF897C281C01AC63001B2634 = {
 			isa = PBXGroup;
 			children = (
-				FFF419B01D23752C00DE4352 /* GoogleService-Info.plist */,
+				FFF335911E89A38600E8B70F /* GoogleService-Info.plist */,
 				FFBDD7551CD599690007A188 /* HomePageViewController.swift */,
 				FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */,
+				FFF335851E899EEC00E8B70F /* GAI.h */,
+				FFF335861E899EEC00E8B70F /* GAIDictionaryBuilder.h */,
+				FFF335871E899EEC00E8B70F /* GAIEcommerceFields.h */,
+				FFF335881E899EEC00E8B70F /* GAIEcommerceProduct.h */,
+				FFF335891E899EEC00E8B70F /* GAIEcommerceProductAction.h */,
+				FFF3358A1E899EEC00E8B70F /* GAIEcommercePromotion.h */,
+				FFF3358B1E899EEC00E8B70F /* GAIFields.h */,
+				FFF3358C1E899EEC00E8B70F /* GAILogger.h */,
+				FFF3358D1E899EEC00E8B70F /* GAITrackedViewController.h */,
+				FFF3358E1E899EEC00E8B70F /* GAITracker.h */,
+				FFF3358F1E899EFD00E8B70F /* libGoogleAnalyticsServices.a */,
 				FFB8602D1C4C390400CFB621 /* AquaintTestCases */,
 				FFB8602C1C4C38F800CFB621 /* AquaintUITestCases */,
 				FFBB87251C5307B700500FAD /* Frameworks */,
@@ -673,8 +697,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF8972981E198FF000A4D9C4 /* FollowerListView.storyboard in Resources */,
+				FFF335921E89A38600E8B70F /* GoogleService-Info.plist in Resources */,
 				FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */,
-				FFF419B11D23752C00DE4352 /* GoogleService-Info.plist in Resources */,
 				FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */,
 				FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */,
 				FF8972921E14ACB400A4D9C4 /* RefreshContents.xib in Resources */,
@@ -1056,6 +1080,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/Firebase",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1130,7 +1155,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.aquaintapp;
 				PRODUCT_NAME = Aquaint;
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "ConnectMe/Aquaint-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -1154,6 +1179,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/Firebase",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1228,7 +1254,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.aquaintapp;
 				PRODUCT_NAME = Aquaint;
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "ConnectMe/Aquaint-Bridging-Header.h";
 			};
 			name = Release;
 		};

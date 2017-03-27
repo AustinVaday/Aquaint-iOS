@@ -19,7 +19,7 @@ import AWSDynamoDB
 import KLCPopup
 
 // Begin using Firebase framework
-import Firebase
+//import Firebase
 
 var userPool : AWSCognitoIdentityUserPool!
 var credentialsProvider: AWSCognitoCredentialsProvider?
@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
   override init() {
     // Firebase Init
     //FIRDatabase.database().persistenceEnabled = true
-    FIRApp.configure()
+//    FIRApp.configure()
   }
   
   // wrapper function for push notification handling
@@ -106,6 +106,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
  
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    
+    
+    // Configure tracker from GoogleService-Info.plist.
+//    var configureError: NSError?
+//    GGLContext.sharedInstance().configureWithError(&configureError)
+//    assert(configureError == nil, "Error configuring Google services: \(configureError)")
+  
+    
+    
+    // Optional: configure GAI options.
+    guard let gai = GAI.sharedInstance() else {
+      assert(false, "Google Analytics not configured correctly")
+    }
+    gai.trackUncaughtExceptions = true  // report uncaught exceptions
+    gai.logger.logLevel = GAILogLevel.Verbose  // remove before app release
+    gai.trackerWithTrackingId("UA-61394116-2")
+    
+    // Test trigger
+//    let tracker = gai.defaultTracker
+//    let builder = GAIDictionaryBuilder.createEventWithCategory("SocialClicksMobile", action: "click", label: "facebook", value: nil)
+//    tracker.send(builder.build() as [NSObject : AnyObject])
+    
+    
     SimpleAuth.configuration()["facebook"] = [
       "app_id"  : "544667035683597"
     ]
