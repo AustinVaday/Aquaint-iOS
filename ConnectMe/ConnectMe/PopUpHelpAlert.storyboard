@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="YhM-gN-oja">
+            <objects>
+                <viewController storyboardIdentifier="HelpPopUp" id="rBE-Hx-KMj" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fwp-fZ-JTg"/>
+                        <viewControllerLayoutGuide type="bottom" id="gld-og-POK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="IMU-XP-MoA" customClass="HelpPopupView" customModule="Aquaint" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pTl-U5-PDa">
+                                <rect key="frame" x="8" y="220" width="586" height="173"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line Separator Black" translatesAutoresizingMaskIntoConstraints="NO" id="qEt-5A-kRN">
+                                        <rect key="frame" x="10" y="46" width="590" height="4"/>
+                                    </imageView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Loading..." textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="2XC-2z-Jnl">
+                                        <rect key="frame" x="10" y="7" width="520" height="41"/>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="24"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="6dD-jx-Cfk">
+                                        <rect key="frame" x="10" y="56" width="555" height="109"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="13"/>
+                                        <color key="textColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="2XC-2z-Jnl" firstAttribute="top" secondItem="pTl-U5-PDa" secondAttribute="top" constant="7" id="4h6-SE-L15"/>
+                                    <constraint firstItem="6dD-jx-Cfk" firstAttribute="bottom" secondItem="pTl-U5-PDa" secondAttribute="bottomMargin" id="6NZ-kX-jzp"/>
+                                    <constraint firstAttribute="trailing" secondItem="6dD-jx-Cfk" secondAttribute="trailing" constant="21" id="AD6-lW-N4u"/>
+                                    <constraint firstAttribute="trailing" secondItem="qEt-5A-kRN" secondAttribute="trailing" constant="-14" id="E9m-ht-2lX"/>
+                                    <constraint firstItem="6dD-jx-Cfk" firstAttribute="top" secondItem="2XC-2z-Jnl" secondAttribute="bottom" constant="8" symbolic="YES" id="bTM-Ar-OxP"/>
+                                    <constraint firstItem="2XC-2z-Jnl" firstAttribute="leading" secondItem="qEt-5A-kRN" secondAttribute="leading" id="cac-zm-gAO"/>
+                                    <constraint firstItem="qEt-5A-kRN" firstAttribute="top" secondItem="pTl-U5-PDa" secondAttribute="top" constant="46" id="ila-69-iqN"/>
+                                    <constraint firstItem="2XC-2z-Jnl" firstAttribute="leading" secondItem="pTl-U5-PDa" secondAttribute="leading" constant="10" id="irO-dV-Iud"/>
+                                    <constraint firstAttribute="trailing" secondItem="2XC-2z-Jnl" secondAttribute="trailing" constant="56" id="oro-DY-GpU"/>
+                                    <constraint firstItem="6dD-jx-Cfk" firstAttribute="leading" secondItem="qEt-5A-kRN" secondAttribute="leading" id="rmb-Rf-U0v"/>
+                                    <constraint firstItem="6dD-jx-Cfk" firstAttribute="top" secondItem="qEt-5A-kRN" secondAttribute="bottom" constant="6" id="xdm-CQ-ZT2"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="pTl-U5-PDa" firstAttribute="leading" secondItem="IMU-XP-MoA" secondAttribute="leading" constant="8" id="9Ux-9r-DbB"/>
+                            <constraint firstItem="pTl-U5-PDa" firstAttribute="top" secondItem="fwp-fZ-JTg" secondAttribute="bottom" constant="200" id="JDd-ky-JXi"/>
+                            <constraint firstItem="pTl-U5-PDa" firstAttribute="centerX" secondItem="IMU-XP-MoA" secondAttribute="centerX" constant="1" id="Job-wc-gVj"/>
+                            <constraint firstItem="pTl-U5-PDa" firstAttribute="centerY" secondItem="IMU-XP-MoA" secondAttribute="centerY" constant="6.5" id="RCf-tz-tin"/>
+                        </constraints>
+                        <connections>
+                            <outlet property="helpDescription" destination="6dD-jx-Cfk" id="Nfq-af-9ER"/>
+                            <outlet property="helpTitle" destination="2XC-2z-Jnl" id="8pw-OX-vrc"/>
+                        </connections>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bwm-aO-oa8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="127" y="189"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Line Separator Black" width="753" height="4"/>
+    </resources>
+</document>

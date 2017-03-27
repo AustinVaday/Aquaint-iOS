@@ -12,9 +12,13 @@ import CoreGraphics
 
 class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
   
-
-  @IBOutlet weak var scanCountLabel: UILabel!
-  @IBOutlet weak var scanCountNumber: UILabel!
+  @IBOutlet weak var profileViewsCountNumber: UILabel!
+  @IBOutlet weak var profileViewsCountLabel: UILabel!
+  
+  @IBOutlet weak var engagementCountNumber: UILabel!
+  @IBOutlet weak var engagementCountLabel: UILabel!
+  
+  
   @IBOutlet weak var maskView: CutTransparentHoleInView!
   @IBOutlet weak var cameraView: UIView!
   @IBOutlet weak var userNameLabel: UILabel!
@@ -23,6 +27,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   @IBOutlet weak var cameraButton: UIButton!
   @IBOutlet weak var exitButton: UIButton!
   @IBOutlet weak var exportButton: UIButton!
+  @IBOutlet weak var animationView: UIView!
   
   var animatedObjects = Array<UIView>()
   var captureSession:AVCaptureSession?
@@ -60,11 +65,11 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   }
   
   override func viewDidAppear(animated: Bool) {
-    setUpSocialMediaAnimations(self, subView: self.view, animatedObjects: &animatedObjects, animationLocation: AnimationLocation.Bottom, theme: AnimationAquaintEmblemTheme.DarkTheme)
+//    setUpSocialMediaAnimations(self, subView: self.animationView, animatedObjects: &animatedObjects, animationLocation: AnimationLocation.Bottom, theme: AnimationAquaintEmblemTheme.DarkTheme)
   }
   
   override func viewDidDisappear(animated: Bool) {
-    clearUpSocialMediaAnimations(&animatedObjects)
+//    clearUpSocialMediaAnimations(&animatedObjects)
   }
   
   override func didReceiveMemoryWarning() {
@@ -126,8 +131,10 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           self.scanCodeImageView.hidden = true
           self.maskView.hidden = false
           self.exportButton.hidden = true
-          self.scanCountNumber.textColor = UIColor.whiteColor()
-          self.scanCountLabel.textColor = UIColor.whiteColor()
+          self.profileViewsCountLabel.textColor = UIColor.whiteColor()
+          self.profileViewsCountNumber.textColor = UIColor.whiteColor()
+          self.engagementCountLabel.textColor = UIColor.whiteColor()
+          self.engagementCountNumber.textColor = UIColor.whiteColor()
           self.lineSeparator.image = self.whiteSeparator
           self.cameraButton.hidden = true
           self.exitButton.hidden = false
@@ -147,8 +154,10 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     self.scanCodeImageView.hidden = false
     self.maskView.hidden = true
     self.exportButton.hidden = false
-    self.scanCountNumber.textColor = self.aquaBlue
-    self.scanCountLabel.textColor = self.aquaBlue
+    self.profileViewsCountNumber.textColor = self.aquaBlue
+    self.profileViewsCountLabel.textColor = self.aquaBlue
+    self.engagementCountNumber.textColor = self.aquaBlue
+    self.engagementCountLabel.textColor = self.aquaBlue
     self.lineSeparator.image = self.blackSeparator
     self.cameraButton.hidden = false
     self.exitButton.hidden = true
@@ -156,6 +165,16 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     // Clear the camera display?
   }
   
+  @IBAction func onShowHelpProfileViews(sender: AnyObject) {
+    showHelpPopup("Profile Views", description: "This feature allows you to see how many people viewed your Aquaint profile. We track data on both the Aquaint mobile app and Aquaint website (hint: If you didn't know already, you can view your Aquaint profile on the web at www.aquaint.us/user/" + userNameLabel.text! + ")!")
+  }
+  
+  @IBAction func onShowHelpEngagements(sender: AnyObject) {
+    showHelpPopup("Engagements", description: "This feature allows you to see how many people actually clicked on the social media profiles you provided. If you want to see more data such as the number of engagements per social media platform, please check out our advanced analytics features!")
+  }
+  
+  @IBAction func onMoreFeaturesButtonClicked(sender: AnyObject) {
+  }
 
   func setUpCameraDisplay() {
     // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video as the media type parameter.

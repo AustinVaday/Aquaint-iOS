@@ -15,7 +15,6 @@
 		FF0E82D61D95FB29003E87A1 /* NewsfeedEntryClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0E82D51D95FB28003E87A1 /* NewsfeedEntryClass.swift */; };
 		FF1001ED1C80374A00B53F8B /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */; };
 		FF1660071D4323F400900686 /* DropDownTableViewFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */; };
-		FF1BE1D61E6271720043C6E6 /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1BE1D51E6271720043C6E6 /* QRScannerController.swift */; };
 		FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */; };
 		FF23A12F1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A12E1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift */; };
 		FF23A1311D9326E40062E9A0 /* AquaintsContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A1301D9326E40062E9A0 /* AquaintsContainerViewController.swift */; };
@@ -29,9 +28,6 @@
 		FF47274D1D48750F0065F418 /* SectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */; };
 		FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */; };
 		FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */; };
-		FF61979C1E5998EB00B94618 /* ScanCodeDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61979A1E5998EB00B94618 /* ScanCodeDisplay.swift */; };
-		FF61979F1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF61979E1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift */; };
-		FF6197A11E599C3E00B94618 /* ScanCodeDisplay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF6197A01E599C3E00B94618 /* ScanCodeDisplay.storyboard */; };
 		FF6197A31E59B4DA00B94618 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6197A21E59B4D900B94618 /* Animations.swift */; };
 		FF6331681D286BAB00967266 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6331671D286BAB00967266 /* AddressBook.framework */; };
 		FF63316A1D286BB200967266 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6331691D286BB200967266 /* SafariServices.framework */; };
@@ -79,7 +75,6 @@
 		FF897C371C01AC63001B2634 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF897C361C01AC63001B2634 /* ViewController.swift */; };
 		FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF897C3B1C01AC63001B2634 /* Assets.xcassets */; };
 		FF90CFF61CD08DE8003DEA18 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */; };
-		FF9896991E628900009E7DCD /* CutTransparentHoleInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9896981E628900009E7DCD /* CutTransparentHoleInView.swift */; };
 		FF9BFCD31D3F308A00987D78 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9BFCD21D3F308A00987D78 /* CustomSearchBar.swift */; };
 		FF9BFCD51D3F389500987D78 /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9BFCD41D3F389500987D78 /* CustomSearchController.swift */; };
 		FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */; };
@@ -99,6 +94,13 @@
 		FFF335921E89A38600E8B70F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFF335911E89A38600E8B70F /* GoogleService-Info.plist */; };
 		FFF335991E89AC9600E8B70F /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFF335981E89AC9600E8B70F /* Stripe.framework */; };
 		FFF3359B1E89ACA700E8B70F /* Stripe.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FFF3359A1E89ACA700E8B70F /* Stripe.bundle */; };
+		FFF335A11E89B13F00E8B70F /* CutTransparentHoleInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3359C1E89B13F00E8B70F /* CutTransparentHoleInView.swift */; };
+		FFF335A21E89B13F00E8B70F /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3359D1E89B13F00E8B70F /* QRScannerController.swift */; };
+		FFF335A31E89B13F00E8B70F /* ScanCodeDisplay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFF3359E1E89B13F00E8B70F /* ScanCodeDisplay.storyboard */; };
+		FFF335A41E89B13F00E8B70F /* ScanCodeDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3359F1E89B13F00E8B70F /* ScanCodeDisplay.swift */; };
+		FFF335A51E89B13F00E8B70F /* ScanCodeDisplayStoryboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF335A01E89B13F00E8B70F /* ScanCodeDisplayStoryboardViewController.swift */; };
+		FFF335A91E89B1A200E8B70F /* HelpPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF335A71E89B1A200E8B70F /* HelpPopupView.swift */; };
+		FFF335AA1E89B1A200E8B70F /* PopUpHelpAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFF335A81E89B1A200E8B70F /* PopUpHelpAlert.storyboard */; };
 		FFF3A2A71D488F12009EF4F2 /* MenuProfilesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3A2A61D488F12009EF4F2 /* MenuProfilesCell.swift */; };
 		FFF3A2A91D49BF18009EF4F2 /* MenuButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3A2A81D49BF18009EF4F2 /* MenuButtonTableViewCell.swift */; };
 		FFF3A2AB1D4EBC08009EF4F2 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF3A2AA1D4EBC08009EF4F2 /* ContactsTableViewCell.swift */; };
@@ -139,7 +141,6 @@
 		FF0E82D51D95FB28003E87A1 /* NewsfeedEntryClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsfeedEntryClass.swift; sourceTree = "<group>"; };
 		FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownTableViewFunctions.swift; sourceTree = "<group>"; };
-		FF1BE1D51E6271720043C6E6 /* QRScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerController.swift; sourceTree = "<group>"; };
 		FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetViewController.swift; sourceTree = "<group>"; };
 		FF23A12E1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSocialMediaPageTableViewCell.swift; sourceTree = "<group>"; };
 		FF23A1301D9326E40062E9A0 /* AquaintsContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AquaintsContainerViewController.swift; sourceTree = "<group>"; };
@@ -152,9 +153,6 @@
 		FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderCell.swift; sourceTree = "<group>"; };
 		FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsTableViewCell.swift; sourceTree = "<group>"; };
-		FF61979A1E5998EB00B94618 /* ScanCodeDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCodeDisplay.swift; sourceTree = "<group>"; };
-		FF61979E1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCodeDisplayStoryboardViewController.swift; sourceTree = "<group>"; };
-		FF6197A01E599C3E00B94618 /* ScanCodeDisplay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ScanCodeDisplay.storyboard; sourceTree = "<group>"; };
 		FF6197A21E59B4D900B94618 /* Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		FF6331671D286BAB00967266 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		FF6331691D286BB200967266 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
@@ -206,7 +204,6 @@
 		FF897C451C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF897C501C01AC63001B2634 /* Aquaint.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aquaint.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		FF9896981E628900009E7DCD /* CutTransparentHoleInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CutTransparentHoleInView.swift; sourceTree = "<group>"; };
 		FF9BFCD21D3F308A00987D78 /* CustomSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		FF9BFCD41D3F389500987D78 /* CustomSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
 		FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
@@ -237,6 +234,13 @@
 		FFF335911E89A38600E8B70F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FFF335981E89AC9600E8B70F /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stripe.framework; sourceTree = "<group>"; };
 		FFF3359A1E89ACA700E8B70F /* Stripe.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Stripe.bundle; sourceTree = "<group>"; };
+		FFF3359C1E89B13F00E8B70F /* CutTransparentHoleInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CutTransparentHoleInView.swift; sourceTree = "<group>"; };
+		FFF3359D1E89B13F00E8B70F /* QRScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerController.swift; sourceTree = "<group>"; };
+		FFF3359E1E89B13F00E8B70F /* ScanCodeDisplay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ScanCodeDisplay.storyboard; sourceTree = "<group>"; };
+		FFF3359F1E89B13F00E8B70F /* ScanCodeDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCodeDisplay.swift; sourceTree = "<group>"; };
+		FFF335A01E89B13F00E8B70F /* ScanCodeDisplayStoryboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCodeDisplayStoryboardViewController.swift; sourceTree = "<group>"; };
+		FFF335A71E89B1A200E8B70F /* HelpPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpPopupView.swift; sourceTree = "<group>"; };
+		FFF335A81E89B1A200E8B70F /* PopUpHelpAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PopUpHelpAlert.storyboard; sourceTree = "<group>"; };
 		FFF3A2A61D488F12009EF4F2 /* MenuProfilesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuProfilesCell.swift; sourceTree = "<group>"; };
 		FFF3A2A81D49BF18009EF4F2 /* MenuButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButtonTableViewCell.swift; sourceTree = "<group>"; };
 		FFF3A2AA1D4EBC08009EF4F2 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
@@ -321,11 +325,11 @@
 		FF6197991E59979B00B94618 /* ScanCode */ = {
 			isa = PBXGroup;
 			children = (
-				FF61979A1E5998EB00B94618 /* ScanCodeDisplay.swift */,
-				FF61979E1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift */,
-				FF6197A01E599C3E00B94618 /* ScanCodeDisplay.storyboard */,
-				FF1BE1D51E6271720043C6E6 /* QRScannerController.swift */,
-				FF9896981E628900009E7DCD /* CutTransparentHoleInView.swift */,
+				FFF3359C1E89B13F00E8B70F /* CutTransparentHoleInView.swift */,
+				FFF3359D1E89B13F00E8B70F /* QRScannerController.swift */,
+				FFF3359E1E89B13F00E8B70F /* ScanCodeDisplay.storyboard */,
+				FFF3359F1E89B13F00E8B70F /* ScanCodeDisplay.swift */,
+				FFF335A01E89B13F00E8B70F /* ScanCodeDisplayStoryboardViewController.swift */,
 			);
 			name = ScanCode;
 			sourceTree = "<group>";
@@ -466,6 +470,7 @@
 				FF6197991E59979B00B94618 /* ScanCode */,
 				FF8972A31E1B22FA00A4D9C4 /* Walkthrough */,
 				FF23A1391D93273C0062E9A0 /* Aquaints-Followers/Following */,
+				FFF335A61E89B18600E8B70F /* Popup Help */,
 				FF8972961E14B2A900A4D9C4 /* Popup Profiles */,
 				FF7C0A4A1D13A2A800C1502D /* HelperFunctions */,
 				FFBDD75B1CD59A390007A188 /* Newsfeed */,
@@ -593,6 +598,15 @@
 			name = "Google Analytics";
 			sourceTree = "<group>";
 		};
+		FFF335A61E89B18600E8B70F /* Popup Help */ = {
+			isa = PBXGroup;
+			children = (
+				FFF335A71E89B1A200E8B70F /* HelpPopupView.swift */,
+				FFF335A81E89B1A200E8B70F /* PopUpHelpAlert.storyboard */,
+			);
+			name = "Popup Help";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -712,14 +726,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF8972981E198FF000A4D9C4 /* FollowerListView.storyboard in Resources */,
+				FFF335AA1E89B1A200E8B70F /* PopUpHelpAlert.storyboard in Resources */,
 				FFF3359B1E89ACA700E8B70F /* Stripe.bundle in Resources */,
 				FFF335921E89A38600E8B70F /* GoogleService-Info.plist in Resources */,
 				FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */,
 				FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */,
 				FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */,
 				FF8972921E14ACB400A4D9C4 /* RefreshContents.xib in Resources */,
+				FFF335A31E89B13F00E8B70F /* ScanCodeDisplay.storyboard in Resources */,
 				FF3834D31D6D483E00FC9F2A /* PopUpAlert.storyboard in Resources */,
-				FF6197A11E599C3E00B94618 /* ScanCodeDisplay.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -882,8 +897,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFF335A41E89B13F00E8B70F /* ScanCodeDisplay.swift in Sources */,
 				FF47274D1D48750F0065F418 /* SectionHeaderCell.swift in Sources */,
-				FF61979C1E5998EB00B94618 /* ScanCodeDisplay.swift in Sources */,
 				FF6197A31E59B4DA00B94618 /* Animations.swift in Sources */,
 				FFBDD7581CD59A0B0007A188 /* NewsfeedViewController.swift in Sources */,
 				FF6813F61E0DF60D007930BA /* FollowRequestsTableViewCell.swift in Sources */,
@@ -899,15 +914,17 @@
 				FF8972941E14B10C00A4D9C4 /* CustomRefreshControl.swift in Sources */,
 				FF9BFCD31D3F308A00987D78 /* CustomSearchBar.swift in Sources */,
 				FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */,
-				FF1BE1D61E6271720043C6E6 /* QRScannerController.swift in Sources */,
 				FF7878461C281A2500354936 /* FriendRequestsController.swift in Sources */,
+				FFF335A21E89B13F00E8B70F /* QRScannerController.swift in Sources */,
 				FF89729A1E1991D500A4D9C4 /* FollowerListViewController.swift in Sources */,
 				FF7878771C34EC4A00354936 /* RecentConnections.swift in Sources */,
 				FF0BF0231CB6DC78005188DA /* ProfileViewController.swift in Sources */,
 				FF90CFF61CD08DE8003DEA18 /* HomeViewController.swift in Sources */,
+				FFF335A11E89B13F00E8B70F /* CutTransparentHoleInView.swift in Sources */,
 				FFF442361C4B2244007651DE /* Functions.swift in Sources */,
 				FF897C371C01AC63001B2634 /* ViewController.swift in Sources */,
 				FF8420221D29B59F002D2927 /* BackendAPI.swift in Sources */,
+				FFF335A51E89B13F00E8B70F /* ScanCodeDisplayStoryboardViewController.swift in Sources */,
 				FF7878791C352D0400354936 /* TableViewCell.swift in Sources */,
 				FF23A1351D9327170062E9A0 /* FollowersViewController.swift in Sources */,
 				FF1001ED1C80374A00B53F8B /* MainPageViewController.swift in Sources */,
@@ -918,6 +935,7 @@
 				FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */,
 				FF23A1311D9326E40062E9A0 /* AquaintsContainerViewController.swift in Sources */,
 				FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */,
+				FFF335A91E89B1A200E8B70F /* HelpPopupView.swift in Sources */,
 				FFBDD7611CD5B6190007A188 /* NewsfeedTableViewCell.swift in Sources */,
 				FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */,
 				FF23A13D1D9340480062E9A0 /* PrivacyPolicyViewController.swift in Sources */,
@@ -938,11 +956,9 @@
 				FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */,
 				FF89728E1E10A44800A4D9C4 /* ForgotPasswordViewController.swift in Sources */,
 				FF8972A21E1B22F400A4D9C4 /* WalkthroughPageViewController.swift in Sources */,
-				FF61979F1E59990900B94618 /* ScanCodeDisplayStoryboardViewController.swift in Sources */,
 				FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */,
 				FF6813F41E0DF1F0007930BA /* FollowRequestsViewController.swift in Sources */,
 				FF8420261D30A138002D2927 /* AddSocialMediaProfilesController.swift in Sources */,
-				FF9896991E628900009E7DCD /* CutTransparentHoleInView.swift in Sources */,
 				FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */,
 				FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */,
 			);
