@@ -295,18 +295,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             self.onCancelButtonClicked(self)
         }
     }
-    
-
+  
     @IBAction func goToFollowersPage(sender: AnyObject) {
-        
-        let parentViewController = self.parentViewController as! MainPageViewController
-        parentViewController.goToFollowersPage()
-        
+      showFollowerListViewController("getFollowers")
     }
    
     @IBAction func goToFollowingPage(sender: AnyObject) {
-        let parentViewController = self.parentViewController as! MainPageViewController
-        parentViewController.goToFollowingPage()
+      showFollowerListViewController("getFollowees")
     }
     
     @IBAction func onChangeProfilePictureClicked(sender: UIButton) {
@@ -1618,7 +1613,28 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 //        }
       
     }
+  
+  func showFollowerListViewController(lambdaAction: String) {
+    // Let's use a re-usable view just for viewing user follows/followings!
+    let storyboard = UIStoryboard(name: "PopUpAlert", bundle: nil)
+    let viewController = storyboard.instantiateViewControllerWithIdentifier("AquaintsSingleFollowerListViewController") as! AquaintsSingleFollowerListViewController
+    viewController.currentUserName = self.userNameLabel.text
+    viewController.lambdaAction = lambdaAction
+    viewController.profilePopupView = nil
     
+//    // Fetch VC on top view
+//    var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+//    while ((topVC!.presentedViewController) != nil) {
+//      topVC = topVC!.presentedViewController
+//    }
+    
+    // Note: Need to dismiss this popup so we can display another VC. We will restore the popup later,
+    // which is why we pass in this class and it's data to the next view controller.
+//    self.dismissPresentingPopup()
+    self.presentViewController(viewController, animated: true, completion: nil)
+    
+  }
+
     
     
 }

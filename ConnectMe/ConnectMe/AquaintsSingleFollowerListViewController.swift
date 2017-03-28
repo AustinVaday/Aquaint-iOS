@@ -56,7 +56,11 @@ class AquaintsSingleFollowerListViewController: UIViewController, FollowerListSe
   
   @IBAction func backButtonClicked(sender: AnyObject) {
     self.dismissViewControllerAnimated(true, completion: nil)
-    showPopupForUserWithView(profilePopupView)
+    
+    if (profilePopupView != nil)
+    {
+      showPopupForUserWithView(profilePopupView)
+    }
   }
 
 }
