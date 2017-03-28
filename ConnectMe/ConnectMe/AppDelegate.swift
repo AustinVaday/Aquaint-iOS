@@ -119,11 +119,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     gai.logger.logLevel = GAILogLevel.Verbose  // remove before app release
     gai.trackerWithTrackingId("UA-61394116-2")
     
-    // Test trigger
-//    let tracker = gai.defaultTracker
-//    let builder = GAIDictionaryBuilder.createEventWithCategory("SocialClicksMobile", action: "click", label: "facebook", value: nil)
-//    tracker.send(builder.build() as [NSObject : AnyObject])
-    
     
     SimpleAuth.configuration()["facebook"] = [
       "app_id"  : "544667035683597"

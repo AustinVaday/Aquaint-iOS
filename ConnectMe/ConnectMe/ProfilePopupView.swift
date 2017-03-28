@@ -34,7 +34,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     var me: String!
     var displayPrivate = false
     var popupSearchConsistencyDelegate : ProfilePopupSearchCellConsistencyDelegate?
-
+    var GApageName: String!
   
     /*
     // Only override drawRect: if you perform custom drawing.
@@ -46,6 +46,15 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
   
     func setDataForUser(username: String, me: String)
     {
+        // Send view trigger to Google analytics
+        print("Popup profile initiated!")
+        let tracker = GAI.sharedInstance().defaultTracker
+        GApageName = "/user/" + username + "/iOS"
+        tracker.set(kGAIPage, value: GApageName)
+      
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+      
         userNameLabel.text = username
         self.me = me
       
@@ -351,6 +360,12 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         let socialMediaType = cell.socialMediaType // "facebook", "snapchat", etc..
         
         let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
+        
+        // Send trigger to Google Analytics
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIPage, value: GApageName)
+        let builder = GAIDictionaryBuilder.createEventWithCategory("SocialClicksMobile", action: "click", label: cell.socialMediaType, value: nil)
+        tracker.send(builder.build() as [NSObject : AnyObject])
         
         // Perform the request, go to external application and let the user do whatever they want!
         if socialMediaURL != nil
