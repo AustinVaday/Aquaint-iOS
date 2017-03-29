@@ -39,6 +39,8 @@
 		FF690F661E8B409E003FA5B4 /* AnalyticsDisplay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF690F651E8B409E003FA5B4 /* AnalyticsDisplay.storyboard */; };
 		FF690F6A1E8B40FD003FA5B4 /* PaymentsDisplay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF690F691E8B40FD003FA5B4 /* PaymentsDisplay.storyboard */; };
 		FF690F6C1E8B410B003FA5B4 /* PaymentsDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF690F6B1E8B410B003FA5B4 /* PaymentsDisplay.swift */; };
+		FF690F701E8B7559003FA5B4 /* AnalyticsHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF690F6F1E8B7559003FA5B4 /* AnalyticsHeaderTableViewCell.swift */; };
+		FF690F721E8B758A003FA5B4 /* AnalyticsContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF690F711E8B758A003FA5B4 /* AnalyticsContentTableViewCell.swift */; };
 		FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */; };
 		FF7878401C26A0A900354936 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF78783F1C26A0A900354936 /* MenuController.swift */; };
 		FF7878421C26A0CC00354936 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7878411C26A0CC00354936 /* CameraController.swift */; };
@@ -165,6 +167,8 @@
 		FF690F651E8B409E003FA5B4 /* AnalyticsDisplay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AnalyticsDisplay.storyboard; sourceTree = "<group>"; };
 		FF690F691E8B40FD003FA5B4 /* PaymentsDisplay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PaymentsDisplay.storyboard; sourceTree = "<group>"; };
 		FF690F6B1E8B410B003FA5B4 /* PaymentsDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentsDisplay.swift; sourceTree = "<group>"; };
+		FF690F6F1E8B7559003FA5B4 /* AnalyticsHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		FF690F711E8B758A003FA5B4 /* AnalyticsContentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsContentTableViewCell.swift; sourceTree = "<group>"; };
 		FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialMediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		FF78783F1C26A0A900354936 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		FF7878411C26A0CC00354936 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
@@ -375,6 +379,8 @@
 				FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */,
 				FFF3A2AA1D4EBC08009EF4F2 /* ContactsTableViewCell.swift */,
 				FF6813F51E0DF60D007930BA /* FollowRequestsTableViewCell.swift */,
+				FF690F6F1E8B7559003FA5B4 /* AnalyticsHeaderTableViewCell.swift */,
+				FF690F711E8B758A003FA5B4 /* AnalyticsContentTableViewCell.swift */,
 			);
 			name = TableViewCells;
 			sourceTree = "<group>";
@@ -942,6 +948,7 @@
 				FF0BF0231CB6DC78005188DA /* ProfileViewController.swift in Sources */,
 				FF90CFF61CD08DE8003DEA18 /* HomeViewController.swift in Sources */,
 				FFF335A11E89B13F00E8B70F /* CutTransparentHoleInView.swift in Sources */,
+				FF690F721E8B758A003FA5B4 /* AnalyticsContentTableViewCell.swift in Sources */,
 				FFF442361C4B2244007651DE /* Functions.swift in Sources */,
 				FF897C371C01AC63001B2634 /* ViewController.swift in Sources */,
 				FF8420221D29B59F002D2927 /* BackendAPI.swift in Sources */,
@@ -971,6 +978,7 @@
 				FF8420241D2B42A0002D2927 /* DynamoDBClasses.swift in Sources */,
 				FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */,
 				FF83A4DF1CC59A3900AFB26B /* RBResizer.swift in Sources */,
+				FF690F701E8B7559003FA5B4 /* AnalyticsHeaderTableViewCell.swift in Sources */,
 				FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */,
 				FFBDD75A1CD59A2D0007A188 /* WorldNotificationsViewController.swift in Sources */,
 				FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */,

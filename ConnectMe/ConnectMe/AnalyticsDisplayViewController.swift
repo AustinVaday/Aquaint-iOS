@@ -20,8 +20,12 @@ class AnalyticsDisplayViewController: UIViewController {
       var viewController: UIViewController!
       
       // Check whether user has paid for the app or not.
-      let subscribed = getCurrentCachedSubscriptionStatus()
-      // If user has paid for the app, show analytics!
+      var subscribed = getCurrentCachedSubscriptionStatus()
+      
+      // DEBUG PURPOSES! REMOVE BEFORE SUBMIT
+      subscribed = true
+      
+      // If user has paid for the app, show analytics)
       if (subscribed)
       {
         storyboard = UIStoryboard(name: "AnalyticsDisplay", bundle: nil)
