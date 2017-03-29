@@ -38,6 +38,12 @@
 		FF6813F21E0B7D1D007930BA /* AddSocialContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6813F11E0B7D1D007930BA /* AddSocialContactsViewController.swift */; };
 		FF6813F41E0DF1F0007930BA /* FollowRequestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6813F31E0DF1F0007930BA /* FollowRequestsViewController.swift */; };
 		FF6813F61E0DF60D007930BA /* FollowRequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6813F51E0DF60D007930BA /* FollowRequestsTableViewCell.swift */; };
+		FF690F621E8B403F003FA5B4 /* AnalyticsDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF690F611E8B403F003FA5B4 /* AnalyticsDisplayViewController.swift */; };
+		FF690F641E8B407A003FA5B4 /* AnalyticsDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF690F631E8B407A003FA5B4 /* AnalyticsDisplay.swift */; };
+		FF690F661E8B409E003FA5B4 /* AnalyticsDisplay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF690F651E8B409E003FA5B4 /* AnalyticsDisplay.storyboard */; };
+		FF690F6A1E8B40FD003FA5B4 /* PaymentsDisplay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF690F691E8B40FD003FA5B4 /* PaymentsDisplay.storyboard */; };
+		FF690F6C1E8B410B003FA5B4 /* PaymentsDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF690F6B1E8B410B003FA5B4 /* PaymentsDisplay.swift */; };
+		FF690F6E1E8B411A003FA5B4 /* PaymentsDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF690F6D1E8B411A003FA5B4 /* PaymentsDisplayViewController.swift */; };
 		FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */; };
 		FF7878401C26A0A900354936 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF78783F1C26A0A900354936 /* MenuController.swift */; };
 		FF7878421C26A0CC00354936 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7878411C26A0CC00354936 /* CameraController.swift */; };
@@ -163,6 +169,12 @@
 		FF6813F11E0B7D1D007930BA /* AddSocialContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSocialContactsViewController.swift; sourceTree = "<group>"; };
 		FF6813F31E0DF1F0007930BA /* FollowRequestsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequestsViewController.swift; sourceTree = "<group>"; };
 		FF6813F51E0DF60D007930BA /* FollowRequestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequestsTableViewCell.swift; sourceTree = "<group>"; };
+		FF690F611E8B403F003FA5B4 /* AnalyticsDisplayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsDisplayViewController.swift; sourceTree = "<group>"; };
+		FF690F631E8B407A003FA5B4 /* AnalyticsDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsDisplay.swift; sourceTree = "<group>"; };
+		FF690F651E8B409E003FA5B4 /* AnalyticsDisplay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AnalyticsDisplay.storyboard; sourceTree = "<group>"; };
+		FF690F691E8B40FD003FA5B4 /* PaymentsDisplay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PaymentsDisplay.storyboard; sourceTree = "<group>"; };
+		FF690F6B1E8B410B003FA5B4 /* PaymentsDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentsDisplay.swift; sourceTree = "<group>"; };
+		FF690F6D1E8B411A003FA5B4 /* PaymentsDisplayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentsDisplayViewController.swift; sourceTree = "<group>"; };
 		FF7323EF1C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialMediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		FF78783F1C26A0A900354936 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		FF7878411C26A0CC00354936 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
@@ -325,9 +337,9 @@
 		FF6197991E59979B00B94618 /* ScanCode */ = {
 			isa = PBXGroup;
 			children = (
+				FFF3359E1E89B13F00E8B70F /* ScanCodeDisplay.storyboard */,
 				FFF3359C1E89B13F00E8B70F /* CutTransparentHoleInView.swift */,
 				FFF3359D1E89B13F00E8B70F /* QRScannerController.swift */,
-				FFF3359E1E89B13F00E8B70F /* ScanCodeDisplay.storyboard */,
 				FFF3359F1E89B13F00E8B70F /* ScanCodeDisplay.swift */,
 				FFF335A01E89B13F00E8B70F /* ScanCodeDisplayStoryboardViewController.swift */,
 			);
@@ -341,6 +353,26 @@
 				FF63316C1D286D4300967266 /* AWSMobileHubHelper.framework */,
 			);
 			name = AmazonAWS;
+			sourceTree = "<group>";
+		};
+		FF690F671E8B40A5003FA5B4 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				FF690F651E8B409E003FA5B4 /* AnalyticsDisplay.storyboard */,
+				FF690F611E8B403F003FA5B4 /* AnalyticsDisplayViewController.swift */,
+				FF690F631E8B407A003FA5B4 /* AnalyticsDisplay.swift */,
+			);
+			name = Analytics;
+			sourceTree = "<group>";
+		};
+		FF690F681E8B40E3003FA5B4 /* Payments */ = {
+			isa = PBXGroup;
+			children = (
+				FF690F691E8B40FD003FA5B4 /* PaymentsDisplay.storyboard */,
+				FF690F6B1E8B410B003FA5B4 /* PaymentsDisplay.swift */,
+				FF690F6D1E8B411A003FA5B4 /* PaymentsDisplayViewController.swift */,
+			);
+			name = Payments;
 			sourceTree = "<group>";
 		};
 		FF7C0A471D13A20700C1502D /* TableViewCells */ = {
@@ -468,6 +500,8 @@
 				FF1001EC1C80374A00B53F8B /* MainPageViewController.swift */,
 				FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */,
 				FF6197991E59979B00B94618 /* ScanCode */,
+				FF690F681E8B40E3003FA5B4 /* Payments */,
+				FF690F671E8B40A5003FA5B4 /* Analytics */,
 				FF8972A31E1B22FA00A4D9C4 /* Walkthrough */,
 				FF23A1391D93273C0062E9A0 /* Aquaints-Followers/Following */,
 				FFF335A61E89B18600E8B70F /* Popup Help */,
@@ -725,11 +759,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF690F6A1E8B40FD003FA5B4 /* PaymentsDisplay.storyboard in Resources */,
 				FF8972981E198FF000A4D9C4 /* FollowerListView.storyboard in Resources */,
 				FFF335AA1E89B1A200E8B70F /* PopUpHelpAlert.storyboard in Resources */,
 				FFF3359B1E89ACA700E8B70F /* Stripe.bundle in Resources */,
 				FFF335921E89A38600E8B70F /* GoogleService-Info.plist in Resources */,
 				FFF4423A1C4C2B21007651DE /* Launch Screen.storyboard in Resources */,
+				FF690F661E8B409E003FA5B4 /* AnalyticsDisplay.storyboard in Resources */,
 				FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */,
 				FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */,
 				FF8972921E14ACB400A4D9C4 /* RefreshContents.xib in Resources */,
@@ -935,9 +971,11 @@
 				FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */,
 				FF23A1311D9326E40062E9A0 /* AquaintsContainerViewController.swift in Sources */,
 				FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */,
+				FF690F621E8B403F003FA5B4 /* AnalyticsDisplayViewController.swift in Sources */,
 				FFF335A91E89B1A200E8B70F /* HelpPopupView.swift in Sources */,
 				FFBDD7611CD5B6190007A188 /* NewsfeedTableViewCell.swift in Sources */,
 				FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */,
+				FF690F6C1E8B410B003FA5B4 /* PaymentsDisplay.swift in Sources */,
 				FF23A13D1D9340480062E9A0 /* PrivacyPolicyViewController.swift in Sources */,
 				FFF3A2AB1D4EBC08009EF4F2 /* ContactsTableViewCell.swift in Sources */,
 				FF8420201D299A9C002D2927 /* SignUpFetchMoreDataController.swift in Sources */,
@@ -945,6 +983,7 @@
 				FF7878611C3010E700354936 /* LogInController.swift in Sources */,
 				FFF3A2A91D49BF18009EF4F2 /* MenuButtonTableViewCell.swift in Sources */,
 				FFF3A2A71D488F12009EF4F2 /* MenuProfilesCell.swift in Sources */,
+				FF690F641E8B407A003FA5B4 /* AnalyticsDisplay.swift in Sources */,
 				FF3834D51D6D529500FC9F2A /* ProfilePopupView.swift in Sources */,
 				FF8420241D2B42A0002D2927 /* DynamoDBClasses.swift in Sources */,
 				FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */,
@@ -958,6 +997,7 @@
 				FF8972A21E1B22F400A4D9C4 /* WalkthroughPageViewController.swift in Sources */,
 				FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */,
 				FF6813F41E0DF1F0007930BA /* FollowRequestsViewController.swift in Sources */,
+				FF690F6E1E8B411A003FA5B4 /* PaymentsDisplayViewController.swift in Sources */,
 				FF8420261D30A138002D2927 /* AddSocialMediaProfilesController.swift in Sources */,
 				FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */,
 				FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */,
