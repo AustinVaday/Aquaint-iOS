@@ -71,13 +71,13 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   }
   
   override func viewDidAppear(animated: Bool) {
-//    setUpSocialMediaAnimations(self, subView: self.animationView, animatedObjects: &animatedObjects, animationLocation: AnimationLocation.Bottom, theme: AnimationAquaintEmblemTheme.DarkTheme)
+    setUpSocialMediaAnimations(self, subView: self.animationView, animatedObjects: &animatedObjects, animationLocation: AnimationLocation.Bottom, theme: AnimationAquaintEmblemTheme.DarkTheme)
     updateAnalyticsDisplayValues()
     
   }
   
   override func viewDidDisappear(animated: Bool) {
-//    clearUpSocialMediaAnimations(&animatedObjects)
+    clearUpSocialMediaAnimations(&animatedObjects)
   }
   
   override func didReceiveMemoryWarning() {

@@ -262,11 +262,6 @@
                             <constraint firstItem="H1S-p8-SN6" firstAttribute="leading" secondItem="k0J-cX-TJp" secondAttribute="leading" id="zzC-oV-kic"/>
                         </constraints>
                         <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="IXi-N8-Ryo"/>
-                                <exclude reference="3Id-2x-iyM"/>
-                                <exclude reference="HZr-E8-DXy"/>
-                            </mask>
                             <mask key="constraints">
                                 <exclude reference="iiE-Mg-3AE"/>
                             </mask>
