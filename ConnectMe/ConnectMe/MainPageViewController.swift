@@ -18,7 +18,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     let NEWSFEED = 0
     let SEARCH = 1
     let SCANCODE = 2
-    let CONNECTIONS = 3
+    let ANALYTICS = 3
     let MENU = 4
     
     var arrayOfViewControllers: Array<UIViewController>!
@@ -49,7 +49,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeContainerViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("SearchViewController"))!)
       arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("ScanCodeDisplayStoryboardViewController"))!)
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("AquaintsContainerViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("AnalyticsDisplayViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))!)
         
         let firstViewController = arrayOfViewControllers[SCANCODE]
@@ -73,10 +73,10 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
       
         if viewController.isKindOfClass(ScanCodeDisplayStoryboardViewController)
         {
-            return arrayOfViewControllers[CONNECTIONS]
+            return arrayOfViewControllers[ANALYTICS]
         }
         
-        if viewController.isKindOfClass(AquaintsContainerViewController)
+        if viewController.isKindOfClass(AnalyticsDisplayViewController)
         {
             return arrayOfViewControllers[MENU]
         }
@@ -108,14 +108,14 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
           return arrayOfViewControllers[SEARCH]
         }
       
-        if viewController.isKindOfClass(AquaintsContainerViewController)
+        if viewController.isKindOfClass(AnalyticsDisplayViewController)
         {
             return arrayOfViewControllers[SCANCODE]
         }
         
         if viewController.isKindOfClass(MenuController)
         {
-            return arrayOfViewControllers[CONNECTIONS]
+            return arrayOfViewControllers[ANALYTICS]
         }
         
                 
@@ -144,9 +144,9 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             currentPageIndex = MENU
         }
 
-        else if nextViewController.isKindOfClass(AquaintsContainerViewController)
+        else if nextViewController.isKindOfClass(AnalyticsDisplayViewController)
         {
-            currentPageIndex = CONNECTIONS
+            currentPageIndex = ANALYTICS
         }
         
         else if nextViewController.isKindOfClass(HomeContainerViewController)
@@ -168,27 +168,27 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     
     }
 
-    func goToFollowersPage()
-    {
-        changePage(CONNECTIONS)
-        let aquaintsVC = arrayOfViewControllers[CONNECTIONS] as! AquaintsContainerViewController
-        let dummyButton = UIButton()
-        aquaintsVC.goToPage0(dummyButton) // Send in random button
-        
-        sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
-
-    }
-    
-    func goToFollowingPage()
-    {
-        changePage(CONNECTIONS)
-        let aquaintsVC = arrayOfViewControllers[CONNECTIONS] as! AquaintsContainerViewController
-        let dummyButton = UIButton()
-        aquaintsVC.goToPage1(dummyButton) // Send in random button
-        
-        sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
-    }
-    
+//    func goToFollowersPage()
+//    {
+//        changePage(ANALYTICS)
+//        let aquaintsVC = arrayOfViewControllers[ANALYTICS] as! AnalyticsDisplayViewController
+//        let dummyButton = UIButton()
+//        aquaintsVC.goToPage0(dummyButton) // Send in random button
+//        
+//        sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
+//
+//    }
+//    
+//    func goToFollowingPage()
+//    {
+//        changePage(ANALYTICS)
+//        let aquaintsVC = arrayOfViewControllers[ANALYTICS] as! AnalyticsDisplayViewController
+//        let dummyButton = UIButton()
+//        aquaintsVC.goToPage1(dummyButton) // Send in random button
+//        
+//        sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
+//    }
+  
     // Used so that we can use buttons to change the page!
     func changePage (pageIndex: Int)
     {
@@ -228,33 +228,33 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
 
     }
 
-  // a special case of changePage(pageIndex: 2) used for push notification handling. Displaying Followers or Following section in AquaintsContainerViewController
-  func changePageToFollows(subpageIndex: Int) {  // 0 for Followers, 1 for Following
-    let pageIndex = CONNECTIONS
-    
-    let destinationViewController = arrayOfViewControllers[pageIndex]
-    
-    var direction : UIPageViewControllerNavigationDirection!
-    
-    if (pageIndex < currentPageIndex) {
-      direction = UIPageViewControllerNavigationDirection.Reverse
-    }
-    else {
-      direction = UIPageViewControllerNavigationDirection.Forward
-    }
-    
-    setViewControllers([destinationViewController], direction: direction, animated: true, completion: nil)
-    
-    let vcFollow = destinationViewController as? AquaintsContainerViewController
-    let dummyButton = UIButton();
-    if (subpageIndex == 0) {
-      vcFollow?.goToPage0(dummyButton)
-    } else if (subpageIndex == 1) {
-      vcFollow?.goToPage1(dummyButton)
-    }
-    
-    currentPageIndex = pageIndex
-
-  }
+//  // a special case of changePage(pageIndex: 2) used for push notification handling. Displaying Followers or Following section in AnalyticsDisplayViewController
+//  func changePageToFollows(subpageIndex: Int) {  // 0 for Followers, 1 for Following
+//    let pageIndex = ANALYTICS
+//    
+//    let destinationViewController = arrayOfViewControllers[pageIndex]
+//    
+//    var direction : UIPageViewControllerNavigationDirection!
+//    
+//    if (pageIndex < currentPageIndex) {
+//      direction = UIPageViewControllerNavigationDirection.Reverse
+//    }
+//    else {
+//      direction = UIPageViewControllerNavigationDirection.Forward
+//    }
+//    
+//    setViewControllers([destinationViewController], direction: direction, animated: true, completion: nil)
+//    
+//    let vcFollow = destinationViewController as? AnalyticsDisplayViewController
+//    let dummyButton = UIButton();
+//    if (subpageIndex == 0) {
+//      vcFollow?.goToPage0(dummyButton)
+//    } else if (subpageIndex == 1) {
+//      vcFollow?.goToPage1(dummyButton)
+//    }
+//    
+//    currentPageIndex = pageIndex
+//
+//  }
   
 }

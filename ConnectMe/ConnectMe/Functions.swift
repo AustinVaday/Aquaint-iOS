@@ -630,6 +630,11 @@ func setCurrentCachedUserScanCode(scanCode: UIImage!)
   
 }
 
+func setCurrentCachedSubscriptionStatus(status : Bool)
+{
+  let defaults = NSUserDefaults.standardUserDefaults()
+  defaults.setObject(status, forKey: "subscriptionStatus")
+}
 
 func setCurrentCachedUserProfiles(userProfiles: NSMutableDictionary)
 {
@@ -797,6 +802,19 @@ func getCurrentCachedUserScanCode() -> UIImage!
   
   return currentScanCode
   
+}
+
+func getCurrentCachedSubscriptionStatus() -> Bool
+{
+  let defaults = NSUserDefaults.standardUserDefaults()
+  
+  let status = defaults.valueForKey("subscriptionStatus") as! Bool!
+  
+  if status == nil {
+    return false
+  } else {
+    return status
+  }
 }
 
 // Get the current user that is signed into the app

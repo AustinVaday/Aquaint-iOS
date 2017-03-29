@@ -10,26 +10,43 @@ import UIKit
 
 class AnalyticsDisplayViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    dispatch_async(dispatch_get_main_queue()) {
+      
+      var storyboard: UIStoryboard!
+      var viewController: UIViewController!
+      
+      // Check whether user has paid for the app or not.
+      let subscribed = getCurrentCachedSubscriptionStatus()
+      // If user has paid for the app, show analytics!
+      if (subscribed)
+      {
+        storyboard = UIStoryboard(name: "AnalyticsDisplay", bundle: nil)
+        viewController = storyboard.instantiateViewControllerWithIdentifier("AnalyticsDisplay") as! AnalyticsDisplay
+      } else {
+        // Else, we show payment plan
+        storyboard = UIStoryboard(name: "PaymentsDisplay", bundle: nil)
+        viewController = storyboard.instantiateViewControllerWithIdentifier("PaymentsDisplay") as! PaymentsDisplay
+      }
+      
+      // Get our special popup design from the XIB
+      viewController.view.bounds = self.view.bounds
+      viewController.view.frame = self.view.frame
+      
+      self.view.addSubview(viewController.view)
+      
+      self.addChildViewController(viewController)
+      viewController.didMoveToParentViewController(self)
+      
     }
-    */
+  }
+  
+  override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+    // Dispose of any resources that can be recreated.
+  }
 
 }
