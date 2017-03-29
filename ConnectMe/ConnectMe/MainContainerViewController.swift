@@ -90,6 +90,10 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     }
   
     override func viewDidLoad() {
+        // Warm up lambda so that user has better experience. Lambda servers removed from "cache" every 5 min.
+        warmUpLambda()
+      
+      
         // Get the mainPageViewController, this holds all our pages!
         mainPageViewController = self.childViewControllers.last as! MainPageViewController
 

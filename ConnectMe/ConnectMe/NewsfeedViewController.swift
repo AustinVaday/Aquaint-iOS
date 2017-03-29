@@ -94,9 +94,6 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Generates data needed -- fetches newsfeed from AWS
         generateData(0)
         
-        
-        // Warm up lambda so that user has better experience. Lambda servers removed from "cache" every 5 min.
-        warmUpLambda()
     }
     
     // Function that is called when user drags/pulls table with intention of refreshing it

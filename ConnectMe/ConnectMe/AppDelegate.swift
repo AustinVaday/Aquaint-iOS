@@ -233,7 +233,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
     
     userPool.delegate = self
-    
 
     // handle push notificiations when app is killed and relaunched
     if let payload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary, identifier = payload["identifier"] as? NSString {

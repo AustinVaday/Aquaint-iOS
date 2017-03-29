@@ -549,8 +549,9 @@ func uploadDeviceIDDynamoDB(currentDeviceID: String) {
 
 func warmUpLambda()
 {
+    print("WARMING UP LAMBDA")
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-    let parameters = ["action":"doIFollow", "target": "", "me": ""]
+    let parameters = ["action":"doIFollow", "target": "aquaint", "me": "aquaint"]
     lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
         return nil
     }

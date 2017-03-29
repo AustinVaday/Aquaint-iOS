@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import CoreGraphics
+import AWSLambda
 
 class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
   
@@ -23,7 +24,10 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   @IBOutlet weak var cameraView: UIView!
   @IBOutlet weak var userNameLabel: UILabel!
   @IBOutlet weak var scanCodeImageView: UIImageView!
-  @IBOutlet weak var lineSeparator: UIImageView!
+  
+  @IBOutlet weak var firstLineSeparator: UIImageView!
+  @IBOutlet weak var secondLineSeparator: UIImageView!
+  
   @IBOutlet weak var cameraButton: UIButton!
   @IBOutlet weak var exitButton: UIButton!
   @IBOutlet weak var exportButton: UIButton!
@@ -52,6 +56,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    updateAnalyticsDisplayValues()
+
     maskView.transparentHoleView = self.scanCodeImageView
     maskView.drawRect(maskView.frame)
     
@@ -66,6 +72,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   
   override func viewDidAppear(animated: Bool) {
 //    setUpSocialMediaAnimations(self, subView: self.animationView, animatedObjects: &animatedObjects, animationLocation: AnimationLocation.Bottom, theme: AnimationAquaintEmblemTheme.DarkTheme)
+    updateAnalyticsDisplayValues()
+    
   }
   
   override func viewDidDisappear(animated: Bool) {
@@ -135,7 +143,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           self.profileViewsCountNumber.textColor = UIColor.whiteColor()
           self.engagementCountLabel.textColor = UIColor.whiteColor()
           self.engagementCountNumber.textColor = UIColor.whiteColor()
-          self.lineSeparator.image = self.whiteSeparator
+          self.firstLineSeparator.image = self.whiteSeparator
+          self.secondLineSeparator.image = self.whiteSeparator
           self.cameraButton.hidden = true
           self.exitButton.hidden = false
         
@@ -158,7 +167,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     self.profileViewsCountLabel.textColor = self.aquaBlue
     self.engagementCountNumber.textColor = self.aquaBlue
     self.engagementCountLabel.textColor = self.aquaBlue
-    self.lineSeparator.image = self.blackSeparator
+    self.firstLineSeparator.image = self.blackSeparator
+    self.secondLineSeparator.image = self.blackSeparator
     self.cameraButton.hidden = false
     self.exitButton.hidden = true
     
@@ -225,6 +235,50 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     }
 
   }
+  
+  func updateAnalyticsDisplayValues()
+  {
+    var username: String!
+    username = getCurrentCachedUser()
+
+    if (username == nil)
+    {
+      return
+    }
+    
+    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+    var parameters = ["action":"getUserPageViews", "target": username]
+    
+    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+      if resultTask.error == nil && resultTask.result != nil
+      {
+        print("Result task for getUserPageViews is: ", resultTask.result!)
+        dispatch_async(dispatch_get_main_queue(), {
+          let number = resultTask.result as? Int
+          self.profileViewsCountNumber.text  = String(number!)
+        })
+      }
+      
+      return nil
+    }
+    
+    parameters = ["action":"getUserTotalEngagements", "target": username]
+    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+      if resultTask.error == nil && resultTask.result != nil
+      {
+        print("Result task for getUserTotalEngagements is: ", resultTask.result!)
+        dispatch_async(dispatch_get_main_queue(), {
+          let number = resultTask.result as? Int
+          self.engagementCountNumber.text = String(number!)
+        })
+
+      }
+      
+      return nil
+    }
+    
+  }
+  
   
   func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
     
