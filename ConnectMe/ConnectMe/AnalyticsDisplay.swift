@@ -8,13 +8,17 @@
 
 import UIKit
 import AWSLambda
+import Graphs
 
 // Will have the real displays and data
 class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
   enum AnalyticsDataEnum: Int {
+    case VIEW_BREAKDOWN
     case ENGAGEMENT_BREAKDOWN
+    case GENDER
     case LOCATION
+    case DEVICE_TYPE
   }
 
   struct SectionTitleAndCountPair
@@ -23,17 +27,22 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     var sectionCount : Int!
   }
 
+
   @IBOutlet weak var analyticsTableView: UITableView!
   var currentUserName : String!
   let footerHeight = CGFloat(65)
   let defaultTableViewCellHeight = CGFloat(55)
+  let graphTableViewCellHeight = CGFloat(300)
   var tableViewSectionsList : Array<String>!
   var refreshControl : CustomRefreshControl!
   var engagementBreakdownRowCount = 0
   var locationRowCount = 0
   var socialProviderToEngagementCountList = NSMutableArray()
   var locationToCountList = NSArray()
-  
+  var graphViewForViews : GraphView<String, Int>!
+  var graphViewForGender : GraphView<String, Double>!
+  var graphViewForDevices : GraphView<String, Double>!
+
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -42,8 +51,11 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     // Set up the data for the table views section.
     tableViewSectionsList = Array<String>()
+    tableViewSectionsList.append("VIEWS PER DAY (LAST 10 DAYS)")
     tableViewSectionsList.append("ENGAGEMENT BREAKDOWN")
+    tableViewSectionsList.append("VIEWER GENDER BREAKDOWN")
     tableViewSectionsList.append("LOCATION OF VIEWERS")
+    tableViewSectionsList.append("VIEWER DEVICE BREAKDOWN")
     
     // Call this function to generate dummy data (before data actually loads)
     generateDummyAnalyticsData()
@@ -91,11 +103,21 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     switch indexPath.section
     {
+    case AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue:
+      returnHeight = graphTableViewCellHeight
+      break;
     case AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue:
       returnHeight = defaultTableViewCellHeight
       break;
+    case AnalyticsDataEnum.GENDER.rawValue:
+      returnHeight = graphTableViewCellHeight
+      break;
     case AnalyticsDataEnum.LOCATION.rawValue:
       returnHeight = defaultTableViewCellHeight
+      break;
+    case AnalyticsDataEnum.DEVICE_TYPE.rawValue:
+      returnHeight = graphTableViewCellHeight
+      break;
     default:
       returnHeight = defaultTableViewCellHeight
     }
@@ -108,11 +130,20 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     var numRows = 0
     switch tableViewSectionsList[section]
     {
+    case "VIEWS PER DAY (LAST 10 DAYS)":
+      numRows = 1
     case "ENGAGEMENT BREAKDOWN":
       numRows = engagementBreakdownRowCount
       break;
+    case "VIEWER GENDER BREAKDOWN":
+      numRows = 1
+      break;
     case "LOCATION OF VIEWERS":
       numRows = locationRowCount
+      break;
+    case "VIEWER DEVICE BREAKDOWN":
+      numRows = 1
+      break;
     default:
       numRows = 0
     }
@@ -125,13 +156,48 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     let cell = tableView.dequeueReusableCellWithIdentifier("analyticsContentCell") as! AnalyticsContentTableViewCell!
     switch indexPath.section
     {
+      
+    case AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue:
+      // Configure cell for graph
+      let graphCell = tableView.dequeueReusableCellWithIdentifier("freeViewCell") as! AnalyticsFreeViewTableViewCell!
+      
+      if graphViewForViews != nil {
+        graphViewForViews.removeFromSuperview()
+      }
+      graphViewForViews = [8, 12, 20, 10, 6, 20, 11, 9, 20, 3].barGraph().view(graphCell.viewDisplay.bounds).barGraphConfiguration({ BarGraphViewConfig(barColor: UIColor(hex: "#ff6699"), contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
+
+//      graphViewForViews = [8, 12, 13, 10, 7, 11, 9, 14, 12, 6].lineGraph(GraphRange(min: 5, max: 14)).view(graphCell.viewDisplay.bounds).lineGraphConfiguration({ LineGraphViewConfig(lineColor: UIColor(hex: "#ff6699"), lineWidth: 2.0, dotDiameter: 10.0) })
+
+      
+      graphCell.viewDisplay.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+      graphCell.viewDisplay.addSubview(graphViewForViews)
+      return graphCell
     case AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue:
       if (socialProviderToEngagementCountList.count == 0) {
         return cell
       }
+      
       cell.numericalValueLabel.text = String(socialProviderToEngagementCountList[indexPath.item][1])
       cell.numericalTypeLabel.text = "CLICKS"
       cell.socialProviderLabel.text = String(socialProviderToEngagementCountList[indexPath.item][0])
+      
+      break;
+      
+    case AnalyticsDataEnum.GENDER.rawValue:
+      // Configure cell for graph
+      let graphCell = tableView.dequeueReusableCellWithIdentifier("freeViewCell") as! AnalyticsFreeViewTableViewCell!
+      
+      if graphViewForGender != nil {
+        graphViewForGender.removeFromSuperview()
+      }
+      
+      graphViewForGender = [42.3,57.7].pieGraph().view(graphCell.viewDisplay.bounds).pieGraphConfiguration({ PieGraphViewConfig(textFont: UIFont(name: "DINCondensed-Bold", size: 14.0), isDounut: true, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
+      
+//      graphViewForGender = [8.5, 20.0].pieGraph(){ (u, t) -> String? in String(format: "%.0f%%", (Float(u.value) / Float(t)))}.
+      
+      graphCell.viewDisplay.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+      graphCell.viewDisplay.addSubview(graphViewForGender)
+      return graphCell
       break;
     case AnalyticsDataEnum.LOCATION.rawValue:
       if (locationToCountList.count == 0){
@@ -140,6 +206,21 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       cell.numericalValueLabel.text = String(locationToCountList[indexPath.item][1])
       cell.numericalTypeLabel.text = "VIEWS"
       cell.socialProviderLabel.text = String(locationToCountList[indexPath.item][0])
+      break;
+    case AnalyticsDataEnum.DEVICE_TYPE.rawValue:
+      // Configure cell for graph
+      let graphCell = tableView.dequeueReusableCellWithIdentifier("freeViewCell") as! AnalyticsFreeViewTableViewCell!
+      
+      if graphViewForDevices != nil {
+        graphViewForDevices.removeFromSuperview()
+      }
+      
+      graphViewForDevices = [30.0,70.0].pieGraph().view(graphCell.viewDisplay.bounds).pieGraphConfiguration({ PieGraphViewConfig(textFont: UIFont(name: "DINCondensed-Bold", size: 14.0), isDounut: true, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
+      
+      graphCell.viewDisplay.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+      graphCell.viewDisplay.addSubview(graphViewForDevices)
+      return graphCell
+
       break;
     default:
       break;
@@ -227,8 +308,9 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
         print("Result task for getUserTotalEngagementsBreakdown is: ", resultTask.result!)
         
         self.socialProviderToEngagementCountList = resultTask.result as! NSMutableArray
+        // Add one to account for graph index offset
         self.engagementBreakdownRowCount = self.socialProviderToEngagementCountList.count
-        
+
         dispatch_async(dispatch_get_main_queue(), {
           self.analyticsTableView.reloadData()
         })

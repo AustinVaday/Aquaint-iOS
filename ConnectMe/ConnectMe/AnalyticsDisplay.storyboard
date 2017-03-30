@@ -141,6 +141,31 @@
                                             <outlet property="socialProviderLabel" destination="tjW-hR-09Y" id="Vce-ky-xv7"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="freeViewCell" rowHeight="300" id="U7n-0P-17a" customClass="AnalyticsFreeViewTableViewCell" customModule="Aquaint" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="135" width="600" height="300"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="U7n-0P-17a" id="0Mr-km-ktX">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Td1-Pd-GUK">
+                                                    <rect key="frame" x="8" y="8" width="584" height="292"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="Td1-Pd-GUK" firstAttribute="leading" secondItem="0Mr-km-ktX" secondAttribute="leadingMargin" id="8fz-vR-kG8"/>
+                                                <constraint firstItem="Td1-Pd-GUK" firstAttribute="centerY" secondItem="0Mr-km-ktX" secondAttribute="centerY" constant="4" id="9R2-FF-X0Z"/>
+                                                <constraint firstItem="Td1-Pd-GUK" firstAttribute="top" secondItem="0Mr-km-ktX" secondAttribute="topMargin" id="aih-df-H6x"/>
+                                                <constraint firstItem="Td1-Pd-GUK" firstAttribute="centerX" secondItem="0Mr-km-ktX" secondAttribute="centerX" id="qUL-VL-xNC"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="viewDisplay" destination="Td1-Pd-GUK" id="o54-9z-a5p"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="kb8-eQ-3kS" id="JYh-d5-ivs"/>
