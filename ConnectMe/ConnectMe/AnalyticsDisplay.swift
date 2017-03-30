@@ -40,9 +40,9 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   var socialProviderToEngagementCountList = NSMutableArray()
   var locationToCountList = NSArray()
   var graphViewForViews : GraphView<String, Int>!
-  var graphViewForGender : GraphView<String, Double>!
-  var graphViewForDevices : GraphView<String, Double>!
-
+  var graphViewForGender : GraphView<String, Int>!
+  var graphViewForDevices : GraphView<String, Int>!
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -191,9 +191,12 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
         graphViewForGender.removeFromSuperview()
       }
       
-      graphViewForGender = [42.3,57.7].pieGraph().view(graphCell.viewDisplay.bounds).pieGraphConfiguration({ PieGraphViewConfig(textFont: UIFont(name: "DINCondensed-Bold", size: 14.0), isDounut: true, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
       
-//      graphViewForGender = [8.5, 20.0].pieGraph(){ (u, t) -> String? in String(format: "%.0f%%", (Float(u.value) / Float(t)))}.
+//      (u, t) -> String? in String(format: "%.0f%%", (Float(u.value) / Float(t)))
+      
+      graphViewForGender = [900,500,20].pieGraph().view(graphCell.viewDisplay.bounds).pieGraphConfiguration({ PieGraphViewConfig(textFont: UIFont(name: "Avenir-Next", size: 14.0), isDounut: true, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
+      
+//      graphViewForGender = [8.5, 20.0].pieGraph(){ }.
       
       graphCell.viewDisplay.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
       graphCell.viewDisplay.addSubview(graphViewForGender)
@@ -215,7 +218,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
         graphViewForDevices.removeFromSuperview()
       }
       
-      graphViewForDevices = [30.0,70.0].pieGraph().view(graphCell.viewDisplay.bounds).pieGraphConfiguration({ PieGraphViewConfig(textFont: UIFont(name: "DINCondensed-Bold", size: 14.0), isDounut: true, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
+      graphViewForDevices = [100, 200, 10].pieGraph().view(graphCell.viewDisplay.bounds).pieGraphConfiguration({ PieGraphViewConfig(textFont: UIFont(name: "DINCondensed-Bold", size: 14.0), isDounut: true, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
       
       graphCell.viewDisplay.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
       graphCell.viewDisplay.addSubview(graphViewForDevices)

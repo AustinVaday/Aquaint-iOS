@@ -214,7 +214,7 @@
                                     <constraint firstAttribute="height" constant="43" id="ju9-cr-iYB"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
-                                <state key="normal" title="MORE FEATURES">
+                                <state key="normal" title="MORE DATA">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>

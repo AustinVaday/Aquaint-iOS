@@ -168,6 +168,12 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     
     }
 
+    func goToAnalyticsPage()
+    {
+      changePage(ANALYTICS)
+      sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
+    }
+  
 //    func goToFollowersPage()
 //    {
 //        changePage(ANALYTICS)

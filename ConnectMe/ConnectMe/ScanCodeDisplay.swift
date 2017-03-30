@@ -184,6 +184,9 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   }
   
   @IBAction func onMoreFeaturesButtonClicked(sender: AnyObject) {
+    // Takes advantage of the fact that we know our grandparent is MainPageViewController
+    let parentViewController = self.parentViewController?.parentViewController as! MainPageViewController
+    parentViewController.goToAnalyticsPage()
   }
 
   func setUpCameraDisplay() {
