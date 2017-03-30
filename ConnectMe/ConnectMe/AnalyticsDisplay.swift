@@ -31,7 +31,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   var refreshControl : CustomRefreshControl!
   var engagementBreakdownRowCount = 0
   var locationRowCount = 0
-  var socialProviderToEngagementCountList = NSArray()
+  var socialProviderToEngagementCountList = NSMutableArray()
   var locationToCountList = NSArray()
   
   override func viewDidLoad() {
@@ -45,6 +45,8 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     tableViewSectionsList.append("ENGAGEMENT BREAKDOWN")
     tableViewSectionsList.append("LOCATION OF VIEWERS")
     
+    // Call this function to generate dummy data (before data actually loads)
+    generateDummyAnalyticsData()
     
     // Call this function to generate all analytics data for this page!
     generateAnalyticsData()
@@ -55,6 +57,11 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     // When user pulls, this function will be called
     refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
     analyticsTableView.addSubview(refreshControl)
+  }
+  
+  override func viewDidAppear(animated: Bool) {
+    // Call this function to generate all analytics data for this page!
+    generateAnalyticsData()
   }
   
   /**************************************************************************
@@ -184,13 +191,42 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
     var parameters = ["action":"getUserTotalEngagementsBreakdown", "target": currentUserName, "social_list": userSocialPlatforms]
     
+//    var parameters = NSDictionary()
+//    self.socialProviderToEngagementCountList = NSMutableArray()
+//    self.engagementBreakdownRowCount = 0
+//    
+//    for platform in userSocialPlatforms {
+//      // Get engagement info
+//      parameters = ["action":"getUserSingleEngagements", "target": currentUserName, "social_platform": platform]
+//      lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+//        if resultTask.error == nil && resultTask.result != nil
+//        {
+//          print("Result task for getUserSingleEngagements is: ", resultTask.result!)
+//          
+//          let number = resultTask.result as? Int
+//          var tuple = Array<String>()
+//          tuple.append(platform)
+//          tuple.append(String(number!))
+//          self.socialProviderToEngagementCountList.addObject(tuple)
+//          self.engagementBreakdownRowCount = self.engagementBreakdownRowCount + 1
+//          
+//          dispatch_async(dispatch_get_main_queue(), {
+//            self.analyticsTableView.reloadData()
+//          })
+//        }
+//        
+//        return nil
+//      }
+//
+//    }
+    
     // Get engagement info
     lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil
       {
         print("Result task for getUserTotalEngagementsBreakdown is: ", resultTask.result!)
         
-        self.socialProviderToEngagementCountList = resultTask.result as! NSArray
+        self.socialProviderToEngagementCountList = resultTask.result as! NSMutableArray
         self.engagementBreakdownRowCount = self.socialProviderToEngagementCountList.count
         
         dispatch_async(dispatch_get_main_queue(), {
@@ -220,6 +256,28 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       return nil
     }
     
+    
+  }
+  
+  func generateDummyAnalyticsData() {
+    // Get list of all social media platforms the user currently supports
+    let userProfiles = getCurrentCachedUserProfiles() as NSDictionary!
+    let userSocialPlatforms = userProfiles.allKeys as! Array<String>
+    
+    engagementBreakdownRowCount = userSocialPlatforms.count
+    self.socialProviderToEngagementCountList = NSMutableArray()
+    analyticsTableView.reloadData()
+    
+    for platform in userSocialPlatforms {
+      var tuple = Array<String>()
+      tuple.append(platform)
+      tuple.append("...")
+      self.socialProviderToEngagementCountList.addObject(tuple)
+      
+      dispatch_async(dispatch_get_main_queue(), { 
+        self.analyticsTableView.reloadData()
+      })
+    }
     
   }
 

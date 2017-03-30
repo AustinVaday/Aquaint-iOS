@@ -85,7 +85,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="facebook" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tjW-hR-09Y">
-                                                    <rect key="frame" x="24" y="14" width="177" height="24"/>
+                                                    <rect key="frame" x="24" y="19" width="177" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="177" id="OT6-N0-4y5"/>
                                                     </constraints>
@@ -103,8 +103,8 @@
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YyR-UH-Gys">
-                                                    <rect key="frame" x="519" y="10" width="59" height="24"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="..." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YyR-UH-Gys">
+                                                    <rect key="frame" x="517" y="9" width="59" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="24" id="6pl-PA-Zzw"/>
                                                         <constraint firstAttribute="width" constant="59" id="pY3-Za-v6Y"/>
@@ -114,7 +114,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKY-d3-z45">
-                                                    <rect key="frame" x="21" y="40" width="80" height="1"/>
+                                                    <rect key="frame" x="21" y="45" width="80" height="1"/>
                                                     <color key="backgroundColor" red="0.070588235289999995" green="0.73333333329999995" blue="0.83529411760000005" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="cKE-qp-giX"/>
@@ -125,13 +125,13 @@
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="rKY-d3-z45" firstAttribute="top" secondItem="tjW-hR-09Y" secondAttribute="bottom" constant="2" id="ABU-jE-BSj"/>
-                                                <constraint firstItem="YyR-UH-Gys" firstAttribute="top" secondItem="4dX-Gh-M8c" secondAttribute="topMargin" constant="2" id="CHe-vy-jO7"/>
+                                                <constraint firstItem="YyR-UH-Gys" firstAttribute="top" secondItem="4dX-Gh-M8c" secondAttribute="topMargin" constant="1" id="CHe-vy-jO7"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="hql-PC-OPw" secondAttribute="trailing" constant="16" id="Tst-a1-6gN"/>
                                                 <constraint firstItem="tjW-hR-09Y" firstAttribute="leading" secondItem="4dX-Gh-M8c" secondAttribute="leadingMargin" constant="16" id="aei-IP-Vs6"/>
                                                 <constraint firstItem="rKY-d3-z45" firstAttribute="leading" secondItem="4dX-Gh-M8c" secondAttribute="leadingMargin" constant="13" id="ldV-LR-pFo"/>
-                                                <constraint firstItem="tjW-hR-09Y" firstAttribute="top" secondItem="4dX-Gh-M8c" secondAttribute="topMargin" constant="6" id="o8q-K5-SJP"/>
-                                                <constraint firstItem="hql-PC-OPw" firstAttribute="top" secondItem="YyR-UH-Gys" secondAttribute="bottom" constant="-1" id="r9v-wh-VHM"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="YyR-UH-Gys" secondAttribute="trailing" constant="14" id="xVk-om-ZlH"/>
+                                                <constraint firstItem="tjW-hR-09Y" firstAttribute="top" secondItem="4dX-Gh-M8c" secondAttribute="topMargin" constant="11" id="o8q-K5-SJP"/>
+                                                <constraint firstItem="hql-PC-OPw" firstAttribute="top" secondItem="YyR-UH-Gys" secondAttribute="bottom" id="r9v-wh-VHM"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="YyR-UH-Gys" secondAttribute="trailing" constant="16" id="xVk-om-ZlH"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
