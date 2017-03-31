@@ -10,7 +10,7 @@
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "9253013D-86AF-4533-B48A-A9DA213DDCC3",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "2CBC5D4830F349F69B3DBC4DC78FC591B1CCB4D2" : "ios-sdk\/",
-    "CE9F4EC9E1FAC1699EEFD156F7F9D8DBB53824C0" : "Aquaint\/"
+    "CE9F4EC9E1FAC1699EEFD156F7F9D8DBB53824C0" : "Aquaint-iOS\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Aquaint",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,

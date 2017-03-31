@@ -32,6 +32,7 @@
 		FF3C9C9E1E8CCA7800C32C34 /* Graphs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF3C9C9C1E8CC95300C32C34 /* Graphs.framework */; };
 		FF3C9C9F1E8CCA7800C32C34 /* Graphs.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF3C9C9C1E8CC95300C32C34 /* Graphs.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FF3C9CA21E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9CA11E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift */; };
+		FF3C9CA41E8DEE1600C32C34 /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9CA31E8DEE1500C32C34 /* CheckoutViewController.swift */; };
 		FF47274D1D48750F0065F418 /* SectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */; };
 		FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */; };
 		FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */; };
@@ -183,6 +184,7 @@
 		FF3C9C941E8CC76F00C32C34 /* PieGraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieGraphView.swift; sourceTree = "<group>"; };
 		FF3C9C9C1E8CC95300C32C34 /* Graphs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Graphs.framework; sourceTree = "<group>"; };
 		FF3C9CA11E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsFreeViewTableViewCell.swift; sourceTree = "<group>"; };
+		FF3C9CA31E8DEE1500C32C34 /* CheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
 		FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderCell.swift; sourceTree = "<group>"; };
 		FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsTableViewCell.swift; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 			isa = PBXGroup;
 			children = (
 				FF690F691E8B40FD003FA5B4 /* PaymentsDisplay.storyboard */,
+				FF3C9CA31E8DEE1500C32C34 /* CheckoutViewController.swift */,
 				FF690F6B1E8B410B003FA5B4 /* PaymentsDisplay.swift */,
 			);
 			name = Payments;
@@ -1014,6 +1017,7 @@
 				FF7878791C352D0400354936 /* TableViewCell.swift in Sources */,
 				FF1001ED1C80374A00B53F8B /* MainPageViewController.swift in Sources */,
 				FF23A12F1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift in Sources */,
+				FF3C9CA41E8DEE1600C32C34 /* CheckoutViewController.swift in Sources */,
 				FFBDD75F1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift in Sources */,
 				FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */,
 				FF6813F21E0B7D1D007930BA /* AddSocialContactsViewController.swift in Sources */,

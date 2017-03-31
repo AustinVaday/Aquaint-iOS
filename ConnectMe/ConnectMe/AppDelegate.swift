@@ -109,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
     // Configure Stripe for payments
-    STPPaymentConfiguration.sharedConfiguration().publishableKey = ""
+    STPPaymentConfiguration.sharedConfiguration().publishableKey = "pk_test_8wtPUgWqEu9jAZRVPNDMoVMn"
     
     // Configure Google Analytics
     guard let gai = GAI.sharedInstance() else {
