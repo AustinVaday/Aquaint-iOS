@@ -16,4 +16,18 @@ class PaymentsDisplay: UIViewController {
     
   }
   
+  @IBAction func onClickBuyTop(sender: AnyObject) {
+    let checkoutViewController = CheckoutViewController(product: "le producto",
+                                                        price: 200)
+    self.presentViewController(checkoutViewController, animated: true, completion: nil)
+
+  }
+  
+  @IBAction func onClickBuyMiddle(sender: AnyObject) {
+  }
+  
+  @IBAction func onClickBuyBottom(sender: AnyObject) {
+  }
+  
+  
 }

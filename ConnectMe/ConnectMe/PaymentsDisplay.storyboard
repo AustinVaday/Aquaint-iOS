@@ -53,6 +53,9 @@
                                 <state key="normal" title="Subscribe for 12 months">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="onClickBuyTop:" destination="wv6-Yg-1sF" eventType="touchUpInside" id="XAk-io-rHP"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rJ3-49-iWr">
                                 <rect key="frame" x="0.0" y="480" width="600" height="60"/>
@@ -62,6 +65,9 @@
                                 <state key="normal" title="Subscribe for 6 months">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="onClickBuyMiddle:" destination="wv6-Yg-1sF" eventType="touchUpInside" id="fdY-u9-ZIc"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1d-22-rK4">
                                 <rect key="frame" x="0.0" y="540" width="600" height="60"/>
@@ -71,6 +77,9 @@
                                 <state key="normal" title="Subscribe for 1 month">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="onClickBuyBottom:" destination="wv6-Yg-1sF" eventType="touchUpInside" id="jM3-XK-Keg"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Right Chevron Icon Chunky" translatesAutoresizingMaskIntoConstraints="NO" id="IQH-U5-BJp">
                                 <rect key="frame" x="568" y="441" width="12" height="17"/>

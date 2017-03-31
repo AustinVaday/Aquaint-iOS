@@ -33,6 +33,9 @@
 		FF3C9C9F1E8CCA7800C32C34 /* Graphs.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF3C9C9C1E8CC95300C32C34 /* Graphs.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FF3C9CA21E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9CA11E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift */; };
 		FF3C9CA41E8DEE1600C32C34 /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9CA31E8DEE1500C32C34 /* CheckoutViewController.swift */; };
+		FF3C9CA61E8DF03200C32C34 /* CheckoutRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9CA51E8DF03200C32C34 /* CheckoutRowView.swift */; };
+		FF3C9CA81E8DF09E00C32C34 /* PaymentButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9CA71E8DF09E00C32C34 /* PaymentButtons.swift */; };
+		FF3C9CAA1E8DFE8000C32C34 /* MyAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9CA91E8DFE8000C32C34 /* MyAPIClient.swift */; };
 		FF47274D1D48750F0065F418 /* SectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */; };
 		FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */; };
 		FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */; };
@@ -185,6 +188,9 @@
 		FF3C9C9C1E8CC95300C32C34 /* Graphs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Graphs.framework; sourceTree = "<group>"; };
 		FF3C9CA11E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsFreeViewTableViewCell.swift; sourceTree = "<group>"; };
 		FF3C9CA31E8DEE1500C32C34 /* CheckoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
+		FF3C9CA51E8DF03200C32C34 /* CheckoutRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutRowView.swift; sourceTree = "<group>"; };
+		FF3C9CA71E8DF09E00C32C34 /* PaymentButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentButtons.swift; sourceTree = "<group>"; };
+		FF3C9CA91E8DFE8000C32C34 /* MyAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAPIClient.swift; sourceTree = "<group>"; };
 		FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderCell.swift; sourceTree = "<group>"; };
 		FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsTableViewCell.swift; sourceTree = "<group>"; };
@@ -412,7 +418,10 @@
 			children = (
 				FF690F691E8B40FD003FA5B4 /* PaymentsDisplay.storyboard */,
 				FF3C9CA31E8DEE1500C32C34 /* CheckoutViewController.swift */,
+				FF3C9CA51E8DF03200C32C34 /* CheckoutRowView.swift */,
 				FF690F6B1E8B410B003FA5B4 /* PaymentsDisplay.swift */,
+				FF3C9CA71E8DF09E00C32C34 /* PaymentButtons.swift */,
+				FF3C9CA91E8DFE8000C32C34 /* MyAPIClient.swift */,
 			);
 			name = Payments;
 			sourceTree = "<group>";
@@ -1012,6 +1021,7 @@
 				FF3C9C971E8CC76F00C32C34 /* GraphsExtensions.swift in Sources */,
 				FF897C371C01AC63001B2634 /* ViewController.swift in Sources */,
 				FF3C9C951E8CC76F00C32C34 /* BarGraphView.swift in Sources */,
+				FF3C9CAA1E8DFE8000C32C34 /* MyAPIClient.swift in Sources */,
 				FF8420221D29B59F002D2927 /* BackendAPI.swift in Sources */,
 				FFF335A51E89B13F00E8B70F /* ScanCodeDisplayStoryboardViewController.swift in Sources */,
 				FF7878791C352D0400354936 /* TableViewCell.swift in Sources */,
@@ -1045,6 +1055,7 @@
 				FF3C9C9A1E8CC76F00C32C34 /* MultiBarGraphView.swift in Sources */,
 				FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */,
 				FFBDD75A1CD59A2D0007A188 /* WorldNotificationsViewController.swift in Sources */,
+				FF3C9CA81E8DF09E00C32C34 /* PaymentButtons.swift in Sources */,
 				FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */,
 				FF89728E1E10A44800A4D9C4 /* ForgotPasswordViewController.swift in Sources */,
 				FF3C9C9B1E8CC76F00C32C34 /* PieGraphView.swift in Sources */,
@@ -1054,6 +1065,7 @@
 				FF6813F41E0DF1F0007930BA /* FollowRequestsViewController.swift in Sources */,
 				FF8420261D30A138002D2927 /* AddSocialMediaProfilesController.swift in Sources */,
 				FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */,
+				FF3C9CA61E8DF03200C32C34 /* CheckoutRowView.swift in Sources */,
 				FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
