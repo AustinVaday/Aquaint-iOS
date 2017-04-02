@@ -16,9 +16,9 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   enum AnalyticsDataEnum: Int {
     case VIEW_BREAKDOWN
     case ENGAGEMENT_BREAKDOWN
-    case GENDER
+//    case GENDER
     case LOCATION
-    case DEVICE_TYPE
+//    case DEVICE_TYPE
   }
 
   struct SectionTitleAndCountPair
@@ -42,7 +42,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   var graphViewForViews : GraphView<String, Int>!
   var graphViewForGender : GraphView<String, Int>!
   var graphViewForDevices : GraphView<String, Int>!
-  
+  var isGeneratingEngagementAnalytics = false
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -53,12 +53,12 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     tableViewSectionsList = Array<String>()
     tableViewSectionsList.append("VIEWS PER DAY (LAST 10 DAYS)")
     tableViewSectionsList.append("ENGAGEMENT BREAKDOWN")
-    tableViewSectionsList.append("VIEWER GENDER BREAKDOWN")
+//    tableViewSectionsList.append("VIEWER GENDER BREAKDOWN")
     tableViewSectionsList.append("LOCATION OF VIEWERS")
-    tableViewSectionsList.append("VIEWER DEVICE BREAKDOWN")
+//    tableViewSectionsList.append("VIEWER DEVICE BREAKDOWN")
     
     // Call this function to generate dummy data (before data actually loads)
-    generateDummyAnalyticsData()
+//    generateDummyAnalyticsData()
     
     // Call this function to generate all analytics data for this page!
     generateAnalyticsData()
@@ -109,15 +109,15 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     case AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue:
       returnHeight = defaultTableViewCellHeight
       break;
-    case AnalyticsDataEnum.GENDER.rawValue:
-      returnHeight = graphTableViewCellHeight
-      break;
+//    case AnalyticsDataEnum.GENDER.rawValue:
+//      returnHeight = graphTableViewCellHeight
+//      break;
     case AnalyticsDataEnum.LOCATION.rawValue:
       returnHeight = defaultTableViewCellHeight
       break;
-    case AnalyticsDataEnum.DEVICE_TYPE.rawValue:
-      returnHeight = graphTableViewCellHeight
-      break;
+//    case AnalyticsDataEnum.DEVICE_TYPE.rawValue:
+//      returnHeight = graphTableViewCellHeight
+//      break;
     default:
       returnHeight = defaultTableViewCellHeight
     }
@@ -135,15 +135,15 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     case "ENGAGEMENT BREAKDOWN":
       numRows = engagementBreakdownRowCount
       break;
-    case "VIEWER GENDER BREAKDOWN":
-      numRows = 1
-      break;
+//    case "VIEWER GENDER BREAKDOWN":
+//      numRows = 1
+//      break;
     case "LOCATION OF VIEWERS":
       numRows = locationRowCount
       break;
-    case "VIEWER DEVICE BREAKDOWN":
-      numRows = 1
-      break;
+//    case "VIEWER DEVICE BREAKDOWN":
+//      numRows = 1
+//      break;
     default:
       numRows = 0
     }
@@ -183,25 +183,25 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       
       break;
       
-    case AnalyticsDataEnum.GENDER.rawValue:
-      // Configure cell for graph
-      let graphCell = tableView.dequeueReusableCellWithIdentifier("freeViewCell") as! AnalyticsFreeViewTableViewCell!
-      
-      if graphViewForGender != nil {
-        graphViewForGender.removeFromSuperview()
-      }
-      
-      
-//      (u, t) -> String? in String(format: "%.0f%%", (Float(u.value) / Float(t)))
-      
-      graphViewForGender = [900,500,20].pieGraph().view(graphCell.viewDisplay.bounds).pieGraphConfiguration({ PieGraphViewConfig(textFont: UIFont(name: "Avenir-Next", size: 14.0), isDounut: true, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
-      
-//      graphViewForGender = [8.5, 20.0].pieGraph(){ }.
-      
-      graphCell.viewDisplay.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-      graphCell.viewDisplay.addSubview(graphViewForGender)
-      return graphCell
-      break;
+//    case AnalyticsDataEnum.GENDER.rawValue:
+//      // Configure cell for graph
+//      let graphCell = tableView.dequeueReusableCellWithIdentifier("freeViewCell") as! AnalyticsFreeViewTableViewCell!
+//      
+//      if graphViewForGender != nil {
+//        graphViewForGender.removeFromSuperview()
+//      }
+//      
+//      
+////      (u, t) -> String? in String(format: "%.0f%%", (Float(u.value) / Float(t)))
+//      
+//      graphViewForGender = [900,500,20].pieGraph().view(graphCell.viewDisplay.bounds).pieGraphConfiguration({ PieGraphViewConfig(textFont: UIFont(name: "Avenir-Next", size: 14.0), isDounut: true, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
+//      
+////      graphViewForGender = [8.5, 20.0].pieGraph(){ }.
+//      
+//      graphCell.viewDisplay.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+//      graphCell.viewDisplay.addSubview(graphViewForGender)
+//      return graphCell
+//      break;
     case AnalyticsDataEnum.LOCATION.rawValue:
       if (locationToCountList.count == 0){
         return cell
@@ -210,21 +210,21 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       cell.numericalTypeLabel.text = "VIEWS"
       cell.socialProviderLabel.text = String(locationToCountList[indexPath.item][0])
       break;
-    case AnalyticsDataEnum.DEVICE_TYPE.rawValue:
-      // Configure cell for graph
-      let graphCell = tableView.dequeueReusableCellWithIdentifier("freeViewCell") as! AnalyticsFreeViewTableViewCell!
-      
-      if graphViewForDevices != nil {
-        graphViewForDevices.removeFromSuperview()
-      }
-      
-      graphViewForDevices = [100, 200, 10].pieGraph().view(graphCell.viewDisplay.bounds).pieGraphConfiguration({ PieGraphViewConfig(textFont: UIFont(name: "DINCondensed-Bold", size: 14.0), isDounut: true, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
-      
-      graphCell.viewDisplay.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-      graphCell.viewDisplay.addSubview(graphViewForDevices)
-      return graphCell
-
-      break;
+//    case AnalyticsDataEnum.DEVICE_TYPE.rawValue:
+//      // Configure cell for graph
+//      let graphCell = tableView.dequeueReusableCellWithIdentifier("freeViewCell") as! AnalyticsFreeViewTableViewCell!
+//      
+//      if graphViewForDevices != nil {
+//        graphViewForDevices.removeFromSuperview()
+//      }
+//      
+//      graphViewForDevices = [100, 200, 10].pieGraph().view(graphCell.viewDisplay.bounds).pieGraphConfiguration({ PieGraphViewConfig(textFont: UIFont(name: "DINCondensed-Bold", size: 14.0), isDounut: true, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
+//      
+//      graphCell.viewDisplay.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+//      graphCell.viewDisplay.addSubview(graphViewForDevices)
+//      return graphCell
+//
+//      break;
     default:
       break;
       
@@ -267,60 +267,64 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   }
   
   func generateAnalyticsData() {
-    
     // Get list of all social media platforms the user currently supports
     let userProfiles = getCurrentCachedUserProfiles() as NSDictionary!
     let userSocialPlatforms = userProfiles.allKeys as! Array<String>
     
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-    var parameters = ["action":"getUserTotalEngagementsBreakdown", "target": currentUserName, "social_list": userSocialPlatforms]
+//    var parameters = ["action":"getUserTotalEngagementsBreakdown", "target": currentUserName, "social_list": userSocialPlatforms]
     
-//    var parameters = NSDictionary()
-//    self.socialProviderToEngagementCountList = NSMutableArray()
-//    self.engagementBreakdownRowCount = 0
-//    
-//    for platform in userSocialPlatforms {
-//      // Get engagement info
-//      parameters = ["action":"getUserSingleEngagements", "target": currentUserName, "social_platform": platform]
-//      lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-//        if resultTask.error == nil && resultTask.result != nil
-//        {
-//          print("Result task for getUserSingleEngagements is: ", resultTask.result!)
-//          
-//          let number = resultTask.result as? Int
-//          var tuple = Array<String>()
-//          tuple.append(platform)
-//          tuple.append(String(number!))
-//          self.socialProviderToEngagementCountList.addObject(tuple)
-//          self.engagementBreakdownRowCount = self.engagementBreakdownRowCount + 1
-//          
-//          dispatch_async(dispatch_get_main_queue(), {
-//            self.analyticsTableView.reloadData()
-//          })
-//        }
-//        
-//        return nil
-//      }
-//
-//    }
+    var parameters = NSDictionary()
+    self.socialProviderToEngagementCountList = NSMutableArray()
+    self.engagementBreakdownRowCount = 0
     
-    // Get engagement info
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-      if resultTask.error == nil && resultTask.result != nil
-      {
-        print("Result task for getUserTotalEngagementsBreakdown is: ", resultTask.result!)
-        
-        self.socialProviderToEngagementCountList = resultTask.result as! NSMutableArray
-        // Add one to account for graph index offset
-        self.engagementBreakdownRowCount = self.socialProviderToEngagementCountList.count
-
-        dispatch_async(dispatch_get_main_queue(), {
-          self.analyticsTableView.reloadData()
-        })
+    if !isGeneratingEngagementAnalytics {
+      isGeneratingEngagementAnalytics = true
+      for platform in userSocialPlatforms {
+        // Get engagement info
+        parameters = ["action":"getUserSingleEngagements", "target": currentUserName, "social_platform": platform]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+          if resultTask.error == nil && resultTask.result != nil
+          {
+            print("Result task for getUserSingleEngagements is: ", resultTask.result!)
+            
+            let number = resultTask.result as? Int
+            var tuple = Array<String>()
+            tuple.append(platform)
+            tuple.append(String(number!))
+            self.socialProviderToEngagementCountList.addObject(tuple)
+            self.engagementBreakdownRowCount = self.engagementBreakdownRowCount + 1
+            
+            dispatch_async(dispatch_get_main_queue(), {
+              self.analyticsTableView.reloadData()
+              
+//              self.analyticsTableView.reloadSections(NSIndexSet(index: AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue), withRowAnimation: .Automatic)
+            })
+          }
+  
+          self.isGeneratingEngagementAnalytics = false
+          return nil
+        }
       }
-      
-      return nil
     }
+    
+//    // Get engagement info
+//    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+//      if resultTask.error == nil && resultTask.result != nil
+//      {
+//        print("Result task for getUserTotalEngagementsBreakdown is: ", resultTask.result!)
+//        
+//        self.socialProviderToEngagementCountList = resultTask.result as! NSMutableArray
+//        // Add one to account for graph index offset
+//        self.engagementBreakdownRowCount = self.socialProviderToEngagementCountList.count
+//
+//        dispatch_async(dispatch_get_main_queue(), {
+//          self.analyticsTableView.reloadData()
+//        })
+//      }
+//      
+//      return nil
+//    }
 
     // Get location info
     parameters = ["action":"getUserPageViewsLocations", "target": currentUserName, "max_results": 15]
@@ -335,6 +339,9 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
         
         dispatch_async(dispatch_get_main_queue(), {
           self.analyticsTableView.reloadData()
+          
+//          self.analyticsTableView.reloadSections(NSIndexSet(index: AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue), withRowAnimation: .Automatic)
+
         })
       }
       
@@ -344,27 +351,27 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     
   }
   
-  func generateDummyAnalyticsData() {
-    // Get list of all social media platforms the user currently supports
-    let userProfiles = getCurrentCachedUserProfiles() as NSDictionary!
-    let userSocialPlatforms = userProfiles.allKeys as! Array<String>
-    
-    engagementBreakdownRowCount = userSocialPlatforms.count
-    self.socialProviderToEngagementCountList = NSMutableArray()
-    analyticsTableView.reloadData()
-    
-    for platform in userSocialPlatforms {
-      var tuple = Array<String>()
-      tuple.append(platform)
-      tuple.append("...")
-      self.socialProviderToEngagementCountList.addObject(tuple)
-      
-      dispatch_async(dispatch_get_main_queue(), { 
-        self.analyticsTableView.reloadData()
-      })
-    }
-    
-  }
+//  func generateDummyAnalyticsData() {
+//    // Get list of all social media platforms the user currently supports
+//    let userProfiles = getCurrentCachedUserProfiles() as NSDictionary!
+//    let userSocialPlatforms = userProfiles.allKeys as! Array<String>
+//    
+//    engagementBreakdownRowCount = userSocialPlatforms.count
+//    self.socialProviderToEngagementCountList = NSMutableArray()
+//    analyticsTableView.reloadData()
+//    
+//    for platform in userSocialPlatforms {
+//      var tuple = Array<String>()
+//      tuple.append(platform)
+//      tuple.append("...")
+//      self.socialProviderToEngagementCountList.addObject(tuple)
+//      
+//      dispatch_async(dispatch_get_main_queue(), { 
+//        self.analyticsTableView.reloadData()
+//      })
+//    }
+//    
+//  }
 
 
 }
