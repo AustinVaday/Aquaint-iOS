@@ -12,7 +12,7 @@ import Graphs
 
 // Will have the real displays and data
 class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+  
   enum AnalyticsDataEnum: Int {
     case VIEW_BREAKDOWN
     case ENGAGEMENT_BREAKDOWN
@@ -37,7 +37,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   var refreshControl : CustomRefreshControl!
   var engagementBreakdownRowCount = 0
   var locationRowCount = 0
-  var socialProviderToEngagementCountList = NSMutableArray()
+  var socialProviderToEngagementCountList = Array<Array<String>>()
   var locationToCountList = NSArray()
   var graphViewForViews : GraphView<String, Int>!
   var graphViewForGender : GraphView<String, Int>!
@@ -275,7 +275,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 //    var parameters = ["action":"getUserTotalEngagementsBreakdown", "target": currentUserName, "social_list": userSocialPlatforms]
     
     var parameters = NSDictionary()
-    self.socialProviderToEngagementCountList = NSMutableArray()
+    self.socialProviderToEngagementCountList = Array<Array<String>>()
     self.engagementBreakdownRowCount = 0
     
     if !isGeneratingEngagementAnalytics {
@@ -292,7 +292,13 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
             var tuple = Array<String>()
             tuple.append(platform)
             tuple.append(String(number!))
-            self.socialProviderToEngagementCountList.addObject(tuple)
+            self.socialProviderToEngagementCountList.append(tuple)
+            self.socialProviderToEngagementCountList.sortInPlace({ (obj1, obj2) -> Bool in
+              return Int(obj1[1]) > Int(obj2[1])
+            })
+            
+            print ("SORTED ARRAY socialProviderToEngagementCountList IS: ", self.socialProviderToEngagementCountList)
+            
             self.engagementBreakdownRowCount = self.engagementBreakdownRowCount + 1
             
             dispatch_async(dispatch_get_main_queue(), {
