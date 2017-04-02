@@ -177,9 +177,10 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
         return cell
       }
       
-      cell.numericalValueLabel.text = String(socialProviderToEngagementCountList[indexPath.item][1])
+      let engagementArray = socialProviderToEngagementCountList[indexPath.item] as! NSArray
+      cell.numericalValueLabel.text = String(engagementArray[1])
       cell.numericalTypeLabel.text = "CLICKS"
-      cell.socialProviderLabel.text = String(socialProviderToEngagementCountList[indexPath.item][0])
+      cell.socialProviderLabel.text = String(engagementArray[0])
       
       break;
       
@@ -206,9 +207,10 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       if (locationToCountList.count == 0){
         return cell
       }
-      cell.numericalValueLabel.text = String(locationToCountList[indexPath.item][1])
+      let locationTemp = locationToCountList[indexPath.item] as! NSArray
+      cell.numericalValueLabel.text = String(locationTemp[1])
       cell.numericalTypeLabel.text = "VIEWS"
-      cell.socialProviderLabel.text = String(locationToCountList[indexPath.item][0])
+      cell.socialProviderLabel.text = String(locationTemp[0])
       break;
     case AnalyticsDataEnum.DEVICE_TYPE.rawValue:
       // Configure cell for graph
