@@ -52,8 +52,10 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         }, completion: nil)
     }
   }
+  let planOption: String  // Subscription Options
   
-  init(product: String, price: Int) {
+  init(product: String, price: Int, planOptionFlag: String) {
+    planOption = planOptionFlag
     
 //    let stripePublishableKey = self.stripePublishableKey
 //    let backendBaseURL = self.backendBaseURL
@@ -173,7 +175,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
   // MARK: STPPaymentContextDelegate
   
   func paymentContext(paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: STPErrorBlock) {
-    MyAPIClient.sharedClient.completeSubscription(paymentResult, amount: paymentContext.paymentAmount , currency: paymentContext.paymentCurrency, completion: completion)
+    MyAPIClient.sharedClient.completeSubscription(paymentResult, planOption: planOption, completion: completion)
   }
   
   func paymentContext(paymentContext: STPPaymentContext, didFinishWithStatus status: STPPaymentStatus, error: NSError?) {
@@ -191,7 +193,9 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     }
     
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-    let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+    let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert: UIAlertAction!) in
+      self.dismissViewControllerAnimated(true, completion: nil)
+    })
     alertController.addAction(action)
     dispatch_async(dispatch_get_main_queue()) {
       self.paymentInProgress = false
@@ -212,6 +216,8 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
   }
   
   func paymentContext(paymentContext: STPPaymentContext, didFailToLoadWithError error: NSError) {
+    print("paymentContext(didFailToLoadWithError): \(error)")
+    
     let alertController = UIAlertController(
       title: "Error",
       message: error.localizedDescription,

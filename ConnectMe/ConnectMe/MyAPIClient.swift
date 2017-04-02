@@ -21,10 +21,11 @@ class MyAPIClient: NSObject, STPBackendAPIAdapter {
     super.init()
     }
   
-  func completeSubscription(result: STPPaymentResult, amount: Int, currency: String, completion: STPErrorBlock)
+  func completeSubscription(result: STPPaymentResult, planOption: String, completion: STPErrorBlock)
   {
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-    let parameters = ["action":"createSubscription", "source": result.source.stripeID, "amount": amount, "currency": currency]
+    //let parameters = ["action":"createSubscription", "source": result.source.stripeID, "amount": amount, "currency": currency]
+    let parameters = ["action":"createSubscription", "target": username, "plan": planOption]
     
     lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil
