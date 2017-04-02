@@ -188,6 +188,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     case .Success:
       title = "Success"
       message = "You bought a subscription to \(self.product)!"
+      setCurrentCachedSubscriptionStatus(true)
     case .UserCancellation:
       return
     }

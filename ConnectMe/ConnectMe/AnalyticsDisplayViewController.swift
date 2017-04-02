@@ -8,12 +8,16 @@
 
 import UIKit
 import Graphs
+import AWSLambda
 
 class AnalyticsDisplayViewController: UIViewController {
 
+  var username: String!
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    username = getCurrentCachedUser()
     
     dispatch_async(dispatch_get_main_queue()) {
       
