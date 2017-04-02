@@ -85,8 +85,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     paymentContext.paymentCurrency = self.paymentCurrency
     self.paymentContext = paymentContext
     
-    self.paymentRow = CheckoutRowView(title: "Payment", detail: "Select Payment",
-                                      theme: STPTheme())
+    self.paymentRow = CheckoutRowView(title: "Payment", detail: "Select Payment", theme: STPTheme())
     
 //    var shippingString = "Contact"
 //    if config.requiredShippingAddressFields.contains(.postalAddress) {
@@ -96,8 +95,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
 //    self.shippingRow = CheckoutRowView(title: self.shippingString,
 //                                       detail: "Enter \(self.shippingString) Info",
 //                                       theme: settings.theme)
-    self.totalRow = CheckoutRowView(title: "Total", detail: "", tappable: false,
-                                    theme: STPTheme())
+    self.totalRow = CheckoutRowView(title: "Total", detail: "", tappable: false, theme: STPTheme())
     self.buyButton = BuyButton(enabled: true, theme: STPTheme())
     
     let currencyCode = NSLocale.currentLocale().objectForKey(NSLocaleCurrencyCode)! as! String
@@ -134,7 +132,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     
     self.productImage.font = UIFont.systemFontOfSize(20)
     self.view.addSubview(self.totalRow)
-    self.view.addSubview(self.paymentRow)
+//    self.view.addSubview(self.paymentRow)
 //    self.view.addSubview(self.shippingRow)
     self.view.addSubview(self.productImage)
     self.view.addSubview(self.buyButton)
@@ -205,13 +203,13 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
   }
   
   func paymentContextDidChange(paymentContext: STPPaymentContext) {
-    self.paymentRow.loading = paymentContext.loading
-    if let paymentMethod = paymentContext.selectedPaymentMethod {
-      self.paymentRow.detail = paymentMethod.label
-    }
-    else {
-      self.paymentRow.detail = "Select Payment"
-    }
+//    self.paymentRow.loading = paymentContext.loading
+//    if let paymentMethod = paymentContext.selectedPaymentMethod {
+//      self.paymentRow.detail = paymentMethod.label
+//    }
+//    else {
+//      self.paymentRow.detail = "Select Payment"
+//    }
 
     self.totalRow.detail = self.numberFormatter.stringFromNumber(NSNumber(float: Float(self.paymentContext.paymentAmount)/100))!
   }
