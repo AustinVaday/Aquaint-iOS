@@ -43,6 +43,9 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   var graphViewForGender : GraphView<String, Int>!
   var graphViewForDevices : GraphView<String, Int>!
   var isGeneratingEngagementAnalytics = false
+  var isGeneratingViewBreakdownAnalytics = false
+  var viewBreakdownList = Array<Int>()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -164,7 +167,8 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       if graphViewForViews != nil {
         graphViewForViews.removeFromSuperview()
       }
-      graphViewForViews = [8, 12, 20, 10, 6, 20, 11, 9, 20, 3].barGraph().view(graphCell.viewDisplay.bounds).barGraphConfiguration({ BarGraphViewConfig(barColor: UIColor(hex: "#ff6699"), contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
+      
+      graphViewForViews = viewBreakdownList.barGraph().view(graphCell.viewDisplay.bounds).barGraphConfiguration({ BarGraphViewConfig(barColor: UIColor(hex: "#ff6699"), contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
 
 //      graphViewForViews = [8, 12, 13, 10, 7, 11, 9, 14, 12, 6].lineGraph(GraphRange(min: 5, max: 14)).view(graphCell.viewDisplay.bounds).lineGraphConfiguration({ LineGraphViewConfig(lineColor: UIColor(hex: "#ff6699"), lineWidth: 2.0, dotDiameter: 10.0) })
 
@@ -273,8 +277,37 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
 //    var parameters = ["action":"getUserTotalEngagementsBreakdown", "target": currentUserName, "social_list": userSocialPlatforms]
-    
     var parameters = NSDictionary()
+    
+    if !isGeneratingViewBreakdownAnalytics {
+      isGeneratingViewBreakdownAnalytics = true
+      
+      self.viewBreakdownList = Array<Int>()
+      
+      for daysAgo in 10.stride(to: 1, by: -1) {
+        // Get engagement info
+        parameters = ["action":"getUserSinglePayViewsForDay", "target": currentUserName, "days_ago": daysAgo]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+          if resultTask.error == nil && resultTask.result != nil
+          {
+            print("Result task for getUserSinglePayViewsForDay is: ", resultTask.result!)
+            
+            let number = resultTask.result as? Int
+            self.viewBreakdownList.append(number!)
+ 
+            dispatch_async(dispatch_get_main_queue(), {
+              self.analyticsTableView.reloadData()
+              
+            })
+          }
+          
+          self.isGeneratingViewBreakdownAnalytics = false
+          return nil
+        }
+      }
+    }
+
+    
     self.socialProviderToEngagementCountList = Array<Array<String>>()
     self.engagementBreakdownRowCount = 0
     
