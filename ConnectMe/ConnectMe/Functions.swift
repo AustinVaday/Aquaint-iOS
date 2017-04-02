@@ -14,7 +14,7 @@ import UIKit
 import KLCPopup
 
 // Private so to not let other files use this list directly.
-private let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr", "soundcloud" /*, "phone"*/)
+private let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr", "soundcloud", "website")
 
 // The dictionary we receive from AWS DynamoDB maps a string to an array.
 // When we have a collection view, we need a way to propogate this
@@ -156,8 +156,8 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
   case "tumblr":
     urlString = "tumblr://x-callback-url/blog?blogName=" + socialMediaUserName
     altString = "http://" + socialMediaUserName + ".tumblr.com"
-  case "phone":
-    print ("COMING SOON")
+  case "website":
+    urlString  = socialMediaUserName
     
     //                contact.familyName = "Vaday"
     //                contact.givenName  = "Austin"
@@ -269,7 +269,6 @@ func getAllPossibleSocialMediaImages() -> Dictionary<String, UIImage>!
     else
     {
       print ("ERROR: getAllPossibleSocialMediaImages : social media emblem image not found for:", imageName)
-      
     }
     
   }
@@ -318,6 +317,21 @@ func flipImageHorizontally(imageView:UIImageView)
 func flipImageVertically(imageView:UIImageView)
 {
   imageView.transform = CGAffineTransformMakeScale(1.0, -1.0)
+}
+
+// Check if url format is proper
+func verifyUrl (urlString: String?) -> Bool {
+//  //Check for nil
+//  if let urlString = urlString {
+//    // create NSURL instance
+//    if let url = NSURL(string: urlString) {
+//      // check if your application can open the NSURL instance
+//      return UIApplication.sharedApplication().canOpenURL(url)
+//    }
+//  }
+//  return false
+  let urlRegEx = "(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+"
+  return NSPredicate(format: "SELF MATCHES %@", urlRegEx).evaluateWithObject(urlString)
 }
 
 // Check if username format is proper

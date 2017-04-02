@@ -23,7 +23,7 @@ class AnalyticsDisplayViewController: UIViewController {
       // Check whether user has paid for the app or not.
       var subscribed = getCurrentCachedSubscriptionStatus()
       
-      // DEBUG PURPOSES! REMOVE BEFORE SUBMIT
+//       DEBUG PURPOSES! REMOVE BEFORE SUBMIT
 //      subscribed = true
       
       // If user has paid for the app, show analytics)

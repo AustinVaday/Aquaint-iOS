@@ -296,6 +296,10 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
           }
         }
         break
+      
+    case "website" :
+      showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+      break
 
       default:
         break
@@ -679,16 +683,25 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
     // textField.layer.cornerRadius = 5
     textField.font          = UIFont(name: "Avenir Roman", size: 14.0)
     textField.textColor     = colorDarkBlue
-    textField.placeholder   = "Enter Username"
     textField.textAlignment = NSTextAlignment.Center
-
-    // Add target to text field to validate/fix user input of a proper input
-    textField.addTarget(
-      self,
-      action: #selector(usernameTextFieldDidChange),
-      forControlEvents: UIControlEvents.EditingChanged
-    )
+    textField.autocorrectionType = .No
+    textField.autocapitalizationType = .None
+    
+    if socialMediaType == "website" {
+      textField.placeholder   = "Enter Website URL"
+    } else {
+      textField.placeholder   = "Enter Username"
+      
+      // Add target to text field to validate/fix user input of a proper input
+      textField.addTarget(
+        self,
+        action: #selector(usernameTextFieldDidChange),
+        forControlEvents: UIControlEvents.EditingChanged
+      )
+    }
+    
     subview.addSubview(textField)
+
 
     let alertAppearance = SCLAlertView.SCLAppearance(
       showCircularIcon: true,
@@ -715,13 +728,34 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
 
         if username.isEmpty {
           // TODO: Nothing?
-        } else if username.characters.count > 30 {
-          // TODO: Notify that username is too long
+        } else if username.characters.count > 45 {
+          dispatch_async(dispatch_get_main_queue(), {
+            showAlert("Too long entry", message: "Please enter a valid entry", buttonTitle: "Try again", sender: self)
+          })
+          
+          alertViewResponder.close()
           alertViewResponder.close()
         } else {
-          let socialMediaName = username
+          var socialMediaName = username
           print(socialMediaType, " username returned is: ", socialMediaName)
-
+          
+          
+          if socialMediaType == "website"
+          {
+            // If website url does not have 'http://' or 'https://', add http:// it in
+            if !socialMediaName.hasPrefix("http://") && !socialMediaName.hasPrefix("https://") {
+              socialMediaName = "http://" + socialMediaName
+            }
+            
+            if !verifyUrl(socialMediaName){
+              dispatch_async(dispatch_get_main_queue(), { 
+                showAlert("Invalid Website URL", message: "Please enter a valid URL", buttonTitle: "Try again", sender: self)
+              })
+              
+              alertViewResponder.close()
+              return 
+            }
+          }
           if self.delegate != nil {
             self.delegate?.userDidAddNewProfile(
               socialMediaType,

@@ -32,7 +32,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   var currentUserName : String!
   let footerHeight = CGFloat(65)
   let defaultTableViewCellHeight = CGFloat(55)
-  let graphTableViewCellHeight = CGFloat(300)
+  let graphTableViewCellHeight = CGFloat(200)
   var tableViewSectionsList : Array<String>!
   var refreshControl : CustomRefreshControl!
   var engagementBreakdownRowCount = 0
