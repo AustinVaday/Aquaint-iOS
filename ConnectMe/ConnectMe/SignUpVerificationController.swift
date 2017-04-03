@@ -376,7 +376,43 @@ class SignUpVerificationController: UIViewController {
 //                                return nil
 //                                
 //                            }
-                            
+                          
+                          
+                            // Generate scan code for user
+                            parameters = ["action":"createScanCodeForUser", "target": self.userName]
+                            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+                              if resultTask.error != nil {
+                                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+                              }
+                              else if resultTask.exception != nil {
+                                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                              }
+                              else if resultTask.result != nil {
+                                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                              }
+                              else {
+                                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                              }
+                              return nil
+                            }
+                          
+                            // Generate stripe payment ID for user
+                            parameters = ["action":"createPaymentCustomer", "target": self.userName, "email": self.userEmail]
+                            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+                              if resultTask.error != nil {
+                                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+                              }
+                              else if resultTask.exception != nil {
+                                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                              }
+                              else if resultTask.result != nil {
+                                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                              }
+                              else {
+                                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                              }
+                              return nil
+                            }
 
                             /********************************
                              *  UPLOAD USER DATA TO DYNAMODB
