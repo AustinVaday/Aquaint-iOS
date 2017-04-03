@@ -52,8 +52,10 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
         }, completion: nil)
     }
   }
+  let planOption: String  // Subscription Options
   
-  init(product: String, price: Int) {
+  init(product: String, price: Int, planOptionFlag: String) {
+    planOption = planOptionFlag
     
 //    let stripePublishableKey = self.stripePublishableKey
 //    let backendBaseURL = self.backendBaseURL
@@ -83,8 +85,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     paymentContext.paymentCurrency = self.paymentCurrency
     self.paymentContext = paymentContext
     
-    self.paymentRow = CheckoutRowView(title: "Payment", detail: "Select Payment",
-                                      theme: STPTheme())
+    self.paymentRow = CheckoutRowView(title: "Payment", detail: "Select Payment", theme: STPTheme())
     
 //    var shippingString = "Contact"
 //    if config.requiredShippingAddressFields.contains(.postalAddress) {
@@ -94,8 +95,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
 //    self.shippingRow = CheckoutRowView(title: self.shippingString,
 //                                       detail: "Enter \(self.shippingString) Info",
 //                                       theme: settings.theme)
-    self.totalRow = CheckoutRowView(title: "Total", detail: "", tappable: false,
-                                    theme: STPTheme())
+    self.totalRow = CheckoutRowView(title: "Total", detail: "", tappable: false, theme: STPTheme())
     self.buyButton = BuyButton(enabled: true, theme: STPTheme())
     
     let currencyCode = NSLocale.currentLocale().objectForKey(NSLocaleCurrencyCode)! as! String
@@ -132,7 +132,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     
     self.productImage.font = UIFont.systemFontOfSize(20)
     self.view.addSubview(self.totalRow)
-    self.view.addSubview(self.paymentRow)
+//    self.view.addSubview(self.paymentRow)
 //    self.view.addSubview(self.shippingRow)
     self.view.addSubview(self.productImage)
     self.view.addSubview(self.buyButton)
@@ -173,7 +173,7 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
   // MARK: STPPaymentContextDelegate
   
   func paymentContext(paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: STPErrorBlock) {
-    MyAPIClient.sharedClient.completeSubscription(paymentResult, amount: paymentContext.paymentAmount , currency: paymentContext.paymentCurrency, completion: completion)
+    MyAPIClient.sharedClient.completeSubscription(paymentResult, planOption: planOption, completion: completion)
   }
   
   func paymentContext(paymentContext: STPPaymentContext, didFinishWithStatus status: STPPaymentStatus, error: NSError?) {
@@ -186,12 +186,15 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     case .Success:
       title = "Success"
       message = "You bought a subscription to \(self.product)!"
+      setCurrentCachedSubscriptionStatus(true)
     case .UserCancellation:
       return
     }
     
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-    let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+    let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert: UIAlertAction!) in
+      self.dismissViewControllerAnimated(true, completion: nil)
+    })
     alertController.addAction(action)
     dispatch_async(dispatch_get_main_queue()) {
       self.paymentInProgress = false
@@ -200,18 +203,20 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
   }
   
   func paymentContextDidChange(paymentContext: STPPaymentContext) {
-    self.paymentRow.loading = paymentContext.loading
-    if let paymentMethod = paymentContext.selectedPaymentMethod {
-      self.paymentRow.detail = paymentMethod.label
-    }
-    else {
-      self.paymentRow.detail = "Select Payment"
-    }
+//    self.paymentRow.loading = paymentContext.loading
+//    if let paymentMethod = paymentContext.selectedPaymentMethod {
+//      self.paymentRow.detail = paymentMethod.label
+//    }
+//    else {
+//      self.paymentRow.detail = "Select Payment"
+//    }
 
     self.totalRow.detail = self.numberFormatter.stringFromNumber(NSNumber(float: Float(self.paymentContext.paymentAmount)/100))!
   }
   
   func paymentContext(paymentContext: STPPaymentContext, didFailToLoadWithError error: NSError) {
+    print("paymentContext(didFailToLoadWithError): \(error)")
+    
     let alertController = UIAlertController(
       title: "Error",
       message: error.localizedDescription,

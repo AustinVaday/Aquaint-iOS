@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import ReachabilitySwift
 import AWSDynamoDB
+import AWSLambda
 
 class MainContainerViewController: UIViewController, UIPageViewControllerDelegate, MainPageSectionUnderLineViewDelegate {
     
@@ -89,9 +90,35 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
       
     }
   
+
+    func isCustomerSubscribed() {
+      
+      let lambdaInnvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+      let parameters = ["action": "countSubscriptionOfCustomer", "target": userName]
+      lambdaInnvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({
+        (resultTask) -> AnyObject? in
+        if resultTask.error == nil && resultTask.result != nil {
+          print("Result task for countSubscriptionOfCustomer is: ", resultTask.result!)
+          let numOfPlans = resultTask.result as! Int
+          if (numOfPlans == 0) {
+            setCurrentCachedSubscriptionStatus(false)
+          } else {  // number of subscribed plans can only be 1
+            setCurrentCachedSubscriptionStatus(true)
+          }
+        } else {
+          print(resultTask.error)
+        }
+        return nil
+      })
+    }
+  
     override func viewDidLoad() {
         // Warm up lambda so that user has better experience. Lambda servers removed from "cache" every 5 min.
         warmUpLambda()
+      
+        // check if the user is subscribed to paid feature of Aqualytics
+        userName = getCurrentCachedUser()
+        isCustomerSubscribed()
       
       
         // Get the mainPageViewController, this holds all our pages!

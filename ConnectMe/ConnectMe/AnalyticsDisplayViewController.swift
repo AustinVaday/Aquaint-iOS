@@ -8,20 +8,29 @@
 
 import UIKit
 import Graphs
+import AWSLambda
 
 class AnalyticsDisplayViewController: UIViewController {
 
+  var username: String!
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    username = getCurrentCachedUser()
+  }
+  
+  // We want to check the user's subscription status every time Aqualytics is about to be displayed
+  // as user may just subscribe in current session
+  override func viewWillAppear(animated: Bool) {
+
     dispatch_async(dispatch_get_main_queue()) {
       
       var storyboard: UIStoryboard!
       var viewController: UIViewController!
       
       // Check whether user has paid for the app or not.
-      var subscribed = getCurrentCachedSubscriptionStatus()
+      let subscribed = getCurrentCachedSubscriptionStatus()
       
 //       DEBUG PURPOSES! REMOVE BEFORE SUBMIT
       subscribed = true
