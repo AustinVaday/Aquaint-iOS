@@ -44,7 +44,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   var graphViewForDevices : GraphView<String, Int>!
   var isGeneratingEngagementAnalytics = false
   var isGeneratingViewBreakdownAnalytics = false
-  var viewBreakdownList = Array<Int>()
+  var viewBreakdownList = Array<Array<Int>>()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -76,7 +76,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   
   override func viewDidAppear(animated: Bool) {
     // Call this function to generate all analytics data for this page!
-    generateAnalyticsData()
+//    generateAnalyticsData()
   }
   
   /**************************************************************************
@@ -168,7 +168,13 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
         graphViewForViews.removeFromSuperview()
       }
       
-      graphViewForViews = viewBreakdownList.barGraph().view(graphCell.viewDisplay.bounds).barGraphConfiguration({ BarGraphViewConfig(barColor: UIColor(hex: "#ff6699"), contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
+      self.viewBreakdownList.sortInPlace({ (obj1, obj2) -> Bool in
+        return Int(obj1[0]) > Int(obj2[0])
+      })
+      
+      let barGraphData = extractDataArray(viewBreakdownList) as Array<Int>
+      
+      graphViewForViews = barGraphData.barGraph().view(graphCell.viewDisplay.bounds).barGraphConfiguration({ BarGraphViewConfig(barColor: UIColor(hex: "#ff6699"), contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
 
 //      graphViewForViews = [8, 12, 13, 10, 7, 11, 9, 14, 12, 6].lineGraph(GraphRange(min: 5, max: 14)).view(graphCell.viewDisplay.bounds).lineGraphConfiguration({ LineGraphViewConfig(lineColor: UIColor(hex: "#ff6699"), lineWidth: 2.0, dotDiameter: 10.0) })
 
@@ -275,8 +281,10 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   func generateAnalyticsData() {
     // Get list of all social media platforms the user currently supports
     let userProfiles = getCurrentCachedUserProfiles() as NSDictionary!
-    let userSocialPlatforms = userProfiles.allKeys as! Array<String>
-    
+    var userSocialPlatforms = Array<String>()
+    if userProfiles != nil {
+      userSocialPlatforms = userProfiles.allKeys as! Array<String>
+    }
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
 //    var parameters = ["action":"getUserTotalEngagementsBreakdown", "target": currentUserName, "social_list": userSocialPlatforms]
     var parameters = NSDictionary()
@@ -284,7 +292,8 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     if !isGeneratingViewBreakdownAnalytics {
       isGeneratingViewBreakdownAnalytics = true
       
-      self.viewBreakdownList = Array<Int>()
+      
+      self.viewBreakdownList = Array<Array<Int>>()
       
       for daysAgo in 9.stride(to: 0, by: -1) {
         // Get engagement info
@@ -296,7 +305,12 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
  
             dispatch_async(dispatch_get_main_queue(), {
               let number = resultTask.result as? Int
-              self.viewBreakdownList.append(number!)
+              
+              var tuple = Array<Int>()
+              tuple.append(daysAgo)
+              tuple.append(number!)
+              
+              self.viewBreakdownList.append(tuple)
               self.analyticsTableView.reloadData()
               
             })
@@ -309,45 +323,46 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
 
     
-    self.socialProviderToEngagementCountList = Array<Array<String>>()
-    self.engagementBreakdownRowCount = 0
-    
-    if !isGeneratingEngagementAnalytics {
-      isGeneratingEngagementAnalytics = true
-      for platform in userSocialPlatforms {
-        // Get engagement info
-        parameters = ["action":"getUserSingleEngagements", "target": currentUserName, "social_platform": platform]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-          if resultTask.error == nil && resultTask.result != nil
-          {
-            print("Result task for getUserSingleEngagements is: ", resultTask.result!)
-            
-            let number = resultTask.result as? Int
-            var tuple = Array<String>()
-            tuple.append(platform)
-            tuple.append(String(number!))
-            self.socialProviderToEngagementCountList.append(tuple)
-            self.socialProviderToEngagementCountList.sortInPlace({ (obj1, obj2) -> Bool in
-              return Int(obj1[1]) > Int(obj2[1])
-            })
-            
-            print ("SORTED ARRAY socialProviderToEngagementCountList IS: ", self.socialProviderToEngagementCountList)
-            
-            self.engagementBreakdownRowCount = self.engagementBreakdownRowCount + 1
-            
-            dispatch_async(dispatch_get_main_queue(), {
-              self.analyticsTableView.reloadData()
+//    if userProfiles != nil {
+      self.socialProviderToEngagementCountList = Array<Array<String>>()
+      self.engagementBreakdownRowCount = 0
+      
+      if !isGeneratingEngagementAnalytics {
+        isGeneratingEngagementAnalytics = true
+        for platform in userSocialPlatforms {
+          // Get engagement info
+          parameters = ["action":"getUserSingleEngagements", "target": currentUserName, "social_platform": platform]
+          lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            if resultTask.error == nil && resultTask.result != nil
+            {
+              print("Result task for getUserSingleEngagements is: ", resultTask.result!)
               
-//              self.analyticsTableView.reloadSections(NSIndexSet(index: AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue), withRowAnimation: .Automatic)
-            })
+              let number = resultTask.result as? Int
+              var tuple = Array<String>()
+              tuple.append(platform)
+              tuple.append(String(number!))
+              self.socialProviderToEngagementCountList.append(tuple)
+              self.socialProviderToEngagementCountList.sortInPlace({ (obj1, obj2) -> Bool in
+                return Int(obj1[1]) > Int(obj2[1])
+              })
+              
+              print ("SORTED ARRAY socialProviderToEngagementCountList IS: ", self.socialProviderToEngagementCountList)
+              
+              self.engagementBreakdownRowCount = self.engagementBreakdownRowCount + 1
+              
+              dispatch_async(dispatch_get_main_queue(), {
+                self.analyticsTableView.reloadData()
+                
+  //              self.analyticsTableView.reloadSections(NSIndexSet(index: AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue), withRowAnimation: .Automatic)
+              })
+            }
+    
+            self.isGeneratingEngagementAnalytics = false
+            return nil
           }
-  
-          self.isGeneratingEngagementAnalytics = false
-          return nil
         }
       }
-    }
-    
+//    }
 //    // Get engagement info
 //    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
 //      if resultTask.error == nil && resultTask.result != nil
@@ -412,6 +427,17 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 //    }
 //    
 //  }
+  
+  func extractDataArray(listOfLists: Array<Array<Int>>) -> Array<Int>
+  {
+    var firstElementsArray = Array<Int>()
+    
+    for tuple in listOfLists {
+      firstElementsArray.append(tuple[1])
+    }
+    
+    return firstElementsArray
+  }
 
 
 }
