@@ -98,17 +98,27 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     self.totalRow = CheckoutRowView(title: "Total", detail: "", tappable: false, theme: STPTheme())
     self.buyButton = BuyButton(enabled: true, theme: STPTheme())
     
-    let currencyCode = NSLocale.currentLocale().objectForKey(NSLocaleCurrencyCode)! as! String
-    var localeComponents: [String: String] = [
-      currencyCode: self.paymentCurrency,
-      ]
+    // Working version of paymentCurrency settings in USD by locale. TODO: why it works?
+    //let currencyCode = NSLocale.currentLocale().objectForKey(NSLocaleCurrencyCode)! as! String
+    let currencyCode = "USD"
+    //var localeComponents: [String: String] = [
+    //  currencyCode: self.paymentCurrency,
+    //  ]
+    let localeComponents = [NSLocaleCurrencyCode: currencyCode]
+    
+    let localeIdentifier = NSLocale.localeIdentifierFromComponents(localeComponents)
+    let locale = NSLocale(localeIdentifier: localeIdentifier)
+    let currencySymbol = locale.objectForKey(NSLocaleCurrencySymbol) as! String
+    
 //    localeComponents[NSLocale.Key.languageCode.rawValue] = NSLocale.preferredLanguages.first
     let localeID = NSLocale.localeIdentifierFromComponents(localeComponents)
     let numberFormatter = NSNumberFormatter()
-    numberFormatter.locale = NSLocale(localeIdentifier: localeID)
+    numberFormatter.locale = NSLocale(localeIdentifier: localeIdentifier)
     numberFormatter.numberStyle = .CurrencyStyle
     numberFormatter.usesGroupingSeparator = true
     self.numberFormatter = numberFormatter
+    
+    
     self.theme = STPTheme()
     self.shippingRow = CheckoutRowView()
     self.shippingString = "ship ship"
@@ -120,6 +130,10 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
 
+  }
+  
+  func backButtonClicked(sender: UIButton!) {
+    self.dismissViewControllerAnimated(true, completion: nil)
   }
   
   override func viewDidLoad() {
@@ -137,6 +151,22 @@ class CheckoutViewController: UIViewController, STPPaymentContextDelegate {
     self.view.addSubview(self.productImage)
     self.view.addSubview(self.buyButton)
     self.view.addSubview(self.activityIndicator)
+    
+    let backButton = UIButton(frame: CGRect(x: 70, y: 500, width: 80, height: 40))
+    backButton.setTitle("Cancel", forState: .Normal)
+    backButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
+    backButton.addTarget(self, action: #selector(backButtonClicked), forControlEvents: .TouchUpInside)
+    self.view.addSubview(backButton)
+    backButton.translatesAutoresizingMaskIntoConstraints = false
+    backButton.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
+    backButton.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor, constant: 100).active = true
+    //backButton.center = self.view.center
+    
+    // DEBUG: Constraints do not work
+    //let centerX = NSLayoutConstraint(item: backButton, attribute: .CenterX, relatedBy: .Equal, toItem: self.view, attribute: .CenterX, multiplier: 1, constant: 0)
+    //NSLayoutConstraint.activateConstraints([centerX])
+    //self.updateViewConstraints()
+    
     self.activityIndicator.alpha = 0
     self.buyButton.addTarget(self, action: #selector(didTapBuy), forControlEvents: .TouchUpInside)
     self.totalRow.detail = self.numberFormatter.stringFromNumber(NSNumber(float: Float(self.paymentContext.paymentAmount)/100))!
