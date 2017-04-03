@@ -18,14 +18,14 @@ class PaymentsDisplay: UIViewController {
   
   @IBAction func onClickBuyTop(sender: AnyObject) {
     let checkoutViewController = CheckoutViewController(product: "Subscription for 12 Months",
-                                                        price: 499, planOptionFlag: "subs_12_mo")
+                                                        price: 5988, planOptionFlag: "subs_12_mo")
     self.presentViewController(checkoutViewController, animated: true, completion: nil)
 
   }
   
   @IBAction func onClickBuyMiddle(sender: AnyObject) {
     let checkoutViewController = CheckoutViewController(product: "Subscription for 6 Months",
-                                                        price: 699, planOptionFlag: "subs_6_mo")
+                                                        price: 4194, planOptionFlag: "subs_6_mo")
     self.presentViewController(checkoutViewController, animated: true, completion: nil)
   }
   
