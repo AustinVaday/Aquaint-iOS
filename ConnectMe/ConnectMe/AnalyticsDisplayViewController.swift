@@ -33,7 +33,7 @@ class AnalyticsDisplayViewController: UIViewController {
       let subscribed = getCurrentCachedSubscriptionStatus()
       
 //       DEBUG PURPOSES! REMOVE BEFORE SUBMIT
-      subscribed = true
+//      subscribed = true
       
       // If user has paid for the app, show analytics)
       if (subscribed)
