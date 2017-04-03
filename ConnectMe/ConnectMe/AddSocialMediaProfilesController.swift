@@ -67,87 +67,69 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
 
     switch (socialMediaType){
       case "facebook" :
-        /*************************************************************************
-        * FACEBOOK DATA FETCH
-        **************************************************************************/
-        //            SimpleAuth.authorize("facebook") { (result, error) in
-        //
-        //                print("ERROR IS: ", error)
-        //                if (result == nil)
-        //                {
-        //                    print("CANCELLED REQUEST")
-        //                }
-        //                else if (error == nil)
-        //                {
-        //                    print ("RESULT IS: ", result)
-        //
-        //                    let jsonResult = result as! NSDictionary
-        //
-        //                    // Get user's nickname from JSON object returned. I.e:
-        //                    // info
-        //                    // {
-        //                    //    nickname = "AustinVaday";
-        //                    //    ...
-        //                    // }
-        //
-        ////                    socialMediaName = jsonResult["info"]!["nickname"]! as String!
-        ////                    print("Twitter username returned is: ", socialMediaName)
-        ////
-        ////                    self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
-        //
-        //                }
-        //                else
-        //                {
-        //                    print ("FAILED TO PROCESS REQUEST")
-        //                }
-        //
-        //            }
-
-        let login = FBSDKLoginManager.init()
-        login.logOut()
-
-        // Open in app instead of web browser!
-        login.loginBehavior = FBSDKLoginBehavior.Native
-
-        // Request basic profile permissions just to get user ID. UPDATE: also get friends list for 'find friends via facebook' feature
-        login.logInWithReadPermissions(["public_profile", "user_friends"], fromViewController: self) { (result, error) in
-          // If no error, store facebook user ID
-          if (error == nil && result != nil) {
-            print("SUCCESS LOG IN!", result.debugDescription)
-            print(result.description)
-
-            print("RESULTOO: ", result)
-
-            if (FBSDKAccessToken.currentAccessToken() != nil) {
-              print("FBSDK userID is:", FBSDKAccessToken.currentAccessToken().userID)
-
-              let fbUID = FBSDKAccessToken.currentAccessToken().userID
-              let currentUserName = getCurrentCachedUser()
+        // Create alert to send to user
+        let alert = UIAlertController(title: nil, message: "Are you a company?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        
+        let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { (action) in
+          self.showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        })
+        
+        // Create the action to add to alert
+        let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.Default, handler: { (action) in
+          let login = FBSDKLoginManager.init()
+          login.logOut()
+          
+          // Open in app instead of web browser!
+          login.loginBehavior = FBSDKLoginBehavior.Native
+          
+          // Request basic profile permissions just to get user ID. UPDATE: also get friends list for 'find friends via facebook' feature
+          login.logInWithReadPermissions(["public_profile", "user_friends"], fromViewController: self) { (result, error) in
+            // If no error, store facebook user ID
+            if (error == nil && result != nil) {
+              print("SUCCESS LOG IN!", result.debugDescription)
+              print(result.description)
               
-              // Needed for 'find friends via facebook' feature
-              uploadUserFBUIDToDynamo(currentUserName, fbUID: fbUID)
+              print("RESULTOO: ", result)
               
-              socialMediaName = FBSDKAccessToken.currentAccessToken().userID
-
-              if self.delegate != nil {
-                self.delegate?.userDidAddNewProfile(
-                  socialMediaType,
-                  socialMediaName: socialMediaName
-                )
-
-                // Delay the animation because it happens too fast!
-                delay(0.2) {
-                  cell.showSuccessAnimation()
+              if (FBSDKAccessToken.currentAccessToken() != nil) {
+                print("FBSDK userID is:", FBSDKAccessToken.currentAccessToken().userID)
+                
+                let fbUID = FBSDKAccessToken.currentAccessToken().userID
+                let currentUserName = getCurrentCachedUser()
+                
+                // Needed for 'find friends via facebook' feature
+                uploadUserFBUIDToDynamo(currentUserName, fbUID: fbUID)
+                
+                socialMediaName = FBSDKAccessToken.currentAccessToken().userID
+                
+                if self.delegate != nil {
+                  self.delegate?.userDidAddNewProfile(
+                    socialMediaType,
+                    socialMediaName: socialMediaName
+                  )
+                  
+                  // Delay the animation because it happens too fast!
+                  delay(0.2) {
+                    cell.showSuccessAnimation()
+                  }
                 }
+                login.logOut()
               }
-              login.logOut()
+            } else if (result == nil && error != nil) {
+              print ("ERROR IS: ", error)
+            } else {
+              print("FAIL LOG IN")
             }
-          } else if (result == nil && error != nil) {
-            print ("ERROR IS: ", error)
-          } else {
-            print("FAIL LOG IN")
           }
-        }
+
+        })
+
+        // Add the action to the alert
+        alert.addAction(noAction)
+        alert.addAction(yesAction)
+        self.showViewController(alert, sender: nil)
+
         break
 
       case "twitter" :
@@ -216,37 +198,53 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
         /*************************************************************************
         * LINKEDIN DATA FETCH
         **************************************************************************/
-        SimpleAuth.authorize("linkedin-web") { (result, error) in
-          if (result == nil) {
-            print("CANCELLED REQUEST")
-          } else if (error == nil) {
-            print ("RESULT IS: ", result)
+        // Create alert to send to user
+        let alert = UIAlertController(title: nil, message: "Are you a company?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { (action) in
+          self.showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        })
+        
+        // Create the action to add to alert
+        let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.Default, handler: { (action) in
+          SimpleAuth.authorize("linkedin-web") { (result, error) in
+            if (result == nil) {
+              print("CANCELLED REQUEST")
+            } else if (error == nil) {
+              print ("RESULT IS: ", result)
 
-            let jsonResult = result as! NSDictionary
+              let jsonResult = result as! NSDictionary
 
-            let profileUrl = jsonResult["raw_info"]!["siteStandardProfileRequest"]!["url"]! as String!
+              let profileUrl = jsonResult["raw_info"]!["siteStandardProfileRequest"]!["url"]! as String!
 
-            if (profileUrl != nil){
-              let urlArray = profileUrl.componentsSeparatedByString("id=")
+              if (profileUrl != nil){
+                let urlArray = profileUrl.componentsSeparatedByString("id=")
 
-              if urlArray.count == 2 {
-                print ("FIRST PART", urlArray[0])
-                print ("SECOND PART", urlArray[1])
+                if urlArray.count == 2 {
+                  print ("FIRST PART", urlArray[0])
+                  print ("SECOND PART", urlArray[1])
 
-                // This is not a username, but a special ID linkedin generated for us.
-                socialMediaName = urlArray[1]
-                // self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
+                  // This is not a username, but a special ID linkedin generated for us.
+                  socialMediaName = urlArray[1]
+                  // self.updateProfilesDynamoDB(socialMediaType, socialMediaName: socialMediaName)
 
-                if self.delegate != nil {
-                  self.delegate?.userDidAddNewProfile(socialMediaType, socialMediaName: socialMediaName)
-                  cell.showSuccessAnimation()
+                  if self.delegate != nil {
+                    self.delegate?.userDidAddNewProfile(socialMediaType, socialMediaName: socialMediaName)
+                    cell.showSuccessAnimation()
+                  }
                 }
               }
+            } else {
+              print ("FAILED TO PROCESS REQUEST")
             }
-          } else {
-            print ("FAILED TO PROCESS REQUEST")
           }
-        }
+        })
+        
+        // Add the action to the alert
+        alert.addAction(noAction)
+        alert.addAction(yesAction)
+        self.showViewController(alert, sender: nil)
+        
         break
 
       case "snapchat" :
@@ -755,7 +753,12 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
               alertViewResponder.close()
               return 
             }
+          } else if socialMediaType == "linkedin" {
+            // LinkedIn requires company/ before all company names. So this should only be appended for company accounts
+            socialMediaName = "company/" + socialMediaName
+            
           }
+          
           if self.delegate != nil {
             self.delegate?.userDidAddNewProfile(
               socialMediaType,

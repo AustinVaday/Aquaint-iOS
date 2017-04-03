@@ -20,7 +20,7 @@ class PrivacyPolicyViewController: UIViewController {
         
         // Set up webview to link to privacy policy
         
-        let url = NSURL(string: "http://www.aquaint.us/privacy-policy")
+        let url = NSURL(string: "http://www.aquaint.us/static/privacy-policy")
         let urlRequest = NSURLRequest(URL: url!)
         
         webView.loadRequest(urlRequest)

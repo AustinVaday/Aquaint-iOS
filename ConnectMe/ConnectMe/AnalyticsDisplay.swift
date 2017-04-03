@@ -286,18 +286,17 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       
       self.viewBreakdownList = Array<Int>()
       
-      for daysAgo in 10.stride(to: 1, by: -1) {
+      for daysAgo in 9.stride(to: 0, by: -1) {
         // Get engagement info
         parameters = ["action":"getUserSinglePayViewsForDay", "target": currentUserName, "days_ago": daysAgo]
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
           if resultTask.error == nil && resultTask.result != nil
           {
             print("Result task for getUserSinglePayViewsForDay is: ", resultTask.result!)
-            
-            let number = resultTask.result as? Int
-            self.viewBreakdownList.append(number!)
  
             dispatch_async(dispatch_get_main_queue(), {
+              let number = resultTask.result as? Int
+              self.viewBreakdownList.append(number!)
               self.analyticsTableView.reloadData()
               
             })
