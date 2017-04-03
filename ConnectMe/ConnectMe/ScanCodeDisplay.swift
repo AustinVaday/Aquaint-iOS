@@ -33,6 +33,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   @IBOutlet weak var exportButton: UIButton!
   @IBOutlet weak var animationView: UIView!
   
+  var defaultCameraView: UIView!
+  
   var animatedObjects = Array<UIView>()
   var captureSession:AVCaptureSession?
   var videoPreviewLayer:AVCaptureVideoPreviewLayer?
@@ -58,6 +60,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    defaultCameraView = cameraView
     
     updateAnalyticsDisplayValues()
 
@@ -154,6 +158,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
         }, completion: { (status) in
           // Show camera view
           dispatch_async(dispatch_get_main_queue(), {
+              self.cameraView.hidden = false
               self.setUpCameraDisplay()
           })
         })
@@ -176,6 +181,13 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     self.exitButton.hidden = true
     
     // Clear the camera display?
+    captureSession?.stopRunning()
+    //self.view.backgroundColor = UIColor.whiteColor()
+    //self.cameraView.backgroundColor = UIColor.clearColor()
+    
+    //cameraView = defaultCameraView
+    cameraView.hidden = true
+    
   }
   
   @IBAction func onShowHelpProfileViews(sender: AnyObject) {
