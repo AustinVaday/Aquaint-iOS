@@ -33,6 +33,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   @IBOutlet weak var exportButton: UIButton!
   @IBOutlet weak var animationView: UIView!
   
+  var defaultCameraView: UIView!
+  
   var animatedObjects = Array<UIView>()
   var captureSession:AVCaptureSession?
   var videoPreviewLayer:AVCaptureVideoPreviewLayer?
@@ -52,9 +54,14 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
                             AVMetadataObjectTypeAztecCode,
                             AVMetadataObjectTypePDF417Code,
                             AVMetadataObjectTypeQRCode]
+  
+  var lastScanCodeProcessedTime: NSDate?
+  let SCAN_CODE_PROCESSING_INTERVAL = 5.0
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    defaultCameraView = cameraView
     
     updateAnalyticsDisplayValues()
 
@@ -151,6 +158,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
         }, completion: { (status) in
           // Show camera view
           dispatch_async(dispatch_get_main_queue(), {
+              self.cameraView.hidden = false
               self.setUpCameraDisplay()
           })
         })
@@ -173,6 +181,13 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     self.exitButton.hidden = true
     
     // Clear the camera display?
+    captureSession?.stopRunning()
+    //self.view.backgroundColor = UIColor.whiteColor()
+    //self.cameraView.backgroundColor = UIColor.clearColor()
+    
+    //cameraView = defaultCameraView
+    cameraView.hidden = true
+    
   }
   
   @IBAction func onShowHelpProfileViews(sender: AnyObject) {
@@ -191,11 +206,13 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
 
   func setUpCameraDisplay() {
     // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video as the media type parameter.
-    let captureDevice = AVCaptureDevice.defaultDeviceWithMediaType("AVMediaTypeVideo")
+    //let captureDevice = AVCaptureDevice.defaultDeviceWithMediaType("AVMediaTypeVideo")
+    let captureDevice = AVCaptureDevice.devices().filter({ $0.position == .Back }).first as? AVCaptureDevice
+    
     do {
       // Get an instance of the AVCaptureDeviceInput class using the previous device object.
       let input = try AVCaptureDeviceInput(device: captureDevice)
-      
+
       // Initialize the captureSession object.
       captureSession = AVCaptureSession()
       
@@ -223,12 +240,12 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
       // Initialize QR Code Frame to highlight the QR code
       qrCodeFrameView = UIView()
       
-      if let qrCodeFrameView = qrCodeFrameView {
-        qrCodeFrameView.layer.borderColor = UIColor.blueColor().CGColor
-        qrCodeFrameView.layer.borderWidth = 3
-        view.addSubview(qrCodeFrameView)
-        view.bringSubviewToFront(qrCodeFrameView)
-      }
+//      if let qrCodeFrameView = qrCodeFrameView {
+//        qrCodeFrameView.layer.borderColor = UIColor.blueColor().CGColor
+//        qrCodeFrameView.layer.borderWidth = 3
+//        view.addSubview(qrCodeFrameView)
+//        view.bringSubviewToFront(qrCodeFrameView)
+//      }
       
     } catch {
       // If any error occurs, simply print it out and don't continue any more.
@@ -283,7 +300,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   }
   
   
-  func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+  func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
     
     // Check if the metadataObjects array is not nil and it contains at least one object.
     if metadataObjects == nil || metadataObjects.count == 0 {
@@ -314,7 +331,22 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
         print("URL LAST PATH COMP:", url?.lastPathComponent)
         
         // Check if host of QR code is ours, else we do not process
-        if url?.host == "aquaint.us" || url?.pathComponents![0] == "www.aquaint.us" {
+        if url?.host == "www.aquaint.us" {
+          
+        // check if the scan code should be processed now, to avoid duplicate processes
+        if let scanCodeProcessedTime = lastScanCodeProcessedTime {
+            let currentDate = NSDate.init()
+            if (currentDate.timeIntervalSinceDate(scanCodeProcessedTime) <= SCAN_CODE_PROCESSING_INTERVAL) {
+                print("scanCodeDisplay(): scan code is already processed; ignore current request.")
+                return;
+              } else {
+                lastScanCodeProcessedTime = NSDate.init()
+                print("scanCodeDisplay(): processing current scan code...")
+              }
+          } else {
+            lastScanCodeProcessedTime = NSDate.init()
+          }
+          
           userName = url?.lastPathComponent
           
           // Check if extracted username is a valid aquaint username
