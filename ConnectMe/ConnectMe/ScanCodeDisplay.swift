@@ -52,6 +52,9 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
                             AVMetadataObjectTypeAztecCode,
                             AVMetadataObjectTypePDF417Code,
                             AVMetadataObjectTypeQRCode]
+  
+  var lastScanCodeProcessedTime: NSDate?
+  let SCAN_CODE_PROCESSING_INTERVAL = 5.0
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -225,12 +228,12 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
       // Initialize QR Code Frame to highlight the QR code
       qrCodeFrameView = UIView()
       
-      if let qrCodeFrameView = qrCodeFrameView {
-        qrCodeFrameView.layer.borderColor = UIColor.blueColor().CGColor
-        qrCodeFrameView.layer.borderWidth = 3
-        view.addSubview(qrCodeFrameView)
-        view.bringSubviewToFront(qrCodeFrameView)
-      }
+//      if let qrCodeFrameView = qrCodeFrameView {
+//        qrCodeFrameView.layer.borderColor = UIColor.blueColor().CGColor
+//        qrCodeFrameView.layer.borderWidth = 3
+//        view.addSubview(qrCodeFrameView)
+//        view.bringSubviewToFront(qrCodeFrameView)
+//      }
       
     } catch {
       // If any error occurs, simply print it out and don't continue any more.
@@ -316,7 +319,22 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
         print("URL LAST PATH COMP:", url?.lastPathComponent)
         
         // Check if host of QR code is ours, else we do not process
-        if url?.host == "aquaint.us" || url?.pathComponents![0] == "www.aquaint.us" {
+        if url?.host == "www.aquaint.us" {
+          
+        // check if the scan code should be processed now, to avoid duplicate processes
+        if let scanCodeProcessedTime = lastScanCodeProcessedTime {
+            let currentDate = NSDate.init()
+            if (currentDate.timeIntervalSinceDate(scanCodeProcessedTime) <= SCAN_CODE_PROCESSING_INTERVAL) {
+                print("scanCodeDisplay(): scan code is already processed; ignore current request.")
+                return;
+              } else {
+                lastScanCodeProcessedTime = NSDate.init()
+                print("scanCodeDisplay(): processing current scan code...")
+              }
+          } else {
+            lastScanCodeProcessedTime = NSDate.init()
+          }
+          
           userName = url?.lastPathComponent
           
           // Check if extracted username is a valid aquaint username
