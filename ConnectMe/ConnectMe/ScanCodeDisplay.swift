@@ -75,11 +75,19 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     }
     
     fetchUserScanCode()
+    
+    // TEMP FIX: When user initially logs in (and doesn't have a scan code), some race conditions may occur where the code is not ready to fetch before we display. Add a delay to fix this if it does happen
+    delay(2.0) {
+      self.fetchUserScanCode()
+    }
+    
   }
   
   override func viewDidAppear(animated: Bool) {
     setUpSocialMediaAnimations(self, subView: self.animationView, animatedObjects: &animatedObjects, animationLocation: AnimationLocation.Bottom, theme: AnimationAquaintEmblemTheme.DarkTheme)
     updateAnalyticsDisplayValues()
+    
+    fetchUserScanCode()
     
   }
   

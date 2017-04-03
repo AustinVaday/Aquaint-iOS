@@ -82,9 +82,9 @@ func setCachedUserFromAWS(userName: String!)
      * user image from S3
      ********************************************/
     // AWS TRANSFER REQUEST
-    let downloadingFilePath = NSTemporaryDirectory().stringByAppendingString("temp")
-    let downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath)
-    let downloadRequest = AWSS3TransferManagerDownloadRequest()
+    var downloadingFilePath = NSTemporaryDirectory().stringByAppendingString("temp")
+    var downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath)
+    var downloadRequest = AWSS3TransferManagerDownloadRequest()
     downloadRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
     downloadRequest.key = "public/" + userName
     downloadRequest.downloadingFileURL = downloadingFileURL
@@ -111,7 +111,39 @@ func setCachedUserFromAWS(userName: String!)
         return nil
         
     })
-    
+  
+    getUserS3Image(userName, extraPath: "scancodes/", completion: { (result, error) in
+      if result != nil && error == nil
+      {
+        let scanCode = result as UIImage!
+        setCurrentCachedUserScanCode(scanCode)
+      } else {
+        // User may not have a scan code, so generate one for them
+        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let parameters = ["action":"createScanCodeForUser", "target": userName]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+          if resultTask.result != nil && resultTask.error == nil {
+            print("Succesfully generated scan code on login!")
+            getUserS3Image(userName, extraPath: "scancodes/", completion: { (result, error) in
+              if result != nil && error == nil
+              {
+                let scanCode = result as UIImage!
+                setCurrentCachedUserScanCode(scanCode)
+              }
+              
+            })
+            
+          } else {
+            print("Oh shoot, could not generated scan code on login!")
+          }
+          return nil
+        }
+
+      }
+      
+    })
+  
+  
     // Get UserPool Data too (email, phone info)
     getUserPoolData(userName) { (result, error) in
         
@@ -130,7 +162,7 @@ func setCachedUserFromAWS(userName: String!)
         }
         
     }
-
+  
 
     
 }
