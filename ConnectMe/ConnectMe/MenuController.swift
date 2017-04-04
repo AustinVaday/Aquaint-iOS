@@ -83,46 +83,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     let defaultTableViewCellHeight = CGFloat(60)
     let defaultImage = UIImage(imageLiteral: "Person Icon Black")
 
-  func cancelAqualyticsSubscription() {
-    let isSubscribed = getCurrentCachedSubscriptionStatus()
-    
-    if (isSubscribed) {
-      let alertTitle = "Aqualytics"
-      let alertMessage = "Are you sure you want to cancel your Aquaint subscription? "
-      let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .Alert)
-      
-      let yesAction = UIAlertAction(title: "Yes", style: .Default, handler: {
-        (alert: UIAlertAction!) in
-        
-        let lambdaInnvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action": "cancelSubscription", "target": self.currentUserName]
-        lambdaInnvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({
-          (resultTask) -> AnyObject? in
-          if resultTask.error == nil && resultTask.result != nil {
-            print("Result task for cancelSubscription is: ", resultTask.result!)
-            setCurrentCachedSubscriptionStatus(false)
-          } else {
-            print(resultTask.error)
-          }
-          return nil
-        })
-      })
-      
-      let noAction = UIAlertAction(title: "No", style: .Default, handler: nil)
-        
-      alert.addAction(noAction)
-      alert.addAction(yesAction)
-      self.presentViewController(alert, animated: true, completion: nil)
-      
-    } else {
-      let alertTitle = "Aqualytics"
-      let alertMessage = "You don't have any Aquaint subscriptions yet."
-      showAlert(alertTitle, message: alertMessage, buttonTitle: "OK", sender: self)
-    }
-  }
-  
     override func viewDidLoad() {
-
         
         // Make the profile photo round
         profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
@@ -144,7 +105,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Discover Friends", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Notification Settings", sectionCount: 1))
         tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 2))
-        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Account Actions", sectionCount: 3))
+        tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Account Actions", sectionCount: 2))
         
         
         // Call this function to generate all AWS data for this page!
@@ -1051,11 +1012,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             switch (indexPath.item)
             {
             case 0:
-                cell.menuButtonLabel.text = "Cancel Subscription"
-            case 1:
                 cell.menuButtonLabel.text = "Change Password"
                 break;
-            case 2: //Log out button
+            case 1: //Log out button
                 cell.menuButtonLabel.text = "Log Out"
                 break;
             default: //Default
@@ -1095,18 +1054,14 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         if (indexPath.section == MenuData.ACTIONS.rawValue)
         {
-            if (indexPath.item == 0) {
-              cancelAqualyticsSubscription()
-            }
-          
             // Reset password button
-            if (indexPath.item == 1)
+            if (indexPath.item == 0)
             {
                 performSegueWithIdentifier("toResetPasswordViewController", sender: self)
             }
             
             // Log out button
-            if (indexPath.item == 2)
+            if (indexPath.item == 1)
             {
                 logUserOut()
             }

@@ -31,7 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "176"
             endingLineNumber = "176"
-            landmarkName = "paymentContext(_:didCreatePaymentResult:completion:)"
+            landmarkName = "viewDidLoad()"
             landmarkType = "5">
             <Locations>
                <Location
@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "175"
             endingLineNumber = "175"
-            landmarkName = "paymentContext(_:didCreatePaymentResult:completion:)"
+            landmarkName = "viewDidLoad()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -95,7 +95,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "32"
             endingLineNumber = "32"
-            landmarkName = "completeSubscription(_:amount:currency:completion:)"
+            landmarkName = "completeSubscription(_:planOption:completion:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -111,7 +111,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "36"
             endingLineNumber = "36"
-            landmarkName = "completeSubscription(_:amount:currency:completion:)"
+            landmarkName = "completeSubscription(_:planOption:completion:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -223,7 +223,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "224"
             endingLineNumber = "224"
-            landmarkName = "paymentContext(_:didFailToLoadWithError:)"
+            landmarkName = "paymentContext(_:didFinishWithStatus:error:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -239,8 +239,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "203"
             endingLineNumber = "203"
-            landmarkName = "paymentContext(_:didFinishWithStatus:error:)"
-            landmarkType = "5">
+            landmarkName = "CheckoutViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -255,7 +255,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "210"
             endingLineNumber = "210"
-            landmarkName = "paymentContextDidChange(_:)"
+            landmarkName = "paymentContext(_:didFinishWithStatus:error:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
