@@ -17,7 +17,7 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
   
   var arrayOfViewControllers: Array<UIViewController>!
   var currentPageIndex = 0 //UPDATED in changePage and didFinishAnimating methods
-  let numPages = 4
+  let numPages = 5
   var pageDelegate : WalkthroughPageViewDelegate?
   
   
@@ -31,6 +31,7 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("Walkthrough1"))!)
     arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("Walkthrough2"))!)
     arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("Walkthrough3"))!)
+    arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("Walkthrough4"))!)
     
     let firstViewController = arrayOfViewControllers[0]
     currentPageIndex = 0
@@ -57,6 +58,11 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     }
     
     if viewController.restorationIdentifier == "Walkthrough3"
+    {
+      return arrayOfViewControllers[4]
+    }
+    
+    if viewController.restorationIdentifier == "Walkthrough4"
     {
       return nil
     }
@@ -86,8 +92,13 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     
     if viewController.restorationIdentifier == "Walkthrough3"
     {
-      pageDelegate?.didLeaveLastPage()
       return arrayOfViewControllers[2]
+    }
+    
+    if viewController.restorationIdentifier == "Walkthrough4"
+    {
+      pageDelegate?.didLeaveLastPage()
+      return arrayOfViewControllers[3]
     }
 
     
@@ -143,6 +154,11 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     if nextViewController.restorationIdentifier == "Walkthrough3"
     {
       currentPageIndex = 3
+    }
+    
+    if nextViewController.restorationIdentifier == "Walkthrough4"
+    {
+      currentPageIndex = 4
       pageDelegate?.didHitLastPage()
     }
     
