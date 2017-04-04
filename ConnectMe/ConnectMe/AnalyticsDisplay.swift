@@ -32,11 +32,12 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   var currentUserName : String!
   let footerHeight = CGFloat(65)
   let defaultTableViewCellHeight = CGFloat(55)
+  let noDataToDisplayCellHeight = CGFloat(25)
   let graphTableViewCellHeight = CGFloat(200)
   var tableViewSectionsList : Array<String>!
   var refreshControl : CustomRefreshControl!
   var engagementBreakdownRowCount = 0
-  var locationRowCount = 0
+  var locationRowCount = 1
   var socialProviderToEngagementCountList = Array<Array<String>>()
   var locationToCountList = NSArray()
   var graphViewForViews : GraphView<String, Int>!
@@ -107,16 +108,29 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     switch indexPath.section
     {
     case AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue:
-      returnHeight = graphTableViewCellHeight
+      if viewBreakdownList.isEmpty {
+        returnHeight = noDataToDisplayCellHeight
+      } else {
+        returnHeight = graphTableViewCellHeight
+      }
       break;
     case AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue:
-      returnHeight = defaultTableViewCellHeight
+      if socialProviderToEngagementCountList.isEmpty {
+        returnHeight = noDataToDisplayCellHeight
+      } else {
+        returnHeight = defaultTableViewCellHeight
+      }
+      
       break;
 //    case AnalyticsDataEnum.GENDER.rawValue:
 //      returnHeight = graphTableViewCellHeight
 //      break;
     case AnalyticsDataEnum.LOCATION.rawValue:
-      returnHeight = defaultTableViewCellHeight
+      if locationToCountList.count == 0 {
+        returnHeight = noDataToDisplayCellHeight
+      } else {
+        returnHeight = defaultTableViewCellHeight
+      }
       break;
 //    case AnalyticsDataEnum.DEVICE_TYPE.rawValue:
 //      returnHeight = graphTableViewCellHeight
@@ -136,13 +150,21 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     case "VIEWS PER DAY (LAST 10 DAYS)":
       numRows = 1
     case "ENGAGEMENT BREAKDOWN":
-      numRows = engagementBreakdownRowCount
+      if socialProviderToEngagementCountList.isEmpty {
+        numRows = 1 // Display no data cell
+      } else {
+        numRows = engagementBreakdownRowCount
+      }
       break;
 //    case "VIEWER GENDER BREAKDOWN":
 //      numRows = 1
 //      break;
     case "LOCATION OF VIEWERS":
-      numRows = locationRowCount
+      if locationToCountList.count == 0 {
+        numRows = 1 // Display no data cell
+      } else {
+        numRows = locationRowCount
+      }
       break;
 //    case "VIEWER DEVICE BREAKDOWN":
 //      numRows = 1
@@ -161,6 +183,9 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     {
       
     case AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue:
+      if viewBreakdownList.isEmpty {
+        return tableView.dequeueReusableCellWithIdentifier("noDataToDisplayCell")!
+      }
       // Configure cell for graph
       let graphCell = tableView.dequeueReusableCellWithIdentifier("freeViewCell") as! AnalyticsFreeViewTableViewCell!
       
@@ -173,7 +198,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       })
       
       let barGraphData = extractDataArray(viewBreakdownList) as Array<Int>
-      
+    
       graphViewForViews = barGraphData.barGraph().view(graphCell.viewDisplay.bounds).barGraphConfiguration({ BarGraphViewConfig(barColor: UIColor(hex: "#ff6699"), contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
 
 //      graphViewForViews = [8, 12, 13, 10, 7, 11, 9, 14, 12, 6].lineGraph(GraphRange(min: 5, max: 14)).view(graphCell.viewDisplay.bounds).lineGraphConfiguration({ LineGraphViewConfig(lineColor: UIColor(hex: "#ff6699"), lineWidth: 2.0, dotDiameter: 10.0) })
@@ -184,7 +209,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       return graphCell
     case AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue:
       if (socialProviderToEngagementCountList.count == 0) {
-        return cell
+        return tableView.dequeueReusableCellWithIdentifier("noDataToDisplayCell")!
       }
       
       let engagementArray = socialProviderToEngagementCountList[indexPath.item] as! NSArray
@@ -215,8 +240,9 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 //      break;
     case AnalyticsDataEnum.LOCATION.rawValue:
       if (locationToCountList.count == 0){
-        return cell
+        return tableView.dequeueReusableCellWithIdentifier("noDataToDisplayCell")!
       }
+      
       let locationTemp = locationToCountList[indexPath.item] as! NSArray
       cell.numericalValueLabel.text = String(locationTemp[1])
       cell.numericalTypeLabel.text = "VIEWS"

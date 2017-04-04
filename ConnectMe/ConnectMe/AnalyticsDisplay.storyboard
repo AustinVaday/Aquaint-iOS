@@ -166,6 +166,40 @@
                                             <outlet property="viewDisplay" destination="Td1-Pd-GUK" id="o54-9z-a5p"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noDataToDisplayCell" rowHeight="25" id="nzw-60-1V0">
+                                        <rect key="frame" x="0.0" y="435" width="600" height="25"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nzw-60-1V0" id="c1h-gQ-wfH">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="25"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PL6-sC-E2W">
+                                                    <rect key="frame" x="8" y="8" width="584" height="20"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not enough data to display yet. 😭" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PwR-Wl-7sT">
+                                                    <rect key="frame" x="24" y="2" width="219" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="219" id="cy1-Md-7c5"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="10"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="PwR-Wl-7sT" firstAttribute="top" secondItem="c1h-gQ-wfH" secondAttribute="topMargin" constant="-6" id="H49-6g-77T"/>
+                                                <constraint firstItem="PL6-sC-E2W" firstAttribute="top" secondItem="c1h-gQ-wfH" secondAttribute="topMargin" id="HUL-ry-KvN"/>
+                                                <constraint firstItem="PL6-sC-E2W" firstAttribute="leading" secondItem="c1h-gQ-wfH" secondAttribute="leadingMargin" id="LSv-B3-fdo"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="PwR-Wl-7sT" secondAttribute="bottom" constant="-7" id="OGI-YD-hit"/>
+                                                <constraint firstItem="PL6-sC-E2W" firstAttribute="trailing" secondItem="c1h-gQ-wfH" secondAttribute="trailingMargin" id="Q6A-Hg-jRQ"/>
+                                                <constraint firstItem="PwR-Wl-7sT" firstAttribute="leading" secondItem="c1h-gQ-wfH" secondAttribute="leadingMargin" constant="16" id="ylG-x0-w2y"/>
+                                                <constraint firstItem="PL6-sC-E2W" firstAttribute="centerY" secondItem="PwR-Wl-7sT" secondAttribute="centerY" constant="5" id="zWe-Lk-Wxs"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="kb8-eQ-3kS" id="JYh-d5-ivs"/>
