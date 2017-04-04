@@ -277,33 +277,33 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
     var parameters = ["action":"getUserPageViews", "target": username]
     
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-      if resultTask.error == nil && resultTask.result != nil
-      {
-        print("Result task for getUserPageViews is: ", resultTask.result!)
-        dispatch_async(dispatch_get_main_queue(), {
-          let number = resultTask.result as? Int
-          self.profileViewsCountNumber.text  = String(number!)
-        })
-      }
-      
-      return nil
-    }
-    
-    parameters = ["action":"getUserTotalEngagements", "target": username]
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-      if resultTask.error == nil && resultTask.result != nil
-      {
-        print("Result task for getUserTotalEngagements is: ", resultTask.result!)
-        dispatch_async(dispatch_get_main_queue(), {
-          let number = resultTask.result as? Int
-          self.engagementCountNumber.text = String(number!)
-        })
-
-      }
-      
-      return nil
-    }
+//    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+//      if resultTask.error == nil && resultTask.result != nil
+//      {
+//        print("Result task for getUserPageViews is: ", resultTask.result!)
+//        dispatch_async(dispatch_get_main_queue(), {
+//          let number = resultTask.result as? Int
+//          self.profileViewsCountNumber.text  = String(number!)
+//        })
+//      }
+//      
+//      return nil
+//    }
+//    
+//    parameters = ["action":"getUserTotalEngagements", "target": username]
+//    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+//      if resultTask.error == nil && resultTask.result != nil
+//      {
+//        print("Result task for getUserTotalEngagements is: ", resultTask.result!)
+//        dispatch_async(dispatch_get_main_queue(), {
+//          let number = resultTask.result as? Int
+//          self.engagementCountNumber.text = String(number!)
+//        })
+//
+//      }
+//      
+//      return nil
+//    }
     
   }
   
