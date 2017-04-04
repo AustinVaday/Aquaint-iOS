@@ -307,7 +307,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   func generateAnalyticsData() {
     // Get list of all social media platforms the user currently supports
     let userProfiles = getCurrentCachedUserProfiles() as NSDictionary!
-    var userSocialPlatforms = Array<String>()
+    var userSocialPlatforms = Array<String>() 
     if userProfiles != nil {
       userSocialPlatforms = userProfiles.allKeys as! Array<String>
     }
