@@ -7,32 +7,87 @@
 //
 
 import UIKit
+import StoreKit
 
 // Will have the real displays and data
-class PaymentsDisplay: UIViewController {
+class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+  
+  var productIDs: Array<String!> = []
+  var productsArray: Array<SKProduct!> = []
+  var transactionInProgress = false
+  let selectedProductIndex = 0
   
   override func viewDidLoad() {
+    // TODO: Fetch list of apple IDs programmatically in future.
+    productIDs.append("Aquaint_Subscription_1_mo")
+    
+    requestProductInfo()
+    
+    SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+  }
+
+  @IBAction func onClickBuyBottom(sender: AnyObject) {
+    if transactionInProgress {
+      return
+    }
+    
+    let payment = SKPayment(product: self.productsArray[self.selectedProductIndex] as SKProduct)
+    SKPaymentQueue.defaultQueue().addPayment(payment)
+    self.transactionInProgress = true
     
   }
   
-  @IBAction func onClickBuyTop(sender: AnyObject) {
-//    let checkoutViewController = CheckoutViewController(product: "Subscription for 12 Months",
-//                                                        price: 5988, planOptionFlag: "subs_12_mo")
-//    self.presentViewController(checkoutViewController, animated: true, completion: nil)
-
+  func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
+    if response.products.count != 0 {
+      for product in response.products {
+        productsArray.append(product)
+      }
+    }
+    else {
+      print("There are no products.")
+    }
+    
+    if response.invalidProductIdentifiers.count != 0 {
+      print(response.invalidProductIdentifiers.description)
+    }
   }
   
-  @IBAction func onClickBuyMiddle(sender: AnyObject) {
-//    let checkoutViewController = CheckoutViewController(product: "Subscription for 6 Months",
-//                                                        price: 4194, planOptionFlag: "subs_6_mo")
-//    self.presentViewController(checkoutViewController, animated: true, completion: nil)
+  func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+    for transaction in transactions {
+      switch transaction.transactionState {
+      case SKPaymentTransactionState.Purchased:
+        print("Transaction completed successfully.")
+        SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+        transactionInProgress = false
+//        delegate.didBuyColorsCollection(selectedProductIndex)
+        
+      case SKPaymentTransactionState.Failed:
+        print("Transaction Failed");
+        SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+        transactionInProgress = false
+        
+      case SKPaymentTransactionState.Restored:
+        SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
+        transactionInProgress = false
+        
+      default:
+        print(transaction.transactionState.rawValue)
+      }
+    }
   }
   
-  @IBAction func onClickBuyBottom(sender: AnyObject) {
-//    let checkoutViewController = CheckoutViewController(product: "Subscription for 1 Month",
-//                                                        price: 999, planOptionFlag: "subs_1_mo")
-//    self.presentViewController(checkoutViewController, animated: true, completion: nil)
+  
+  
+  func requestProductInfo() {
+    if SKPaymentQueue.canMakePayments() {
+      let productIdentifiers = NSSet(array: productIDs) as! Set<String>
+      let productRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
+      
+      productRequest.delegate = self
+      productRequest.start()
+    }
+    else {
+      print("Cannot perform In App Purchases.")
+    }
   }
-  
-  
 }

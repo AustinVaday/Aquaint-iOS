@@ -92,24 +92,49 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
   
 
     func isCustomerSubscribed() {
-      
+      // Validate receipt first
+      let receiptUrl = NSBundle.mainBundle().appStoreReceiptURL
+      let receipt: NSData = NSData(contentsOfURL: receiptUrl!)!
+      let receiptData: NSString = receipt.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+
+      print ("RECEIPTDATA IS: ", receiptData)
+//      do {
+//        receiptJSON = try NSJSONSerialization.JSONObjectWithData(receipt, options: .MutableLeaves) as? NSJSONSerialization
+//        stringJSON = NSSTring(
+//      } catch _ {
+//        print ("FAILED TO PARSE RECEIPT DATA")
+//      }
       let lambdaInnvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-      let parameters = ["action": "countSubscriptionOfCustomer", "target": userName]
+      let parameters = ["action": "verifyAppleReceipt", "target": userName, "receipt_json": receiptData]
       lambdaInnvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({
         (resultTask) -> AnyObject? in
         if resultTask.error == nil && resultTask.result != nil {
-          print("Result task for countSubscriptionOfCustomer is: ", resultTask.result!)
-          let numOfPlans = resultTask.result as! Int
-          if (numOfPlans == 0) {
-            setCurrentCachedSubscriptionStatus(false)
-          } else {  // number of subscribed plans can only be 1
-            setCurrentCachedSubscriptionStatus(true)
-          }
+          print("Result task for verifyAppleReceipt is: ", resultTask.result!)
         } else {
+          print("Result error for verifyAppleReceipt is:")
           print(resultTask.error)
         }
         return nil
       })
+
+      
+//      let lambdaInnvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+//      let parameters = ["action": "countSubscriptionOfCustomer", "target": userName]
+//      lambdaInnvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({
+//        (resultTask) -> AnyObject? in
+//        if resultTask.error == nil && resultTask.result != nil {
+//          print("Result task for countSubscriptionOfCustomer is: ", resultTask.result!)
+//          let numOfPlans = resultTask.result as! Int
+//          if (numOfPlans == 0) {
+//            setCurrentCachedSubscriptionStatus(false)
+//          } else {  // number of subscribed plans can only be 1
+//            setCurrentCachedSubscriptionStatus(true)
+//          }
+//        } else {
+//          print(resultTask.error)
+//        }
+//        return nil
+//      })
     }
   
     override func viewDidLoad() {
@@ -118,7 +143,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
       
         // check if the user is subscribed to paid feature of Aqualytics
         userName = getCurrentCachedUser()
-        isCustomerSubscribed()
+//        isCustomerSubscribed()
       
       
         // Get the mainPageViewController, this holds all our pages!
