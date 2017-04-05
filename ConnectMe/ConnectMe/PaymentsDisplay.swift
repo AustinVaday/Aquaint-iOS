@@ -9,6 +9,10 @@
 import UIKit
 import StoreKit
 
+
+protocol PaymentsDisplayDelegate {
+  func didPayForProduct()
+}
 // Will have the real displays and data
 class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver {
   
@@ -16,6 +20,7 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
   var productsArray: Array<SKProduct!> = []
   var transactionInProgress = false
   let selectedProductIndex = 0
+  var paidDelegate : PaymentsDisplayDelegate?
   
   override func viewDidLoad() {
     // TODO: Fetch list of apple IDs programmatically in future.
@@ -59,7 +64,9 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
         print("Transaction completed successfully.")
         SKPaymentQueue.defaultQueue().finishTransaction(transaction)
         transactionInProgress = false
-//        delegate.didBuyColorsCollection(selectedProductIndex)
+        if paidDelegate != nil {
+          self.paidDelegate!.didPayForProduct()
+        }
         
       case SKPaymentTransactionState.Failed:
         print("Transaction Failed");
@@ -69,6 +76,9 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
       case SKPaymentTransactionState.Restored:
         SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
         transactionInProgress = false
+        if paidDelegate != nil {
+          self.paidDelegate!.didPayForProduct()
+        }
         
       default:
         print(transaction.transactionState.rawValue)

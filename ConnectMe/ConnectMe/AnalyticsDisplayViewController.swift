@@ -10,10 +10,11 @@ import UIKit
 import Graphs
 import AWSLambda
 
-class AnalyticsDisplayViewController: UIViewController {
+
+
+class AnalyticsDisplayViewController: UIViewController, PaymentsDisplayDelegate {
 
   var username: String!
-  
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -45,9 +46,8 @@ class AnalyticsDisplayViewController: UIViewController {
         if resultTask.error == nil && resultTask.result != nil {
           print("Result task for subscriptionGetExpiresDate is: ", resultTask.result!)
           
-          let expiration_timestamp_ms = resultTask.result! as! Int
-          
-          let expiration_timestamp = expiration_timestamp_ms / 1000 as Int
+          let expiration_timestamp_ms = resultTask.result! as! Double
+          let expiration_timestamp = Int(expiration_timestamp_ms / 1000)
           let current_timestamp = getTimestampAsInt()
           // SUBSCRIBED
           if expiration_timestamp > current_timestamp {
@@ -58,6 +58,8 @@ class AnalyticsDisplayViewController: UIViewController {
             // Else, we show payment plan
             storyboard = UIStoryboard(name: "PaymentsDisplay", bundle: nil)
             viewController = storyboard.instantiateViewControllerWithIdentifier("PaymentsDisplay") as! PaymentsDisplay
+            (viewController as! PaymentsDisplay).paidDelegate = self
+            
           }
           
         } else {
@@ -66,6 +68,7 @@ class AnalyticsDisplayViewController: UIViewController {
           // Else, we show payment plan
           storyboard = UIStoryboard(name: "PaymentsDisplay", bundle: nil)
           viewController = storyboard.instantiateViewControllerWithIdentifier("PaymentsDisplay") as! PaymentsDisplay
+          (viewController as! PaymentsDisplay).paidDelegate = self
         }
         
         dispatch_async(dispatch_get_main_queue()) {
@@ -106,6 +109,22 @@ class AnalyticsDisplayViewController: UIViewController {
 //      self.addChildViewController(viewController)
 //      viewController.didMoveToParentViewController(self)
       
+  }
+  
+  func didPayForProduct() {
+    let storyboard = UIStoryboard(name: "AnalyticsDisplay", bundle: nil)
+    let viewController = storyboard.instantiateViewControllerWithIdentifier("AnalyticsDisplay") as! AnalyticsDisplay
+    dispatch_async(dispatch_get_main_queue()) {
+      // Get our special popup design from the XIB
+      viewController.view.bounds = self.view.bounds
+      viewController.view.frame = self.view.frame
+      
+      self.view.addSubview(viewController.view)
+      
+      self.addChildViewController(viewController)
+      viewController.didMoveToParentViewController(self)
+    }
+
   }
   
   override func didReceiveMemoryWarning() {
