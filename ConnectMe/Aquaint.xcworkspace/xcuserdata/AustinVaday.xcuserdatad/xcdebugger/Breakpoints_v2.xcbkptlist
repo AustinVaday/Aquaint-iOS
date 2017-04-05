@@ -441,22 +441,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ConnectMe/AnalyticsDisplayViewController.swift"
-            timestampString = "513047793.317803"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
-            landmarkName = "viewWillAppear(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "ConnectMe/AnalyticsDisplay.swift"
             timestampString = "512977475.292172"
             startingColumnNumber = "9223372036854775807"
@@ -586,60 +570,60 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/AnalyticsDisplayViewController.swift"
-            timestampString = "513047793.317803"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
-            landmarkName = "viewWillAppear(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ConnectMe/AnalyticsDisplayViewController.swift"
-            timestampString = "513047793.317803"
+            timestampString = "513067103.124908"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "66"
             endingLineNumber = "66"
-            landmarkName = "viewWillAppear(_:)"
+            landmarkName = "didPayForProduct()"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Aquaint.AnalyticsDisplayViewController.didPayForProduct () -&gt; ()"
+                  moduleName = "Aquaint"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/AnalyticsDisplayViewController.swift"
+                  timestampString = "513066866.2855"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "90"
+                  endingLineNumber = "90"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "protocol witness for Aquaint.PaymentsDisplayDelegate.didPayForProduct () -&gt; () in conformance Aquaint.AnalyticsDisplayViewController : Aquaint.PaymentsDisplayDelegate in Aquaint"
+                  moduleName = "Aquaint"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/AnalyticsDisplayViewController.swift"
+                  timestampString = "513066866.285998"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "89"
+                  endingLineNumber = "89"
+                  offsetFromSymbolStart = "28">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/AnalyticsDisplayViewController.swift"
-            timestampString = "513047793.317803"
+            timestampString = "513067103.124908"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "viewWillAppear(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ConnectMe/AnalyticsDisplayViewController.swift"
-            timestampString = "513047793.317803"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "viewWillAppear(_:)"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "updateLocalSubscriptionStatusForFuture()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -650,45 +634,29 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/AnalyticsDisplayViewController.swift"
-            timestampString = "513047793.317803"
+            timestampString = "513067103.124908"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
-            landmarkName = "didPayForProduct()"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "updateLocalSubscriptionStatusForFuture()"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Aquaint.AnalyticsDisplayViewController.didPayForProduct () -&gt; ()"
-                  moduleName = "Aquaint"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/AnalyticsDisplayViewController.swift"
-                  timestampString = "513047795.53926"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "115"
-                  endingLineNumber = "115"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "protocol witness for Aquaint.PaymentsDisplayDelegate.didPayForProduct () -&gt; () in conformance Aquaint.AnalyticsDisplayViewController : Aquaint.PaymentsDisplayDelegate in Aquaint"
-                  moduleName = "Aquaint"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/AnalyticsDisplayViewController.swift"
-                  timestampString = "513047795.539547"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "114"
-                  endingLineNumber = "114"
-                  offsetFromSymbolStart = "28">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ConnectMe/AnalyticsDisplayViewController.swift"
+            timestampString = "513067103.124908"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "updateLocalSubscriptionStatusForFuture()"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

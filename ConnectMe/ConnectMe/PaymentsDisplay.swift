@@ -63,10 +63,13 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
       case SKPaymentTransactionState.Purchased:
         print("Transaction completed successfully.")
         SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+        setCurrentCachedSubscriptionStatus(true)
         transactionInProgress = false
+        
         if paidDelegate != nil {
           self.paidDelegate!.didPayForProduct()
         }
+
         
       case SKPaymentTransactionState.Failed:
         print("Transaction Failed");
@@ -76,6 +79,8 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
       case SKPaymentTransactionState.Restored:
         SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
         transactionInProgress = false
+        setCurrentCachedSubscriptionStatus(true)
+       
         if paidDelegate != nil {
           self.paidDelegate!.didPayForProduct()
         }
