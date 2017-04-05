@@ -1,0 +1,3 @@
+After running `pod install` each time, be sure to make the following changes:
+1. Go to "SimpleAuth" target in "Pods" project -> Build Settings -> Header Search Paths in "Search Path" section, add "${PODS_ROOT}" as non-recursive to the search path.
+   Reference: https://github.com/calebd/SimpleAuth/issues/128
