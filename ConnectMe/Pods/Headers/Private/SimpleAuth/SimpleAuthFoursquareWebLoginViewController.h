@@ -1,1 +1,0 @@
-../../../SimpleAuth/Pod/Providers/FoursquareWeb/SimpleAuthFoursquareWebLoginViewController.h
