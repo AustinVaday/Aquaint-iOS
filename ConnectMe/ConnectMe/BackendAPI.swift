@@ -36,6 +36,45 @@ func getAWSCognitoIdentityUserPool() -> AWSCognitoIdentityUserPool
   return userPool
 }
 
+func fetchAndSetCurrentCachedSubscriptionStatus(userName: String)
+{
+  // Validate receipt first
+  let receiptUrl = NSBundle.mainBundle().appStoreReceiptURL
+  
+  if receiptUrl == nil {
+    return
+  }
+  
+  let receipt: NSData = NSData(contentsOfURL: receiptUrl!)!
+  let receiptData: NSString = receipt.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+  let lambdaInnvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+  let parameters = ["action": "subscriptionGetExpiresDate", "target": userName, "receipt_json": receiptData]
+  lambdaInnvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({
+    (resultTask) -> AnyObject? in
+    if resultTask.error == nil && resultTask.result != nil {
+      print("Result task for subscriptionGetExpiresDate is: ", resultTask.result!)
+      
+      let expiration_timestamp_ms = resultTask.result! as! Double
+      let expiration_timestamp = Int(expiration_timestamp_ms / 1000)
+      let current_timestamp = getTimestampAsInt()
+      
+      // SUBSCRIBED
+      if expiration_timestamp > current_timestamp {
+        setCurrentCachedSubscriptionStatus(true) // Should be inferred automatically, but good to be explicit
+      } else {
+        // NOT SUBSCRIBED
+        setCurrentCachedSubscriptionStatus(false)
+      }
+      
+    } else {
+      print("Result error for subscriptionGetExpiresDate is:")
+      print(resultTask.error)
+    }
+    return nil
+    
+  })
+}
+
 func setCachedUserFromAWS(userName: String!)
 {
     /*******************************************
@@ -111,6 +150,8 @@ func setCachedUserFromAWS(userName: String!)
         return nil
         
     })
+  
+    fetchAndSetCurrentCachedSubscriptionStatus(userName)
   
     getUserS3Image(userName, extraPath: "scancodes/", completion: { (result, error) in
       if result != nil && error == nil

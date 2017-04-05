@@ -288,7 +288,7 @@ class LogInController: UIViewController, AWSCognitoIdentityPasswordAuthenticatio
                     // Cache username, user full name, user image, and user accounts
                     setCurrentCachedUserName(userNameString)
                     setCachedUserFromAWS(userNameString)
-                    
+                  
                     return nil
                 })
 
