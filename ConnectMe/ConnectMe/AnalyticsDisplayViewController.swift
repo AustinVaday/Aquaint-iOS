@@ -35,18 +35,18 @@ class AnalyticsDisplayViewController: UIViewController, PaymentsDisplayDelegate 
         self.username = getCurrentCachedUser()
       }
     
-    
-    if subscribed {
-      storyboard = UIStoryboard(name: "AnalyticsDisplay", bundle: nil)
-      viewController = storyboard.instantiateViewControllerWithIdentifier("AnalyticsDisplay") as! AnalyticsDisplay
-    } else {
-      // Else, we show payment plan
-      storyboard = UIStoryboard(name: "PaymentsDisplay", bundle: nil)
-      viewController = storyboard.instantiateViewControllerWithIdentifier("PaymentsDisplay") as! PaymentsDisplay
-      (viewController as! PaymentsDisplay).paidDelegate = self
-    }
-    
       dispatch_async(dispatch_get_main_queue()) {
+        
+        if subscribed {
+          storyboard = UIStoryboard(name: "AnalyticsDisplay", bundle: nil)
+          viewController = storyboard.instantiateViewControllerWithIdentifier("AnalyticsDisplay") as! AnalyticsDisplay
+        } else {
+          // Else, we show payment plan
+          storyboard = UIStoryboard(name: "PaymentsDisplay", bundle: nil)
+          viewController = storyboard.instantiateViewControllerWithIdentifier("PaymentsDisplay") as! PaymentsDisplay
+          (viewController as! PaymentsDisplay).paidDelegate = self
+        }
+
         // Get our special popup design from the XIB
         viewController.view.bounds = self.view.bounds
         viewController.view.frame = self.view.frame
