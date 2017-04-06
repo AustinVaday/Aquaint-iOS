@@ -15,21 +15,30 @@ import AWSLambda
 class AnalyticsDisplayViewController: UIViewController, PaymentsDisplayDelegate {
 
   var username: String!
+  var analyticsDisplayVC: AnalyticsDisplay!
+  var paymentsDisplayVC: PaymentsDisplay!
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
     username = getCurrentCachedUser()
+    
+    var storyboard = UIStoryboard(name: "AnalyticsDisplay", bundle: nil)
+    analyticsDisplayVC = storyboard.instantiateViewControllerWithIdentifier("AnalyticsDisplay") as! AnalyticsDisplay
+    
+    storyboard = UIStoryboard(name: "PaymentsDisplay", bundle: nil)
+    paymentsDisplayVC = storyboard.instantiateViewControllerWithIdentifier("PaymentsDisplay") as! PaymentsDisplay
+    paymentsDisplayVC.paidDelegate = self
   }
   
   // We want to check the user's subscription status every time Aqualytics is about to be displayed
   // as user may just subscribe in current session
   override func viewWillAppear(animated: Bool) {
     
-      var storyboard: UIStoryboard!
       var viewController: UIViewController!
       
       // Check whether user has paid for the app or not.
-      var subscribed = getCurrentCachedSubscriptionStatus()
+      let subscribed = getCurrentCachedSubscriptionStatus()
     
       if self.username == nil {
         self.username = getCurrentCachedUser()
@@ -38,13 +47,10 @@ class AnalyticsDisplayViewController: UIViewController, PaymentsDisplayDelegate 
       dispatch_async(dispatch_get_main_queue()) {
         
         if subscribed {
-          storyboard = UIStoryboard(name: "AnalyticsDisplay", bundle: nil)
-          viewController = storyboard.instantiateViewControllerWithIdentifier("AnalyticsDisplay") as! AnalyticsDisplay
+          viewController = self.analyticsDisplayVC
         } else {
           // Else, we show payment plan
-          storyboard = UIStoryboard(name: "PaymentsDisplay", bundle: nil)
-          viewController = storyboard.instantiateViewControllerWithIdentifier("PaymentsDisplay") as! PaymentsDisplay
-          (viewController as! PaymentsDisplay).paidDelegate = self
+          viewController = self.paymentsDisplayVC
         }
 
         // Get our special popup design from the XIB
@@ -64,8 +70,9 @@ class AnalyticsDisplayViewController: UIViewController, PaymentsDisplayDelegate 
   }
   
   func didPayForProduct() {
-    let storyboard = UIStoryboard(name: "AnalyticsDisplay", bundle: nil)
-    let viewController = storyboard.instantiateViewControllerWithIdentifier("AnalyticsDisplay") as! AnalyticsDisplay
+//    let storyboard = UIStoryboard(name: "AnalyticsDisplay", bundle: nil)
+//    let viewController = storyboard.instantiateViewControllerWithIdentifier("AnalyticsDisplay") as! AnalyticsDisplay
+    let viewController = analyticsDisplayVC
     dispatch_async(dispatch_get_main_queue()) {
       // Get our special popup design from the XIB
       viewController.view.bounds = self.view.bounds

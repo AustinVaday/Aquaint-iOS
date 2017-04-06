@@ -46,6 +46,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   var isGeneratingEngagementAnalytics = false
   var isGeneratingViewBreakdownAnalytics = false
   var viewBreakdownList = Array<Array<Int>>()
+  var alreadyInitializedSection = [false, false, false] // NOTE: MODIFY TO SIZE OF AnalyticsDataEnum
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -64,15 +65,17 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     // Call this function to generate dummy data (before data actually loads)
 //    generateDummyAnalyticsData()
     
-    // Call this function to generate all analytics data for this page!
-    generateAnalyticsData()
-    
     // Set up refresh control for when user drags for a refresh.
     refreshControl = CustomRefreshControl()
     
     // When user pulls, this function will be called
     refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
     analyticsTableView.addSubview(refreshControl)
+  }
+  
+  override func viewWillAppear(animated: Bool) {
+    // Call this function to generate all analytics data for this page!
+    generateAnalyticsData()
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -153,7 +156,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       if socialProviderToEngagementCountList.isEmpty {
         numRows = 1 // Display no data cell
       } else {
-        numRows = engagementBreakdownRowCount
+        numRows = self.socialProviderToEngagementCountList.count
       }
       break;
 //    case "VIEWER GENDER BREAKDOWN":
@@ -163,7 +166,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       if locationToCountList.count == 0 {
         numRows = 1 // Display no data cell
       } else {
-        numRows = locationRowCount
+        numRows = self.locationToCountList.count
       }
       break;
 //    case "VIEWER DEVICE BREAKDOWN":
@@ -300,8 +303,6 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       print("REFRESH CONTROL!")
       
     }
-    
-    
   }
   
   func generateAnalyticsData() {
@@ -312,16 +313,15 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       userSocialPlatforms = userProfiles.allKeys as! Array<String>
     }
     let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-//    var parameters = ["action":"getUserTotalEngagementsBreakdown", "target": currentUserName, "social_list": userSocialPlatforms]
     var parameters = NSDictionary()
     
     if !isGeneratingViewBreakdownAnalytics {
       isGeneratingViewBreakdownAnalytics = true
       
+      var newViewBreakdownList = Array<Array<Int>>()
+//      self.viewBreakdownList = Array<Array<Int>>()
       
-      self.viewBreakdownList = Array<Array<Int>>()
-      
-      for daysAgo in 9.stride(to: 0, by: -1) {
+      for daysAgo in 10.stride(through: 1, by: -1) {
         // Get engagement info
         parameters = ["action":"getUserSinglePayViewsForDay", "target": currentUserName, "days_ago": daysAgo]
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
@@ -336,9 +336,31 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
               tuple.append(daysAgo)
               tuple.append(number!)
               
-              self.viewBreakdownList.append(tuple)
-              self.analyticsTableView.reloadData()
+              newViewBreakdownList.append(tuple)
               
+              if (daysAgo == 1)
+              {
+                // If all zero values, don't display data
+                if self.allZeroDisplayValues(newViewBreakdownList)
+                {
+                  newViewBreakdownList = Array<Array<Int>>()
+                }
+
+              }
+              
+              // Regenerate data in more aesthetic ways (i.e. only display choppy animation on first load, not subsequent ones
+              if (daysAgo == 1 && !self.alreadyInitializedSection[AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue]){
+                self.viewBreakdownList = newViewBreakdownList
+                self.analyticsTableView.reloadData()
+                self.alreadyInitializedSection[AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue] = true
+              } else if (daysAgo == 1 && self.alreadyInitializedSection[AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue]) {
+                self.viewBreakdownList = newViewBreakdownList
+                self.analyticsTableView.reloadData()
+              } else if !self.alreadyInitializedSection[AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue] {
+                self.viewBreakdownList = newViewBreakdownList
+                self.analyticsTableView.reloadData()
+              }
+            
             })
           }
           
@@ -349,13 +371,15 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
 
     
-//    if userProfiles != nil {
-      self.socialProviderToEngagementCountList = Array<Array<String>>()
-      self.engagementBreakdownRowCount = 0
-      
+      //self.socialProviderToEngagementCountList = Array<Array<String>>()
+      var newSocialProviderToEngagementCountList = Array<Array<String>>()
+    
       if !isGeneratingEngagementAnalytics {
         isGeneratingEngagementAnalytics = true
+        
+        var runningRequests = 0
         for platform in userSocialPlatforms {
+          runningRequests = runningRequests + 1
           // Get engagement info
           parameters = ["action":"getUserSingleEngagements", "target": currentUserName, "social_platform": platform]
           lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
@@ -367,20 +391,34 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
               var tuple = Array<String>()
               tuple.append(platform)
               tuple.append(String(number!))
-              self.socialProviderToEngagementCountList.append(tuple)
-              self.socialProviderToEngagementCountList.sortInPlace({ (obj1, obj2) -> Bool in
+              newSocialProviderToEngagementCountList.append(tuple)
+              newSocialProviderToEngagementCountList.sortInPlace({ (obj1, obj2) -> Bool in
                 return Int(obj1[1]) > Int(obj2[1])
               })
               
-              print ("SORTED ARRAY socialProviderToEngagementCountList IS: ", self.socialProviderToEngagementCountList)
+              print ("SORTED ARRAY socialProviderToEngagementCountList IS: ", newSocialProviderToEngagementCountList)
               
-              self.engagementBreakdownRowCount = self.engagementBreakdownRowCount + 1
+              runningRequests = runningRequests - 1
               
-              dispatch_async(dispatch_get_main_queue(), {
-                self.analyticsTableView.reloadData()
-                
-  //              self.analyticsTableView.reloadSections(NSIndexSet(index: AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue), withRowAnimation: .Automatic)
-              })
+              // Load data differently for first and subsequent requests
+              if runningRequests == 0 && !self.alreadyInitializedSection[AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue] {
+                dispatch_async(dispatch_get_main_queue(), {
+                  self.socialProviderToEngagementCountList = newSocialProviderToEngagementCountList
+                  self.analyticsTableView.reloadData()
+                  self.alreadyInitializedSection[AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue] = true
+                })
+              } else if runningRequests == 0 && self.alreadyInitializedSection[AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue] {
+                dispatch_async(dispatch_get_main_queue(), {
+                  self.socialProviderToEngagementCountList = newSocialProviderToEngagementCountList
+                  self.analyticsTableView.reloadData()
+                })
+              }
+              else if !self.alreadyInitializedSection[AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue]{
+                dispatch_async(dispatch_get_main_queue(), {
+                  self.socialProviderToEngagementCountList = newSocialProviderToEngagementCountList
+                  self.analyticsTableView.reloadData()
+                })
+              }
             }
     
             self.isGeneratingEngagementAnalytics = false
@@ -388,24 +426,6 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
           }
         }
       }
-//    }
-//    // Get engagement info
-//    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-//      if resultTask.error == nil && resultTask.result != nil
-//      {
-//        print("Result task for getUserTotalEngagementsBreakdown is: ", resultTask.result!)
-//        
-//        self.socialProviderToEngagementCountList = resultTask.result as! NSMutableArray
-//        // Add one to account for graph index offset
-//        self.engagementBreakdownRowCount = self.socialProviderToEngagementCountList.count
-//
-//        dispatch_async(dispatch_get_main_queue(), {
-//          self.analyticsTableView.reloadData()
-//        })
-//      }
-//      
-//      return nil
-//    }
 
     // Get location info
     parameters = ["action":"getUserPageViewsLocations", "target": currentUserName, "max_results": 15]
@@ -416,13 +436,10 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
         print("Result task for getUserPageViewsLocations is: ", resultTask.result!)
         
         self.locationToCountList = resultTask.result as! NSArray
-        self.locationRowCount = self.locationToCountList.count
         
         dispatch_async(dispatch_get_main_queue(), {
           self.analyticsTableView.reloadData()
           
-//          self.analyticsTableView.reloadSections(NSIndexSet(index: AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue), withRowAnimation: .Automatic)
-
         })
       }
       
@@ -431,28 +448,6 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     
   }
-  
-//  func generateDummyAnalyticsData() {
-//    // Get list of all social media platforms the user currently supports
-//    let userProfiles = getCurrentCachedUserProfiles() as NSDictionary!
-//    let userSocialPlatforms = userProfiles.allKeys as! Array<String>
-//    
-//    engagementBreakdownRowCount = userSocialPlatforms.count
-//    self.socialProviderToEngagementCountList = NSMutableArray()
-//    analyticsTableView.reloadData()
-//    
-//    for platform in userSocialPlatforms {
-//      var tuple = Array<String>()
-//      tuple.append(platform)
-//      tuple.append("...")
-//      self.socialProviderToEngagementCountList.addObject(tuple)
-//      
-//      dispatch_async(dispatch_get_main_queue(), { 
-//        self.analyticsTableView.reloadData()
-//      })
-//    }
-//    
-//  }
   
   func extractDataArray(listOfLists: Array<Array<Int>>) -> Array<Int>
   {
@@ -464,6 +459,20 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     return firstElementsArray
   }
-
+  
+  
+  func allZeroDisplayValues(listOfLists: Array<Array<Int>>) -> Bool
+  {
+    var sum = 0
+    for tuple in listOfLists {
+      sum += tuple[1]
+    }
+    
+    if sum == 0 {
+      return true
+    } else {
+      return false
+    }
+  }
 
 }
