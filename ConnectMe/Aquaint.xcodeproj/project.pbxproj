@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1C172820DB4C47D4F953079D /* Pods_AquaintUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A33672E844F87E0E0636574 /* Pods_AquaintUITests.framework */; };
-		CF5842C9BDA198015330272F /* Pods_AquaintTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DECA6AE8BBCE3AC0B05D864 /* Pods_AquaintTests.framework */; };
+		1E03A7848D4BE5F856CE241B /* Pods_Aquaint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34EEF12311B0D735B7FE379F /* Pods_Aquaint.framework */; };
+		4D2DB745884A414A67AEC73E /* Pods_AquaintUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D42B7474E582FDC3F9AFB8 /* Pods_AquaintUITests.framework */; };
+		76209F1DB6FBD0F8C19CC5AC /* Pods_AquaintTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510A69C38AC090A6E7B973F /* Pods_AquaintTests.framework */; };
 		FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */; };
 		FF0BF0231CB6DC78005188DA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */; };
 		FF0BF0251CB6DCB3005188DA /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */; };
@@ -18,19 +19,8 @@
 		FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */; };
 		FF23A12F1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A12E1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift */; };
 		FF23A13D1D9340480062E9A0 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A13C1D9340480062E9A0 /* PrivacyPolicyViewController.swift */; };
-		FF29BB1D9643BB46054B3871 /* Pods_Aquaint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D1CC9F354D9EF78F36FCC8C /* Pods_Aquaint.framework */; };
 		FF3834D31D6D483E00FC9F2A /* PopUpAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */; };
 		FF3834D51D6D529500FC9F2A /* ProfilePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */; };
-		FF3C9C951E8CC76F00C32C34 /* BarGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9C8E1E8CC76F00C32C34 /* BarGraphView.swift */; };
-		FF3C9C961E8CC76F00C32C34 /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9C8F1E8CC76F00C32C34 /* Graph.swift */; };
-		FF3C9C971E8CC76F00C32C34 /* GraphsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9C901E8CC76F00C32C34 /* GraphsExtensions.swift */; };
-		FF3C9C981E8CC76F00C32C34 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9C911E8CC76F00C32C34 /* GraphView.swift */; };
-		FF3C9C991E8CC76F00C32C34 /* LineGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9C921E8CC76F00C32C34 /* LineGraphView.swift */; };
-		FF3C9C9A1E8CC76F00C32C34 /* MultiBarGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9C931E8CC76F00C32C34 /* MultiBarGraphView.swift */; };
-		FF3C9C9B1E8CC76F00C32C34 /* PieGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9C941E8CC76F00C32C34 /* PieGraphView.swift */; };
-		FF3C9C9D1E8CC95300C32C34 /* Graphs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF3C9C9C1E8CC95300C32C34 /* Graphs.framework */; };
-		FF3C9C9E1E8CCA7800C32C34 /* Graphs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF3C9C9C1E8CC95300C32C34 /* Graphs.framework */; };
-		FF3C9C9F1E8CCA7800C32C34 /* Graphs.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF3C9C9C1E8CC95300C32C34 /* Graphs.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FF3C9CA21E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9CA11E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift */; };
 		FF47274D1D48750F0065F418 /* SectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */; };
 		FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */; };
@@ -137,30 +127,16 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		FF3C9CA01E8CCA7800C32C34 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				FF3C9C9F1E8CCA7800C32C34 /* Graphs.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		0DECA6AE8BBCE3AC0B05D864 /* Pods_AquaintTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AquaintTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		12A745E60F4646F35588D48C /* Pods-Aquaint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aquaint.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint.debug.xcconfig"; sourceTree = "<group>"; };
-		3A33672E844F87E0E0636574 /* Pods_AquaintUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AquaintUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7D1CC9F354D9EF78F36FCC8C /* Pods_Aquaint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Aquaint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B023BA07E0D736BEED4A4905 /* Pods-AquaintUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintUITests/Pods-AquaintUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		BFA6407C29C4B103B3F32EEC /* Pods-AquaintTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintTests/Pods-AquaintTests.debug.xcconfig"; sourceTree = "<group>"; };
-		C0A85DC514249201247ACD2E /* Pods-AquaintUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintUITests/Pods-AquaintUITests.release.xcconfig"; sourceTree = "<group>"; };
-		C734498D23A2E4D446F260FB /* Pods-AquaintTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintTests/Pods-AquaintTests.release.xcconfig"; sourceTree = "<group>"; };
-		EA7880975F687C6827F7B301 /* Pods-Aquaint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aquaint.release.xcconfig"; path = "Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint.release.xcconfig"; sourceTree = "<group>"; };
+		01D42B7474E582FDC3F9AFB8 /* Pods_AquaintUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AquaintUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E8833267EF2168C25287F83 /* Pods-AquaintUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintUITests/Pods-AquaintUITests.release.xcconfig"; sourceTree = "<group>"; };
+		34EEF12311B0D735B7FE379F /* Pods_Aquaint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Aquaint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		671137205723932265B11D03 /* Pods-Aquaint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aquaint.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint.debug.xcconfig"; sourceTree = "<group>"; };
+		80DE6A0B04CCD15219F58E87 /* Pods-AquaintTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintTests/Pods-AquaintTests.debug.xcconfig"; sourceTree = "<group>"; };
+		820A230C1F41AD15AF685EEB /* Pods-Aquaint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aquaint.release.xcconfig"; path = "Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint.release.xcconfig"; sourceTree = "<group>"; };
+		9A64274B07B3280E1F621ACD /* Pods-AquaintTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintTests/Pods-AquaintTests.release.xcconfig"; sourceTree = "<group>"; };
+		A510A69C38AC090A6E7B973F /* Pods_AquaintTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AquaintTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C45821F799B96B5198E5BE7B /* Pods-AquaintUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintUITests/Pods-AquaintUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainContainerViewController.swift; sourceTree = "<group>"; };
 		FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = ../ProfileViewController.swift; sourceTree = "<group>"; };
 		FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -172,14 +148,6 @@
 		FF23A13C1D9340480062E9A0 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PopUpAlert.storyboard; sourceTree = "<group>"; };
 		FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePopupView.swift; sourceTree = "<group>"; };
-		FF3C9C8E1E8CC76F00C32C34 /* BarGraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarGraphView.swift; sourceTree = "<group>"; };
-		FF3C9C8F1E8CC76F00C32C34 /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
-		FF3C9C901E8CC76F00C32C34 /* GraphsExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphsExtensions.swift; sourceTree = "<group>"; };
-		FF3C9C911E8CC76F00C32C34 /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
-		FF3C9C921E8CC76F00C32C34 /* LineGraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineGraphView.swift; sourceTree = "<group>"; };
-		FF3C9C931E8CC76F00C32C34 /* MultiBarGraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiBarGraphView.swift; sourceTree = "<group>"; };
-		FF3C9C941E8CC76F00C32C34 /* PieGraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieGraphView.swift; sourceTree = "<group>"; };
-		FF3C9C9C1E8CC95300C32C34 /* Graphs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Graphs.framework; sourceTree = "<group>"; };
 		FF3C9CA11E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsFreeViewTableViewCell.swift; sourceTree = "<group>"; };
 		FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderCell.swift; sourceTree = "<group>"; };
 		FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
@@ -300,17 +268,15 @@
 				FF78786B1C30267500354936 /* QuartzCore.framework in Frameworks */,
 				FFBB872D1C5307F500500FAD /* FBSDKLoginKit.framework in Frameworks */,
 				FF7878691C30266C00354936 /* CoreLocation.framework in Frameworks */,
-				FF3C9C9D1E8CC95300C32C34 /* Graphs.framework in Frameworks */,
 				FF7878671C30266600354936 /* CoreGraphics.framework in Frameworks */,
 				FF7878651C30266000354936 /* CFNetwork.framework in Frameworks */,
 				FF7878631C30265800354936 /* AudioToolbox.framework in Frameworks */,
 				FFBB872C1C5307F500500FAD /* FBSDKCoreKit.framework in Frameworks */,
 				FF7878731C3026BB00354936 /* Bolts.framework in Frameworks */,
 				FF78785E1C30009900354936 /* libsqlite3.tbd in Frameworks */,
-				FF3C9C9E1E8CCA7800C32C34 /* Graphs.framework in Frameworks */,
 				FF7878751C3026C200354936 /* Parse.framework in Frameworks */,
 				FF78785C1C30008C00354936 /* libz.tbd in Frameworks */,
-				FF29BB1D9643BB46054B3871 /* Pods_Aquaint.framework in Frameworks */,
+				1E03A7848D4BE5F856CE241B /* Pods_Aquaint.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,7 +284,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF5842C9BDA198015330272F /* Pods_AquaintTests.framework in Frameworks */,
+				76209F1DB6FBD0F8C19CC5AC /* Pods_AquaintTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,22 +292,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C172820DB4C47D4F953079D /* Pods_AquaintUITests.framework in Frameworks */,
+				4D2DB745884A414A67AEC73E /* Pods_AquaintUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		083B25C0CBB20B8AA59FCC7B /* Pods */ = {
+		C04EAA157CD0B5492AF59183 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				12A745E60F4646F35588D48C /* Pods-Aquaint.debug.xcconfig */,
-				EA7880975F687C6827F7B301 /* Pods-Aquaint.release.xcconfig */,
-				BFA6407C29C4B103B3F32EEC /* Pods-AquaintTests.debug.xcconfig */,
-				C734498D23A2E4D446F260FB /* Pods-AquaintTests.release.xcconfig */,
-				B023BA07E0D736BEED4A4905 /* Pods-AquaintUITests.debug.xcconfig */,
-				C0A85DC514249201247ACD2E /* Pods-AquaintUITests.release.xcconfig */,
+				671137205723932265B11D03 /* Pods-Aquaint.debug.xcconfig */,
+				820A230C1F41AD15AF685EEB /* Pods-Aquaint.release.xcconfig */,
+				80DE6A0B04CCD15219F58E87 /* Pods-AquaintTests.debug.xcconfig */,
+				9A64274B07B3280E1F621ACD /* Pods-AquaintTests.release.xcconfig */,
+				C45821F799B96B5198E5BE7B /* Pods-AquaintUITests.debug.xcconfig */,
+				2E8833267EF2168C25287F83 /* Pods-AquaintUITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -353,20 +319,6 @@
 				FF8972991E1991D500A4D9C4 /* FollowerListViewController.swift */,
 			);
 			name = "Aquaints-Followers/Following";
-			sourceTree = "<group>";
-		};
-		FF3C9C8D1E8CC75500C32C34 /* Graphs */ = {
-			isa = PBXGroup;
-			children = (
-				FF3C9C8E1E8CC76F00C32C34 /* BarGraphView.swift */,
-				FF3C9C8F1E8CC76F00C32C34 /* Graph.swift */,
-				FF3C9C901E8CC76F00C32C34 /* GraphsExtensions.swift */,
-				FF3C9C911E8CC76F00C32C34 /* GraphView.swift */,
-				FF3C9C921E8CC76F00C32C34 /* LineGraphView.swift */,
-				FF3C9C931E8CC76F00C32C34 /* MultiBarGraphView.swift */,
-				FF3C9C941E8CC76F00C32C34 /* PieGraphView.swift */,
-			);
-			name = Graphs;
 			sourceTree = "<group>";
 		};
 		FF6197991E59979B00B94618 /* ScanCode */ = {
@@ -504,7 +456,6 @@
 				FFBDD7551CD599690007A188 /* HomePageViewController.swift */,
 				FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */,
 				FFF335931E89AB2900E8B70F /* Google Analytics */,
-				FF3C9C8D1E8CC75500C32C34 /* Graphs */,
 				FFB8602D1C4C390400CFB621 /* AquaintTestCases */,
 				FFB8602C1C4C38F800CFB621 /* AquaintUITestCases */,
 				FFBB87251C5307B700500FAD /* Frameworks */,
@@ -512,7 +463,7 @@
 				FF78785B1C30008C00354936 /* libz.tbd */,
 				FF897C331C01AC63001B2634 /* Aquaint */,
 				FF897C321C01AC63001B2634 /* Products */,
-				083B25C0CBB20B8AA59FCC7B /* Pods */,
+				C04EAA157CD0B5492AF59183 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -603,15 +554,14 @@
 		FFBB87251C5307B700500FAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FF3C9C9C1E8CC95300C32C34 /* Graphs.framework */,
 				FF6331691D286BB200967266 /* SafariServices.framework */,
 				FF6331671D286BAB00967266 /* AddressBook.framework */,
 				FFBB87281C5307DA00500FAD /* Facebook Frameworks */,
 				FFBB87241C5307AC00500FAD /* Parse Frameworks */,
 				FFBB87261C5307C800500FAD /* iOS Frameworks */,
-				7D1CC9F354D9EF78F36FCC8C /* Pods_Aquaint.framework */,
-				0DECA6AE8BBCE3AC0B05D864 /* Pods_AquaintTests.framework */,
-				3A33672E844F87E0E0636574 /* Pods_AquaintUITests.framework */,
+				34EEF12311B0D735B7FE379F /* Pods_Aquaint.framework */,
+				A510A69C38AC090A6E7B973F /* Pods_AquaintTests.framework */,
+				01D42B7474E582FDC3F9AFB8 /* Pods_AquaintUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -685,14 +635,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FF897C591C01AC63001B2634 /* Build configuration list for PBXNativeTarget "Aquaint" */;
 			buildPhases = (
-				F95CFFCBCAFBA104C15112CC /* [CP] Check Pods Manifest.lock */,
+				5EBB043354B365769A84F6F7 /* [CP] Check Pods Manifest.lock */,
 				FF897C2D1C01AC63001B2634 /* Sources */,
 				FF897C2E1C01AC63001B2634 /* Frameworks */,
 				FF897C2F1C01AC63001B2634 /* Resources */,
-				F59E4728C1698DF27E879303 /* [CP] Embed Pods Frameworks */,
-				30CD05C1E5DBDE6BC01ED2EC /* [CP] Copy Pods Resources */,
-				7AA7DE039E73567500595AA8 /* Embed Pods Frameworks */,
-				FF3C9CA01E8CCA7800C32C34 /* Embed Frameworks */,
+				A744F868839EBF07C5F92351 /* [CP] Embed Pods Frameworks */,
+				D301069A999CC639AA2DB1FB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -707,12 +655,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FF897C5C1C01AC63001B2634 /* Build configuration list for PBXNativeTarget "AquaintTests" */;
 			buildPhases = (
-				C6156569DB013F67C39585D7 /* [CP] Check Pods Manifest.lock */,
+				6F3190D79D6382F1EDDAC476 /* [CP] Check Pods Manifest.lock */,
 				FF897C411C01AC63001B2634 /* Sources */,
 				FF897C421C01AC63001B2634 /* Frameworks */,
 				FF897C431C01AC63001B2634 /* Resources */,
-				4013854467DCD9292357273C /* [CP] Embed Pods Frameworks */,
-				877F4F03B37AE3609330AAFE /* [CP] Copy Pods Resources */,
+				BD52CE23F140B3363214D083 /* [CP] Embed Pods Frameworks */,
+				CFEC363288B472EACFD3D01B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -728,11 +676,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FF897C5F1C01AC63001B2634 /* Build configuration list for PBXNativeTarget "AquaintUITests" */;
 			buildPhases = (
-				A72DD4389BB9C7E64EF61AB4 /* [CP] Check Pods Manifest.lock */,
+				E2EF68FFE3B5BFA4C628122F /* [CP] Check Pods Manifest.lock */,
 				FF897C4C1C01AC63001B2634 /* Sources */,
 				FF897C4D1C01AC63001B2634 /* Frameworks */,
 				FF897C4E1C01AC63001B2634 /* Resources */,
-				B2A61D56E63A0C0913469C4B /* [CP] Copy Pods Resources */,
+				921A36099BEF0014DAEC4E65 /* [CP] Embed Pods Frameworks */,
+				229D3AC8B094A6580A37D3B7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -828,82 +777,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		30CD05C1E5DBDE6BC01ED2EC /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4013854467DCD9292357273C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AquaintTests/Pods-AquaintTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7AA7DE039E73567500595AA8 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		877F4F03B37AE3609330AAFE /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AquaintTests/Pods-AquaintTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A72DD4389BB9C7E64EF61AB4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		B2A61D56E63A0C0913469C4B /* [CP] Copy Pods Resources */ = {
+		229D3AC8B094A6580A37D3B7 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -918,7 +792,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AquaintUITests/Pods-AquaintUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C6156569DB013F67C39585D7 /* [CP] Check Pods Manifest.lock */ = {
+		5EBB043354B365769A84F6F7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -930,10 +804,40 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		F59E4728C1698DF27E879303 /* [CP] Embed Pods Frameworks */ = {
+		6F3190D79D6382F1EDDAC476 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		921A36099BEF0014DAEC4E65 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AquaintUITests/Pods-AquaintUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A744F868839EBF07C5F92351 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -948,7 +852,52 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F95CFFCBCAFBA104C15112CC /* [CP] Check Pods Manifest.lock */ = {
+		BD52CE23F140B3363214D083 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AquaintTests/Pods-AquaintTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CFEC363288B472EACFD3D01B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AquaintTests/Pods-AquaintTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D301069A999CC639AA2DB1FB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E2EF68FFE3B5BFA4C628122F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -960,7 +909,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -988,7 +937,6 @@
 				FF8972941E14B10C00A4D9C4 /* CustomRefreshControl.swift in Sources */,
 				FF9BFCD31D3F308A00987D78 /* CustomSearchBar.swift in Sources */,
 				FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */,
-				FF3C9C981E8CC76F00C32C34 /* GraphView.swift in Sources */,
 				FF7878461C281A2500354936 /* FriendRequestsController.swift in Sources */,
 				FFF335A21E89B13F00E8B70F /* QRScannerController.swift in Sources */,
 				FF89729A1E1991D500A4D9C4 /* FollowerListViewController.swift in Sources */,
@@ -998,9 +946,7 @@
 				FFF335A11E89B13F00E8B70F /* CutTransparentHoleInView.swift in Sources */,
 				FF690F721E8B758A003FA5B4 /* AnalyticsContentTableViewCell.swift in Sources */,
 				FFF442361C4B2244007651DE /* Functions.swift in Sources */,
-				FF3C9C971E8CC76F00C32C34 /* GraphsExtensions.swift in Sources */,
 				FF897C371C01AC63001B2634 /* ViewController.swift in Sources */,
-				FF3C9C951E8CC76F00C32C34 /* BarGraphView.swift in Sources */,
 				FF8420221D29B59F002D2927 /* BackendAPI.swift in Sources */,
 				FFF335A51E89B13F00E8B70F /* ScanCodeDisplayStoryboardViewController.swift in Sources */,
 				FF7878791C352D0400354936 /* TableViewCell.swift in Sources */,
@@ -1012,7 +958,6 @@
 				FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */,
 				FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */,
 				FF690F621E8B403F003FA5B4 /* AnalyticsDisplayViewController.swift in Sources */,
-				FF3C9C991E8CC76F00C32C34 /* LineGraphView.swift in Sources */,
 				FFF335A91E89B1A200E8B70F /* HelpPopupView.swift in Sources */,
 				FFBDD7611CD5B6190007A188 /* NewsfeedTableViewCell.swift in Sources */,
 				FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */,
@@ -1030,15 +975,12 @@
 				FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */,
 				FF83A4DF1CC59A3900AFB26B /* RBResizer.swift in Sources */,
 				FF690F701E8B7559003FA5B4 /* AnalyticsHeaderTableViewCell.swift in Sources */,
-				FF3C9C9A1E8CC76F00C32C34 /* MultiBarGraphView.swift in Sources */,
 				FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */,
 				FFBDD75A1CD59A2D0007A188 /* WorldNotificationsViewController.swift in Sources */,
 				FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */,
 				FF89728E1E10A44800A4D9C4 /* ForgotPasswordViewController.swift in Sources */,
-				FF3C9C9B1E8CC76F00C32C34 /* PieGraphView.swift in Sources */,
 				FF8972A21E1B22F400A4D9C4 /* WalkthroughPageViewController.swift in Sources */,
 				FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */,
-				FF3C9C961E8CC76F00C32C34 /* Graph.swift in Sources */,
 				FF6813F41E0DF1F0007930BA /* FollowRequestsViewController.swift in Sources */,
 				FF8420261D30A138002D2927 /* AddSocialMediaProfilesController.swift in Sources */,
 				FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */,
@@ -1177,7 +1119,7 @@
 		};
 		FF897C5A1C01AC63001B2634 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 12A745E60F4646F35588D48C /* Pods-Aquaint.debug.xcconfig */;
+			baseConfigurationReference = 671137205723932265B11D03 /* Pods-Aquaint.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1276,7 +1218,7 @@
 		};
 		FF897C5B1C01AC63001B2634 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EA7880975F687C6827F7B301 /* Pods-Aquaint.release.xcconfig */;
+			baseConfigurationReference = 820A230C1F41AD15AF685EEB /* Pods-Aquaint.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1374,7 +1316,7 @@
 		};
 		FF897C5D1C01AC63001B2634 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BFA6407C29C4B103B3F32EEC /* Pods-AquaintTests.debug.xcconfig */;
+			baseConfigurationReference = 80DE6A0B04CCD15219F58E87 /* Pods-AquaintTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -1389,7 +1331,7 @@
 		};
 		FF897C5E1C01AC63001B2634 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C734498D23A2E4D446F260FB /* Pods-AquaintTests.release.xcconfig */;
+			baseConfigurationReference = 9A64274B07B3280E1F621ACD /* Pods-AquaintTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -1403,7 +1345,7 @@
 		};
 		FF897C601C01AC63001B2634 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B023BA07E0D736BEED4A4905 /* Pods-AquaintUITests.debug.xcconfig */;
+			baseConfigurationReference = C45821F799B96B5198E5BE7B /* Pods-AquaintUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = ConnectMeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1416,7 +1358,7 @@
 		};
 		FF897C611C01AC63001B2634 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C0A85DC514249201247ACD2E /* Pods-AquaintUITests.release.xcconfig */;
+			baseConfigurationReference = 2E8833267EF2168C25287F83 /* Pods-AquaintUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = ConnectMeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

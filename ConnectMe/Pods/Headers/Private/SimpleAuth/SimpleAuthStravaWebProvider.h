@@ -1,1 +1,0 @@
-../../../SimpleAuth/Pod/Providers/Strava/SimpleAuthStravaWebProvider.h

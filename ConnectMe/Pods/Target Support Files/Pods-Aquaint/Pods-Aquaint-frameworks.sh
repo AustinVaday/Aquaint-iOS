@@ -16,7 +16,7 @@ install_framework()
     local source="$1"
   fi
 
-  local destination="${CONFIGURATION_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
+  local destination="${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}"
 
   if [ -L "${source}" ]; then
       echo "Symlinked..."
@@ -59,8 +59,13 @@ code_sign_if_enabled() {
   if [ -n "${EXPANDED_CODE_SIGN_IDENTITY}" -a "${CODE_SIGNING_REQUIRED}" != "NO" -a "${CODE_SIGNING_ALLOWED}" != "NO" ]; then
     # Use the current code_sign_identitiy
     echo "Code Signing $1 with Identity ${EXPANDED_CODE_SIGN_IDENTITY_NAME}"
-    echo "/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements \"$1\""
-    /usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements "$1"
+    local code_sign_cmd="/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} ${OTHER_CODE_SIGN_FLAGS} --preserve-metadata=identifier,entitlements '$1'"
+
+    if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
+      code_sign_cmd="$code_sign_cmd &"
+    fi
+    echo "$code_sign_cmd"
+    eval "$code_sign_cmd"
   fi
 }
 
@@ -84,46 +89,51 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "Pods-Aquaint/AWSCognito.framework"
-  install_framework "Pods-Aquaint/AWSCognitoIdentityProvider.framework"
-  install_framework "Pods-Aquaint/AWSCore.framework"
-  install_framework "Pods-Aquaint/AWSDynamoDB.framework"
-  install_framework "Pods-Aquaint/AWSEC2.framework"
-  install_framework "Pods-Aquaint/AWSLambda.framework"
-  install_framework "Pods-Aquaint/AWSMobileAnalytics.framework"
-  install_framework "Pods-Aquaint/AWSS3.framework"
-  install_framework "Pods-Aquaint/AWSSNS.framework"
-  install_framework "Pods-Aquaint/CMDQueryStringSerialization.framework"
-  install_framework "Pods-Aquaint/FRHyperLabel.framework"
-  install_framework "Pods-Aquaint/ISO8601.framework"
-  install_framework "Pods-Aquaint/KLCPopup.framework"
-  install_framework "Pods-Aquaint/NSData_Base64.framework"
-  install_framework "Pods-Aquaint/ReachabilitySwift.framework"
-  install_framework "Pods-Aquaint/ReactiveCocoa.framework"
-  install_framework "Pods-Aquaint/Result.framework"
-  install_framework "Pods-Aquaint/SCLAlertView.framework"
-  install_framework "Pods-Aquaint/SimpleAuth.framework"
-  install_framework "Pods-Aquaint/cocoa_oauth.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSCognito/AWSCognito.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSCognitoIdentityProvider/AWSCognitoIdentityProvider.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSCore/AWSCore.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSDynamoDB/AWSDynamoDB.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSEC2/AWSEC2.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSLambda/AWSLambda.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSMobileAnalytics/AWSMobileAnalytics.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSS3/AWSS3.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSSNS/AWSSNS.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CMDQueryStringSerialization/CMDQueryStringSerialization.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FRHyperLabel/FRHyperLabel.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Graphs/Graphs.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/ISO8601/ISO8601.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/KLCPopup/KLCPopup.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NSData+Base64/NSData_Base64.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/ReachabilitySwift/ReachabilitySwift.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/ReactiveCocoa/ReactiveCocoa.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Result/Result.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SCLAlertView/SCLAlertView.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SimpleAuth/SimpleAuth.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/cocoa-oauth/cocoa_oauth.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "Pods-Aquaint/AWSCognito.framework"
-  install_framework "Pods-Aquaint/AWSCognitoIdentityProvider.framework"
-  install_framework "Pods-Aquaint/AWSCore.framework"
-  install_framework "Pods-Aquaint/AWSDynamoDB.framework"
-  install_framework "Pods-Aquaint/AWSEC2.framework"
-  install_framework "Pods-Aquaint/AWSLambda.framework"
-  install_framework "Pods-Aquaint/AWSMobileAnalytics.framework"
-  install_framework "Pods-Aquaint/AWSS3.framework"
-  install_framework "Pods-Aquaint/AWSSNS.framework"
-  install_framework "Pods-Aquaint/CMDQueryStringSerialization.framework"
-  install_framework "Pods-Aquaint/FRHyperLabel.framework"
-  install_framework "Pods-Aquaint/ISO8601.framework"
-  install_framework "Pods-Aquaint/KLCPopup.framework"
-  install_framework "Pods-Aquaint/NSData_Base64.framework"
-  install_framework "Pods-Aquaint/ReachabilitySwift.framework"
-  install_framework "Pods-Aquaint/ReactiveCocoa.framework"
-  install_framework "Pods-Aquaint/Result.framework"
-  install_framework "Pods-Aquaint/SCLAlertView.framework"
-  install_framework "Pods-Aquaint/SimpleAuth.framework"
-  install_framework "Pods-Aquaint/cocoa_oauth.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSCognito/AWSCognito.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSCognitoIdentityProvider/AWSCognitoIdentityProvider.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSCore/AWSCore.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSDynamoDB/AWSDynamoDB.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSEC2/AWSEC2.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSLambda/AWSLambda.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSMobileAnalytics/AWSMobileAnalytics.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSS3/AWSS3.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/AWSSNS/AWSSNS.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CMDQueryStringSerialization/CMDQueryStringSerialization.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FRHyperLabel/FRHyperLabel.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Graphs/Graphs.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/ISO8601/ISO8601.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/KLCPopup/KLCPopup.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/NSData+Base64/NSData_Base64.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/ReachabilitySwift/ReachabilitySwift.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/ReactiveCocoa/ReactiveCocoa.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Result/Result.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SCLAlertView/SCLAlertView.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SimpleAuth/SimpleAuth.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/cocoa-oauth/cocoa_oauth.framework"
+fi
+if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
+  wait
 fi
