@@ -39,6 +39,13 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     var reachability: Reachability!
     var arrivedFromWalkthrough = false
   
+  // flags for push notification handling, when the app is killed and relaunched
+  let NO_NOTIFICATION = 0
+  let NEW_FOLLOWER = 1
+  let FOLLOW_REQUEST_ACCEPTANCE = 2
+  let NEW_FOLLOW_REQUESTS = 3
+  var arrivedFromPushNotification = 0
+  
     // This is our child (container) view controller that holds all our pages
     var mainPageViewController: MainPageViewController!
 
@@ -193,7 +200,31 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
           
         }
       
-        askUserForPushNotificationPermission()
+      // push notification handling, when the app is killed and relaunched
+      switch arrivedFromPushNotification {
+      case NEW_FOLLOWER:
+        goToPage4OfSection(0)
+        break
+        
+      case FOLLOW_REQUEST_ACCEPTANCE:
+        goToPage4OfSection(1)
+        break
+        
+      case NEW_FOLLOW_REQUESTS:
+        goToPage0AndShowFollowRequests()
+        break
+        
+      default:
+        print("MainContainerViewController(arrivedFromPushNotification): undefined flag.")
+        break
+      }
+      
+      askUserForPushNotificationPermission()
+      
+      // clear all badges from previous notifications on the app icon
+      UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+      
+      //
       /*
       print("Adding deviceID to dynamoDB table...");
       updateDeviceIDDynamoDB()
