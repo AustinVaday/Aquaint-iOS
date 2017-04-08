@@ -39,6 +39,13 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     var reachability: Reachability!
     var arrivedFromWalkthrough = false
   
+  // flags for push notification handling, when the app is killed and relaunched
+  let NO_NOTIFICATION = 0
+  let NEW_FOLLOWER = 1
+  let FOLLOW_REQUEST_ACCEPTANCE = 2
+  let NEW_FOLLOW_REQUESTS = 3
+  var arrivedFromPushNotification = 0
+  
     // This is our child (container) view controller that holds all our pages
     var mainPageViewController: MainPageViewController!
 
@@ -55,9 +62,27 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         sectionUnderlineView4.hidden = true
     }
   
-    // prompt the user if he wants to enable app push notification. If yes, register system-level remote notification
+    // prompt the user if he/she wants to enable app push notification. If yes, register system-level remote notification
     func askUserForPushNotificationPermission() {
-      if UIApplication.sharedApplication().isRegisteredForRemoteNotifications() == false {
+      
+      // TODO: if user disables notification permission in system Settings later, the prompt would still show up but cannot register for push notification. Have to distinguish "Declined" or "Uninitialized"
+      let timeIntervalThreshold = 604800.0  // setting to one week (in seconds)
+      var willRemindUser = 1
+      
+      let lastNotificationDate = getCurrentNotificationTimestamp()
+      let currentDate = NSDate()
+      if let lastNotification = lastNotificationDate {
+        let timeInterval = currentDate.timeIntervalSinceDate(lastNotification)
+        // if we have reminded user to enable push notification before (a timestamp entry exists in NSUserDefaults), in less than timeIntervalThreshold, we don't ask again
+        if timeInterval < timeIntervalThreshold {
+          willRemindUser = 0
+        }
+      }
+      
+      let isRegisteredForNotification = UIApplication.sharedApplication().isRegisteredForRemoteNotifications()
+      
+      if ((UIApplication.sharedApplication().isRegisteredForRemoteNotifications() == false) && (willRemindUser == 1)) {
+        
         let alertTitle = "Enable Push Notification"
         let alertMessage = "Aquaint will notify you when you have new followers, new follow requests or your follow requests to others get accepted! "
         let notificationAlert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .Alert)
@@ -73,6 +98,9 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
           UIAlertAction in
           
           print("askUserForPushNotificationPermission: user chooses NOT to enable push notification. ")
+          
+          let currentDate = NSDate.init()
+          setCurrentNotificationTimestamp(currentDate)
         }
         
         notificationAlert.addAction(noAction)
@@ -82,7 +110,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
           self.presentViewController(notificationAlert, animated: true, completion: nil)
         }
         
-      } else {
+      } else if (isRegisteredForNotification == true) {
         // app has registered system-level push notification service before.
         // register with APN server every time the app launches, to check any update on deviceToken
         registerToReceivePushNotifications()
@@ -193,7 +221,31 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
           
         }
       
-        askUserForPushNotificationPermission()
+      // push notification handling, when the app is killed and relaunched
+      switch arrivedFromPushNotification {
+      case NEW_FOLLOWER:
+        goToPage4OfSection(0)
+        break
+        
+      case FOLLOW_REQUEST_ACCEPTANCE:
+        goToPage4OfSection(1)
+        break
+        
+      case NEW_FOLLOW_REQUESTS:
+        goToPage0AndShowFollowRequests()
+        break
+        
+      default:
+        print("MainContainerViewController(arrivedFromPushNotification): undefined flag.")
+        break
+      }
+      
+      askUserForPushNotificationPermission()
+      
+      // clear all badges from previous notifications on the app icon
+      UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+      
+      //
       /*
       print("Adding deviceID to dynamoDB table...");
       updateDeviceIDDynamoDB()
@@ -265,7 +317,17 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         hideAllSectionUnderlineViews()
         sectionUnderlineView0.hidden = false
     }
+  
+  // a special case for goToPage0 used for push notification handling
+  func goToPage0AndShowFollowRequests() {
+    let dummyButton = UIButton()
     
+    mainPageViewController.changePageToFollowRequests()
+    
+    hideAllSectionUnderlineViews()
+    sectionUnderlineView0.hidden = false
+  }
+  
     @IBAction func goToPage1(sender: UIButton) {
 
         mainPageViewController.changePage(1)
@@ -298,14 +360,15 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     sectionUnderlineView4.hidden = false
   }
   
-    // NOTE: Previous page 2 is NOW PAGE 3.
-    // a special case for goToPage3() used for push notification handling. Displaying Followers or Following section in AquaintsContainerViewController
-//    func goToPage3OfSection(section: Int) {
-//      mainPageViewController.changePageToFollows(section)
-//      
-//      hideAllSectionUnderlineViews()
-//      sectionUnderlineView3.hidden = false
-//    }
+  // NOTE: After adding Aqualytics, Previous page 2 is NOW PAGE 3.
+  // a special case for goToPage4() used for push notification handling. Displaying Followers or Following section in MenuController
+  func goToPage4OfSection(section: Int) {
+    mainPageViewController.changePageToFollows(section)
+    
+    hideAllSectionUnderlineViews()
+    sectionUnderlineView3.hidden = false
+  }
+
   
     func updateSectionUnderLineView(newViewNum: Int) {
         hideAllSectionUnderlineViews()

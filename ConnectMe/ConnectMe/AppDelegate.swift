@@ -51,15 +51,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     if let mainViewController = self.window?.rootViewController as? MainContainerViewController {
       
       if identifier == "newFollower" {
-//        mainViewController.goToPage3OfSection(0)
+        mainViewController.goToPage4OfSection(0)
         
       } else if identifier == "followRequestAcceptance" {
-//        mainViewController.goToPage3OfSection(1)
+        mainViewController.goToPage4OfSection(1)
         
       } else if identifier == "newFollowRequests" {
         
-        let vcHome = mainViewController.mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
-        vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
+        let dummyButton = UIButton()
+        mainViewController.goToPage0AndShowFollowRequests()
         
         /* approach #1: directly presenting FollowRequestsViewController
          let vcFollowRequests = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController") as? FollowRequestsViewController
@@ -177,8 +177,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
 
       let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
       let viewControllerIdentifier = "MainContainerViewController"
+      
+      // handle push notificiations when app is killed and relaunched
+      let vcMainContainer = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier) as! MainContainerViewController
+      
+      if let payload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary, identifier = payload["identifier"] as? NSString {
+        print("application(didFinishLaunchingWithOptions): with RemoteNotificaitonKey: ", payload)
+        
+        if identifier == "newFollower" {
+          vcMainContainer.arrivedFromPushNotification = vcMainContainer.NEW_FOLLOWER
+        } else if identifier == "followRequestAcceptance" {
+          vcMainContainer.arrivedFromPushNotification = vcMainContainer.FOLLOW_REQUEST_ACCEPTANCE
+        } else if identifier == "newFollowRequests" {
+          vcMainContainer.arrivedFromPushNotification = vcMainContainer.NEW_FOLLOW_REQUESTS
+        }
+        
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+      }
+      
       // Go to home page, as if user was logged in already!
-      self.window?.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
+      self.window?.rootViewController = vcMainContainer
       print("user already logged in")
     }
 
@@ -229,13 +247,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
     
     userPool.delegate = self
-
-    // handle push notificiations when app is killed and relaunched
-    if let payload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary, identifier = payload["identifier"] as? NSString {
-        print("application(didFinishLaunchingWithOptions): with RemoteNotificaitonKey: ", payload)
-      
-        presentSectionfromPushNotification(withIdentifier: identifier)
-    }
     
     return AWSMobileClient.sharedInstance.didFinishLaunching(
       application,
@@ -299,13 +310,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     
     // handle push notifications when app is in foreground or background
     let state: UIApplicationState = UIApplication.sharedApplication().applicationState
-    if state == .Active {
-      if let aps = userInfo["aps"] as? NSDictionary {
-        if let identifier = aps["identifier"] as? NSString {
-          presentSectionfromPushNotification(withIdentifier: identifier)
-        }
+    if (state == .Background) || (state == .Inactive) {
+      if let identifier = userInfo["identifier"] as? NSString {
+        presentSectionfromPushNotification(withIdentifier: identifier)
       }
+    } else {
+      print("\(state): application not in Background or Inactive state, not doing anything.")
     }
+    
+    UIApplication.sharedApplication().applicationIconBadgeNumber = 0
  }
 
   func applicationWillResignActive(application: UIApplication) {
