@@ -58,8 +58,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
         
       } else if identifier == "newFollowRequests" {
         
-        let vcHome = mainViewController.mainPageViewController.arrayOfViewControllers[0] as! HomeContainerViewController
-        vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
+        let dummyButton = UIButton()
+        mainViewController.goToPage0AndShowFollowRequests()
         
         /* approach #1: directly presenting FollowRequestsViewController
          let vcFollowRequests = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController") as? FollowRequestsViewController

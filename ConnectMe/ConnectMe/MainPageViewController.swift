@@ -268,4 +268,26 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
 
   }
   
+  // another function for push notification handling
+  func changePageToFollowRequests() {
+    let pageIndex = 0
+    
+    let destinationViewController = arrayOfViewControllers[pageIndex]
+    
+    var direction : UIPageViewControllerNavigationDirection!
+    
+    if (pageIndex < currentPageIndex) {
+      direction = UIPageViewControllerNavigationDirection.Reverse
+    }
+    else {
+      direction = UIPageViewControllerNavigationDirection.Forward
+    }
+
+    setViewControllers([destinationViewController], direction: direction, animated: true, completion: {
+      (result: Bool) -> Void in
+        let vcHome = self.arrayOfViewControllers[0] as! HomeContainerViewController
+        vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
+    })
+  }
+  
 }

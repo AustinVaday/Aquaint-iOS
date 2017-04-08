@@ -265,7 +265,17 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         hideAllSectionUnderlineViews()
         sectionUnderlineView0.hidden = false
     }
+  
+  // a special case for goToPage0 used for push notification handling
+  func goToPage0AndShowFollowRequests() {
+    let dummyButton = UIButton()
     
+    mainPageViewController.changePageToFollowRequests()
+    
+    hideAllSectionUnderlineViews()
+    sectionUnderlineView0.hidden = false
+  }
+  
     @IBAction func goToPage1(sender: UIButton) {
 
         mainPageViewController.changePage(1)
@@ -299,7 +309,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
   }
   
   // NOTE: After adding Aqualytics, Previous page 2 is NOW PAGE 3.
-  // a special case for goToPage3() used for push notification handling. Displaying Followers or Following section in MenuController
+  // a special case for goToPage4() used for push notification handling. Displaying Followers or Following section in MenuController
   func goToPage4OfSection(section: Int) {
     mainPageViewController.changePageToFollows(section)
     
