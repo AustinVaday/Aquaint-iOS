@@ -656,6 +656,11 @@ func setCurrentCachedUserProfiles(userProfiles: NSMutableDictionary)
   defaults.setObject(userProfiles, forKey: "userprofiles")
 }
 
+func setCurrentNotificationTimestamp(timestamp: NSDate) {
+  let defaults = NSUserDefaults.standardUserDefaults()
+  defaults.setObject(timestamp, forKey: "notificationTimestamp")
+}
+
 // Get the current user that is signed into the app
 func getCurrentCachedUser() -> String!
 {
@@ -848,6 +853,20 @@ func getCurrentCachedUserProfiles() -> NSMutableDictionary!
   let mutableCopy = NSMutableDictionary(dictionary: currentUserProfiles)
   return mutableCopy
   
+}
+
+// Get the Notification Timestamp of last time reminding the user to enable push notification feature
+func getCurrentNotificationTimestamp() -> NSDate! {
+  let defaults = NSUserDefaults.standardUserDefaults()
+  
+  let currentNotificationTimestamp = defaults.valueForKey("notificationTimestamp")
+  
+  if currentNotificationTimestamp == nil {
+    print("Uh oh, no cached notificationTimestamp available.")
+    return nil
+  }
+  
+  return (currentNotificationTimestamp as! NSDate)
 }
 
 // Get timestamp as integer value
