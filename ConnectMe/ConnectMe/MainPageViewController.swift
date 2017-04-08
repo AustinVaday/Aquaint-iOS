@@ -288,6 +288,8 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         let vcHome = self.arrayOfViewControllers[0] as! HomeContainerViewController
         vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
     })
+    
+    currentPageIndex = pageIndex
   }
   
 }

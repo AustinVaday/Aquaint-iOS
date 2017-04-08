@@ -196,7 +196,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       }
       
       // Go to home page, as if user was logged in already!
-      self.window?.rootViewController = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier)
+      self.window?.rootViewController = vcMainContainer
       print("user already logged in")
     }
 
