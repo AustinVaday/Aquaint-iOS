@@ -51,10 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     if let mainViewController = self.window?.rootViewController as? MainContainerViewController {
       
       if identifier == "newFollower" {
-//        mainViewController.goToPage3OfSection(0)
+        mainViewController.goToPage4OfSection(0)
         
       } else if identifier == "followRequestAcceptance" {
-//        mainViewController.goToPage3OfSection(1)
+        mainViewController.goToPage4OfSection(1)
         
       } else if identifier == "newFollowRequests" {
         
@@ -299,13 +299,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     
     // handle push notifications when app is in foreground or background
     let state: UIApplicationState = UIApplication.sharedApplication().applicationState
-    if state == .Active {
-      if let aps = userInfo["aps"] as? NSDictionary {
-        if let identifier = aps["identifier"] as? NSString {
-          presentSectionfromPushNotification(withIdentifier: identifier)
-        }
+    if (state == .Background) || (state == .Inactive) {
+      if let identifier = userInfo["identifier"] as? NSString {
+        presentSectionfromPushNotification(withIdentifier: identifier)
       }
+    } else {
+      print("\(state): application not in Background or Inactive state, not doing anything.")
     }
+    
+    UIApplication.sharedApplication().applicationIconBadgeNumber = 0
  }
 
   func applicationWillResignActive(application: UIApplication) {

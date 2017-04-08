@@ -234,33 +234,38 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
 
     }
 
-//  // a special case of changePage(pageIndex: 2) used for push notification handling. Displaying Followers or Following section in AnalyticsDisplayViewController
-//  func changePageToFollows(subpageIndex: Int) {  // 0 for Followers, 1 for Following
-//    let pageIndex = ANALYTICS
-//    
-//    let destinationViewController = arrayOfViewControllers[pageIndex]
-//    
-//    var direction : UIPageViewControllerNavigationDirection!
-//    
-//    if (pageIndex < currentPageIndex) {
-//      direction = UIPageViewControllerNavigationDirection.Reverse
-//    }
-//    else {
-//      direction = UIPageViewControllerNavigationDirection.Forward
-//    }
-//    
-//    setViewControllers([destinationViewController], direction: direction, animated: true, completion: nil)
-//    
-//    let vcFollow = destinationViewController as? AnalyticsDisplayViewController
-//    let dummyButton = UIButton();
-//    if (subpageIndex == 0) {
-//      vcFollow?.goToPage0(dummyButton)
-//    } else if (subpageIndex == 1) {
-//      vcFollow?.goToPage1(dummyButton)
-//    }
-//    
-//    currentPageIndex = pageIndex
-//
-//  }
+  // a special case of changePage(pageIndex: 2) used for push notification handling. Displaying Followers or Following section in MenuController
+  func changePageToFollows(subpageIndex: Int) {  // 0 for Followers, 1 for Following
+    let pageIndex = MENU
+    
+    let destinationViewController = arrayOfViewControllers[pageIndex]
+    
+    var direction : UIPageViewControllerNavigationDirection!
+    
+    if (pageIndex < currentPageIndex) {
+      direction = UIPageViewControllerNavigationDirection.Reverse
+    }
+    else {
+      direction = UIPageViewControllerNavigationDirection.Forward
+    }
+    
+    setViewControllers([destinationViewController], direction: direction, animated: true, completion: { (result: Bool) -> Void in
+      if let vcFollow = destinationViewController as? MenuController {
+        
+        let dummyButton = UIButton()
+        if (subpageIndex == 0) {
+          vcFollow.goToFollowersPage(dummyButton)
+        } else if (subpageIndex == 1) {
+          vcFollow.goToFollowingPage(dummyButton)
+        }
+        
+      } else {
+        print("View Controller on UIView is not MenuController; cannot goToFollowers/FollowingPage. ")
+      }
+      })
+    
+    currentPageIndex = pageIndex
+
+  }
   
 }
