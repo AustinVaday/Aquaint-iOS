@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>AWS</key>
 	<dict>
 		<key>CloudLogic</key>
@@ -111,11 +109,13 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>8</string>
+	<string>15</string>
 	<key>FacebookAppID</key>
 	<string>544667035683597</string>
 	<key>FacebookDisplayName</key>
 	<string>Aquaint</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LIAppId</key>
 	<string>4869151</string>
 	<key>LSApplicationQueriesSchemes</key>

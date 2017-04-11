@@ -8,6 +8,7 @@
 
 import UIKit
 import StoreKit
+import LocalAuthentication
 
 
 protocol PaymentsDisplayDelegate {
@@ -24,16 +25,37 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
   
   override func viewDidLoad() {
     // TODO: Fetch list of apple IDs programmatically in future.
-    productIDs.append("Aquaint_Subscription_1_mo")
-    
-    requestProductInfo()
-    
+    self.productIDs.append("Aquaint_Subscription_1_mo")
+    self.requestProductInfo()
     SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+
+    
   }
 
   @IBAction func onClickBuyBottom(sender: AnyObject) {
     if transactionInProgress {
       return
+    }
+    
+    // Touch ID LocalAuthentication
+    let authenticationContext = LAContext()
+    
+    if authenticationContext.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: nil) {
+      // Check the fingerprint
+      authenticationContext.evaluatePolicy(
+        .DeviceOwnerAuthenticationWithBiometrics,
+        localizedReason: "Aquaint Subscription - Authentication is needed to proceed with purchase.",
+        reply: { [unowned self] (success, error) -> Void in
+          if(success) {
+            // Fingerprint recognized
+          } else {
+            // Check if there is an error
+            if let error = error {
+              // TODO: Handle htis
+            }
+          }
+        })
+      
     }
     
     let payment = SKPayment(product: self.productsArray[self.selectedProductIndex] as SKProduct)
