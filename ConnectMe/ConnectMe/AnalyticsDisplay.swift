@@ -74,6 +74,12 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   }
   
   override func viewWillAppear(animated: Bool) {
+    // Do not generate if user is not subscribed -- no point in doing so
+    let subscribed = getCurrentCachedSubscriptionStatus()
+    if !subscribed {
+      return
+    }
+    
     // Call this function to generate all analytics data for this page!
     generateAnalyticsData()
   }

@@ -17,6 +17,8 @@ class AnalyticsDisplayViewController: UIViewController, PaymentsDisplayDelegate 
   var username: String!
   var analyticsDisplayVC: AnalyticsDisplay!
   var paymentsDisplayVC: PaymentsDisplay!
+  var analyticsAddedToSubview = false
+  var paymentsAddedToSubview = false
   
   
   override func viewDidLoad() {
@@ -38,7 +40,7 @@ class AnalyticsDisplayViewController: UIViewController, PaymentsDisplayDelegate 
       var viewController: UIViewController!
       
       // Check whether user has paid for the app or not.
-      var subscribed = getCurrentCachedSubscriptionStatus()
+      let subscribed = getCurrentCachedSubscriptionStatus()
     
       if self.username == nil {
         self.username = getCurrentCachedUser()
@@ -58,8 +60,8 @@ class AnalyticsDisplayViewController: UIViewController, PaymentsDisplayDelegate 
         viewController.view.frame = self.view.frame
         
         self.view.addSubview(viewController.view)
-        
         self.addChildViewController(viewController)
+        
         viewController.didMoveToParentViewController(self)
       }
     

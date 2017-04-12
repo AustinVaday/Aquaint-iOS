@@ -27,11 +27,21 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
     // TODO: Fetch list of apple IDs programmatically in future.
     self.productIDs.append("Aquaint_Subscription_1_mo")
     self.requestProductInfo()
-    SKPaymentQueue.defaultQueue().addTransactionObserver(self)
-
     
   }
+
+  override func viewWillAppear(animated: Bool) {
+    if SKPaymentQueue.canMakePayments() {
+      SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+    }
+  }
   
+  override func viewWillDisappear(animated: Bool) {
+    if SKPaymentQueue.canMakePayments() {
+      SKPaymentQueue.defaultQueue().removeTransactionObserver(self)
+    }
+  }
+
   override func viewDidAppear(animated: Bool) {
     awsMobileAnalyticsRecordPageVisitEventTrigger("PaymentsDisplay", forKey: "page_name")
   }

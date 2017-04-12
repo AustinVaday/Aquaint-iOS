@@ -55,7 +55,10 @@ func fetchAndSetCurrentCachedSubscriptionStatus(userName: String)
       if resultTask.error == nil && resultTask.result != nil {
         print("Result task for subscriptionGetExpiresDate is: ", resultTask.result!)
         
-        let expiration_timestamp_ms = resultTask.result! as! Double
+        guard let expiration_timestamp_ms = resultTask.result as? Double else {
+          print("Error fetch from mock_api backend for subscriptionGetExpiresDate with error returned: ", resultTask.result!)
+          return nil
+        }
         let expiration_timestamp = Int(expiration_timestamp_ms / 1000)
         let current_timestamp = getTimestampAsInt()
         
