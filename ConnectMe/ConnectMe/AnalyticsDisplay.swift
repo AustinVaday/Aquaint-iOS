@@ -81,6 +81,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   override func viewDidAppear(animated: Bool) {
     // Call this function to generate all analytics data for this page!
 //    generateAnalyticsData()
+    awsMobileAnalyticsRecordPageVisitEventTrigger("AnalyticsDisplay", forKey: "page_name")
   }
   
   /**************************************************************************

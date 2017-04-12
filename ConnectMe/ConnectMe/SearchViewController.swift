@@ -125,6 +125,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             setUpAnimations(self)
         }
         print("Filter list size:", self.filteredUsers.count)
+      
+        awsMobileAnalyticsRecordPageVisitEventTrigger("SearchViewController", forKey: "page_name")
     }
     
     // When the view disappears, upload action data to Dynamo (used for newsfeed)

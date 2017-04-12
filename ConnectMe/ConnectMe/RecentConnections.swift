@@ -50,7 +50,9 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     }
     
-    
+    override func viewDidAppear(animated: Bool) {
+      awsMobileAnalyticsRecordPageVisitEventTrigger("RecentConnections", forKey: "page_name")
+    }
     // Function that is called when user drags/pulls table with intention of refreshing it
     func refreshTable(sender:AnyObject)
     {

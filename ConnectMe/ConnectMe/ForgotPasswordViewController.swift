@@ -54,6 +54,9 @@ class ForgotPasswordViewController: UIViewController {
   }
   
   
+  override func viewDidAppear(animated: Bool) {
+    awsMobileAnalyticsRecordPageVisitEventTrigger("ForgotPasswordViewController", forKey: "page_name")
+  }
   /*=======================================================
    * BEGIN : Keyboard/Button Animations
    =======================================================*/

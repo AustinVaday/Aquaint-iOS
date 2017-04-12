@@ -60,6 +60,10 @@ class SignUpFetchMoreDataController: UIViewController {
         edgePan.edges = .Left
         view.addGestureRecognizer(edgePan)
     }
+  
+    override func viewDidAppear(animated: Bool) {
+      awsMobileAnalyticsRecordPageVisitEventTrigger("SignUpFetchMoreDataController", forKey: "page_name")
+    }
     
     
     /*=======================================================

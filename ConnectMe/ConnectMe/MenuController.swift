@@ -217,6 +217,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       self.performSegueWithIdentifier("toAddSocialContactsViewController", sender: self)
       transitionToAddSocialContactsController = false
     }
+    
+    awsMobileAnalyticsRecordPageVisitEventTrigger("MenuViewController", forKey: "page_name")
   }
   
   // KEYBOARD shift-up buttons functionality

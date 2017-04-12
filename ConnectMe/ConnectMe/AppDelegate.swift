@@ -17,6 +17,7 @@ import AWSCognitoIdentityProvider
 import AWSLambda
 import AWSDynamoDB
 import KLCPopup
+import AWSMobileAnalytics
 
 // Begin using Firebase framework
 //import Firebase
@@ -245,6 +246,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       credentialsProvider: credentialsProvider
     )
     AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
+    
+    // App Analytics
+    let analyticsConfiguration = AWSMobileAnalyticsConfiguration.init()
+    analyticsConfiguration.serviceConfiguration = AWSServiceManager.defaultServiceManager().defaultServiceConfiguration
+    _ = AWSMobileAnalytics.init(forAppId: "806eb8fb1f0c4af39af73c945a87e108", configuration: analyticsConfiguration, completionBlock: nil)
     
     userPool.delegate = self
     

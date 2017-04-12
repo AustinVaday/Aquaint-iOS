@@ -31,6 +31,10 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
 
     
   }
+  
+  override func viewDidAppear(animated: Bool) {
+    awsMobileAnalyticsRecordPageVisitEventTrigger("PaymentsDisplay", forKey: "page_name")
+  }
 
   @IBAction func onClickBuyBottom(sender: AnyObject) {
     if transactionInProgress {
@@ -61,6 +65,9 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
     let payment = SKPayment(product: self.productsArray[self.selectedProductIndex] as SKProduct)
     SKPaymentQueue.defaultQueue().addPayment(payment)
     self.transactionInProgress = true
+    
+    // Record event trigger
+    awsMobileAnalyticsRecordButtonClickEventTrigger("PaymentsDisplay - Buy", forKey: "button_name")
     
   }
   

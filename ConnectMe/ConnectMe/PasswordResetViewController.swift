@@ -55,6 +55,10 @@ class PasswordResetViewController: UIViewController {
         view.addGestureRecognizer(edgePan)
         
     }
+  
+    override func viewDidAppear(animated: Bool) {
+      awsMobileAnalyticsRecordPageVisitEventTrigger("PasswordResetViewController", forKey: "page_name")
+    }
     
     
     func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer)

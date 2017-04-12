@@ -40,6 +40,9 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
     view.addGestureRecognizer(edgePan)
   }
 
+  override func viewDidAppear(animated: Bool) {
+    awsMobileAnalyticsRecordPageVisitEventTrigger("AddSocialMediaProfilesController", forKey: "page_name")
+  }
 
   func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer) {
     if recognizer.state == .Ended {

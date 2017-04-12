@@ -62,6 +62,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
   
   override func viewDidAppear(animated: Bool) {
     //        generateData(false)
+    awsMobileAnalyticsRecordPageVisitEventTrigger("FollowRequestsViewController", forKey: "page_name")
   }
   
   // Function that is called when user drags/pulls table with intention of refreshing it

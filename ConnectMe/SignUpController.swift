@@ -79,6 +79,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         //TODO: INVESTIGATE UIImagePickerController class
         // The following initialization, for some reason, takes longer than usual. Doing this AFTER the view appears so that there's no obvious delay in any transitions.
         imagePicker = UIImagePickerController()
+      
+      awsMobileAnalyticsRecordPageVisitEventTrigger("SignUpController", forKey: "page_name")
     }
     
     /*=======================================================

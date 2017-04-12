@@ -46,6 +46,10 @@ class AquaintsSingleFollowerListViewController: UIViewController, FollowerListSe
     
   }
   
+  override func viewDidAppear(animated: Bool) {
+    awsMobileAnalyticsRecordPageVisitEventTrigger("AquaintsSingleFollowerListViewController", forKey: "page_name")
+  }
+  
   func dataForUser() -> String {
     return currentUserName
   }

@@ -13,6 +13,7 @@ import AWSDynamoDB
 import AWSLambda
 import FBSDKCoreKit
 import FBSDKLoginKit
+import AWSMobileAnalytics
 
 class FacebookProvider: NSObject, AWSIdentityProviderManager {
   func logins() -> AWSTask {
@@ -632,4 +633,40 @@ func warmUpLambda()
     }
 }
 
+func awsMobileAnalyticsRecordPageVisitEventTrigger(page: String!, forKey: String!)
+{
+  let eventClient = AWSMobileAnalytics(forAppId: "806eb8fb1f0c4af39af73c945a87e108").eventClient
 
+  guard let client = eventClient else {
+    print("Error creating AMA event client for ", page, "with key: ", forKey)
+    return
+  }
+
+  guard let event = client.createEventWithEventType("PageVisits") else {
+    print("Error creating AMA event for ", page, "with key: ", forKey)
+    return
+  }
+
+  event.addAttribute(page, forKey: forKey)
+  client.recordEvent(event)
+//  client.submitEvents()
+}
+
+func awsMobileAnalyticsRecordButtonClickEventTrigger(button: String!, forKey: String!)
+{
+  let eventClient = AWSMobileAnalytics(forAppId: "806eb8fb1f0c4af39af73c945a87e108").eventClient
+  
+  guard let client = eventClient else {
+    print("Error creating AMA event client for ", button, "with key: ", forKey)
+    return
+  }
+  
+  guard let event = client.createEventWithEventType("ButtonClicks") else {
+    print("Error creating AMA event for ", button, "with key: ", forKey)
+    return
+  }
+  
+  event.addAttribute(button, forKey: forKey)
+  client.recordEvent(event)
+  //  client.submitEvents()
+}

@@ -28,6 +28,13 @@ class ReusableWebViewController: UIViewController {
     titleLabel.text = webTitle
   }
   
+  override func viewDidAppear(animated: Bool) {
+    
+    if webTitle != nil {
+      awsMobileAnalyticsRecordPageVisitEventTrigger("ReusableWebViewController - " + webTitle, forKey: "page_name")
+    }
+  }
+  
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.

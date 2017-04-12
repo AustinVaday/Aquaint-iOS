@@ -57,6 +57,10 @@ class LogInController: UIViewController, AWSCognitoIdentityPasswordAuthenticatio
         view.addGestureRecognizer(edgePan)
 
     }
+  
+    override func viewDidAppear(animated: Bool) {
+      awsMobileAnalyticsRecordPageVisitEventTrigger("LoginController", forKey: "page_name")
+    }
 
     
     /*=======================================================

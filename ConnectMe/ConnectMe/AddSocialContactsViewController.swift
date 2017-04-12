@@ -92,6 +92,7 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
     // If this is not here, then we will upload same user events to dynamo every time.
     recentUsernameAdds = NSMutableDictionary()
 
+    awsMobileAnalyticsRecordPageVisitEventTrigger("AddSocialContactsViewController", forKey: "page_name")
   }
   
   // When the view disappears, upload action data to Dynamo (used for newsfeed)

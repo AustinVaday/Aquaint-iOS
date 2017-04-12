@@ -88,6 +88,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     updateAnalyticsDisplayValues()
     
     fetchUserScanCode()
+    awsMobileAnalyticsRecordPageVisitEventTrigger("ScanCodeDisplay", forKey: "page_name")
     
   }
   

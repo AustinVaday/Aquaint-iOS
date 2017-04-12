@@ -65,6 +65,10 @@ class SignUpVerificationController: UIViewController {
         view.addGestureRecognizer(edgePan)
 
     }
+  
+    override func viewDidAppear(animated: Bool) {
+      awsMobileAnalyticsRecordPageVisitEventTrigger("SignUpVerificationController", forKey: "page_name")
+    }
     
     /*=======================================================
      * BEGIN : Keyboard/Button Animations

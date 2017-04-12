@@ -10,6 +10,7 @@ import UIKit
 import AWSDynamoDB
 import AWSLambda
 import FRHyperLabel
+import AWSMobileAnalytics
 
 class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SponsoredProfileButtonDelegate {
 
@@ -37,7 +38,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             // attempt to regenerate data again
             generateData(0)
         }
-        
+      
+      awsMobileAnalyticsRecordPageVisitEventTrigger("NewsfeedViewController", forKey: "page_name")
     }
     
     // Remove animations after user leaves page. Prevents post-animation stale objects
