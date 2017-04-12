@@ -71,7 +71,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="20"/>
                                 <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Let me try it out!">
+                                <state key="normal" title="Let me try it for free!">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -105,25 +105,49 @@
                                             <constraint firstAttribute="height" constant="150" id="qy8-AH-r7e"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="84V-3X-JRs">
-                                        <rect key="frame" x="32" y="235" width="537" height="141"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="84V-3X-JRs">
+                                        <rect key="frame" x="22" y="203" width="555" height="173"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="141" id="K3p-4v-02c"/>
+                                            <constraint firstAttribute="height" constant="173" id="K3p-4v-02c"/>
                                         </constraints>
                                         <string key="text">Your social media in-depth, easy to use analytics platform. Understand your social media audience and transform your social media campaigns with demographics, location, age, and much more!</string>
-                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$9.99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CfM-7q-pTL">
+                                        <rect key="frame" x="219" y="384" width="162" height="48"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="5hR-q9-95P"/>
+                                            <constraint firstAttribute="width" constant="162" id="vhi-7E-toC"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="35"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="monthly" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GgJ-yV-X5S">
+                                        <rect key="frame" x="221" y="420" width="162" height="27"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="27" id="Eir-6a-tA5"/>
+                                            <constraint firstAttribute="width" constant="162" id="fat-qb-cj1"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Avenir-LightOblique" family="Avenir" pointSize="13"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.039347791920807326" green="0.35024483151952346" blue="0.45324637066364992" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="84V-3X-JRs" firstAttribute="leading" secondItem="yAF-et-xog" secondAttribute="leading" constant="32" id="DMu-Tw-FKP"/>
-                                    <constraint firstItem="84V-3X-JRs" firstAttribute="centerX" secondItem="OBV-80-cr3" secondAttribute="centerX" id="DVl-aV-mJr"/>
-                                    <constraint firstItem="84V-3X-JRs" firstAttribute="centerX" secondItem="yAF-et-xog" secondAttribute="centerX" id="GVZ-qy-Zv1"/>
+                                    <constraint firstItem="84V-3X-JRs" firstAttribute="leading" secondItem="yAF-et-xog" secondAttribute="leading" constant="22" id="DMu-Tw-FKP"/>
+                                    <constraint firstItem="84V-3X-JRs" firstAttribute="centerX" secondItem="OBV-80-cr3" secondAttribute="centerX" constant="-0.5" id="DVl-aV-mJr"/>
+                                    <constraint firstItem="84V-3X-JRs" firstAttribute="centerX" secondItem="yAF-et-xog" secondAttribute="centerX" constant="-0.5" id="GVZ-qy-Zv1"/>
+                                    <constraint firstItem="CfM-7q-pTL" firstAttribute="top" secondItem="84V-3X-JRs" secondAttribute="bottom" constant="8" symbolic="YES" id="Odx-Pi-sx6"/>
                                     <constraint firstAttribute="bottom" secondItem="84V-3X-JRs" secondAttribute="bottom" constant="97" id="T5o-1N-CF8"/>
-                                    <constraint firstItem="84V-3X-JRs" firstAttribute="top" secondItem="OBV-80-cr3" secondAttribute="bottom" constant="54" id="YIz-Lf-tbe"/>
+                                    <constraint firstItem="GgJ-yV-X5S" firstAttribute="centerX" secondItem="yAF-et-xog" secondAttribute="centerX" constant="2" id="TuT-qM-9V8"/>
+                                    <constraint firstItem="84V-3X-JRs" firstAttribute="top" secondItem="OBV-80-cr3" secondAttribute="bottom" constant="22" id="YIz-Lf-tbe"/>
                                     <constraint firstItem="OBV-80-cr3" firstAttribute="top" secondItem="yAF-et-xog" secondAttribute="top" constant="31" id="aPs-cE-3C6"/>
+                                    <constraint firstItem="CfM-7q-pTL" firstAttribute="centerX" secondItem="yAF-et-xog" secondAttribute="centerX" id="xlP-hF-vbH"/>
+                                    <constraint firstItem="GgJ-yV-X5S" firstAttribute="top" secondItem="84V-3X-JRs" secondAttribute="bottom" constant="44" id="ynv-Hh-wld"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1.99" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vjc-DQ-teI">
