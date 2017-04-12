@@ -18,12 +18,13 @@
 		FF1660071D4323F400900686 /* DropDownTableViewFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */; };
 		FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */; };
 		FF23A12F1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A12E1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift */; };
-		FF23A13D1D9340480062E9A0 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF23A13C1D9340480062E9A0 /* PrivacyPolicyViewController.swift */; };
 		FF3834D31D6D483E00FC9F2A /* PopUpAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */; };
 		FF3834D51D6D529500FC9F2A /* ProfilePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */; };
 		FF3C9CA21E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3C9CA11E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift */; };
 		FF47274D1D48750F0065F418 /* SectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */; };
 		FF4D07B11E9D9FF6004919D3 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF4D07B01E9D9FF6004919D3 /* LocalAuthentication.framework */; };
+		FF4D07B41E9DA6D7004919D3 /* ReusableWebView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF4D07B31E9DA6D7004919D3 /* ReusableWebView.storyboard */; };
+		FF4D07B61E9DA706004919D3 /* ReusableWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4D07B51E9DA706004919D3 /* ReusableWebViewController.swift */; };
 		FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */; };
 		FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */; };
 		FF6197A31E59B4DA00B94618 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6197A21E59B4D900B94618 /* Animations.swift */; };
@@ -146,12 +147,13 @@
 		FF1660061D4323F400900686 /* DropDownTableViewFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownTableViewFunctions.swift; sourceTree = "<group>"; };
 		FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetViewController.swift; sourceTree = "<group>"; };
 		FF23A12E1D9056AF0062E9A0 /* AddSocialMediaPageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSocialMediaPageTableViewCell.swift; sourceTree = "<group>"; };
-		FF23A13C1D9340480062E9A0 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		FF3834D21D6D483E00FC9F2A /* PopUpAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PopUpAlert.storyboard; sourceTree = "<group>"; };
 		FF3834D41D6D529500FC9F2A /* ProfilePopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePopupView.swift; sourceTree = "<group>"; };
 		FF3C9CA11E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsFreeViewTableViewCell.swift; sourceTree = "<group>"; };
 		FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeaderCell.swift; sourceTree = "<group>"; };
 		FF4D07B01E9D9FF6004919D3 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		FF4D07B31E9DA6D7004919D3 /* ReusableWebView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ReusableWebView.storyboard; sourceTree = "<group>"; };
+		FF4D07B51E9DA706004919D3 /* ReusableWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReusableWebViewController.swift; sourceTree = "<group>"; };
 		FF5D303D1CBA238600BD417B /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		FF5D303F1CBA55DE00BD417B /* RequestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsTableViewCell.swift; sourceTree = "<group>"; };
 		FF6197A21E59B4D900B94618 /* Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
@@ -324,6 +326,15 @@
 			name = "Aquaints-Followers/Following";
 			sourceTree = "<group>";
 		};
+		FF4D07B21E9DA6AF004919D3 /* Reusable Web View */ = {
+			isa = PBXGroup;
+			children = (
+				FF4D07B31E9DA6D7004919D3 /* ReusableWebView.storyboard */,
+				FF4D07B51E9DA706004919D3 /* ReusableWebViewController.swift */,
+			);
+			name = "Reusable Web View";
+			sourceTree = "<group>";
+		};
 		FF6197991E59979B00B94618 /* ScanCode */ = {
 			isa = PBXGroup;
 			children = (
@@ -493,6 +504,7 @@
 				FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */,
 				FF6197991E59979B00B94618 /* ScanCode */,
 				FF690F681E8B40E3003FA5B4 /* Payments */,
+				FF4D07B21E9DA6AF004919D3 /* Reusable Web View */,
 				FF690F671E8B40A5003FA5B4 /* Analytics */,
 				FF8972A31E1B22FA00A4D9C4 /* Walkthrough */,
 				FF23A1391D93273C0062E9A0 /* Aquaints-Followers/Following */,
@@ -511,7 +523,6 @@
 				FF78783F1C26A0A900354936 /* MenuController.swift */,
 				FF6813F11E0B7D1D007930BA /* AddSocialContactsViewController.swift */,
 				FF1D95E81D89EA960012066C /* PasswordResetViewController.swift */,
-				FF23A13C1D9340480062E9A0 /* PrivacyPolicyViewController.swift */,
 				FF8420251D30A138002D2927 /* AddSocialMediaProfilesController.swift */,
 				FF6813F31E0DF1F0007930BA /* FollowRequestsViewController.swift */,
 				FF897C401C01AC63001B2634 /* Info.plist */,
@@ -759,6 +770,7 @@
 				FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */,
 				FF897C3C1C01AC63001B2634 /* Assets.xcassets in Resources */,
 				FF8972921E14ACB400A4D9C4 /* RefreshContents.xib in Resources */,
+				FF4D07B41E9DA6D7004919D3 /* ReusableWebView.storyboard in Resources */,
 				FFF335A31E89B13F00E8B70F /* ScanCodeDisplay.storyboard in Resources */,
 				FF3834D31D6D483E00FC9F2A /* PopUpAlert.storyboard in Resources */,
 			);
@@ -940,6 +952,7 @@
 				FF84201E1D299A5E002D2927 /* SignUpVerificationController.swift in Sources */,
 				FF8972941E14B10C00A4D9C4 /* CustomRefreshControl.swift in Sources */,
 				FF9BFCD31D3F308A00987D78 /* CustomSearchBar.swift in Sources */,
+				FF4D07B61E9DA706004919D3 /* ReusableWebViewController.swift in Sources */,
 				FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */,
 				FF7878461C281A2500354936 /* FriendRequestsController.swift in Sources */,
 				FFF335A21E89B13F00E8B70F /* QRScannerController.swift in Sources */,
@@ -966,7 +979,6 @@
 				FFBDD7611CD5B6190007A188 /* NewsfeedTableViewCell.swift in Sources */,
 				FF5D303E1CBA238600BD417B /* MenuTableViewCell.swift in Sources */,
 				FF690F6C1E8B410B003FA5B4 /* PaymentsDisplay.swift in Sources */,
-				FF23A13D1D9340480062E9A0 /* PrivacyPolicyViewController.swift in Sources */,
 				FFF3A2AB1D4EBC08009EF4F2 /* ContactsTableViewCell.swift in Sources */,
 				FF8420201D299A9C002D2927 /* SignUpFetchMoreDataController.swift in Sources */,
 				FF9BFCD51D3F389500987D78 /* CustomSearchController.swift in Sources */,

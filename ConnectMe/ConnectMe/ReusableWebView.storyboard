@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Reusable Web View -->
+        <scene sceneID="KqT-Bp-uX5">
+            <objects>
+                <viewController storyboardIdentifier="reusableWebViewController" title="Sign Up" modalTransitionStyle="crossDissolve" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1Va-Qh-tOT" userLabel="Reusable Web View " customClass="ReusableWebViewController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pIV-cL-mOW"/>
+                        <viewControllerLayoutGuide type="bottom" id="Af6-ix-h0S"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hqw-nK-V47">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kxI-Tr-CFd" userLabel="PageHeaderView">
+                                <rect key="frame" x="-1" y="18" width="601" height="45"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pW1-DD-EL8">
+                                        <rect key="frame" x="280" y="9" width="42" height="28"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="20"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="pW1-DD-EL8" firstAttribute="bottom" secondItem="kxI-Tr-CFd" secondAttribute="bottomMargin" id="46J-n7-puV"/>
+                                    <constraint firstItem="pW1-DD-EL8" firstAttribute="centerX" secondItem="kxI-Tr-CFd" secondAttribute="centerX" id="EaY-fa-Y8V"/>
+                                    <constraint firstAttribute="height" constant="45" id="Ev0-hL-Dd3"/>
+                                </constraints>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login Background" translatesAutoresizingMaskIntoConstraints="NO" id="Swy-dO-exb">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9ja-b7-0rw" userLabel="SystemHeaderView">
+                                <rect key="frame" x="-1" y="0.0" width="601" height="20"/>
+                                <color key="backgroundColor" red="0.055401942349999997" green="0.3908864695" blue="0.53284902899999997" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FOo-Wv-Xbf">
+                                <rect key="frame" x="20" y="28" width="26" height="26"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="26" id="HMj-hU-oRh"/>
+                                </constraints>
+                                <state key="normal" image="Back Arrow"/>
+                                <connections>
+                                    <action selector="backButtonClicked:" destination="1Va-Qh-tOT" eventType="touchUpInside" id="H7Y-eP-d7a"/>
+                                    <segue destination="nv4-rC-Cl2" kind="unwind" unwindAction="unwindBackToMenuVC:" id="0T6-RB-85T"/>
+                                </connections>
+                            </button>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u0s-NB-L6X">
+                                <rect key="frame" x="-1" y="62" width="601" height="538"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" address="YES"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Swy-dO-exb" firstAttribute="leading" secondItem="hqw-nK-V47" secondAttribute="leadingMargin" constant="-20" id="09v-Nq-kfe"/>
+                            <constraint firstItem="9ja-b7-0rw" firstAttribute="leading" secondItem="kxI-Tr-CFd" secondAttribute="leading" id="31I-qH-m4u"/>
+                            <constraint firstItem="9ja-b7-0rw" firstAttribute="trailing" secondItem="kxI-Tr-CFd" secondAttribute="trailing" id="43F-t2-Dz8"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Swy-dO-exb" secondAttribute="trailing" constant="-20" id="AE0-YQ-yF3"/>
+                            <constraint firstItem="kxI-Tr-CFd" firstAttribute="trailing" secondItem="u0s-NB-L6X" secondAttribute="trailing" id="B3g-hC-nh7"/>
+                            <constraint firstItem="u0s-NB-L6X" firstAttribute="bottom" secondItem="Af6-ix-h0S" secondAttribute="top" id="Ehy-yM-tDH"/>
+                            <constraint firstItem="9ja-b7-0rw" firstAttribute="top" secondItem="hqw-nK-V47" secondAttribute="top" id="Iy6-rq-H5a"/>
+                            <constraint firstItem="kxI-Tr-CFd" firstAttribute="centerY" secondItem="FOo-Wv-Xbf" secondAttribute="centerY" id="Knm-Pc-iay"/>
+                            <constraint firstItem="Af6-ix-h0S" firstAttribute="top" secondItem="Swy-dO-exb" secondAttribute="bottom" id="MEs-Cw-38z"/>
+                            <constraint firstItem="Swy-dO-exb" firstAttribute="top" secondItem="pIV-cL-mOW" secondAttribute="bottom" constant="-20" id="PsI-0e-Jjy"/>
+                            <constraint firstItem="kxI-Tr-CFd" firstAttribute="leading" secondItem="u0s-NB-L6X" secondAttribute="leading" id="SkA-ar-EQy"/>
+                            <constraint firstItem="FOo-Wv-Xbf" firstAttribute="leading" secondItem="hqw-nK-V47" secondAttribute="leadingMargin" id="WaR-3E-Jky"/>
+                            <constraint firstItem="FOo-Wv-Xbf" firstAttribute="top" secondItem="pIV-cL-mOW" secondAttribute="bottom" constant="8" symbolic="YES" id="akt-cV-DSa"/>
+                            <constraint firstAttribute="trailing" secondItem="9ja-b7-0rw" secondAttribute="trailing" id="clB-6G-5n6"/>
+                            <constraint firstItem="u0s-NB-L6X" firstAttribute="top" secondItem="FOo-Wv-Xbf" secondAttribute="bottom" constant="8" symbolic="YES" id="ieB-od-GCX"/>
+                            <constraint firstItem="kxI-Tr-CFd" firstAttribute="top" secondItem="hqw-nK-V47" secondAttribute="topMargin" constant="18" id="pC2-vx-xqO"/>
+                            <constraint firstItem="FOo-Wv-Xbf" firstAttribute="top" secondItem="9ja-b7-0rw" secondAttribute="bottom" constant="8" symbolic="YES" id="qr2-LU-YD0"/>
+                            <constraint firstItem="9ja-b7-0rw" firstAttribute="centerX" secondItem="hqw-nK-V47" secondAttribute="centerX" id="tMq-BX-RNX"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Swy-dO-exb"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="titleLabel" destination="pW1-DD-EL8" id="pDQ-81-k9A"/>
+                        <outlet property="webView" destination="u0s-NB-L6X" id="oMa-Ec-D5M"/>
+                    </connections>
+                </viewController>
+                <exit id="nv4-rC-Cl2" userLabel="Exit" sceneMemberID="exit"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="czf-0C-lAm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="494" y="1329"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Back Arrow" width="50" height="50"/>
+        <image name="Login Background" width="1000" height="1000"/>
+    </resources>
+</document>
