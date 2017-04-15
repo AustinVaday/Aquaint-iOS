@@ -234,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/AddSocialMediaProfilesController.swift"
-            timestampString = "513671190.756016"
+            timestampString = "513911594.284733"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "760"
-            endingLineNumber = "760"
+            startingLineNumber = "763"
+            endingLineNumber = "763"
             landmarkName = "showAndProcessUsernameAlert(_:forCell:)"
             landmarkType = "5">
          </BreakpointContent>

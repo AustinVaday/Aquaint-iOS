@@ -56,7 +56,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     // Set up the data for the table views section.
     tableViewSectionsList = Array<String>()
-    tableViewSectionsList.append("VIEWS PER DAY (LAST 10 DAYS)")
+    tableViewSectionsList.append("CODE SCANS PER DAY (LAST 10 DAYS)")
     tableViewSectionsList.append("ENGAGEMENT BREAKDOWN")
 //    tableViewSectionsList.append("VIEWER GENDER BREAKDOWN")
     tableViewSectionsList.append("LOCATION OF VIEWERS")
@@ -157,7 +157,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     var numRows = 0
     switch tableViewSectionsList[section]
     {
-    case "VIEWS PER DAY (LAST 10 DAYS)":
+    case "CODE SCANS PER DAY (LAST 10 DAYS)":
       numRows = 1
     case "ENGAGEMENT BREAKDOWN":
       if socialProviderToEngagementCountList.isEmpty {

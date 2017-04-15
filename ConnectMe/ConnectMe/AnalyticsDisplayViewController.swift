@@ -41,7 +41,7 @@ class AnalyticsDisplayViewController: UIViewController, PaymentsDisplayDelegate 
       
       // Check whether user has paid for the app or not.
       let subscribed = getCurrentCachedSubscriptionStatus()
-    
+
       if self.username == nil {
         self.username = getCurrentCachedUser()
       }

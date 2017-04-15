@@ -312,7 +312,10 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
 
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("addProfileTableViewCell") as! AddSocialMediaPageTableViewCell
-
+    
+    // Temp iOS versions, iPad white background fix < 10
+    cell.backgroundColor = cell.contentView.backgroundColor;
+    
     let allSocialMediaList = getAllPossibleSocialMediaList()
     let socialMediaType = allSocialMediaList[indexPath.item % allSocialMediaList.count]
 

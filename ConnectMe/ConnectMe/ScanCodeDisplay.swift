@@ -200,7 +200,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   }
   
   @IBAction func onShowHelpProfileViews(sender: AnyObject) {
-    showHelpPopup("Profile Views", description: "This feature allows you to see how many people viewed your Aquaint profile. We track data on both the Aquaint mobile app and Aquaint website (hint: If you didn't know already, you can view your Aquaint profile on the web at www.aquaint.us/user/" + userNameLabel.text! + ")!")
+    showHelpPopup("Code Scans", description: "This feature allows you to see how many people viewed your Aquaint profile (via your scan code). We track data on both the Aquaint mobile app and Aquaint website (hint: If you didn't know already, you can view your Aquaint profile on the web at www.aquaint.us/user/" + userNameLabel.text! + ")!")
   }
   
   @IBAction func onShowHelpEngagements(sender: AnyObject) {
