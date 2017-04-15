@@ -479,7 +479,10 @@ class SignUpVerificationController: UIViewController {
                             
                             self.spinner.stopAnimating()
                             
-                            showAlert("Error", message: "Verification code successful, but could not log you in at this time. Please try again.", buttonTitle: "Try again", sender: self)
+                            //showAlert("Error", message: "Verification code successful, but could not log you in at this time. Please try again.", buttonTitle: "Try again", sender: self)
+                          
+                            let errorMessage = "Verification code successful, but could not log you in at this time. Please try again. Error: " + sessionResultTask.error.debugDescription
+                            showAlert("Error", message: errorMessage, buttonTitle: "Try again", sender: self)
                         })
                     }
                     
