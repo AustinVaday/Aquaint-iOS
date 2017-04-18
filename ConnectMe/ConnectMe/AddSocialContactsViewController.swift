@@ -26,8 +26,8 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
   var followeeRequestsMapping : [String: Int]!
   var recentUsernameAdds : NSMutableDictionary!
   var currentSearchBegin = 0
-  var currentSearchEnd = 15
-  let searchOffset = 15
+  var currentSearchEnd = 25
+  let searchOffset = 25
   let imageCache = NSCache()
   var users: Array<UserPrivacyObjectModel>!
   var userName: String!
@@ -393,25 +393,10 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
           
           print("Current access user id: ", FBSDKAccessToken.currentAccessToken().userID)
           
-          let request = FBSDKGraphRequest(graphPath: "/me/friends?fields=id", parameters: nil)
-          request.startWithCompletionHandler { (connection, result, error) in
-            if error == nil {
-              let resultMap = result as! Dictionary<String, AnyObject>
-              let resultIds = resultMap["data"] as! Array<Dictionary<String, String>>
-              
-              for object in resultIds {
-                print("Id is: ", object["id"]! as String)
-                let id = object["id"]! as String
-                self.listOfFBUserIDs.insert(id)
-              }
-              
-              completion(error: nil)
-              
-            } else {
-              print("Error getting **FB friends", error)
-              completion(error: error)
-            }
-          }
+          let currentGraphPath = "/me/friends?fields=id"
+          
+          self.startGraphRequest(currentGraphPath, completion: completion)
+        
         }
       } else {
         completion(error: error)
@@ -423,12 +408,45 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
     print("YOLOGINYO")
     
   }
+  
+  private func startGraphRequest(path: String, completion: (error: NSError?)->()) {
+    let request = FBSDKGraphRequest(graphPath: path, parameters: ["limit": "100"])
+    request.startWithCompletionHandler { (connection, result, error) in
+      if error == nil {
+        let resultMap = result as! Dictionary<String, AnyObject>
+        let resultIds = resultMap["data"] as! Array<Dictionary<String, String>>
+        let pagingMap = resultMap["paging"] as! Dictionary<String, AnyObject>
+//        
+//        if pagingMap.keys.count != 0 && pagingMap.keys.contains("next")
+//        {
+//          print("PAGINATION TIME!!")
+//          print(pagingMap["next"])
+//          let nextGraphPath = pagingMap["next"] as! String
+//          self.startGraphRequest(nextGraphPath, completion: completion)
+//        }
+        
+        
+        for object in resultIds {
+          print("Id is: ", object["id"]! as String)
+          let id = object["id"]! as String
+          self.listOfFBUserIDs.insert(id)
+        }
+        
+        completion(error: nil)
+        
+      } else {
+        print("Error getting **FB friends", error)
+        completion(error: error)
+      }
+    }
+    
+  }
 
   private func fetchDynamoUserDataFromFBUID(fbUID: String) {
     let dynamoDB = AWSDynamoDB.defaultDynamoDB()
     let scanInput = AWSDynamoDBScanInput()
     scanInput.tableName = "aquaint-users"
-    scanInput.limit = 100
+    scanInput.limit = 200
     scanInput.exclusiveStartKey = nil
       
     let UIDValue = AWSDynamoDBAttributeValue()
@@ -439,12 +457,13 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
     
     
     dynamoDB.scan(scanInput).continueWithBlock { (resultTask) -> AnyObject? in
+      print("SCAN FOR UID ", fbUID)
       if resultTask.result != nil && resultTask.error == nil
       {
         print("DB QUERY SUCCESS:", resultTask.result)
         let results = resultTask.result as! AWSDynamoDBScanOutput
         for result in results.items! {
-          print("RESULT IS: ", result)
+          print("RESULT for UID ", fbUID, " IS: ", result)
           
           let user = UserPrivacyObjectModel()
           user.realname = (result["realname"]?.S)! as String
@@ -473,11 +492,14 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
           
         }
         
-        
+      }
+      else if resultTask.result == nil
+      {
+        print("DB QUERY NIL for UID:", fbUID )
       }
       else
       {
-        print("DB QUERY FAILURE:", resultTask.error)
+        print("DB QUERY FAILURE for UID:", fbUID, " error is: ", resultTask.error)
       }
       return nil
     }
