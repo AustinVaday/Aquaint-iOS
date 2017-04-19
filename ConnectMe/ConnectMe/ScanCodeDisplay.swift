@@ -56,7 +56,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
                             AVMetadataObjectTypeQRCode]
   
   var lastScanCodeProcessedTime: NSDate?
-  let SCAN_CODE_PROCESSING_INTERVAL = 5.0
+  let SCAN_CODE_PROCESSING_INTERVAL = 3.0  // this should be the maximum time taken to fully show the KLCPopup, so that we guarantee its completion handler is called
+  var isShowingUserProfilePopup = false
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -342,18 +343,26 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
         // Check if host of QR code is ours, else we do not process
         if url?.host == "www.aquaint.us" {
           
-        // check if the scan code should be processed now, to avoid duplicate processes
-        if let scanCodeProcessedTime = lastScanCodeProcessedTime {
+          // Check if scan code should be processed now #1: keep the PROCESSING_INTERVAL check to give the first user profile popup enough time to be fully shown
+          // Moving to check #2 after the isShowingUserProfilePopup flag is set
+          if let scanCodeProcessedTime = lastScanCodeProcessedTime {
             let currentDate = NSDate.init()
             if (currentDate.timeIntervalSinceDate(scanCodeProcessedTime) <= SCAN_CODE_PROCESSING_INTERVAL) {
-                print("scanCodeDisplay(): scan code is already processed; ignore current request.")
+                print("scanCodeDisplay(): PROCESSING_INTERVAL: scan code is already processed; ignore current request.")
                 return;
               } else {
                 lastScanCodeProcessedTime = NSDate.init()
-                print("scanCodeDisplay(): processing current scan code...")
               }
           } else {
             lastScanCodeProcessedTime = NSDate.init()
+          }
+          
+          // Check if scan code should be processed now #2
+          if isShowingUserProfilePopup == true {
+            print ("scanCodeDisplay(): isShowingUserProfilePopup: scan code is already processed; ignore current request.")
+            return
+          } else {
+            print ("scanCodeDisplay(): processing current code scan...")
           }
           
           userName = url?.lastPathComponent
@@ -361,7 +370,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           // Check if extracted username is a valid aquaint username
           if verifyUserNameFormat(userName) && verifyUserNameLength(userName) {
             dispatch_async(dispatch_get_main_queue(), { 
-              showPopupForUser(userName, me: getCurrentCachedUser())
+              showPopupForUserFromScanCode(userName, me: getCurrentCachedUser(), sender: self)
             })
           } else {
             print ("Error, could not verify proper username format")

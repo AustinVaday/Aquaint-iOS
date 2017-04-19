@@ -972,6 +972,26 @@ func showPopupForUser(username: String, me: String)
   popup.show()
 }
 
+// Showing KLCPopup at the QR code scanning section
+func showPopupForUserFromScanCode(username: String, me: String, sender: UIViewController) {
+  let popup = getProfilePopup()
+  let view = popup.contentView as! ProfilePopupView
+  view.setDataForUser(username, me: me)
+  popup.contentView = view
+  
+  if let scanCodeViewController = sender as? ScanCodeDisplay {
+    popup.didFinishShowingCompletion = { () -> Void in
+      scanCodeViewController.isShowingUserProfilePopup = true
+    }
+    popup.didFinishDismissingCompletion = { () -> Void in
+      scanCodeViewController.isShowingUserProfilePopup = false
+    }
+  } else {
+    print("showPopupForUserFromScanCode(): sender is not of type ScanCodeDisplay. ")
+  }
+  popup.show()
+}
+
 func showPopupForUserWithView(view: ProfilePopupView)
 {
   let popup = getProfilePopup()
