@@ -51,7 +51,6 @@
                                 <state key="normal" image="Back Arrow"/>
                                 <connections>
                                     <action selector="backButtonClicked:" destination="1Va-Qh-tOT" eventType="touchUpInside" id="H7Y-eP-d7a"/>
-                                    <segue destination="nv4-rC-Cl2" kind="unwind" unwindAction="unwindBackToMenuVC:" id="0T6-RB-85T"/>
                                 </connections>
                             </button>
                             <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u0s-NB-L6X">
@@ -92,7 +91,6 @@
                         <outlet property="webView" destination="u0s-NB-L6X" id="oMa-Ec-D5M"/>
                     </connections>
                 </viewController>
-                <exit id="nv4-rC-Cl2" userLabel="Exit" sceneMemberID="exit"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="czf-0C-lAm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="494" y="1329"/>
