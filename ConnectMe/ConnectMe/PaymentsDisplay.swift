@@ -23,6 +23,9 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
   let selectedProductIndex = 0
   var paidDelegate : PaymentsDisplayDelegate?
   
+  // Make sure Apple's server has responded with IAP product information before proceding to purchase
+  var productsRequestDidReceiveResponse = false
+  
   override func viewDidLoad() {
     // TODO: Fetch list of apple IDs programmatically in future.
     self.productIDs.append("Aquaint_Subscription_1_mo")
@@ -51,6 +54,12 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
       return
     }
     
+    if (productsRequestDidReceiveResponse == false) || (selectedProductIndex >= productsArray.count) {
+      let alertMsg = "No subscription product information has been retrieved. Please check Internet connection, or wait a few seconds and try again. "
+      showAlert("Subscription Error", message: alertMsg, buttonTitle: "OK", sender: self)
+      return
+    }
+    
     // Touch ID LocalAuthentication
     let authenticationContext = LAContext()
     
@@ -65,7 +74,7 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
           } else {
             // Check if there is an error
             if let error = error {
-              // TODO: Handle htis
+              // TODO: Handle this
             }
           }
         })
@@ -94,6 +103,8 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
     if response.invalidProductIdentifiers.count != 0 {
       print(response.invalidProductIdentifiers.description)
     }
+    
+    productsRequestDidReceiveResponse = true
   }
   
   func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
