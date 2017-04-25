@@ -56,7 +56,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     // Set up the data for the table views section.
     tableViewSectionsList = Array<String>()
-    tableViewSectionsList.append("CODE SCANS PER DAY (LAST 10 DAYS)")
+    tableViewSectionsList.append("PROFILE VIEWS PER DAY (LAST 10 DAYS)")
     tableViewSectionsList.append("ENGAGEMENT BREAKDOWN")
 //    tableViewSectionsList.append("VIEWER GENDER BREAKDOWN")
     tableViewSectionsList.append("LOCATION OF VIEWERS")
@@ -71,6 +71,9 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     // When user pulls, this function will be called
     refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
     analyticsTableView.addSubview(refreshControl)
+    
+    // Call this function to generate all analytics data for this page!
+    generateAnalyticsData()
   }
   
   override func viewWillAppear(animated: Bool) {
@@ -80,14 +83,15 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       return
     }
     
-    // Call this function to generate all analytics data for this page!
-    generateAnalyticsData()
   }
   
   override func viewDidAppear(animated: Bool) {
     // Call this function to generate all analytics data for this page!
 //    generateAnalyticsData()
     awsMobileAnalyticsRecordPageVisitEventTrigger("AnalyticsDisplay", forKey: "page_name")
+   
+    // Call this function to generate all analytics data for this page!
+//    generateAnalyticsData()
   }
   
   /**************************************************************************
@@ -157,7 +161,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     var numRows = 0
     switch tableViewSectionsList[section]
     {
-    case "CODE SCANS PER DAY (LAST 10 DAYS)":
+    case "PROFILE VIEWS PER DAY (LAST 10 DAYS)":
       numRows = 1
     case "ENGAGEMENT BREAKDOWN":
       if socialProviderToEngagementCountList.isEmpty {
@@ -256,7 +260,16 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       let locationTemp = locationToCountList[indexPath.item] as! NSArray
       cell.numericalValueLabel.text = String(locationTemp[1])
       cell.numericalTypeLabel.text = "VIEWS"
-      cell.socialProviderLabel.text = String(locationTemp[0])
+      
+      var city = locationTemp[0] as! String
+      
+      // Enhance readability
+      if city == "(not set)" {
+        city = "Unknown"
+      }
+      
+      cell.socialProviderLabel.text = city
+
       break;
 //    case AnalyticsDataEnum.DEVICE_TYPE.rawValue:
 //      // Configure cell for graph
@@ -329,6 +342,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 //      self.viewBreakdownList = Array<Array<Int>>()
       
       for daysAgo in 10.stride(through: 1, by: -1) {
+        print("Fetching data for ", daysAgo, " days ago...")
         // Get engagement info
         parameters = ["action":"getUserSinglePayViewsForDay", "target": currentUserName, "days_ago": daysAgo]
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
@@ -355,21 +369,28 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 
               }
               
-              // Regenerate data in more aesthetic ways (i.e. only display choppy animation on first load, not subsequent ones
-              if (daysAgo == 1 && !self.alreadyInitializedSection[AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue]){
-                self.viewBreakdownList = newViewBreakdownList
-                self.analyticsTableView.reloadData()
-                self.alreadyInitializedSection[AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue] = true
-              } else if (daysAgo == 1 && self.alreadyInitializedSection[AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue]) {
-                self.viewBreakdownList = newViewBreakdownList
-                self.analyticsTableView.reloadData()
-              } else if !self.alreadyInitializedSection[AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue] {
-                self.viewBreakdownList = newViewBreakdownList
-                self.analyticsTableView.reloadData()
-              }
+//              // Regenerate data in more aesthetic ways (i.e. only display choppy animation on first load, not subsequent ones
+//              if (daysAgo == 1 && !self.alreadyInitializedSection[AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue]){
+//                self.viewBreakdownList = newViewBreakdownList
+//                self.analyticsTableView.reloadData()
+//                self.alreadyInitializedSection[AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue] = true
+//              } else if (daysAgo == 1 && self.alreadyInitializedSection[AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue]) {
+//                self.viewBreakdownList = newViewBreakdownList
+//                self.analyticsTableView.reloadData()
+//              } else if !self.alreadyInitializedSection[AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue] {
+//                self.viewBreakdownList = newViewBreakdownList
+//                self.analyticsTableView.reloadData()
+//              }
+              
+              self.viewBreakdownList = newViewBreakdownList
+              self.analyticsTableView.reloadData()
             
             })
           }
+//          else if resultTask.error != nil || resultTask.result == nil {
+//            print("ERROR result task for getUserSinglePayViewsForDay DAYS_GO = ", daysAgo, " and error is: ", resultTask.result!)
+//
+//          }
           
           self.isGeneratingViewBreakdownAnalytics = false
           return nil

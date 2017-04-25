@@ -472,7 +472,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                             newAquaintsNewsfeed[index].socialMediaName = profileData[1] as! String // User's username on the platform
                             
                             
-                            newAquaintsNewsfeed[index].textString = newAquaintsNewsfeed[index].user +  " added a new" + newAquaintsNewsfeed[index].socialMediaType + " account, check it out!"
+                            newAquaintsNewsfeed[index].textString = newAquaintsNewsfeed[index].user +  " added a new " + newAquaintsNewsfeed[index].socialMediaType + " account, check it out!"
                             
                             // Denotes which user to fetch data for in the dropdown!
                             getImageAndProfilesForUser = newAquaintsNewsfeed[index].user
