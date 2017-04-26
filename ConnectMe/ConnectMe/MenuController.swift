@@ -23,7 +23,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     case LINKED_PROFILES
     case MY_INFORMATION
     case SOCIAL_ACTIONS
-    case NOTIFICATION_SETTINGS
+//    case NOTIFICATION_SETTINGS
     case PRIVACY_SETTINGS
     case SUBSCRIPTION_SETTINGS
     case ACTIONS
@@ -44,7 +44,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   let LINKED_PROFILES_TITLE = "Linked Profiles"
   let MY_INFORMATION_TITLE = "My Information"
   let SOCIAL_ACTIONS_TITLE = "Discover Friends"
-  let NOTIFICATION_SETTINGS_TITLE = "Notification Settings"
+//  let NOTIFICATION_SETTINGS_TITLE = "Notification Settings"
   let PRIVACY_SETTINGS_TITLE = "Privacy Settings"
   let SUBSCRIPTION_SETTINGS_TITLE = "Subscription Settings"
   let ACTIONS_TITLE = "Account Actions"
@@ -117,7 +117,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: LINKED_PROFILES_TITLE, sectionCount: 1))
     tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: MY_INFORMATION_TITLE, sectionCount: 3))
     tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: SOCIAL_ACTIONS_TITLE, sectionCount: 1))
-    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: NOTIFICATION_SETTINGS_TITLE, sectionCount: 1))
+//    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: NOTIFICATION_SETTINGS_TITLE, sectionCount: 1))
     tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: PRIVACY_SETTINGS_TITLE, sectionCount: 3))
     tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: SUBSCRIPTION_SETTINGS_TITLE, sectionCount: 1))
     tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: ACTIONS_TITLE, sectionCount: 2))
@@ -518,9 +518,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     case MenuData.MY_INFORMATION.rawValue:
       returnHeight = defaultTableViewCellHeight
       break;
-    case MenuData.NOTIFICATION_SETTINGS.rawValue:
-      returnHeight = CGFloat(50)
-      break;
+//    case MenuData.NOTIFICATION_SETTINGS.rawValue:
+//      returnHeight = CGFloat(50)
+//      break;
     case MenuData.PRIVACY_SETTINGS.rawValue:
       returnHeight = CGFloat(50)
       break;
@@ -646,25 +646,25 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       return cell
       
       break;
-    case MenuData.NOTIFICATION_SETTINGS.rawValue:
-      // return regular button cell
-      let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
-      cell.menuToggleSwitch.hidden = true
-      
-      switch (indexPath.item)
-      {
-      case 0: // button
-        cell.menuButtonLabel.text = "Coming Soon!"
-        break;
-        
-      default: //Default
-        cell.menuButtonLabel.text = ""
-        
-      }
-      
-      return cell
-      
-      break;
+//    case MenuData.NOTIFICATION_SETTINGS.rawValue:
+//      // return regular button cell
+//      let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
+//      cell.menuToggleSwitch.hidden = true
+//      
+//      switch (indexPath.item)
+//      {
+//      case 0: // button
+//        cell.menuButtonLabel.text = "Coming Soon!"
+//        break;
+//        
+//      default: //Default
+//        cell.menuButtonLabel.text = ""
+//        
+//      }
+//      
+//      return cell
+//      
+//      break;
     case MenuData.PRIVACY_SETTINGS.rawValue:
       // return regular button cell
       let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
