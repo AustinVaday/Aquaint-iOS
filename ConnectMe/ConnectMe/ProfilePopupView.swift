@@ -46,7 +46,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
   
     func setDataForUser(username: String, me: String)
     {
-        // Send view trigger to Google analytics
+        // Send view trigger (Profile Views) to Google analytics
         print("Popup profile initiated!")
         let tracker = GAI.sharedInstance().defaultTracker
         GApageName = "/user/" + username + "/iOS"

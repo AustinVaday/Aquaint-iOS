@@ -371,6 +371,16 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           if verifyUserNameFormat(userName) && verifyUserNameLength(userName) {
             dispatch_async(dispatch_get_main_queue(), { 
               showPopupForUserFromScanCode(userName, me: getCurrentCachedUser(), sender: self)
+              
+              // Send view trigger (Code Scans) to Google Analytics
+              let tracker = GAI.sharedInstance().defaultTracker
+              let GApageName = "/user/" + userName + "/iOS/scan"
+              tracker.set(kGAIPage, value: GApageName)
+              
+              let builder = GAIDictionaryBuilder.createScreenView()
+              tracker.send(builder.build() as [NSObject : AnyObject])
+              
+              print("scanCodeDisplay(): trigger Google Analytics for Code Scan: \(GApageName)")
             })
           } else {
             print ("Error, could not verify proper username format")
