@@ -19,6 +19,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   @IBOutlet weak var engagementCountNumber: UILabel!
   @IBOutlet weak var engagementCountLabel: UILabel!
   
+  @IBOutlet weak var codeScansCountNumber: UILabel!
+  @IBOutlet weak var codeScansCountLabel: UILabel!
   
   @IBOutlet weak var maskView: CutTransparentHoleInView!
   @IBOutlet weak var cameraView: UIView!
@@ -27,6 +29,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   
   @IBOutlet weak var firstLineSeparator: UIImageView!
   @IBOutlet weak var secondLineSeparator: UIImageView!
+  @IBOutlet weak var thirdLineSeparator: UIImageView!
   
   @IBOutlet weak var cameraButton: UIButton!
   @IBOutlet weak var exitButton: UIButton!
@@ -160,8 +163,11 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           self.profileViewsCountNumber.textColor = UIColor.whiteColor()
           self.engagementCountLabel.textColor = UIColor.whiteColor()
           self.engagementCountNumber.textColor = UIColor.whiteColor()
+          self.codeScansCountLabel.textColor = UIColor.whiteColor()
+          self.codeScansCountNumber.textColor = UIColor.whiteColor()
           self.firstLineSeparator.image = self.whiteSeparator
           self.secondLineSeparator.image = self.whiteSeparator
+          self.thirdLineSeparator.image = self.whiteSeparator
           self.cameraButton.hidden = true
           self.exitButton.hidden = false
         
@@ -183,10 +189,13 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     self.exportButton.hidden = false
     self.profileViewsCountNumber.textColor = self.aquaBlue
     self.profileViewsCountLabel.textColor = self.aquaBlue
+    self.codeScansCountNumber.textColor = self.aquaBlue
+    self.codeScansCountLabel.textColor = self.aquaBlue
     self.engagementCountNumber.textColor = self.aquaBlue
     self.engagementCountLabel.textColor = self.aquaBlue
     self.firstLineSeparator.image = self.blackSeparator
     self.secondLineSeparator.image = self.blackSeparator
+    self.thirdLineSeparator.image = self.blackSeparator
     self.cameraButton.hidden = false
     self.exitButton.hidden = true
     
@@ -199,21 +208,34 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     cameraView.hidden = true
     
   }
+  @IBAction func onShowHelpCodeScans(sender: AnyObject) {
+    showHelpPopup("Code Scans", description: "This feature allows you to see how many people viewed your Aquaint profile directly from your Aquaint scan code. We track data on both the Aquaint mobile app and Aquaint website (hint: If you didn't know already, you can view your Aquaint profile on the web at www.aquaint.us/user/" + currentUser + ")!")
+  }
   
   @IBAction func onShowHelpProfileViews(sender: AnyObject) {
-    showHelpPopup("Code Scans", description: "This feature allows you to see how many people viewed your Aquaint profile (via your scan code). We track data on both the Aquaint mobile app and Aquaint website (hint: If you didn't know already, you can view your Aquaint profile on the web at www.aquaint.us/user/" + currentUser + ")!")
+    showHelpPopup("Profile Views", description: "This feature allows you to see how many people viewed your Aquaint profile in the app and on your web profile. We track data on both the Aquaint mobile app and Aquaint website (hint: If you didn't know already, you can view your Aquaint profile on the web at www.aquaint.us/user/" + currentUser + ")!")
   }
   
   @IBAction func onShowHelpEngagements(sender: AnyObject) {
     showHelpPopup("Engagements", description: "This feature allows you to see how many people actually clicked on the social media profiles you provided. If you want to see more data such as the number of engagements per social media platform, please check out our advanced analytics features!")
   }
   
-  @IBAction func onMoreFeaturesButtonClicked(sender: AnyObject) {
-    // Takes advantage of the fact that we know our grandparent is MainPageViewController
-    let parentViewController = self.parentViewController?.parentViewController as! MainPageViewController
-    parentViewController.goToAnalyticsPage()
-  }
+//  @IBAction func onMoreFeaturesButtonClicked(sender: AnyObject) {
+//    // Takes advantage of the fact that we know our grandparent is MainPageViewController
+//    let parentViewController = self.parentViewController?.parentViewController as! MainPageViewController
+//    parentViewController.goToAnalyticsPage()
+//  }
 
+  @IBAction func onYourWebProfileClicked(sender: AnyObject) {
+    let reusableWebViewStoryboard = UIStoryboard(name: "ReusableWebView", bundle: nil)
+    let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
+    
+    webDisplayVC.webTitle = "aquaint.us/user/" + currentUser
+    webDisplayVC.webURL = "http://www.aquaint.us/user/" + currentUser
+    self.presentViewController(webDisplayVC, animated: true, completion: nil)
+  }
+  
+  
   func setUpCameraDisplay() {
     // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video as the media type parameter.
     //let captureDevice = AVCaptureDevice.defaultDeviceWithMediaType("AVMediaTypeVideo")
@@ -286,6 +308,21 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
         dispatch_async(dispatch_get_main_queue(), {
           let number = resultTask.result as? Int
           self.profileViewsCountNumber.text  = String(number!)
+        })
+      }
+      
+      return nil
+    }
+    
+    parameters = ["action":"getUserCodeScans", "target": username]
+    
+    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+      if resultTask.error == nil && resultTask.result != nil
+      {
+        print("Result task for getUserCodeScans is: ", resultTask.result!)
+        dispatch_async(dispatch_get_main_queue(), {
+          let number = resultTask.result as? Int
+          self.codeScansCountNumber.text  = String(number!)
         })
       }
       
