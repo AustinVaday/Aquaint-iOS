@@ -48,8 +48,9 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         noContentMessageView.hidden = true
         newsfeedTableView.hidden = false
     }
-    
-    
+  
+  
+  
     @IBAction func onUserClickedAquaintButton(sender: UIButton) {
         
         
@@ -472,7 +473,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                             newAquaintsNewsfeed[index].socialMediaName = profileData[1] as! String // User's username on the platform
                             
                             
-                            newAquaintsNewsfeed[index].textString = newAquaintsNewsfeed[index].user +  " added a new" + newAquaintsNewsfeed[index].socialMediaType + " account, check it out!"
+                            newAquaintsNewsfeed[index].textString = newAquaintsNewsfeed[index].user +  " added a new " + newAquaintsNewsfeed[index].socialMediaType + " account, check it out!"
                             
                             // Denotes which user to fetch data for in the dropdown!
                             getImageAndProfilesForUser = newAquaintsNewsfeed[index].user
@@ -623,12 +624,12 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             {
                 let aquaintEmblemImage = UIImage(named: "Emblem")
                 let aquaintEmblemView  = UIImageView(image: aquaintEmblemImage!)
-                aquaintEmblemView.frame = CGRect(x:0, y:0, width:100, height:100)
+                aquaintEmblemView.frame = CGRect(x:-105, y:-105, width:100, height:100)
                 object.addSubview(aquaintEmblemView)
             }
             else
             {
-                object.frame = CGRect(x:55, y:300, width:20 + randomSizeOffset, height:20 + randomSizeOffset)
+                object.frame = CGRect(x:55, y:-300, width:20 + randomSizeOffset, height:20 + randomSizeOffset)
                 object.backgroundColor = generateRandomColor()
                 object.layer.cornerRadius = object.frame.size.width / 2
             

@@ -15,7 +15,7 @@ import AWSDynamoDB
 class HomeContainerViewController: UIViewController, UIPageViewControllerDelegate, HomePageSectionUnderLineViewDelegate {
     
     
-    @IBOutlet weak var userNameLabel: UILabel!
+//    @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var sectionUnderlineView0: UILabel!
     @IBOutlet weak var sectionUnderlineView1: UILabel!
     @IBOutlet weak var aquaintsButton: UIButton!
@@ -69,8 +69,8 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         userName = getCurrentCachedUser()
       
         // Set username label 
-        userNameLabel.text = userName
-        
+//        userNameLabel.text = userName
+      
 
     }
   
