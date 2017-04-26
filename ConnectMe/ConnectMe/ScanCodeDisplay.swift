@@ -22,7 +22,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   
   @IBOutlet weak var maskView: CutTransparentHoleInView!
   @IBOutlet weak var cameraView: UIView!
-  @IBOutlet weak var userNameLabel: UILabel!
+//  @IBOutlet weak var userNameLabel: UILabel!
   @IBOutlet weak var scanCodeImageView: UIImageView!
   
   @IBOutlet weak var firstLineSeparator: UIImageView!
@@ -34,7 +34,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   @IBOutlet weak var animationView: UIView!
   
   var defaultCameraView: UIView!
-  
+  var currentUser: String!
   var animatedObjects = Array<UIView>()
   var captureSession:AVCaptureSession?
   var videoPreviewLayer:AVCaptureVideoPreviewLayer?
@@ -69,11 +69,11 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     maskView.transparentHoleView = self.scanCodeImageView
     maskView.drawRect(maskView.frame)
     
-    let currentUser = getCurrentCachedUser()
+    currentUser = getCurrentCachedUser()
     
-    if currentUser != nil {
-      userNameLabel.text = currentUser
-    }
+//    if currentUser != nil {
+//      userNameLabel.text = currentUser
+//    }
     
     fetchUserScanCode()
     
@@ -201,7 +201,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   }
   
   @IBAction func onShowHelpProfileViews(sender: AnyObject) {
-    showHelpPopup("Code Scans", description: "This feature allows you to see how many people viewed your Aquaint profile (via your scan code). We track data on both the Aquaint mobile app and Aquaint website (hint: If you didn't know already, you can view your Aquaint profile on the web at www.aquaint.us/user/" + userNameLabel.text! + ")!")
+    showHelpPopup("Code Scans", description: "This feature allows you to see how many people viewed your Aquaint profile (via your scan code). We track data on both the Aquaint mobile app and Aquaint website (hint: If you didn't know already, you can view your Aquaint profile on the web at www.aquaint.us/user/" + currentUser + ")!")
   }
   
   @IBAction func onShowHelpEngagements(sender: AnyObject) {

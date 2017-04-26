@@ -17,7 +17,7 @@ import SCLAlertView
 import FBSDKLoginKit
 import FBSDKCoreKit
 
-class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate {
+class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, EditSectionDelegate {
   
   enum MenuData: Int {
     case LINKED_PROFILES
@@ -40,6 +40,14 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     var sectionTitle : String!
     var sectionCount : Int!
   }
+
+  let LINKED_PROFILES_TITLE = "Linked Profiles"
+  let MY_INFORMATION_TITLE = "My Information"
+  let SOCIAL_ACTIONS_TITLE = "Discover Friends"
+  let NOTIFICATION_SETTINGS_TITLE = "Notification Settings"
+  let PRIVACY_SETTINGS_TITLE = "Privacy Settings"
+  let SUBSCRIPTION_SETTINGS_TITLE = "Subscription Settings"
+  let ACTIONS_TITLE = "Account Actions"
   
   @IBOutlet weak var settingsTableView: UITableView!
   @IBOutlet weak var realNameTextFieldLabel: UITextField!
@@ -71,7 +79,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   //  var phoneCell: MenuTableViewCell!
   
   var isKeyboardShown = false
-  var enableEditing = false // Whether or not to enable editing of text fields.
+  var enableEditingArray = Array<Bool>() // Whether or not to enable editing of text fields.
   var hasDeletedProfiles = false
   var buttonViewOriginalFrame : CGRect!
   var socialMediaImageDictionary: Dictionary<String, UIImage>!
@@ -94,7 +102,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
     
     // Disable editing by default
-    enableEditing = false
+    enableEditingArray = Array(count: 7, repeatedValue: false)
+    
     hasDeletedProfiles = false
     
     // Ensure that the button view is always visible -- in front of the table view
@@ -105,13 +114,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // Set up the data for the table views section. Note: Dictionary does not work for this list as we need a sense of ordering.
     tableViewSectionsList = Array<SectionTitleAndCountPair>()
-    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Linked Profiles", sectionCount: 1))
-    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "My Information", sectionCount: 3))
-    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Discover Friends", sectionCount: 1))
-    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Notification Settings", sectionCount: 1))
-    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Privacy Settings", sectionCount: 3))
-    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Subscription Settings", sectionCount: 1))
-    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: "Account Actions", sectionCount: 2))
+    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: LINKED_PROFILES_TITLE, sectionCount: 1))
+    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: MY_INFORMATION_TITLE, sectionCount: 3))
+    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: SOCIAL_ACTIONS_TITLE, sectionCount: 1))
+    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: NOTIFICATION_SETTINGS_TITLE, sectionCount: 1))
+    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: PRIVACY_SETTINGS_TITLE, sectionCount: 3))
+    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: SUBSCRIPTION_SETTINGS_TITLE, sectionCount: 1))
+    tableViewSectionsList.append(SectionTitleAndCountPair(sectionTitle: ACTIONS_TITLE, sectionCount: 2))
     
     
     // Call this function to generate all AWS data for this page!
@@ -285,7 +294,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     //    }
     
     // Go to edit mode
-    self.onEditInformationButtonClicked(self)
+//    self.onEditInformationButtonClicked(self)
+    self.editSectionButtonClicked(LINKED_PROFILES_TITLE)
   }
   
   /*=======================================================
@@ -296,10 +306,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   @IBAction func onAddSocialMediaProfileButtonClicked(sender: AnyObject) {
     
     // Do this so we don't have any miscrepencies when adding profiles from edit mode
-    if enableEditing
+    if enableEditingArray[MenuData.LINKED_PROFILES.rawValue]
     {
       // Mimic a cancellation
-      self.onCancelButtonClicked(self)
+//      self.onCancelButtonClicked(self)
+      self.cancelSectionButtonClicked(LINKED_PROFILES_TITLE)
     }
   }
   
@@ -346,382 +357,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
   }
   
-  
-  
-  @IBAction func onEditInformationButtonClicked(sender: AnyObject) {
-    
-    // Reload data with editing enabled
-    enableEditing = true
-    settingsTableView.reloadData()
-    
-    // Show the buttons in edit view
-    editButton.hidden = true
-    cancelButton.hidden = false
-    saveButton.hidden = false
-    
-    // Used to keep track of accounts the user wants to delete or not
-    if currentUserAccounts == nil
-    {
-      oldUserAccounts = nil
-    }
-    else
-    {
-      oldUserAccounts = NSMutableDictionary(dictionary: currentUserAccounts as [NSObject : AnyObject], copyItems: true)
-    }
-    // Set first input field as first responder
-    //        realNameTextFieldLabel.becomeFirstResponder()
-    realNameTextFieldLabel.performSelector(#selector(becomeFirstResponder))
-    
-  }
-  
-  @IBAction func onCancelButtonClicked(sender: AnyObject) {
-    
-    enableEditing = false
-    
-    // Show the edit button again
-    editButton.hidden = false
-    cancelButton.hidden = true
-    saveButton.hidden = true
-    
-    // Reset any modified user accounts (profiles)
-    if oldUserAccounts == nil
-    {
-      currentUserAccounts = nil
-    }
-    else
-    {
-      currentUserAccounts = NSMutableDictionary(dictionary: oldUserAccounts as [NSObject : AnyObject], copyItems: true)
-    }
-    keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(currentUserAccounts)
-    self.settingsTableView.reloadData()
-    
-  }
-  
-  @IBAction func onSaveButtonClicked(sender: AnyObject) {
-    self.settingsTableView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
-    
-    delay(0.2) {
-      // State resets
-      self.enableEditing = false
-      self.settingsTableView.reloadData()
-      
-      // Show the edit button again
-      self.editButton.hidden = false
-      self.cancelButton.hidden = true
-      self.saveButton.hidden = true
-      
-      
-      let fullNameIndexPath = NSIndexPath(forRow: MyInformationData.FULL_NAME.rawValue , inSection: MenuData.MY_INFORMATION.rawValue)
-      let emailIndexPath = NSIndexPath(forRow: MyInformationData.EMAIL.rawValue, inSection: MenuData.MY_INFORMATION.rawValue)
-      let phoneIndexPath = NSIndexPath(forRow: MyInformationData.PHONE.rawValue, inSection: MenuData.MY_INFORMATION.rawValue)
-      
-      
-      let fullNameCellTemp = self.settingsTableView.cellForRowAtIndexPath(fullNameIndexPath)
-      let emailCellTemp = self.settingsTableView.cellForRowAtIndexPath(emailIndexPath)
-      let phoneCellTemp = self.settingsTableView.cellForRowAtIndexPath(phoneIndexPath)
-      
-      
-      if fullNameCellTemp == nil || emailCellTemp == nil || phoneCellTemp == nil {
-        
-        delay(0.5) {
-          self.onSaveButtonClicked(sender)
-        }
-        return
-      }
-      
-      
-      let fullNameCell = fullNameCellTemp as! MenuTableViewCell
-      let emailCell = emailCellTemp as! MenuTableViewCell
-      let phoneCell = phoneCellTemp as! MenuTableViewCell
-      
-      // If modified data, adjust accordingly!
-      if self.editedRealName != nil && !self.editedRealName.isEmpty
-      {
-        if (!verifyRealNameLength(self.editedRealName!))
-        {
-          showAlert("Improper full name format", message: "Please create a full name that is less than 30 characters long!", buttonTitle: "Try again", sender: self)
-          self.editedRealName = fullNameCell.menuValue.text
-          return
-        }
-      }
-      else if self.editedRealName != nil && self.editedRealName.isEmpty
-      {
-        showAlert("Improper full name format", message: "Please create a full name that is at least 1 character!", buttonTitle: "Try again", sender: self)
-        
-        self.editedRealName = fullNameCell.menuValue.text
-        return
-
-      }
-      
-      if self.editedUserEmail != nil && !self.editedUserEmail.isEmpty
-      {
-        if (!verifyEmailFormat(self.editedUserEmail!))
-        {
-          showAlert("Improper email address", message: "Please enter in a proper email address!", buttonTitle: "Try again", sender: self)
-          self.editedUserEmail = emailCell.menuValue.text
-          return
-        }
-        
-      }
-      else if self.editedUserEmail != nil && self.editedUserEmail.isEmpty
-      {
-        showAlert("Improper email address", message: "Please enter in an email address!", buttonTitle: "Try again", sender: self)
-        self.editedUserEmail = emailCell.menuValue.text
-        return
-      }
-      
-      
-      if self.editedUserPhone != nil && !self.editedUserPhone.isEmpty
-      {
-        // Get the text from the beginning of the phone number (not US country code)
-        let string = self.editedUserPhone as NSString
-        let phoneString = string.substringFromIndex(2)
-        
-        if !verifyPhoneFormat(phoneString)
-        {
-          showAlert("Improper phone number", message: "Please enter in a proper U.S. phone number.", buttonTitle: "Try again", sender: self)
-          self.editedUserPhone = phoneCell.menuValue.text
-          return
-        }
-        
-        
-      }
-      
-      // ADD CHANGE TO USERPOOLS (email/phone only)
-      let userPool = getAWSCognitoIdentityUserPool()
-      let email = AWSCognitoIdentityUserAttributeType()
-      let phone = AWSCognitoIdentityUserAttributeType()
-      email.name = "email"
-      phone.name = "phone_number"
-      
-      if self.editedUserEmail != nil && self.editedUserEmail != self.currentUserEmail
-      {
-        // Update user pools with currentUserPhone
-        emailCell.menuValue.text = self.editedUserEmail
-        self.currentUserEmail = self.editedUserEmail
-        
-        email.value = self.currentUserEmail
-        phone.value = self.currentUserPhone
-        
-        
-        userPool.getUser(self.currentUserName).updateAttributes([email, phone]).continueWithSuccessBlock { (resultTask) -> AnyObject? in
-          
-          print("SUCCESSFUL USER EMAIL UPDATE IN USERPOOLS")
-          return nil
-        }
-        
-      }
-      
-      if self.editedUserPhone != nil && self.editedUserPhone != self.currentUserPhone
-      {
-        // In case we need to revert changes -- if user cannot verify
-        let oldPhoneNum = self.currentUserPhone
-        
-        // Update user pools with currentUserEmail
-        phoneCell.menuValue.text = self.editedUserPhone
-        self.currentUserPhone = self.editedUserPhone
-        
-        email.value = self.currentUserEmail
-        phone.value = self.currentUserPhone
-        
-        userPool.getUser(self.currentUserName).updateAttributes([email, phone]).continueWithSuccessBlock { (resultTask) -> AnyObject? in
-          
-          
-          //                // Prompt user to enter in confirmation code.
-          //                dispatch_async(dispatch_get_main_queue(), {
-          //                    self.showVerificationPopup({ (result) in
-          //                        if result != nil
-          //                        {
-          //                            // Check if valid verification code
-          //                            userPool.getUser(self.currentUserName).confirmSignUp(result!).continueWithBlock { (resultTask) -> AnyObject? in
-          //
-          //                                // If success code
-          //                                if resultTask.error == nil
-          //                                {
-          //                                    // We good to go!
-          //                                    print("WE GOOD TO GO!")
-          //                                }
-          //                                else
-          //                                {
-          //                                    // Invalid code
-          //                                    print("INVALID CODE")
-          //                                }
-          //
-          //                                return nil
-          //                            }
-          //                        }
-          //                        else
-          //                        {
-          //                            // Invalid entry or request, revert back to previous phone number
-          //                            print("INVALID REQUESTO")
-          //                        }
-          //                    })
-          //
-          //                })
-          
-          setCurrentCachedUserPhone(self.currentUserPhone)
-          
-          print("SUCCESSFUL USER PHONE UPDATE IN USERPOOLS")
-          return nil
-        }
-        
-        
-      }
-      
-      // Check if we need to update dynamo
-      if self.editedRealName != nil
-      {
-        fullNameCell.menuValue.text = self.editedRealName
-        self.currentRealName = self.editedRealName
-        
-        // Change name at top of page, too
-        self.realNameTextFieldLabel.text = self.currentRealName
-        
-        print ("UPDATING REALNAME IN DYNAMO AND LAMBDA")
-        
-        /********************************
-         *  UPLOAD USER DATA TO DYNAMODB
-         ********************************/
-        // Upload user DATA to DynamoDB
-        let dynamoDBUser = User()
-        
-        dynamoDBUser.realname = self.currentRealName
-        dynamoDBUser.username = self.currentUserName
-        
-        if self.currentUserAccounts != nil && self.currentUserAccounts.count != 0
-        {
-          dynamoDBUser.accounts = self.currentUserAccounts
-        }
-        
-        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        
-        dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
-          
-          // If successful save
-          if (resultTask.error == nil && resultTask.result != nil)
-          {
-            print ("DYNAMODB SUCCESSFUL SAVE: ", resultTask.result)
-            setCurrentCachedFullName(self.currentRealName)
-            
-          }
-          
-          if (resultTask.error != nil)
-          {
-            print ("DYNAMODB ERROR: ", resultTask.error)
-          }
-          
-          if (resultTask.exception != nil)
-          {
-            print ("DYNAMODB EXCEPTION: ", resultTask.exception)
-          }
-          
-          return nil
-        })
-        
-        // Update user real name in lambda as well
-        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action":"updatern", "target": self.currentUserName, "realname": self.currentRealName]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-          if resultTask.error != nil
-          {
-            print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-          }
-          else if resultTask.exception != nil
-          {
-            print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-            
-          }
-          else if resultTask.result != nil
-          {
-            print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
-          }
-          else
-          {
-            print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-            
-          }
-          
-          return nil
-          
-        }
-        
-      }
-      
-      if self.hasDeletedProfiles
-      {
-        
-        /********************************
-         *  UPLOAD USER DATA TO DYNAMODB
-         ********************************/
-        // Upload user DATA to DynamoDB
-        let dynamoDBUser = User()
-        
-        dynamoDBUser.realname = self.currentRealName
-        dynamoDBUser.username = self.currentUserName
-        
-        // If no current account data, do not upload to dynamo
-        // or else it will throw an error.
-        if self.currentUserAccounts.count != 0
-        {
-          dynamoDBUser.accounts = self.currentUserAccounts
-        }
-        
-        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-        
-        dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
-          
-          // If successful save
-          if (resultTask.error == nil && resultTask.result != nil)
-          {
-            print ("DYNAMODB SUCCESSFUL SAVE: ", resultTask.result)
-            
-            
-            // Update UI on main thread
-            dispatch_async(dispatch_get_main_queue(), {
-              // Cache user accounts result
-              setCurrentCachedUserProfiles(self.currentUserAccounts)
-              self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.currentUserAccounts)
-              
-              self.hasDeletedProfiles = false
-              
-              // Reload table
-              self.settingsTableView.reloadData()
-              
-            })
-          }
-          
-          if (resultTask.error != nil)
-          {
-            print ("DYNAMODB ERROR: ", resultTask.error)
-          }
-          
-          if (resultTask.exception != nil)
-          {
-            print ("DYNAMODB EXCEPTION: ", resultTask.exception)
-          }
-          
-          return nil
-        })
-        
-        
-      }
-      
-      // Clear the edited results
-      self.editedRealName = nil
-      self.editedUserEmail = nil
-      self.editedUserPhone = nil
-      
-      
-      print("full name modified is:", fullNameCell.menuValue.text)
-      print("email data modified is:", emailCell.menuValue.text)
-      print("phone data modified is:", phoneCell.menuValue.text)
-      
-    }
-    
-    
-  }
-  
-  
   @IBAction func textFieldEditingDidEnd(sender: UITextField) {
     
     switch (sender.tag)
@@ -760,7 +395,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     
-    if !enableEditing
+    if !enableEditingArray[MenuData.LINKED_PROFILES.rawValue]
     {
       let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
       
@@ -798,9 +433,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       
       cell.delegate = self
       
-      print("enableEditing is: ", enableEditing)
+//      print("enableEditing is: ", enableEditing)
       // Show the delete buttons if in editing mode!
-      if (enableEditing)
+      if (enableEditingArray[MenuData.LINKED_PROFILES.rawValue])
       {
         cell.deleteSocialMediaButton.hidden = false
       }
@@ -916,7 +551,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     {
     case MenuData.LINKED_PROFILES.rawValue:
       let cell = tableView.dequeueReusableCellWithIdentifier("menuProfilesCell") as! MenuProfilesCell!
-      
+    
       cell.profilesCollectionView.reloadData()
       
       // Add long press gesture recognizer to collection view
@@ -927,7 +562,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       cell.profilesCollectionView.addGestureRecognizer(lpgr)
       
       // Show delete buttons if editing is enabled.
-      if (enableEditing)
+      if (enableEditingArray[MenuData.LINKED_PROFILES.rawValue])
       {
         //TODO: Red delete buttons
       }
@@ -980,7 +615,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       }
       
       // Set text field editable and display the cool line underneath
-      if (enableEditing)
+      if (enableEditingArray[MenuData.MY_INFORMATION.rawValue])
       {
         cell.menuLineSeparator.hidden = false
         cell.menuValue.enabled = true
@@ -1108,7 +743,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
       return cell
       
-      
     }
   }
   
@@ -1118,9 +752,33 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     let sectionTitle = tableViewSectionsList[section].sectionTitle
     
     let cell = tableView.dequeueReusableCellWithIdentifier("sectionHeaderCell") as! SectionHeaderCell!
-    
+  
     cell.sectionTitle.text = sectionTitle
     
+    switch sectionTitle {
+    case LINKED_PROFILES_TITLE:
+      cell.editView.hidden = false
+      if (enableEditingArray[MenuData.LINKED_PROFILES.rawValue]) {
+        cell.cancelSection.hidden = false
+        cell.saveSection.hidden = false
+        cell.editSection.hidden = true
+      }
+      
+      break;
+    case MY_INFORMATION_TITLE:
+      cell.editView.hidden = false
+      if (enableEditingArray[MenuData.MY_INFORMATION.rawValue]) {
+        cell.cancelSection.hidden = false
+        cell.saveSection.hidden = false
+        cell.editSection.hidden = true
+      }
+      break;
+    default:
+      break;
+    }
+  
+    
+    cell.editSectionDelegate = self
     return cell
   }
   
@@ -1128,7 +786,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     if (indexPath.section == MenuData.MY_INFORMATION.rawValue)
     {
-      self.onEditInformationButtonClicked(self)
+//      self.onEditInformationButtonClicked(self)
+      self.editSectionButtonClicked(MY_INFORMATION_TITLE)
     }
     
     if (indexPath.section == MenuData.ACTIONS.rawValue)
@@ -1746,6 +1405,384 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
   }
   
+  func editSectionButtonClicked(sectionTitle: String) {
+    // Reload table view so that buttons can be shown as hidden/unhidden
+    self.settingsTableView.reloadData()
+    switch sectionTitle {
+    case LINKED_PROFILES_TITLE:
+      enableEditingArray[MenuData.LINKED_PROFILES.rawValue] = true
+  
+      // Used to keep track of accounts the user wants to delete or not
+      if currentUserAccounts == nil
+      {
+        oldUserAccounts = nil
+      }
+      else
+      {
+        oldUserAccounts = NSMutableDictionary(dictionary: currentUserAccounts as [NSObject : AnyObject], copyItems: true)
+      }
+      
+      break;
+    case MY_INFORMATION_TITLE:
+      enableEditingArray[MenuData.MY_INFORMATION.rawValue] = true
+      realNameTextFieldLabel.performSelector(#selector(becomeFirstResponder))
+      break;
+    default:
+      break;
+    }
+  }
+  
+  func cancelSectionButtonClicked(sectionTitle: String) {
+    // Reload table view so that buttons can be shown as hidden/unhidden
+    self.settingsTableView.reloadData()
+    
+    switch sectionTitle {
+    case LINKED_PROFILES_TITLE:
+      enableEditingArray[MenuData.LINKED_PROFILES.rawValue] = false
+      // Reset any modified user accounts (profiles)
+      if oldUserAccounts == nil
+      {
+        currentUserAccounts = nil
+      }
+      else
+      {
+        currentUserAccounts = NSMutableDictionary(dictionary: oldUserAccounts as [NSObject : AnyObject], copyItems: true)
+      }
+      keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(currentUserAccounts)
+      self.settingsTableView.reloadData()
+      break;
+    case MY_INFORMATION_TITLE:
+      enableEditingArray[MenuData.MY_INFORMATION.rawValue] = false
+      break;
+    default:
+      break;
+    }
+  }
+
+  
+  func saveSectionButtonClicked(sectionTitle: String) {
+    // Reload table view so that buttons can be shown as hidden/unhidden
+    self.settingsTableView.reloadData()
+    
+    switch sectionTitle {
+    case LINKED_PROFILES_TITLE:
+      enableEditingArray[MenuData.LINKED_PROFILES.rawValue] = false
+      
+      if self.hasDeletedProfiles
+      {
+        
+        /********************************
+         *  UPLOAD USER DATA TO DYNAMODB
+         ********************************/
+        // Upload user DATA to DynamoDB
+        let dynamoDBUser = User()
+        
+        dynamoDBUser.realname = self.currentRealName
+        dynamoDBUser.username = self.currentUserName
+        
+        // If no current account data, do not upload to dynamo
+        // or else it will throw an error.
+        if self.currentUserAccounts.count != 0
+        {
+          dynamoDBUser.accounts = self.currentUserAccounts
+        }
+        
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        
+        dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+          
+          // If successful save
+          if (resultTask.error == nil && resultTask.result != nil)
+          {
+            print ("DYNAMODB SUCCESSFUL SAVE: ", resultTask.result)
+            
+            
+            // Update UI on main thread
+            dispatch_async(dispatch_get_main_queue(), {
+              // Cache user accounts result
+              setCurrentCachedUserProfiles(self.currentUserAccounts)
+              self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.currentUserAccounts)
+              
+              self.hasDeletedProfiles = false
+              
+              // Reload table
+              self.settingsTableView.reloadData()
+              
+            })
+          }
+          
+          if (resultTask.error != nil)
+          {
+            print ("DYNAMODB ERROR: ", resultTask.error)
+          }
+          
+          if (resultTask.exception != nil)
+          {
+            print ("DYNAMODB EXCEPTION: ", resultTask.exception)
+          }
+          
+          return nil
+        })
+        
+        
+      }
+      
+      break;
+    case MY_INFORMATION_TITLE:
+      enableEditingArray[MenuData.MY_INFORMATION.rawValue] = false
+      let fullNameIndexPath = NSIndexPath(forRow: MyInformationData.FULL_NAME.rawValue , inSection: MenuData.MY_INFORMATION.rawValue)
+      let emailIndexPath = NSIndexPath(forRow: MyInformationData.EMAIL.rawValue, inSection: MenuData.MY_INFORMATION.rawValue)
+      let phoneIndexPath = NSIndexPath(forRow: MyInformationData.PHONE.rawValue, inSection: MenuData.MY_INFORMATION.rawValue)
+      
+      
+      let fullNameCellTemp = self.settingsTableView.cellForRowAtIndexPath(fullNameIndexPath)
+      let emailCellTemp = self.settingsTableView.cellForRowAtIndexPath(emailIndexPath)
+      let phoneCellTemp = self.settingsTableView.cellForRowAtIndexPath(phoneIndexPath)
+      
+      
+      if fullNameCellTemp == nil || emailCellTemp == nil || phoneCellTemp == nil {
+        
+//        delay(0.5) {
+//          self.saveSectionButtonClicked(sectionTitle)
+//        }
+        return
+      }
+      
+      
+      let fullNameCell = fullNameCellTemp as! MenuTableViewCell
+      let emailCell = emailCellTemp as! MenuTableViewCell
+      let phoneCell = phoneCellTemp as! MenuTableViewCell
+      
+      // If modified data, adjust accordingly!
+      if self.editedRealName != nil && !self.editedRealName.isEmpty
+      {
+        if (!verifyRealNameLength(self.editedRealName!))
+        {
+          showAlert("Improper full name format", message: "Please create a full name that is less than 30 characters long!", buttonTitle: "Try again", sender: self)
+          self.editedRealName = fullNameCell.menuValue.text
+          return
+        }
+      }
+      else if self.editedRealName != nil && self.editedRealName.isEmpty
+      {
+        showAlert("Improper full name format", message: "Please create a full name that is at least 1 character!", buttonTitle: "Try again", sender: self)
+        
+        self.editedRealName = fullNameCell.menuValue.text
+        return
+        
+      }
+      
+      if self.editedUserEmail != nil && !self.editedUserEmail.isEmpty
+      {
+        if (!verifyEmailFormat(self.editedUserEmail!))
+        {
+          showAlert("Improper email address", message: "Please enter in a proper email address!", buttonTitle: "Try again", sender: self)
+          self.editedUserEmail = emailCell.menuValue.text
+          return
+        }
+        
+      }
+      else if self.editedUserEmail != nil && self.editedUserEmail.isEmpty
+      {
+        showAlert("Improper email address", message: "Please enter in an email address!", buttonTitle: "Try again", sender: self)
+        self.editedUserEmail = emailCell.menuValue.text
+        return
+      }
+      
+      
+      if self.editedUserPhone != nil && !self.editedUserPhone.isEmpty
+      {
+        // Get the text from the beginning of the phone number (not US country code)
+        let string = self.editedUserPhone as NSString
+        let phoneString = string.substringFromIndex(2)
+        
+        if !verifyPhoneFormat(phoneString)
+        {
+          showAlert("Improper phone number", message: "Please enter in a proper U.S. phone number.", buttonTitle: "Try again", sender: self)
+          self.editedUserPhone = phoneCell.menuValue.text
+          return
+        }
+        
+        
+      }
+      
+      // ADD CHANGE TO USERPOOLS (email/phone only)
+      let userPool = getAWSCognitoIdentityUserPool()
+      let email = AWSCognitoIdentityUserAttributeType()
+      let phone = AWSCognitoIdentityUserAttributeType()
+      email.name = "email"
+      phone.name = "phone_number"
+      
+      if self.editedUserEmail != nil && self.editedUserEmail != self.currentUserEmail
+      {
+        // Update user pools with currentUserPhone
+        emailCell.menuValue.text = self.editedUserEmail
+        self.currentUserEmail = self.editedUserEmail
+        
+        email.value = self.currentUserEmail
+        phone.value = self.currentUserPhone
+        
+        
+        userPool.getUser(self.currentUserName).updateAttributes([email, phone]).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+          
+          print("SUCCESSFUL USER EMAIL UPDATE IN USERPOOLS")
+          return nil
+        }
+        
+      }
+      
+      if self.editedUserPhone != nil && self.editedUserPhone != self.currentUserPhone
+      {
+        // In case we need to revert changes -- if user cannot verify
+        let oldPhoneNum = self.currentUserPhone
+        
+        // Update user pools with currentUserEmail
+        phoneCell.menuValue.text = self.editedUserPhone
+        self.currentUserPhone = self.editedUserPhone
+        
+        email.value = self.currentUserEmail
+        phone.value = self.currentUserPhone
+        
+        userPool.getUser(self.currentUserName).updateAttributes([email, phone]).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+          
+          
+          //                // Prompt user to enter in confirmation code.
+          //                dispatch_async(dispatch_get_main_queue(), {
+          //                    self.showVerificationPopup({ (result) in
+          //                        if result != nil
+          //                        {
+          //                            // Check if valid verification code
+          //                            userPool.getUser(self.currentUserName).confirmSignUp(result!).continueWithBlock { (resultTask) -> AnyObject? in
+          //
+          //                                // If success code
+          //                                if resultTask.error == nil
+          //                                {
+          //                                    // We good to go!
+          //                                    print("WE GOOD TO GO!")
+          //                                }
+          //                                else
+          //                                {
+          //                                    // Invalid code
+          //                                    print("INVALID CODE")
+          //                                }
+          //
+          //                                return nil
+          //                            }
+          //                        }
+          //                        else
+          //                        {
+          //                            // Invalid entry or request, revert back to previous phone number
+          //                            print("INVALID REQUESTO")
+          //                        }
+          //                    })
+          //
+          //                })
+          
+          setCurrentCachedUserPhone(self.currentUserPhone)
+          
+          print("SUCCESSFUL USER PHONE UPDATE IN USERPOOLS")
+          return nil
+        }
+        
+        
+      }
+      
+      // Check if we need to update dynamo
+      if self.editedRealName != nil
+      {
+        fullNameCell.menuValue.text = self.editedRealName
+        self.currentRealName = self.editedRealName
+        
+        // Change name at top of page, too
+        self.realNameTextFieldLabel.text = self.currentRealName
+        
+        print ("UPDATING REALNAME IN DYNAMO AND LAMBDA")
+        
+        /********************************
+         *  UPLOAD USER DATA TO DYNAMODB
+         ********************************/
+        // Upload user DATA to DynamoDB
+        let dynamoDBUser = User()
+        
+        dynamoDBUser.realname = self.currentRealName
+        dynamoDBUser.username = self.currentUserName
+        
+        if self.currentUserAccounts != nil && self.currentUserAccounts.count != 0
+        {
+          dynamoDBUser.accounts = self.currentUserAccounts
+        }
+        
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        
+        dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+          
+          // If successful save
+          if (resultTask.error == nil && resultTask.result != nil)
+          {
+            print ("DYNAMODB SUCCESSFUL SAVE: ", resultTask.result)
+            setCurrentCachedFullName(self.currentRealName)
+            
+          }
+          
+          if (resultTask.error != nil)
+          {
+            print ("DYNAMODB ERROR: ", resultTask.error)
+          }
+          
+          if (resultTask.exception != nil)
+          {
+            print ("DYNAMODB EXCEPTION: ", resultTask.exception)
+          }
+          
+          return nil
+        })
+        
+        // Update user real name in lambda as well
+        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let parameters = ["action":"updatern", "target": self.currentUserName, "realname": self.currentRealName]
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+          if resultTask.error != nil
+          {
+            print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+          }
+          else if resultTask.exception != nil
+          {
+            print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+            
+          }
+          else if resultTask.result != nil
+          {
+            print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+          }
+          else
+          {
+            print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+            
+          }
+          
+          return nil
+          
+        }
+        
+        // Clear the edited results
+        self.editedRealName = nil
+        self.editedUserEmail = nil
+        self.editedUserPhone = nil
+        
+        
+        print("full name modified is:", fullNameCell.menuValue.text)
+        print("email data modified is:", emailCell.menuValue.text)
+        print("phone data modified is:", phoneCell.menuValue.text)
+      }
+
+      break;
+    default:
+      break;
+    }
+    
+  }
   
   
 }
+
+

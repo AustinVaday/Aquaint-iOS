@@ -303,8 +303,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "123"
             endingLineNumber = "123"
-            landmarkName = "fetchUserScanCode()"
-            landmarkType = "5">
+            landmarkName = "ScanCodeDisplay"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -351,8 +351,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "122"
             endingLineNumber = "122"
-            landmarkName = "ScanCodeDisplay"
-            landmarkType = "3">
+            landmarkName = "onExportButtonClicked(_:)"
+            landmarkType = "5">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -952,12 +952,12 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/PaymentsDisplay.swift"
-                  timestampString = "514846232.759108"
+                  timestampString = "514872119.459648"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "76"
                   endingLineNumber = "76"
-                  offsetFromSymbolStart = "40">
+                  offsetFromSymbolStart = "35">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -967,12 +967,12 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/PaymentsDisplay.swift"
-                  timestampString = "514846232.759259"
+                  timestampString = "514872119.45991"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "76"
                   endingLineNumber = "76"
-                  offsetFromSymbolStart = "76">
+                  offsetFromSymbolStart = "68">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1160,11 +1160,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/MenuController.swift"
-            timestampString = "514365270.652956"
+            timestampString = "514876762.858655"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "725"
-            endingLineNumber = "725"
+            startingLineNumber = "360"
+            endingLineNumber = "360"
             landmarkName = "textFieldEditingDidEnd(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1176,11 +1176,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/MenuController.swift"
-            timestampString = "514365270.652956"
+            timestampString = "514876762.858655"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "729"
-            endingLineNumber = "729"
+            startingLineNumber = "364"
+            endingLineNumber = "364"
             landmarkName = "textFieldEditingDidEnd(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1192,11 +1192,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/MenuController.swift"
-            timestampString = "514365270.652956"
+            timestampString = "514876762.858655"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "732"
-            endingLineNumber = "732"
+            startingLineNumber = "367"
+            endingLineNumber = "367"
             landmarkName = "textFieldEditingDidEnd(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1208,11 +1208,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/MenuController.swift"
-            timestampString = "514365270.652956"
+            timestampString = "514876762.858655"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "736"
-            endingLineNumber = "736"
+            startingLineNumber = "371"
+            endingLineNumber = "371"
             landmarkName = "textFieldEditingDidEnd(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1224,11 +1224,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/MenuController.swift"
-            timestampString = "514365270.652956"
+            timestampString = "514876762.858655"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "733"
-            endingLineNumber = "733"
+            startingLineNumber = "368"
+            endingLineNumber = "368"
             landmarkName = "textFieldEditingDidEnd(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1236,49 +1236,65 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/MenuController.swift"
-            timestampString = "514364874.028677"
+            timestampString = "514877435.990982"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "426"
-            endingLineNumber = "426"
-            landmarkName = "onSaveButtonClicked(_:)"
+            startingLineNumber = "1410"
+            endingLineNumber = "1410"
+            landmarkName = "editSectionButtonClicked(_:)"
             landmarkType = "5">
             <Locations>
                <Location
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Aquaint.MenuController.(onSaveButtonClicked (Swift.AnyObject) -&gt; ()).(closure #1)"
+                  symbolName = "Aquaint.MenuController.editSectionButtonClicked (Swift.String) -&gt; ()"
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/MenuController.swift"
-                  timestampString = "514364558.657393"
+                  timestampString = "514872119.477211"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "428"
-                  endingLineNumber = "428"
-                  offsetFromSymbolStart = "2116">
+                  startingLineNumber = "1758"
+                  endingLineNumber = "1758"
+                  offsetFromSymbolStart = "27">
                </Location>
                <Location
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Aquaint.MenuController.(onSaveButtonClicked (Swift.AnyObject) -&gt; ()).(closure #1).(closure #1)"
+                  symbolName = "protocol witness for Aquaint.EditSectionDelegate.editSectionButtonClicked (Swift.String) -&gt; () in conformance Aquaint.MenuController : Aquaint.EditSectionDelegate in Aquaint"
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/MenuController.swift"
-                  timestampString = "514364558.657637"
+                  timestampString = "514872119.477475"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "429"
-                  endingLineNumber = "429"
-                  offsetFromSymbolStart = "23">
+                  startingLineNumber = "1757"
+                  endingLineNumber = "1757"
+                  offsetFromSymbolStart = "4">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ConnectMe/SectionHeaderCell.swift"
+            timestampString = "514875901.258154"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "onEditSectionDelegateClicked(_:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

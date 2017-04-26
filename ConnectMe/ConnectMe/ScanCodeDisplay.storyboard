@@ -185,12 +185,27 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo White" translatesAutoresizingMaskIntoConstraints="NO" id="nTC-3h-ar5">
+                                        <rect key="frame" x="237" y="8" width="126" height="33"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="33" id="kSr-Eg-UV0"/>
+                                            <constraint firstAttribute="width" constant="126" id="nW7-Xm-vd6"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="nTC-3h-ar5" firstAttribute="top" secondItem="H1S-p8-SN6" secondAttribute="top" constant="8" id="UnA-fe-r3I"/>
                                     <constraint firstItem="auh-an-Zah" firstAttribute="top" secondItem="H1S-p8-SN6" secondAttribute="topMargin" id="XeH-SF-ifm"/>
+                                    <constraint firstItem="nTC-3h-ar5" firstAttribute="centerX" secondItem="H1S-p8-SN6" secondAttribute="centerX" id="jeF-5h-8aU"/>
                                     <constraint firstItem="auh-an-Zah" firstAttribute="centerX" secondItem="H1S-p8-SN6" secondAttribute="centerX" id="u8P-Nv-jxN"/>
+                                    <constraint firstItem="nTC-3h-ar5" firstAttribute="centerY" secondItem="H1S-p8-SN6" secondAttribute="centerY" constant="1" id="xu0-ih-xHj"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="auh-an-Zah"/>
+                                    </mask>
+                                </variation>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aVE-cn-Nh6" userLabel="SystemHeaderView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="20"/>
@@ -281,7 +296,6 @@
                         <outlet property="profileViewsCountNumber" destination="LRp-H8-XN9" id="Vh5-az-0I7"/>
                         <outlet property="scanCodeImageView" destination="T0e-4W-zzY" id="AKv-Pe-cs2"/>
                         <outlet property="secondLineSeparator" destination="FoP-sY-les" id="Mag-bQ-r2Z"/>
-                        <outlet property="userNameLabel" destination="auh-an-Zah" id="rtt-zd-Cf8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vAX-KG-i9C" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -296,5 +310,6 @@
         <image name="Export Icon Gray" width="38" height="42"/>
         <image name="Help Icon Gray" width="10" height="10"/>
         <image name="Line Separator Black" width="753" height="4"/>
+        <image name="Logo White" width="243" height="63"/>
     </resources>
 </document>
