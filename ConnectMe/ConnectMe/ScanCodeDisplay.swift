@@ -35,6 +35,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   @IBOutlet weak var exitButton: UIButton!
   @IBOutlet weak var exportButton: UIButton!
   @IBOutlet weak var animationView: UIView!
+  @IBOutlet weak var usernameLabel: UILabel!
   
   var defaultCameraView: UIView!
   var currentUser: String!
@@ -46,7 +47,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   let aquaBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
   let blackSeparator = UIImage(named: "Line Separator Black")
   let whiteSeparator = UIImage(named: "Line Separator")
-  
+  let reusableWebViewStoryboard = UIStoryboard(name: "ReusableWebView", bundle: nil)
+
   let supportedCodeTypes = [AVMetadataObjectTypeUPCECode,
                             AVMetadataObjectTypeCode39Code,
                             AVMetadataObjectTypeCode39Mod43Code,
@@ -74,9 +76,9 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     
     currentUser = getCurrentCachedUser()
     
-//    if currentUser != nil {
-//      userNameLabel.text = currentUser
-//    }
+    if currentUser != nil {
+      usernameLabel.text = currentUser
+    }
     
     fetchUserScanCode()
     
@@ -88,7 +90,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   }
   
   override func viewDidAppear(animated: Bool) {
-    setUpSocialMediaAnimations(self, subView: self.animationView, animatedObjects: &animatedObjects, animationLocation: AnimationLocation.Bottom, theme: AnimationAquaintEmblemTheme.DarkTheme)
+//    setUpSocialMediaAnimations(self, subView: self.animationView, animatedObjects: &animatedObjects, animationLocation: AnimationLocation.Bottom, theme: AnimationAquaintEmblemTheme.DarkTheme)
     updateAnalyticsDisplayValues()
     
     fetchUserScanCode()
@@ -97,7 +99,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   }
   
   override func viewDidDisappear(animated: Bool) {
-    clearUpSocialMediaAnimations(&animatedObjects)
+//    clearUpSocialMediaAnimations(&animatedObjects)
   }
   
   override func didReceiveMemoryWarning() {
@@ -170,6 +172,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           self.thirdLineSeparator.image = self.whiteSeparator
           self.cameraButton.hidden = true
           self.exitButton.hidden = false
+          self.usernameLabel.hidden = true
         
         }, completion: { (status) in
           // Show camera view
@@ -198,6 +201,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     self.thirdLineSeparator.image = self.blackSeparator
     self.cameraButton.hidden = false
     self.exitButton.hidden = true
+    self.usernameLabel.hidden = false
     
     // Clear the camera display?
     captureSession?.stopRunning()
@@ -225,9 +229,15 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
 //    let parentViewController = self.parentViewController?.parentViewController as! MainPageViewController
 //    parentViewController.goToAnalyticsPage()
 //  }
+  @IBAction func coolTipsAndTricksButtonClicked(sender: AnyObject) {
+    let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
+    
+    webDisplayVC.webTitle = "Cool Tips"
+    webDisplayVC.webURL = "http://www.aquaint.us/static/cool-tricks"
+    self.presentViewController(webDisplayVC, animated: true, completion: nil)
+  }
 
   @IBAction func onYourWebProfileClicked(sender: AnyObject) {
-    let reusableWebViewStoryboard = UIStoryboard(name: "ReusableWebView", bundle: nil)
     let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
     
     webDisplayVC.webTitle = "aquaint.us/user/" + currentUser
