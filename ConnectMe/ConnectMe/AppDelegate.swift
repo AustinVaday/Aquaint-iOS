@@ -141,7 +141,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       "client_secret" : "YjzhxmwGJlK4meBA",
       "redirect_uri": "http://aquaint"
     ]
-
+    
     SimpleAuth.configuration()["instagram"] = [
       "client_id" : "5de275b3cf674c97b51a767e9ecdea66",
       SimpleAuthRedirectURIKey : "http://aquaint"

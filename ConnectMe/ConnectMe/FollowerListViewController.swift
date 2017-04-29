@@ -23,6 +23,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
   var dataDelegate : FollowerListSetUserAndActionDelegate?
   
   var currentUserName : String!
+  var myUserName : String!
   var lambdaAction : String!
   var socialMediaImageDictionary: Dictionary<String, UIImage>!
   var refreshControl : CustomRefreshControl!
@@ -38,6 +39,8 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     
     // Get user to display in table
     currentUserName = dataDelegate?.dataForUser()
+    
+    myUserName = getCurrentCachedUser()
     
     // Get lambda action to perform (getFollowers) or (getFollowees)
     lambdaAction = dataDelegate?.lambdaActionForUser()
@@ -171,7 +174,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     let connectedUser = connectionList[indexPath.row]
     let handler = {
       (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-      showPopupForUser(connectedUser.userName, me: self.currentUserName)
+      showPopupForUser(connectedUser.userName, me: self.myUserName)
     }
     
     cell.cellName.clearActionDictionary()
@@ -191,7 +194,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     if !tableView.dragging && !tableView.tracking
     {
       let connectedUser = connectionList[indexPath.row]
-      showPopupForUser(connectedUser.userName, me: self.currentUserName)
+      showPopupForUser(connectedUser.userName, me: self.myUserName)
       
     }
   }

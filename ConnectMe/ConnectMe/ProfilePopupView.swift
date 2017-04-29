@@ -11,8 +11,8 @@ import AWSLambda
 
 // Used to enforce consistency of buttons between popup and search table view cell
 protocol ProfilePopupSearchCellConsistencyDelegate {
-  func profilePopupUserAdded()
-  func profilePopupUserDeleted()
+  func profilePopupUserAdded(username: String, isPrivate: Bool)
+  func profilePopupUserDeleted(username: String, isPrivate: Bool)
 }
 
 class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSource{
@@ -239,7 +239,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                         self.activateDeleteButton()
                       }
                       
-                      self.popupSearchConsistencyDelegate?.profilePopupUserAdded()
+                      self.popupSearchConsistencyDelegate?.profilePopupUserAdded(self.userNameLabel.text!, isPrivate: self.displayPrivate)
                     })
                 }
                 else
@@ -292,7 +292,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                     // Perform update on UI on main thread
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                       self.activateAddButton()
-                      self.popupSearchConsistencyDelegate?.profilePopupUserDeleted()
+                      self.popupSearchConsistencyDelegate?.profilePopupUserDeleted(self.userNameLabel.text!, isPrivate: self.displayPrivate)
 
                     })
                 }

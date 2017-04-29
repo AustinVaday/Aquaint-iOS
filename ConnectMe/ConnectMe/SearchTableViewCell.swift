@@ -218,17 +218,25 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
 
     }
   
+  
   // Implement delegate actions for ProfilePopupSearchCellConsistencyDelegate
-  func profilePopupUserAdded() {
+  func profilePopupUserAdded(username: String, isPrivate: Bool) {
     if self.displayPrivate {
       self.activatePendingButton()
     } else {
       self.activateDeleteButton()
     }
+    
+    searchDelegate?.addedUser(username, isPrivate: isPrivate)
   }
   
-  func profilePopupUserDeleted() {
+
+  
+  func profilePopupUserDeleted(username: String, isPrivate: Bool) {
     self.activateAddButton()
+    
+    searchDelegate?.removedUser(username, isPrivate: isPrivate)
+
   }
 
     
