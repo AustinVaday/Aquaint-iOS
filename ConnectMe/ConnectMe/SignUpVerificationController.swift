@@ -27,6 +27,7 @@ class SignUpVerificationController: UIViewController {
     @IBOutlet weak var buttonBottomConstraint: NSLayoutConstraint!
     
     var isKeyboardShown = false
+    var isSignUpWithFacebook = false
     var pool : AWSCognitoIdentityUserPool!
     var fileManager: AWSUserFileManager!
     var dynamoDBObjectMapper: AWSDynamoDBObjectMapper!
@@ -78,6 +79,11 @@ class SignUpVerificationController: UIViewController {
         super.viewWillAppear(true)
         
         registerForKeyboardNotifications()
+      
+        // Bypass this page if so 
+        if (isSignUpWithFacebook) {
+          
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {

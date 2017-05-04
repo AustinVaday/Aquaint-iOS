@@ -30,6 +30,7 @@ class SignUpFetchMoreDataController: UIViewController {
     @IBOutlet weak var buttonBottomConstraint: NSLayoutConstraint!
     
     var isKeyboardShown = false
+    var isSignUpWithFacebook = false
     var pool : AWSCognitoIdentityUserPool!
     var fileManager: AWSUserFileManager!
     var uploadRequest: AWSS3TransferManagerUploadRequest!
@@ -42,6 +43,7 @@ class SignUpFetchMoreDataController: UIViewController {
     var userEmail : String!
     var userFullName : String!
     var userImage: UIImage!
+    var fbUID : String!
     var attemptedUserName = String()
     let segueDestination = "toSignUpVerificationController"
 
