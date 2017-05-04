@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -135,17 +135,38 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vOe-zu-70W">
+                                        <rect key="frame" x="219" y="189" width="148" height="30"/>
+                                        <state key="normal">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="Notice of Purchase">
+                                                    <attributes>
+                                                        <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <font key="NSFont" size="12" name="HelveticaNeue"/>
+                                                        <integer key="NSUnderline" value="1"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                        </state>
+                                        <connections>
+                                            <segue destination="FJc-9a-hx4" kind="popoverPresentation" popoverAnchorView="vOe-zu-70W" id="X9L-zq-2tv">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.039347791920807326" green="0.35024483151952346" blue="0.45324637066364992" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="84V-3X-JRs" firstAttribute="leading" secondItem="yAF-et-xog" secondAttribute="leading" constant="22" id="DMu-Tw-FKP"/>
                                     <constraint firstItem="84V-3X-JRs" firstAttribute="centerX" secondItem="OBV-80-cr3" secondAttribute="centerX" constant="-0.5" id="DVl-aV-mJr"/>
                                     <constraint firstItem="84V-3X-JRs" firstAttribute="centerX" secondItem="yAF-et-xog" secondAttribute="centerX" constant="-0.5" id="GVZ-qy-Zv1"/>
+                                    <constraint firstItem="vOe-zu-70W" firstAttribute="centerX" secondItem="yAF-et-xog" secondAttribute="centerX" id="LSb-t0-cNg"/>
                                     <constraint firstItem="CfM-7q-pTL" firstAttribute="top" secondItem="84V-3X-JRs" secondAttribute="bottom" constant="8" symbolic="YES" id="Odx-Pi-sx6"/>
                                     <constraint firstAttribute="bottom" secondItem="84V-3X-JRs" secondAttribute="bottom" constant="97" id="T5o-1N-CF8"/>
                                     <constraint firstItem="GgJ-yV-X5S" firstAttribute="centerX" secondItem="yAF-et-xog" secondAttribute="centerX" constant="2" id="TuT-qM-9V8"/>
                                     <constraint firstItem="84V-3X-JRs" firstAttribute="top" secondItem="OBV-80-cr3" secondAttribute="bottom" constant="22" id="YIz-Lf-tbe"/>
                                     <constraint firstItem="OBV-80-cr3" firstAttribute="top" secondItem="yAF-et-xog" secondAttribute="top" constant="31" id="aPs-cE-3C6"/>
+                                    <constraint firstItem="vOe-zu-70W" firstAttribute="top" secondItem="OBV-80-cr3" secondAttribute="bottom" constant="8" id="vbe-AQ-Ytf"/>
                                     <constraint firstItem="CfM-7q-pTL" firstAttribute="centerX" secondItem="yAF-et-xog" secondAttribute="centerX" id="xlP-hF-vbH"/>
                                     <constraint firstItem="GgJ-yV-X5S" firstAttribute="top" secondItem="84V-3X-JRs" secondAttribute="bottom" constant="44" id="ynv-Hh-wld"/>
                                 </constraints>
@@ -252,6 +273,186 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TDD-6z-RsH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="436" y="231"/>
+        </scene>
+        <!--Notice Of Subscription View Controller-->
+        <scene sceneID="NLf-Fa-Hmz">
+            <objects>
+                <viewController id="FJc-9a-hx4" customClass="NoticeOfSubscriptionViewController" customModule="Aquaint" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="KCq-m8-pqG"/>
+                        <viewControllerLayoutGuide type="bottom" id="CrN-X3-l9f"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LoZ-kO-nQa">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Db2-hn-ccf" userLabel="SystemHeaderView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="20"/>
+                                <color key="backgroundColor" red="0.055401942349999997" green="0.3908864695" blue="0.53284902899999997" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XCW-7j-p8k" userLabel="PageHeaderView">
+                                <rect key="frame" x="0.0" y="20" width="600" height="47"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Notice of Purchase" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfg-GW-hLU">
+                                        <rect key="frame" x="209" y="8" width="182" height="28"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="20"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ue2-Ih-NMo">
+                                        <rect key="frame" x="546" y="7" width="46" height="30"/>
+                                        <state key="normal" title="Done">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="doneButtonClicked:" destination="FJc-9a-hx4" eventType="touchUpInside" id="p1V-Kh-hDh"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="47" id="DrV-uL-XzU"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ue2-Ih-NMo" secondAttribute="trailing" constant="12" id="GUZ-2a-bK0"/>
+                                    <constraint firstItem="tfg-GW-hLU" firstAttribute="centerY" secondItem="XCW-7j-p8k" secondAttribute="centerY" constant="-1.5" id="W7P-Rb-YjK"/>
+                                    <constraint firstItem="tfg-GW-hLU" firstAttribute="centerX" secondItem="XCW-7j-p8k" secondAttribute="centerX" id="yhP-Ha-AgM"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="30" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VN0-Q5-Ej7">
+                                <rect key="frame" x="20" y="98" width="560" height="404"/>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <string key="content">• Payments will be charged to iTunes Account at confirmation of purchase. 
+
+• Subscription automatically renews unless auto-renewal is turned off at least 24-hours before the end of the current period. 
+
+</string>
+                                        <attributes>
+                                            <color key="NSColor" red="0.46666666666666667" green="0.46666666666666667" blue="0.46666666666666667" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="16" name="Monaco"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="5" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="• ">
+                                        <attributes>
+                                            <color key="NSColor" red="0.46666999999999997" green="0.46666999999999997" blue="0.46666999999999997" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="16" name="Monaco"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="5" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                <tabStops>
+                                                    <textTab alignment="left" location="28">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="56">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="84">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="112">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="140">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="168">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="196">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="224">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="252">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="280">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="308">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="336">
+                                                        <options/>
+                                                    </textTab>
+                                                </tabStops>
+                                            </paragraphStyle>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content">Account will be charged for renewal within 24-hours prior to the end of the current period, and identify the cost of the renewal. 
+</string>
+                                        <attributes>
+                                            <color key="NSColor" red="0.46666666666666667" green="0.46666666666666667" blue="0.46666666666666667" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="16" name="Monaco"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="5" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                <tabStops>
+                                                    <textTab alignment="left" location="28">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="56">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="84">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="112">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="140">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="168">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="196">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="224">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="252">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="280">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="308">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="336">
+                                                        <options/>
+                                                    </textTab>
+                                                </tabStops>
+                                            </paragraphStyle>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content">
+• Subscriptions may be managed by the user and auto-renewal may be turned off by going to the user's Account Settings after purchase.</string>
+                                        <attributes>
+                                            <color key="NSColor" red="0.46666666666666667" green="0.46666666666666667" blue="0.46666666666666667" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="16" name="Monaco"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="5" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="XCW-7j-p8k" secondAttribute="trailing" constant="-20" id="6nC-lP-5XA"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="VN0-Q5-Ej7" secondAttribute="trailing" constant="60" id="Hr6-0q-o9y"/>
+                            <constraint firstItem="VN0-Q5-Ej7" firstAttribute="leading" secondItem="LoZ-kO-nQa" secondAttribute="leadingMargin" constant="5" id="J6g-FG-Fkt"/>
+                            <constraint firstItem="VN0-Q5-Ej7" firstAttribute="trailing" secondItem="LoZ-kO-nQa" secondAttribute="trailingMargin" constant="5" id="KqE-El-KEI"/>
+                            <constraint firstItem="XCW-7j-p8k" firstAttribute="leading" secondItem="LoZ-kO-nQa" secondAttribute="leadingMargin" constant="-20" id="SQS-ma-1qH"/>
+                            <constraint firstItem="VN0-Q5-Ej7" firstAttribute="leading" secondItem="LoZ-kO-nQa" secondAttribute="leadingMargin" constant="61" id="a2S-TP-mn6"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="o5M-d0-2pu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="436" y="-500"/>
         </scene>
         <!--Checkout View Controller-->
         <scene sceneID="xS0-G7-bZB">
