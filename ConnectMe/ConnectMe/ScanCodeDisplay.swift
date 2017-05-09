@@ -420,12 +420,16 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
               showPopupForUserFromScanCode(userName, me: getCurrentCachedUser(), sender: self)
               
               // Send view trigger (Code Scans) to Google Analytics
+              // GAI Behavior data follows structure: Page - Event - Event Action - Event Label - Event Value
               let tracker = GAI.sharedInstance().defaultTracker
               let GApageName = "/user/" + userName + "/iOS/scan"
               tracker.set(kGAIPage, value: GApageName)
               
-              let builder = GAIDictionaryBuilder.createScreenView()
-              tracker.send(builder.build() as [NSObject : AnyObject])
+              let builderPage = GAIDictionaryBuilder.createScreenView()
+              tracker.send(builderPage.build() as [NSObject : AnyObject])
+              
+              let builderEvent = GAIDictionaryBuilder.createEventWithCategory("codeScan", action: "scan", label: "AquaintScanCode", value: 0)
+              tracker.send(builderEvent.build() as [NSObject : AnyObject])
               
               print("scanCodeDisplay(): trigger Google Analytics for Code Scan: \(GApageName)")
             })
