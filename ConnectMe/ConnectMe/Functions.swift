@@ -14,7 +14,7 @@ import UIKit
 import KLCPopup
 
 // Private so to not let other files use this list directly.
-private let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr", "soundcloud", "website")
+private let possibleSocialMediaNameList = Array<String>(arrayLiteral: "facebook", "snapchat", "instagram", "twitter", "linkedin", "youtube", "tumblr", "soundcloud", "website", "ios", "android")
 
 // The dictionary we receive from AWS DynamoDB maps a string to an array.
 // When we have a collection view, we need a way to propogate this
@@ -117,6 +117,14 @@ func computeTimeDiffFromNow(timestampGMT: Int) -> String
   
 }
 
+func getSocialMediaDisplayName(socialMediaType: String) -> String
+{
+  switch socialMediaType {
+    case "android": return "Android App"
+    case "ios": return "iOS App"
+    default: return socialMediaType.capitalizedString
+  }
+}
 
 // Necessary for fetching username URLs
 func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: String!, sender: AnyObject) -> NSURL!
@@ -156,6 +164,10 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
   case "tumblr":
     urlString = "tumblr://x-callback-url/blog?blogName=" + socialMediaUserName
     altString = "http://" + socialMediaUserName + ".tumblr.com"
+  case "ios":
+    urlString  = socialMediaUserName
+  case "android":
+    urlString  = socialMediaUserName
   case "website":
     urlString  = socialMediaUserName
     

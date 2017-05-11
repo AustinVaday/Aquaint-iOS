@@ -392,6 +392,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         let handler = {
           (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
           showPopupForUser(userName, me: self.userName, searchConsistencyDelegate: cell)
+          
+          // This will dismiss keyboard if not dismissed already
+          self.customSearchController.customSearchBar.resignFirstResponder()
         }
       
         cell.cellName.clearActionDictionary()

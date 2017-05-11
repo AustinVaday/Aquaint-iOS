@@ -270,6 +270,20 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
         **************************************************************************/
         showAndProcessUsernameAlert(socialMediaType, forCell: cell)
         break
+    
+      case "ios" :
+        /*************************************************************************
+         * Soundcloud DATA FETCH
+         **************************************************************************/
+        showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        break
+      
+      case "android" :
+        /*************************************************************************
+         * Soundcloud DATA FETCH
+         **************************************************************************/
+        showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        break
 
       case "tumblr" :
         /*************************************************************************
@@ -323,7 +337,9 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
     cell.emblemImage.image = socialMediaImageDictionary[socialMediaType]
 
     cell.socialMediaType = socialMediaType
-    cell.socialMediaTypeLabel.text = socialMediaType.capitalizedString
+    
+    
+    cell.socialMediaTypeLabel.text = getSocialMediaDisplayName(socialMediaType)
 
     // Make cell image circular
     cell.emblemImage.layer.cornerRadius = cell.emblemImage.frame.width / 2
@@ -693,7 +709,11 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
     
     if socialMediaType == "website" {
       textField.placeholder   = "Enter Website URL"
-    } else {
+    } else if socialMediaType == "ios" {
+      textField.placeholder = "Enter App Store URL"
+    } else if socialMediaType == "android" {
+      textField.placeholder = "Enter Play Store URL"
+    }else {
       textField.placeholder   = "Enter Username"
       
       // Add target to text field to validate/fix user input of a proper input
@@ -744,7 +764,7 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
           print(socialMediaType, " username returned is: ", socialMediaName)
           
           
-          if socialMediaType == "website"
+          if socialMediaType == "website" || socialMediaType == "ios" || socialMediaType == "android"
           {
             // If website url does not have 'http://' or 'https://', add http:// it in
             if !socialMediaName.hasPrefix("http://") && !socialMediaName.hasPrefix("https://") {
@@ -779,7 +799,7 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
 
     let alertViewIcon = UIImage(named: socialMediaType)
 
-    alertViewResponder = alertView.showTitle(socialMediaType.capitalizedString,
+    alertViewResponder = alertView.showTitle(getSocialMediaDisplayName(socialMediaType),
       subTitle: "",
       duration:0.0,
       completeText: "Cancel",
