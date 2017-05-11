@@ -206,10 +206,10 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
         
         // Present the Saved Photo Album to user only if it is available
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum)
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary)
         {
             imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum
+            imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             imagePicker.allowsEditing = false
             self.presentViewController(imagePicker, animated: true, completion: nil)
         }

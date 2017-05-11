@@ -40,7 +40,8 @@ class SignUpVerificationController: UIViewController {
     var userImage: UIImage!
     var userPhone: String!
     var userEmail: String!
-    
+    var verificationCodeResendCount = 0
+  
     let segueDestination = "toWalkthroughContainerViewController"
   
     override func viewDidLoad() {
@@ -198,6 +199,20 @@ class SignUpVerificationController: UIViewController {
     @IBAction func onTextFieldDidEndOnExit(sender: AnyObject) {
         // Mimic the "Sign Up" button being pressed
         self.onVerifyButtonClicked(signUpButton.self)
+    }
+  
+  
+    @IBAction func onResentVerificationCodeButtonClicked(sender: AnyObject) {
+      
+      // Prevent abuse
+      if (self.verificationCodeResendCount < 5)
+      {
+        pool.getUser(userName).resendConfirmationCode()
+        self.verificationCodeResendCount = self.verificationCodeResendCount + 1
+      }
+      else {
+        showAlert("Sorry", message: "You've sent too many codes. Please try again later.", buttonTitle: "Ok", sender: self)
+      }
     }
     
     @IBAction func onVerifyButtonClicked(sender: UIButton) {
