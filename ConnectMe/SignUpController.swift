@@ -51,7 +51,6 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     var imagePicker:UIImagePickerController!    // Used for selecting image from user's device
 
     let segueDestination = "toSignUpFetchMoreDataController"
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -499,7 +498,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
               nextViewController.userFullName = self.fbFullName
               nextViewController.userEmail = self.fbEmail
               nextViewController.userImage = self.fbImage
-              nextViewController.fbUID = self.fbUID
+              nextViewController.fbUID = self.fbUID  
+              
             } else {
             
               nextViewController.userEmail = userEmail.text
@@ -525,6 +525,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
         flipImageHorizontally(checkMarkFlippedCopy)
     }
+  
     
     // Use to go back to previous VC at ease.
     @IBAction func unwindBackVC(segue: UIStoryboardSegue)

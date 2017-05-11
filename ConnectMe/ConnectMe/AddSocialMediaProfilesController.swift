@@ -752,7 +752,7 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
 
         if username.isEmpty {
           // TODO: Nothing?
-        } else if username.characters.count > 45 {
+        } else if username.characters.count > 100 {
           dispatch_async(dispatch_get_main_queue(), {
             showAlert("Too long entry", message: "Please enter a valid entry", buttonTitle: "Try again", sender: self)
           })
@@ -771,10 +771,17 @@ class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, U
               socialMediaName = "http://" + socialMediaName
             }
             
-            if !verifyUrl(socialMediaName){
-              dispatch_async(dispatch_get_main_queue(), { 
-                showAlert("Invalid Website URL", message: "Please enter a valid URL", buttonTitle: "Try again", sender: self)
-              })
+            // With android apps, URL is tough to check because of the 'com.appName' url scheme. Instead check for google.com domain
+            if socialMediaType == "android" {
+              if !socialMediaName.containsString("google.com") && !socialMediaName.containsString("goo.gl") {
+                showAlert("Invalid Play Store URL", message: "Please enter a valid Android Play Store URL", buttonTitle: "Try again", sender: self)
+              }
+            }
+            else if !verifyUrl(socialMediaName){
+              
+                dispatch_async(dispatch_get_main_queue(), {
+                  showAlert("Invalid Website URL", message: "Please enter a valid URL", buttonTitle: "Try again", sender: self)
+                })
               
               alertViewResponder.close()
               return 

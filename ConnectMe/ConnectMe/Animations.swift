@@ -11,6 +11,7 @@ import UIKit
 enum AnimationLocation {
   case Top
   case Bottom
+  case Middle
 }
 
 enum AnimationAquaintEmblemTheme {
@@ -31,6 +32,8 @@ func setUpSocialMediaAnimations(viewController: UIViewController, subView: UIVie
   var yLocationDisplacement = CGFloat(0)
   if animationLocation == AnimationLocation.Bottom {
     yLocationDisplacement = CGFloat(viewController.view.frame.size.height) / 1.5
+  } else if animationLocation == AnimationLocation.Middle {
+    yLocationDisplacement = CGFloat(viewController.view.frame.size.height) / 2
   }
   
   var emblem = "Emblem White"
