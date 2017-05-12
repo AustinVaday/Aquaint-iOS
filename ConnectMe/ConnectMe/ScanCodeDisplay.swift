@@ -118,7 +118,10 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
    }
    */
   @IBAction func onExportButtonClicked(sender: AnyObject) {
-    let shareItems = [self.scanCodeImageView.image!]
+    
+    
+    let textToShare = "Take a look at all my social profiles on Aquaint by scanning this code or going to: www.aquaint.us/user/" + currentUser
+    let shareItems = [self.scanCodeImageView.image!, textToShare]
     let activityVC = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
     
     dispatch_async(dispatch_get_main_queue()) { 

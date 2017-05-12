@@ -11,6 +11,7 @@ import AWSCognitoIdentityProvider
 import AWSS3
 import AWSMobileHubHelper
 import AWSDynamoDB
+import AWSLambda
 
 class SignUpFetchMoreDataController: UIViewController {
     
@@ -37,14 +38,16 @@ class SignUpFetchMoreDataController: UIViewController {
     var dynamoDBObjectMapper : AWSDynamoDBObjectMapper!
     
     var checkMarkFlippedCopy: UIImageView!
-    
+  
+    var isSignUpWithFacebook = false
     var userPhone : String!
     var userEmail : String!
     var userFullName : String!
     var userImage: UIImage!
+    var fbUID : String!
     var attemptedUserName = String()
     let segueDestination = "toSignUpVerificationController"
-
+    let signUpWithFBSegueDestination = "toWalkthroughContainerViewController"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +55,10 @@ class SignUpFetchMoreDataController: UIViewController {
         
         // get the IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
-        
+      
+        // Set up DB
+        dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+      
         resetAnimations()
         
         // Set up pan gesture recognizer for when the user wants to swipe left/right
@@ -209,13 +215,12 @@ class SignUpFetchMoreDataController: UIViewController {
         
         // Show activity indicator (spinner)
         spinner.startAnimating()
-        
-//        let currentUser = getCurrentUser()
-//        
-//        print("Current user to sign up: ", currentUser)
-//        print("And password is: ", userPassword)
-        
-        
+      
+        if isSignUpWithFacebook {
+          completeUserRegistration()
+          return
+        }
+      
         //Important!! Make userNameString all lowercase from now on (for storing unique keys in the database)
         // What if userNameString is nil?
         let lowerCaseUserNameString = userNameString.lowercaseString
@@ -237,20 +242,6 @@ class SignUpFetchMoreDataController: UIViewController {
             if (resultTask.error == nil)
             {
                 print("Successful signup")
-
-                // Cache the user name for future use!
-//                let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
-//
-//                // Fetch new identity ID
-//                credentialsProvider.getIdentityId().continueWithBlock({ (task) -> AnyObject? in
-//                    print("^^^USER SIGNED UP:", task.result)
-//
-//                    // Set cached current user
-//                    setCurrentUserNameAndId(userNameString, userId: task.result as! String)
-//
-//                    return nil
-//                })
-
 
                 // Perform update on UI on main thread
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -410,14 +401,313 @@ class SignUpFetchMoreDataController: UIViewController {
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
         flipImageHorizontally(checkMarkFlippedCopy)
     }
-    
+  
+    private func completeUserRegistration() {
+        // Create AWS user and upload
+      let userNameString:String = userName.text!
+      let userPasswordString:String = userPassword.text!
+      let lowerCaseUserNameString = userNameString.lowercaseString
+      
+      let email  = AWSCognitoIdentityUserAttributeType()
+      email.name = "email"
+      email.value = userEmail
+      
+      
+      // Remember, AWSTask is ASYNCHRONOUS.
+      pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email], validationData: nil).continueWithBlock { (resultTask) -> AnyObject? in
+
+        // If sign up performed successfully.
+        if (resultTask.error == nil)
+        {
+           self.pool.getUser(userNameString).getSession(lowerCaseUserNameString, password: userPasswordString, validationData: nil, scopes: nil).continueWithBlock({ (sessionResultTask) -> AnyObject? in
+            
+            setCurrentCachedUserName(lowerCaseUserNameString)
+            setCurrentCachedFullName(self.userFullName)
+            setCurrentCachedUserEmail(self.userEmail)
+            setCurrentCachedPrivacyStatus("public")
+            
+            /*********************
+             *  UPLOAD PHOTO TO S3
+             **********************/
+            // If user did add a photo, upload to S3
+            if (self.userImage != nil)
+            {
+              // Fetch user photo
+              let userPhoto = self.userImage
+              
+              // Resize photo for cheaper storage
+              let targetSize = CGSize(width: 150, height: 150)
+              let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
+              
+              // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
+              let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
+              
+              // Force PNG format
+              let data = UIImagePNGRepresentation(newImage)
+              try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+              
+              // AWS TRANSFER REQUEST
+              let transferRequest = AWSS3TransferManagerUploadRequest()
+              transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
+              transferRequest.key = "public/" + lowerCaseUserNameString
+              transferRequest.body = imageFileURL
+              let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+              
+              transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
+                { (resultTask) -> AnyObject? in
+                  
+                  // if sucessful file transfer
+                  if resultTask.error == nil
+                  {
+                    print("SUCCESS FILE UPLOAD")
+                    // Also cache it.. only if file successfully uploadsd
+                    setCurrentCachedUserImage(self.userImage)
+                    
+                  }
+                  else // If fail file transfer
+                  {
+                    
+                    print("ERROR FILE UPLOAD: ", resultTask.error)
+                  }
+                  
+                  return nil
+              })
+              
+            }
+            /*************************************
+             *  UPLOAD USER DATA TO RDS via LAMBDA
+             *************************************/
+            // Store username and user realname
+            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+            var parameters = ["action":"adduser", "target": lowerCaseUserNameString, "realname": self.userFullName]
+            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+              if resultTask.error != nil
+              {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+              }
+              else if resultTask.exception != nil
+              {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+              }
+              else if resultTask.result != nil
+              {
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                
+              }
+              else
+              {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+              }
+              
+              return nil
+              
+            }
+            
+            
+            // Have user automatically follow and be followed by Aquaint Team!
+            parameters = ["action":"follow", "target": lowerCaseUserNameString, "me": "aquaint"]
+            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+              if resultTask.error != nil
+              {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+              }
+              else if resultTask.exception != nil
+              {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+              }
+              else if resultTask.result != nil
+              {
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                
+              }
+              else
+              {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+              }
+              
+              return nil
+              
+            }
+            
+            // Generate scan code for user
+            parameters = ["action":"createScanCodeForUser", "target": lowerCaseUserNameString]
+            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+              if resultTask.error != nil {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+              }
+              else if resultTask.exception != nil {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+              }
+              else if resultTask.result != nil {
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+              }
+              else {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+              }
+              return nil
+            }
+            
+            /********************************
+             *  UPLOAD USER DATA TO DYNAMODB
+             ********************************/
+            // Upload user DATA to DynamoDB
+            let dynamoDBUser = User()
+            
+            dynamoDBUser.realname = self.userFullName
+            // dynamoDBUser.timestamp = getTimestampAsInt()
+            // dynamoDBUser.userId = task.result as! String
+            dynamoDBUser.username = lowerCaseUserNameString
+            
+            
+            self.dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+              
+              // If successful save
+              if (resultTask.error == nil)
+              {
+                print ("DYNAMODB SUCCESS: ", resultTask.result)
+                
+                // Perform update on UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                  
+                  // Stop showing activity indicator (spinner)
+                  self.spinner.stopAnimating()
+                  self.checkMarkFlipped.hidden = false
+                  self.buttonToFlip.hidden = true
+                  
+                  UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                    
+                    self.checkMarkFlipped.hidden = false
+                    self.checkMarkFlipped.image = self.checkMark.image
+                    
+                    }, completion: nil)
+                  
+                  
+                  delay(1.5)
+                  {
+                    
+                    self.performSegueWithIdentifier(self.signUpWithFBSegueDestination, sender: nil)
+                    
+                  }
+                  
+                  self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
+                })
+              }
+              
+              if (resultTask.error != nil)
+              {
+                print ("DYNAMODB ERROR: ", resultTask.error)
+              }
+              
+              if (resultTask.exception != nil)
+              {
+                print ("DYNAMODB EXCEPTION: ", resultTask.exception)
+              }
+              
+              return nil
+            })
+            
+            return nil
+          })
+      
+        }
+        else // If sign up failed
+        {
+          // If user attempted to use the username before, let them proceed
+          if (!self.attemptedUserName.isEmpty && self.attemptedUserName == self.userName.text)
+          {
+            //Proceed only if user is not confirmed
+            if (self.pool.getUser(self.attemptedUserName).confirmedStatus.rawValue == 0)
+            {
+              // Perform update on UI on main thread
+              dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
+                // Stop showing activity indicator (spinner)
+                self.checkMarkFlipped.hidden = false
+                
+                self.buttonToFlip.hidden = true
+                self.spinner.stopAnimating()
+                
+                UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                  
+                  self.checkMarkFlipped.hidden = false
+                  self.checkMarkFlipped.image = self.checkMark.image
+                  
+                  }, completion: nil)
+                
+                
+                delay(1.5)
+                {
+                  
+                  self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                  // Disable button so that user cannot click on it twice (this is how errors happen)
+                  self.nextButton.enabled = true
+                  
+                }
+                
+                
+                self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
+              })
+              
+              
+            }
+            else
+            {
+              // we failed.. do something like what we do below
+              print("USER PRE CONFIRMED IN SIGN UP")
+            }
+          }
+          else
+          {
+            
+            
+            
+            // Perform update on UI on main thread
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+              
+              // Stop showing activity indicator (spinner)
+              self.spinner.stopAnimating()
+              
+              // Re-enable button
+              self.nextButton.enabled = true
+              
+              self.attemptedUserName = String()
+              
+              // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
+              if (self.presentedViewController == nil)
+              {
+                let error = (resultTask.error?.userInfo["__type"])! as! String
+                
+                if (error == "UsernameExistsException")
+                {
+                  showAlert("Error signing up.", message: "Sorry, your username is already taken. Please try again!", buttonTitle: "Try again", sender: self)
+                }
+                else
+                {
+                  showAlert("Error signing up", message: (resultTask.error?.userInfo["message"])! as! String, buttonTitle: "Try again", sender: self)
+                  
+                }
+                
+              }
+            })
+          }
+        }
+        
+        return nil
+      }
+
+    }
+  
     // Use to go back to previous VC at ease.
     @IBAction func unwindBackSignUpInfoVC(segue: UIStoryboardSegue)
     {
         print("CALLED UNWIND VC")
-        
+      
         resetAnimations()
     }
 
-    
+  
 }

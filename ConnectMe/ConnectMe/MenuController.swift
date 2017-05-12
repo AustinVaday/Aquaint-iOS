@@ -326,10 +326,10 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     let imagePicker = UIImagePickerController()    // Used for selecting image from user's device
     
     // Present the Saved Photo Album to user only if it is available
-    if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum)
+    if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary)
     {
       imagePicker.delegate = self
-      imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum
+      imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
       imagePicker.allowsEditing = false
       self.presentViewController(imagePicker, animated: true, completion: nil)
     }
@@ -458,8 +458,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     {
       print ("HOLA")
       
+      if (textField.text?.characters.count == 0)
+      {
+        textField.text = "+1"
+      }
       // Do not let user modify first 2 characters. Right now this is for US phone numbers ("+1")
-      if (range.location < 2)
+      else if (range.location < 2)
       {
         return false
       }

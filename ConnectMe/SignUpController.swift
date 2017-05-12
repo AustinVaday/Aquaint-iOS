@@ -11,6 +11,9 @@ import UIKit
 import AWSMobileHubHelper
 import AWSCognitoIdentityProvider
 import AWSS3
+import FBSDKCoreKit
+import FBSDKLoginKit
+import AWSDynamoDB
 
 class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -31,8 +34,12 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     @IBOutlet weak var facebookButton: UIButton!
     
 //    @IBOutlet weak var orSignInWithLabel: UIView!
-
+    var fbImage : UIImage!
+    var fbFullName : String!
+    var fbEmail : String!
+    var fbUID : String!
     var isKeyboardShown = false
+    var isSignUpWithFacebook = false
     var didSignInObserver: AnyObject!
     var pool: AWSCognitoIdentityUserPool!
     var credentialsProvider: AWSCognitoCredentialsProvider!
@@ -44,7 +51,6 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     var imagePicker:UIImagePickerController!    // Used for selecting image from user's device
 
     let segueDestination = "toSignUpFetchMoreDataController"
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -199,10 +205,10 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
         
         // Present the Saved Photo Album to user only if it is available
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum)
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary)
         {
             imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum
+            imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             imagePicker.allowsEditing = false
             self.presentViewController(imagePicker, animated: true, completion: nil)
         }
@@ -373,25 +379,140 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
 
     }
     
-    
+  
+  @IBAction func onSignUpWithFacebookButtonClicked(sender: AnyObject) {
+    let login = FBSDKLoginManager.init()
+    login.logOut()
+
+    // Open in app instead of web browser!
+    login.loginBehavior = FBSDKLoginBehavior.Native
+
+
+    // Request basic profile permissions just to get user ID
+    login.logInWithReadPermissions(["public_profile", "email"], fromViewController: self) { (result, error) in
+      
+      if (error == nil && result != nil) {
+
+        //Get user-specific data including name, email, and ID.
+        let request = FBSDKGraphRequest(graphPath: "/me?locale=en_US&fields=name,email", parameters: nil)
+        request.startWithCompletionHandler { (connection, result, error) in
+          if error == nil {
+            print("Result is FB!!: ", result)
+            let resultMap = result as! Dictionary<String, String>
+            
+            self.fbFullName = resultMap["name"]
+            self.fbEmail = resultMap["email"]
+            self.fbUID = resultMap["id"]
+            let userImageURL = "https://graph.facebook.com/" + self.fbUID! + "/picture?type=large"
+            
+            self.isSignUpWithFacebook = true
+            
+            downloadImageFromURL(userImageURL, completion: { (result, error) in
+              if (result != nil && error == nil) {
+                self.fbImage = result! as UIImage
+                dispatch_async(dispatch_get_main_queue(), {
+                  self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                })
+              }
+            })
+            
+            
+           
+
+            
+    //        // Check our databases to see if we have a user with the same fbUID
+    //        // If we have multiple users ->
+    //        // If we don't have a user -> create one
+    //        let dynamoDB = AWSDynamoDB.defaultDynamoDB()
+    //        let scanInput = AWSDynamoDBScanInput()
+    //        scanInput.tableName = "aquaint-users"
+    //        scanInput.limit = 100
+    //        scanInput.exclusiveStartKey = nil
+    //        
+    //        let UIDValue = AWSDynamoDBAttributeValue()
+    //        UIDValue.S = fbUID
+    //        
+    //        scanInput.expressionAttributeValues = [":val" : UIDValue]
+    //        scanInput.filterExpression = "fbuid = :val"
+    //        
+    //        dynamoDB.scan(scanInput).continueWithBlock { (resultTask) -> AnyObject? in
+    //          if resultTask.result != nil && resultTask.error == nil
+    //          {
+    //            print("DB QUERY SUCCESS:", resultTask.result)
+    //            let results = resultTask.result as! AWSDynamoDBScanOutput
+    //            
+    //            if results.items!.count > 1 {
+    //              print("FB login attempt where more than 1 user has same FB ID")
+    //              dispatch_async(dispatch_get_main_queue(), {
+    //                showAlert("Sorry", message: "You already have a ", buttonTitle: "Try again", sender: self)
+    //              })
+    //              
+    //              return nil
+    //            }
+    //            
+    //            for result in results.items! {
+    //              print("RESULT IS: ", result)
+    //              
+    //              let username = (result["username"]?.S)! as String
+    //              
+    //              setCurrentCachedUserName(username)
+    //              setCachedUserFromAWS(username)
+    //              
+    //              dispatch_async(dispatch_get_main_queue(), {
+    //                self.performSegueWithIdentifier("toMainContainerViewController", sender: nil)
+    //              })
+    //            }
+    //          }
+    //          else
+    //          {
+    //            print("DB QUERY FAILURE:", resultTask.error)
+    //          }
+    //          return nil
+    //        }
+            
+            
+            
+          } else {
+            print("Error getting **FB infooo", error)
+            dispatch_async(dispatch_get_main_queue(), {
+              showAlert("Sorry", message: "There was an issue signing up with Facebook. We apologize for the inconvenience.", buttonTitle: "Try again", sender: self)
+            })
+          }
+        }
+      }
+    }
+  }
+  
+  
     // Used to pass password to next view controller
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
+      
         // Pass the password to next view controller so we can log user in there
         if(segue.identifier == segueDestination)
         {
             let nextViewController = segue.destinationViewController as! SignUpFetchMoreDataController
+          
+            nextViewController.isSignUpWithFacebook = self.isSignUpWithFacebook
             
-            nextViewController.userEmail = userEmail.text
+            if self.isSignUpWithFacebook {
+              nextViewController.userFullName = self.fbFullName
+              nextViewController.userEmail = self.fbEmail
+              nextViewController.userImage = self.fbImage
+              nextViewController.fbUID = self.fbUID  
+              
+            } else {
             
-            // Ensure that you pass the country code as well. Default: US
-            nextViewController.userPhone = "+1" + userPhone.text!
-            nextViewController.userFullName = userFullName.text
+              nextViewController.userEmail = userEmail.text
+              
+              // Ensure that you pass the country code as well. Default: US
+              nextViewController.userPhone = "+1" + userPhone.text!
+              nextViewController.userFullName = userFullName.text
             
-            // Pass image only if user set an image
-            if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
-            {
-                nextViewController.userImage = userPhoto.currentImage!
+              // Pass image only if user set an image -- or if we're signing up through facebook
+              if ((self.userPhoto.currentImage != UIImage(named: "Add Photo Color")))
+              {
+                  nextViewController.userImage = userPhoto.currentImage!
+              }
             }
         }
     }
@@ -404,6 +525,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
         flipImageHorizontally(checkMarkFlippedCopy)
     }
+  
     
     // Use to go back to previous VC at ease.
     @IBAction func unwindBackVC(segue: UIStoryboardSegue)

@@ -254,62 +254,81 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         }
 
     }
-
-    // Note: We also link pending button to this method as well. Very functionality
-    @IBAction func onDeleteConnectionButtonClicked(sender: AnyObject) {
+  
+      func unFollowUser() {
         // Fetch current user from NSUserDefaults
         let currentUserName = me
-        
+
         // If currentUser is not trying to add themselves
         if (currentUserName != userNameLabel.text!)
         {
-            // Call lambda to store user connectons in database! If private account, we store in follow_requests. If public, we
-            // store in follows
-            var targetAction : String!
-            if displayPrivate {
-              targetAction = "unfollowRequest"
-            } else {
-              targetAction = "unfollow"
-            }
+          // Call lambda to store user connectons in database! If private account, we store in follow_requests. If public, we
+          // store in follows
+          var targetAction : String!
+          if displayPrivate {
+            targetAction = "unfollowRequest"
+          } else {
+            targetAction = "unfollow"
+        }
 
-            // Call lambda to store user connectons in database!
-            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-            let parameters = ["action": targetAction, "target": userNameLabel.text!, "me": currentUserName]
-            
-            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
-                
-                if resultTask.error != nil
-                {
-                    print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-                }
-                else if resultTask.exception != nil
-                {
-                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                    
-                }
-                else if resultTask.result != nil
-                {
-                    // Perform update on UI on main thread
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                      self.activateAddButton()
-                      self.popupSearchConsistencyDelegate?.profilePopupUserDeleted(self.userNameLabel.text!, isPrivate: self.displayPrivate)
+        // Call lambda to store user connectons in database!
+        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let parameters = ["action": targetAction, "target": userNameLabel.text!, "me": currentUserName]
 
-                    })
-                }
-                else
-                {
-                    print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-                    
-                }
-                
-                return nil
-                
-            })
-            
+        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
+
+        if resultTask.error != nil
+        {
+          print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+        }
+        else if resultTask.exception != nil
+        {
+          print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+
+        }
+        else if resultTask.result != nil
+        {
+          // Perform update on UI on main thread
+          dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.activateAddButton()
+            self.popupSearchConsistencyDelegate?.profilePopupUserDeleted(self.userNameLabel.text!, isPrivate: self.displayPrivate)
+          })
+        }
+        else
+        {
+          print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+
+        }
+
+        return nil
+
+        })
+
         }
 
     }
-   
+  
+    // Note: We also link pending button to this method as well. Very functionality
+    @IBAction func onDeleteConnectionButtonClicked(sender: AnyObject) {
+
+          self.unFollowUser()
+          // ISSUE WITH BELOW: Cannot present view controller on top of a popup....
+//        // Add in action sheet to have user verify if they want to delete
+//        let optionMenu = UIAlertController(title: "Are you sure you want to unfollow this person?", message: "", preferredStyle: .ActionSheet)
+//        let unfollowAction = UIAlertAction(title: "Unfollow", style: .Destructive) { (alert) in
+//          // Unfollow code here
+//          self.unFollowUser()
+//        }
+//      
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+//      
+//        optionMenu.addAction(unfollowAction)
+//        optionMenu.addAction(cancelAction)
+//      
+//        self.superview.presentViewController(optionMenu, animated: true, completion: nil)
+      
+    }
+  
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return keyValSocialMediaPairList.count
     }
