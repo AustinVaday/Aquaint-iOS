@@ -458,8 +458,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     {
       print ("HOLA")
       
+      if (textField.text?.characters.count == 0)
+      {
+        textField.text = "+1"
+      }
       // Do not let user modify first 2 characters. Right now this is for US phone numbers ("+1")
-      if (range.location < 2)
+      else if (range.location < 2)
       {
         return false
       }

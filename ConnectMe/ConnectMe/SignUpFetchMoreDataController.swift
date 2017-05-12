@@ -55,7 +55,10 @@ class SignUpFetchMoreDataController: UIViewController {
         
         // get the IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
-        
+      
+        // Set up DB
+        dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+      
         resetAnimations()
         
         // Set up pan gesture recognizer for when the user wants to swipe left/right
@@ -409,203 +412,206 @@ class SignUpFetchMoreDataController: UIViewController {
       email.name = "email"
       email.value = userEmail
       
+      
       // Remember, AWSTask is ASYNCHRONOUS.
       pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email], validationData: nil).continueWithBlock { (resultTask) -> AnyObject? in
-        
-        
+
         // If sign up performed successfully.
         if (resultTask.error == nil)
         {
-          
-          setCurrentCachedUserName(lowerCaseUserNameString)
-          setCurrentCachedFullName(self.userFullName)
-          setCurrentCachedUserEmail(self.userEmail)
-          setCurrentCachedPrivacyStatus("public")
-          
-          /*********************
-           *  UPLOAD PHOTO TO S3
-           **********************/
-          // If user did add a photo, upload to S3
-          if (self.userImage != nil)
-          {
-            // Fetch user photo
-            let userPhoto = self.userImage
+           self.pool.getUser(userNameString).getSession(lowerCaseUserNameString, password: userPasswordString, validationData: nil, scopes: nil).continueWithBlock({ (sessionResultTask) -> AnyObject? in
             
-            // Resize photo for cheaper storage
-            let targetSize = CGSize(width: 150, height: 150)
-            let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
+            setCurrentCachedUserName(lowerCaseUserNameString)
+            setCurrentCachedFullName(self.userFullName)
+            setCurrentCachedUserEmail(self.userEmail)
+            setCurrentCachedPrivacyStatus("public")
             
-            // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
-            let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
-            
-            // Force PNG format
-            let data = UIImagePNGRepresentation(newImage)
-            try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
-            
-            // AWS TRANSFER REQUEST
-            let transferRequest = AWSS3TransferManagerUploadRequest()
-            transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
-            transferRequest.key = "public/" + lowerCaseUserNameString
-            transferRequest.body = imageFileURL
-            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-            
-            transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
-              { (resultTask) -> AnyObject? in
-                
-                // if sucessful file transfer
-                if resultTask.error == nil
-                {
-                  print("SUCCESS FILE UPLOAD")
-                  // Also cache it.. only if file successfully uploadsd
-                  setCurrentCachedUserImage(self.userImage)
+            /*********************
+             *  UPLOAD PHOTO TO S3
+             **********************/
+            // If user did add a photo, upload to S3
+            if (self.userImage != nil)
+            {
+              // Fetch user photo
+              let userPhoto = self.userImage
+              
+              // Resize photo for cheaper storage
+              let targetSize = CGSize(width: 150, height: 150)
+              let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
+              
+              // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
+              let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
+              
+              // Force PNG format
+              let data = UIImagePNGRepresentation(newImage)
+              try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+              
+              // AWS TRANSFER REQUEST
+              let transferRequest = AWSS3TransferManagerUploadRequest()
+              transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
+              transferRequest.key = "public/" + lowerCaseUserNameString
+              transferRequest.body = imageFileURL
+              let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+              
+              transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
+                { (resultTask) -> AnyObject? in
                   
-                }
-                else // If fail file transfer
-                {
+                  // if sucessful file transfer
+                  if resultTask.error == nil
+                  {
+                    print("SUCCESS FILE UPLOAD")
+                    // Also cache it.. only if file successfully uploadsd
+                    setCurrentCachedUserImage(self.userImage)
+                    
+                  }
+                  else // If fail file transfer
+                  {
+                    
+                    print("ERROR FILE UPLOAD: ", resultTask.error)
+                  }
                   
-                  print("ERROR FILE UPLOAD: ", resultTask.error)
-                }
-                
-                return nil
-            })
-            
-          }
-          /*************************************
-           *  UPLOAD USER DATA TO RDS via LAMBDA
-           *************************************/
-          // Store username and user realname
-          let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-          var parameters = ["action":"adduser", "target": self.userName, "realname": self.userFullName]
-          lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-            if resultTask.error != nil
-            {
-              print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-            }
-            else if resultTask.exception != nil
-            {
-              print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-              
-            }
-            else if resultTask.result != nil
-            {
-              print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
-              
-            }
-            else
-            {
-              print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-              
-            }
-            
-            return nil
-            
-          }
-          
-          
-          // Have user automatically follow and be followed by Aquaint Team!
-          parameters = ["action":"follow", "target": self.userName, "me": "aquaint"]
-          lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-            if resultTask.error != nil
-            {
-              print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-            }
-            else if resultTask.exception != nil
-            {
-              print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-              
-            }
-            else if resultTask.result != nil
-            {
-              print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
-              
-            }
-            else
-            {
-              print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-              
-            }
-            
-            return nil
-            
-          }
-          
-          // Generate scan code for user
-          parameters = ["action":"createScanCodeForUser", "target": self.userName]
-          lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-            if resultTask.error != nil {
-              print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-            }
-            else if resultTask.exception != nil {
-              print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-            }
-            else if resultTask.result != nil {
-              print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
-            }
-            else {
-              print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-            }
-            return nil
-          }
-          
-          /********************************
-           *  UPLOAD USER DATA TO DYNAMODB
-           ********************************/
-          // Upload user DATA to DynamoDB
-          let dynamoDBUser = User()
-          
-          dynamoDBUser.realname = self.userFullName
-          // dynamoDBUser.timestamp = getTimestampAsInt()
-          // dynamoDBUser.userId = task.result as! String
-          dynamoDBUser.username = lowerCaseUserNameString
-          
-          
-          self.dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
-            
-            // If successful save
-            if (resultTask.error == nil)
-            {
-              print ("DYNAMODB SUCCESS: ", resultTask.result)
-              
-              // Perform update on UI on main thread
-              dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                
-                // Stop showing activity indicator (spinner)
-                self.spinner.stopAnimating()
-                self.checkMarkFlipped.hidden = false
-                self.buttonToFlip.hidden = true
-                
-                UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
-                  
-                  self.checkMarkFlipped.hidden = false
-                  self.checkMarkFlipped.image = self.checkMark.image
-                  
-                  }, completion: nil)
-                
-                
-                delay(1.5)
-                {
-                  
-                  self.performSegueWithIdentifier(self.signUpWithFBSegueDestination, sender: nil)
-                  
-                }
-                
-                self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
+                  return nil
               })
+              
+            }
+            /*************************************
+             *  UPLOAD USER DATA TO RDS via LAMBDA
+             *************************************/
+            // Store username and user realname
+            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+            var parameters = ["action":"adduser", "target": lowerCaseUserNameString, "realname": self.userFullName]
+            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+              if resultTask.error != nil
+              {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+              }
+              else if resultTask.exception != nil
+              {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+              }
+              else if resultTask.result != nil
+              {
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                
+              }
+              else
+              {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+              }
+              
+              return nil
+              
             }
             
-            if (resultTask.error != nil)
-            {
-              print ("DYNAMODB ERROR: ", resultTask.error)
+            
+            // Have user automatically follow and be followed by Aquaint Team!
+            parameters = ["action":"follow", "target": lowerCaseUserNameString, "me": "aquaint"]
+            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+              if resultTask.error != nil
+              {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+              }
+              else if resultTask.exception != nil
+              {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+                
+              }
+              else if resultTask.result != nil
+              {
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+                
+              }
+              else
+              {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+                
+              }
+              
+              return nil
+              
             }
             
-            if (resultTask.exception != nil)
-            {
-              print ("DYNAMODB EXCEPTION: ", resultTask.exception)
+            // Generate scan code for user
+            parameters = ["action":"createScanCodeForUser", "target": lowerCaseUserNameString]
+            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+              if resultTask.error != nil {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+              }
+              else if resultTask.exception != nil {
+                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+              }
+              else if resultTask.result != nil {
+                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+              }
+              else {
+                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+              }
+              return nil
             }
+            
+            /********************************
+             *  UPLOAD USER DATA TO DYNAMODB
+             ********************************/
+            // Upload user DATA to DynamoDB
+            let dynamoDBUser = User()
+            
+            dynamoDBUser.realname = self.userFullName
+            // dynamoDBUser.timestamp = getTimestampAsInt()
+            // dynamoDBUser.userId = task.result as! String
+            dynamoDBUser.username = lowerCaseUserNameString
+            
+            
+            self.dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+              
+              // If successful save
+              if (resultTask.error == nil)
+              {
+                print ("DYNAMODB SUCCESS: ", resultTask.result)
+                
+                // Perform update on UI on main thread
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                  
+                  // Stop showing activity indicator (spinner)
+                  self.spinner.stopAnimating()
+                  self.checkMarkFlipped.hidden = false
+                  self.buttonToFlip.hidden = true
+                  
+                  UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                    
+                    self.checkMarkFlipped.hidden = false
+                    self.checkMarkFlipped.image = self.checkMark.image
+                    
+                    }, completion: nil)
+                  
+                  
+                  delay(1.5)
+                  {
+                    
+                    self.performSegueWithIdentifier(self.signUpWithFBSegueDestination, sender: nil)
+                    
+                  }
+                  
+                  self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
+                })
+              }
+              
+              if (resultTask.error != nil)
+              {
+                print ("DYNAMODB ERROR: ", resultTask.error)
+              }
+              
+              if (resultTask.exception != nil)
+              {
+                print ("DYNAMODB EXCEPTION: ", resultTask.exception)
+              }
+              
+              return nil
+            })
             
             return nil
           })
-        
       
         }
         else // If sign up failed

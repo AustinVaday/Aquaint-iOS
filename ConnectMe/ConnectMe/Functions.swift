@@ -1044,7 +1044,7 @@ func downloadImageFromURL(url: String, completion: (result: UIImage?, error: NSE
   let nsurl = NSURL(string: url)
   
   // Creating a session object with the default configuration.
-  let session = NSURLSession()
+  let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
   
   
   // Define a download task. The download task will download the contents of the URL as a Data object and then you can do what you wish with that data.

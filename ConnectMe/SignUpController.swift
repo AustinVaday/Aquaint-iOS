@@ -403,7 +403,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             self.fbFullName = resultMap["name"]
             self.fbEmail = resultMap["email"]
             self.fbUID = resultMap["id"]
-            let userImageURL = "http://graph.facebook.com/" + self.fbUID! + "/picture?type=large"
+            let userImageURL = "https://graph.facebook.com/" + self.fbUID! + "/picture?type=large"
             
             self.isSignUpWithFacebook = true
             
