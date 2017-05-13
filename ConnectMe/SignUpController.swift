@@ -367,8 +367,9 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
         delay(1.5)
         {
-            
-            self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+          
+          self.isSignUpWithFacebook = false
+          self.performSegueWithIdentifier(self.segueDestination, sender: nil)
             
         }
         
@@ -405,12 +406,12 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
             self.fbUID = resultMap["id"]
             let userImageURL = "https://graph.facebook.com/" + self.fbUID! + "/picture?type=large"
             
-            self.isSignUpWithFacebook = true
             
             downloadImageFromURL(userImageURL, completion: { (result, error) in
               if (result != nil && error == nil) {
                 self.fbImage = result! as UIImage
                 dispatch_async(dispatch_get_main_queue(), {
+                  self.isSignUpWithFacebook = true
                   self.performSegueWithIdentifier(self.segueDestination, sender: nil)
                 })
               }

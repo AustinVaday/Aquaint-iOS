@@ -235,7 +235,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   @IBAction func coolTipsAndTricksButtonClicked(sender: AnyObject) {
     let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
     
-    webDisplayVC.webTitle = "Cool Tips"
+    webDisplayVC.webTitle = "Cool Tricks"
     webDisplayVC.webURL = "http://www.aquaint.us/static/cool-tricks"
     self.presentViewController(webDisplayVC, animated: true, completion: nil)
   }

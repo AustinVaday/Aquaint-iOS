@@ -583,6 +583,14 @@ func setCurrentCachedUserName(username: String)
   
 }
 
+func setCachedUserSignUpName(userSignUpName: String)
+{
+  let defaults = NSUserDefaults.standardUserDefaults()
+  defaults.setObject(userSignUpName, forKey: "usersignupname")
+  print("Cache userSignUpName success: ", userSignUpName)
+  
+}
+
 func setCurrentCachedFullName(userFullName: String)
 {
   let defaults = NSUserDefaults.standardUserDefaults()
@@ -688,6 +696,24 @@ func getCurrentCachedUser() -> String!
   }
   
   return currentUser
+  
+}
+
+// Get the current user that is signed into the app
+func getCachedUserSignUpName() -> String!
+{
+  // Get the user defaults set previously in the program (username of user)
+  let defaults = NSUserDefaults.standardUserDefaults()
+  
+  let signupName = defaults.stringForKey("usersignupname")
+  
+  if signupName == nil
+  {
+    print("Uh oh, no cached usersignupname available.")
+    return nil
+  }
+  
+  return signupName
   
 }
 

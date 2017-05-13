@@ -45,7 +45,7 @@ class SignUpFetchMoreDataController: UIViewController {
     var userFullName : String!
     var userImage: UIImage!
     var fbUID : String!
-    var attemptedUserName = String()
+//    var attemptedUserName = String()
     let segueDestination = "toSignUpVerificationController"
     let signUpWithFBSegueDestination = "toWalkthroughContainerViewController"
     
@@ -278,10 +278,11 @@ class SignUpFetchMoreDataController: UIViewController {
             else // If sign up failed
             {
                 // If user attempted to use the username before, let them proceed
-                if (!self.attemptedUserName.isEmpty && self.attemptedUserName == self.userName.text)
+                let attemptedUserName = getCachedUserSignUpName()
+                if (attemptedUserName != nil && attemptedUserName == self.userName.text)
                 {
                     //Proceed only if user is not confirmed
-                    if (self.pool.getUser(self.attemptedUserName).confirmedStatus.rawValue == 0)
+                    if (self.pool.getUser(attemptedUserName).confirmedStatus.rawValue == 0)
                     {
                         // Perform update on UI on main thread
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -335,7 +336,7 @@ class SignUpFetchMoreDataController: UIViewController {
                         // Re-enable button
                         self.nextButton.enabled = true
                         
-                        self.attemptedUserName = String()
+//                        self.attemptedUserName = String()
 
                         // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
                         if (self.presentedViewController == nil)
@@ -380,8 +381,8 @@ class SignUpFetchMoreDataController: UIViewController {
             // IMPORTANT: This will help us determine whether we should allow user to proceed to verification page or not. BE VERY CAREFUL.
             // Problem: If user signs up, goes to verification page, then hits the "back button" -- they cannot use the username they tried to sign up with before -- it will say that it is taken. So we need to know when to let them try again. This will help us. See "unwindBackSignUpInfoVC" for more details
             // Solution: This function will ONLY be called if username does not exist. Therefore it is safe to do this.
-            attemptedUserName = (self.userName.text?.lowercaseString)!
-            
+//            attemptedUserName = (self.userName.text?.lowercaseString)!
+            setCachedUserSignUpName((self.userName.text?.lowercaseString)!)
             
             // Need phone to display it on next screen
             // Don't need to pass email.
@@ -617,10 +618,12 @@ class SignUpFetchMoreDataController: UIViewController {
         else // If sign up failed
         {
           // If user attempted to use the username before, let them proceed
-          if (!self.attemptedUserName.isEmpty && self.attemptedUserName == self.userName.text)
+          let attemptedUserName = getCachedUserSignUpName()
+          
+          if (attemptedUserName != nil && attemptedUserName == self.userName.text)
           {
             //Proceed only if user is not confirmed
-            if (self.pool.getUser(self.attemptedUserName).confirmedStatus.rawValue == 0)
+            if (self.pool.getUser(attemptedUserName).confirmedStatus.rawValue == 0)
             {
               // Perform update on UI on main thread
               dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -674,7 +677,7 @@ class SignUpFetchMoreDataController: UIViewController {
               // Re-enable button
               self.nextButton.enabled = true
               
-              self.attemptedUserName = String()
+//              self.attemptedUserName = String()
               
               // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
               if (self.presentedViewController == nil)
