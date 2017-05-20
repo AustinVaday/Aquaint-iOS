@@ -111,7 +111,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                 // CHECK IF USER IS A VERIFIED ACCOUNT
                 if resultUser.isverified != nil && resultUser.isverified == 1 {
                   dispatch_async(dispatch_get_main_queue(), { 
-                    self.addVerifiedIcon()
+                    addVerifiedIconToLabel(self.otherUserName, label: self.userNameLabel)
                   })
                 }
                 
@@ -446,21 +446,6 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     // which is why we pass in this class and it's data to the next view controller. 
     self.dismissPresentingPopup()
     topVC?.presentViewController(viewController, animated: true, completion: nil)
-
-  }
-  
-  func addVerifiedIcon() {
-    let attachment = NSTextAttachment()
-    attachment.image = UIImage(named: "Verified Button")
-    attachment.bounds = CGRect(x: 2, y: -2, width: 12, height: 12)
-    let attachmentStr = NSAttributedString(attachment: attachment)
-    let myString = NSMutableAttributedString(string: "")
-    let myString1 = NSMutableAttributedString(string: self.otherUserName)
-    myString.appendAttributedString(myString1)
-    myString.appendAttributedString(attachmentStr)
-    
-    userNameLabel.text = ""
-    userNameLabel.attributedText = myString
 
   }
   

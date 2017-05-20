@@ -1240,6 +1240,26 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       
     }
     
+    // Check to see whether user has a verified account (i.e. influencer)
+    getUserVerifiedData(self.currentUserName, completion: { (result, error) in
+      if error == nil && result != nil
+      {
+        let resultUser = result! as UserVerifiedMinimalObjectModel
+        
+        if resultUser.isverified != nil && resultUser.isverified == 1 {
+          dispatch_async(dispatch_get_main_queue(), { 
+            addVerifiedIconToLabel(self.currentUserName, label: self.userNameLabel)
+          })
+          
+        }
+        else {
+          
+        }
+        
+      }
+    })
+
+    
     
   }
   

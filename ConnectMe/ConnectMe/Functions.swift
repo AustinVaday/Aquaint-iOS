@@ -1119,3 +1119,18 @@ func downloadImageFromURL(url: String, completion: (result: UIImage?, error: NSE
   
   downloadPicTask.resume()
 }
+
+func addVerifiedIconToLabel(username: String, label: UILabel) {
+  let attachment = NSTextAttachment()
+  attachment.image = UIImage(named: "Verified Button")
+  attachment.bounds = CGRect(x: 2, y: -2, width: 12, height: 12)
+  let attachmentStr = NSAttributedString(attachment: attachment)
+  let myString = NSMutableAttributedString(string: "")
+  let myString1 = NSMutableAttributedString(string: username)
+  myString.appendAttributedString(myString1)
+  myString.appendAttributedString(attachmentStr)
+  
+  label.text = ""
+  label.attributedText = myString
+  
+}

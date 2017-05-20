@@ -65,7 +65,20 @@ class UserPromoCodeMinimalObjectModel : AWSDynamoDBObjectModel {
   }
   
 }
-
+// AWS DynamoDB minimal object model to just get verified status (i.e. influencer)
+class UserVerifiedMinimalObjectModel : AWSDynamoDBObjectModel {
+  var username: String!
+  var isverified: NSNumber!
+  
+  class func dynamoDBTableName() -> String {
+    return "aquaint-users"
+  }
+  
+  class func hashKeyAttribute() -> String {
+    return "username"
+  }
+  
+}
 // AWS DynamoDB database to store FB UID of each user (for find friends using FB feature)
 class UserFBObjectModel : AWSDynamoDBObjectModel
 {

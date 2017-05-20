@@ -121,7 +121,7 @@
                                                                 <constraint firstAttribute="height" constant="32" id="bp3-U0-Ei3"/>
                                                                 <constraint firstAttribute="width" constant="32" id="ucN-BE-Dnd"/>
                                                             </constraints>
-                                                            <state key="normal" image="E75C3351-5D87-4C3C-8A25-4CCF704F9026"/>
+                                                            <state key="normal" image="98CF45AF-4DBF-4C07-8975-D0734F56E916"/>
                                                         </button>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Password Icon Black" translatesAutoresizingMaskIntoConstraints="NO" id="Vk3-pm-Jmg">
                                                             <rect key="frame" x="13" y="14" width="18" height="18"/>
@@ -406,11 +406,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add People Gray" width="60" height="58"/>
-        <image name="Add People Pending" width="60" height="57"/>
-        <image name="Add People Success Light Blue" width="60" height="58"/>
-        <image name="Back Arrow" width="50" height="50"/>
-        <image name="E75C3351-5D87-4C3C-8A25-4CCF704F9026" width="32" height="32">
+        <image name="98CF45AF-4DBF-4C07-8975-D0734F56E916" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -529,6 +525,10 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDdGX8ZhBmPGZgZqxmvGboZwxnIGdAZ0xnYGecZ6xnyGfoaBxoM
 Gg4aEBoVGh0aIBolGi0aMBpCGkUaSgAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAABpMA
 </mutableData>
         </image>
+        <image name="Add People Gray" width="60" height="58"/>
+        <image name="Add People Pending" width="60" height="57"/>
+        <image name="Add People Success Light Blue" width="60" height="58"/>
+        <image name="Back Arrow" width="50" height="50"/>
         <image name="Line Separator Black" width="753" height="4"/>
         <image name="Password Icon Black" width="50" height="50"/>
         <image name="Person Icon Black" width="50" height="50"/>
