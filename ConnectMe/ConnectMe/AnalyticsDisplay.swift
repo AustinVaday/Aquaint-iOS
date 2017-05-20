@@ -49,12 +49,16 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   var alreadyInitializedSection = [false, false, false] // NOTE: MODIFY TO SIZE OF AnalyticsDataEnum
   var paymentsStoryboard: UIStoryboard?
   var paymentsDisplayVC : PaymentsDisplay!
+  var subscribed = false
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     
     // Get current username
     currentUserName = getCurrentCachedUser()
+    
+    subscribed = getCurrentCachedSubscriptionStatus()
+
     
     // Set up the data for the table views section.
     tableViewSectionsList = Array<String>()
@@ -87,12 +91,6 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   
   override func viewWillAppear(animated: Bool) {
     
-    // Do not generate if user is not subscribed -- no point in doing so
-    let subscribed = getCurrentCachedSubscriptionStatus()
-    if !subscribed {
-      return
-    }
-    
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -118,6 +116,9 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   
   func didPayForProduct() {
     // REMOVE ALL LOCKS
+    setCurrentCachedSubscriptionStatus(true)
+    subscribed = true
+    self.analyticsTableView.reloadData()
   }
 
   
@@ -258,8 +259,14 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       cell.numericalTypeLabel.text = "CLICKS"
       cell.socialProviderLabel.text = String(engagementArray[0])
       
-      cell.numericalValueLabel.hidden = true
-      cell.numericalValueLockImage.hidden = false
+      if (subscribed) {
+        cell.numericalValueLabel.hidden = false
+        cell.numericalValueLockImage.hidden = true
+      } else {
+        cell.numericalValueLabel.hidden = true
+        cell.numericalValueLockImage.hidden = false
+      }
+
       
       // Add blur to freemium users
 //      let lockIconImage = UIImage(named: "Password Icon Black")
@@ -317,8 +324,13 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 ////      blurView.alpha = 0.5
 //      blurView.frame = cell.numericalValueLabel.bounds
 //      cell.numericalValueLabel.addSubview(blurView)
-      cell.numericalValueLabel.hidden = true
-      cell.numericalValueLockImage.hidden = false
+      if (subscribed) {
+        cell.numericalValueLabel.hidden = false
+        cell.numericalValueLockImage.hidden = true
+      } else {
+        cell.numericalValueLabel.hidden = true
+        cell.numericalValueLockImage.hidden = false
+      }
       
       var city = locationTemp[0] as! String
       
