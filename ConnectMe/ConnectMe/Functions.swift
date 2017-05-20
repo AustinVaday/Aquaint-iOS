@@ -670,6 +670,12 @@ func setCurrentCachedSubscriptionStatus(status : Bool)
   defaults.setObject(status, forKey: "subscriptionStatus")
 }
 
+func setCurrentCachedPromoUserStatus(status : Bool)
+{
+  let defaults = NSUserDefaults.standardUserDefaults()
+  defaults.setObject(status, forKey: "promoUserStatus")
+}
+
 func setCurrentCachedUserProfiles(userProfiles: NSMutableDictionary)
 {
   let defaults = NSUserDefaults.standardUserDefaults()
@@ -866,6 +872,19 @@ func getCurrentCachedSubscriptionStatus() -> Bool
   let defaults = NSUserDefaults.standardUserDefaults()
   
   let status = defaults.valueForKey("subscriptionStatus") as! Bool!
+  
+  if status == nil {
+    return false
+  } else {
+    return status
+  }
+}
+
+func getCurrentCachedPromoUserStatus() -> Bool
+{
+  let defaults = NSUserDefaults.standardUserDefaults()
+  
+  let status = defaults.valueForKey("promoUserStatus") as! Bool!
   
   if status == nil {
     return false

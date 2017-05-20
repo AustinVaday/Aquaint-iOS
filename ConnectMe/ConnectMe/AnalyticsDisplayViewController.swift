@@ -90,7 +90,7 @@ class AnalyticsDisplayViewController: UIViewController, PaymentsDisplayDelegate 
   
   func updateLocalSubscriptionStatusForFuture() {
     
-    fetchAndSetCurrentCachedSubscriptionStatus(self.username)
+//    fetchAndSetCurrentCachedSubscriptionStatus(self.username)
     
   }
   

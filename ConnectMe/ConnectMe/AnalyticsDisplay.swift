@@ -29,6 +29,8 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 
 
   @IBOutlet weak var analyticsTableView: UITableView!
+  @IBOutlet weak var unlockDataButton: UIButton!
+  
   var currentUserName : String!
   let footerHeight = CGFloat(65)
   let defaultTableViewCellHeight = CGFloat(55)
@@ -71,6 +73,10 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     // Call this function to generate all analytics data for this page!
     generateAnalyticsData()
+    
+    fetchAndSetCurrentCachedSubscriptionStatus(self.currentUserName, completion: {(result, error) in
+       // Nothing
+    })
   }
   
   override func viewDidLoad() {
@@ -87,7 +93,16 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       paymentsStoryboard = UIStoryboard(name: "PaymentsDisplay", bundle: nil)
       paymentsDisplayVC = paymentsStoryboard!.instantiateViewControllerWithIdentifier("PaymentsDisplay") as! PaymentsDisplay
       paymentsDisplayVC.paidDelegate = self
-     }
+
+    
+      if getCurrentCachedPromoUserStatus() == true || getCurrentCachedSubscriptionStatus() == true {
+        self.didPayForProduct()
+      } else {
+        self.lockAndHideProduct()
+      }
+
+
+   }
   
   override func viewWillAppear(animated: Bool) {
     
@@ -116,8 +131,18 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   
   func didPayForProduct() {
     // REMOVE ALL LOCKS
-    setCurrentCachedSubscriptionStatus(true)
+    if !getCurrentCachedPromoUserStatus() {
+      setCurrentCachedSubscriptionStatus(true)
+    }
+    
     subscribed = true
+    self.unlockDataButton.hidden = true
+    self.analyticsTableView.reloadData()
+  }
+  
+  func lockAndHideProduct() {
+    subscribed = false
+    self.unlockDataButton.hidden = false
     self.analyticsTableView.reloadData()
   }
 

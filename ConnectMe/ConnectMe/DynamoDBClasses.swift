@@ -50,6 +50,21 @@ class UserPrivacyMinimalObjectModel : AWSDynamoDBObjectModel {
   
 }
 
+// AWS DynamoDB minimal object model to just upload subscription settings
+class UserPromoCodeMinimalObjectModel : AWSDynamoDBObjectModel {
+  var username: String!
+  var promouser: NSNumber!
+  
+  class func dynamoDBTableName() -> String {
+    return "aquaint-users"
+  }
+  
+  class func hashKeyAttribute() -> String {
+    return "username"
+  }
+  
+}
+
 // AWS DynamoDB database to store FB UID of each user (for find friends using FB feature)
 class UserFBObjectModel : AWSDynamoDBObjectModel
 {

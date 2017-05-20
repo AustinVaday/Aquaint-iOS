@@ -10,6 +10,7 @@ import UIKit
 import StoreKit
 import LocalAuthentication
 import SCLAlertView
+import AWSDynamoDB
 
 
 protocol PaymentsDisplayDelegate {
@@ -56,8 +57,18 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
           self.showPromoCodePopup({ (result) in
               if result != nil
               {
-                if result! == "x7AQUAINT89h" {
+                if result! == "SOCIAL27" {
                   print("SUCCESS")
+                  self.uploadPromoCodeStatus(true)
+                  if self.paidDelegate != nil {
+                    self.paidDelegate!.didPayForProduct()
+                    
+                    dispatch_async(dispatch_get_main_queue(), { 
+                      self.dismissViewControllerAnimated(true, completion: nil)
+                    })
+                  }
+                } else {
+                  self.uploadPromoCodeStatus(false)
                 }
               }
               else
@@ -231,15 +242,6 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
       {
         //TODO: Nothing?
       }
-      else if code.characters.count != 6
-      {
-        //TODO: Notify that username is too long
-        alertViewResponder.close()
-        completion(result: nil)
-        
-        
-        // Reset userpools to old phone number
-      }
       else
       {
         print("SUCCESS RESULT:", code)
@@ -264,6 +266,48 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
                                              animationStyle: .BottomToTop
     )
     
+  }
+  
+  
+  func uploadPromoCodeStatus(isPromoUser: Bool) {
+    // Upload user DATA to DynamoDB
+    let dynamoDBUser = UserPromoCodeMinimalObjectModel()
+    
+    dynamoDBUser.username = getCurrentCachedUser()
+    
+    if isPromoUser
+    {
+      dynamoDBUser.promouser = 1
+      setCurrentCachedPromoUserStatus(true)
+      
+    } else {
+      dynamoDBUser.promouser = 0
+      setCurrentCachedPromoUserStatus(false)
+      
+    }
+    
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+    dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+      
+      if (resultTask.error != nil)
+      {
+        print ("DYNAMODB UPDATE PROFILE ERROR: ", resultTask.error)
+      }
+      
+      if (resultTask.result == nil)
+      {
+        print ("DYNAMODB UPDATE PROFILE result is nil....: ")
+        
+      }
+        // If successful save
+      else if (resultTask.error == nil)
+      {
+        print ("DYNAMODB UPDATE PROFILE SUCCESS: ", resultTask.result)
+      }
+      
+      return nil
+    })
+
   }
 
 }

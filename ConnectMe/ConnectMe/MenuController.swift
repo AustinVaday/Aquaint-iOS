@@ -871,6 +871,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       }
       
     }
+    
+    tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
   
   

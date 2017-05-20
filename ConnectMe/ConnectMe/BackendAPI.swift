@@ -37,7 +37,7 @@ func getAWSCognitoIdentityUserPool() -> AWSCognitoIdentityUserPool
   return userPool
 }
 
-func fetchAndSetCurrentCachedSubscriptionStatus(userName: String)
+func fetchAndSetCurrentCachedSubscriptionStatus(userName: String, completion: (result: Bool?, error: NSError?)->())
 {
   // Validate receipt first
   let receiptUrl = NSBundle.mainBundle().appStoreReceiptURL
@@ -65,9 +65,38 @@ func fetchAndSetCurrentCachedSubscriptionStatus(userName: String)
         // SUBSCRIBED
         if expiration_timestamp > current_timestamp {
           setCurrentCachedSubscriptionStatus(true) // Should be inferred automatically, but good to be explicit
+          
+          
+          completion(result: true, error: nil)
         } else {
           // NOT SUBSCRIBED
           setCurrentCachedSubscriptionStatus(false)
+
+          
+          // Check DynamoDB to see if user is on a promo code
+          getUserPromoCodeDynamoData(userName, completion: { (result, error) in
+            if error == nil && result != nil
+            {
+              let resultUser = result! as UserPromoCodeMinimalObjectModel
+              
+              if resultUser.promouser != nil && resultUser.promouser == 1 {
+                setCurrentCachedPromoUserStatus(true)
+                completion(result: true, error: nil)
+
+              }
+              else {
+                setCurrentCachedPromoUserStatus(false)
+                completion(result: false, error: nil)
+
+              }
+
+            }
+          })
+          
+          
+          
+          completion(result: false, error: nil)
+
         }
         
       } else {
@@ -157,7 +186,9 @@ func setCachedUserFromAWS(userName: String!)
         
     })
   
-    fetchAndSetCurrentCachedSubscriptionStatus(userName)
+    fetchAndSetCurrentCachedSubscriptionStatus(userName, completion: {(result, error) in
+        
+    })
   
     getUserS3Image(userName, extraPath: "scancodes/", completion: { (result, error) in
       if result != nil && error == nil
@@ -257,6 +288,46 @@ func getUserDynamoData(userName: String!, completion: (result: UserPrivacyObject
     }
 
 }
+
+func getUserPromoCodeDynamoData(userName: String!, completion: (result: UserPromoCodeMinimalObjectModel?, error: NSError?)->())
+{
+  
+  /*******************************************
+   * username, accounts, full name from DYNAMODB
+   ********************************************/
+  let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+  
+  dynamoDBObjectMapper.load(UserPromoCodeMinimalObjectModel.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
+    if (resultTask.error != nil)
+    {
+      print("Error getting user from dynamoDB: ", resultTask.error)
+      completion(result: nil, error: resultTask.error)
+      
+    }
+    else if (resultTask.exception != nil)
+    {
+      print("Exception getting user from dynamoDB: ", resultTask.exception)
+      completion(result: nil, error: nil)
+      
+    }
+    else if (resultTask.result == nil)
+    {
+      print("Error getting user from dynamoDB: nil result")
+      completion(result: nil, error: nil)
+      
+    }
+    else
+    {
+      let user = resultTask.result as! UserPromoCodeMinimalObjectModel
+      
+      completion(result: user, error: nil)
+    }
+    
+    return nil
+  }
+  
+}
+
 
 func getUserS3Image(userName: String!, extraPath: String!, completion: (result: UIImage?, error: NSError?)->())
 {

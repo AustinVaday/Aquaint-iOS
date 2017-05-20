@@ -40,7 +40,7 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZPh-eI-Plv" userLabel="SystemHeaderView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="20"/>
-                                <color key="backgroundColor" red="0.055401942349999997" green="0.3908864695" blue="0.53284902899999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.058823529411764705" green="0.47843137254901957" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="SRI-cj-RU1">
                                 <rect key="frame" x="0.0" y="67" width="600" height="533"/>
@@ -256,6 +256,7 @@
                     </view>
                     <connections>
                         <outlet property="analyticsTableView" destination="SRI-cj-RU1" id="LBH-pq-aGf"/>
+                        <outlet property="unlockDataButton" destination="Fgt-8v-FT5" id="jed-dX-ffD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="91x-Wa-OWR" userLabel="First Responder" sceneMemberID="firstResponder"/>
