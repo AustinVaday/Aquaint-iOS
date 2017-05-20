@@ -35,6 +35,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     var displayPrivate = false
     var popupSearchConsistencyDelegate : ProfilePopupSearchCellConsistencyDelegate?
     var GApageName: String!
+    var otherUserName: String!
   
     /*
     // Only override drawRect: if you perform custom drawing.
@@ -57,6 +58,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
       
         userNameLabel.text = username
         self.me = me
+        self.otherUserName = username
       
         // Determine whether "me" follows user or not
         var lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
@@ -104,6 +106,13 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                 else {
                   // User is public, continue as normal
                   self.displayPrivate = false
+                }
+                
+                // CHECK IF USER IS A VERIFIED ACCOUNT
+                if resultUser.isverified != nil && resultUser.isverified == 1 {
+                  dispatch_async(dispatch_get_main_queue(), { 
+                    self.addVerifiedIcon()
+                  })
                 }
                 
                 // Update UI on main thread
@@ -204,7 +213,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         let currentUserName = self.me
         
         // If currentUser is not trying to add themselves
-        if (currentUserName != userNameLabel.text!)
+        if (currentUserName != otherUserName!)
         {
             // Call lambda to store user connectons in database! If private account, we store in follow_requests. If public, we 
             // store in follows
@@ -216,7 +225,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             }
           
             let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-            let parameters = ["action": targetAction, "target": userNameLabel.text!, "me": currentUserName]
+            let parameters = ["action": targetAction, "target": otherUserName!, "me": currentUserName]
             
             lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
                 
@@ -239,7 +248,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                         self.activateDeleteButton()
                       }
                       
-                      self.popupSearchConsistencyDelegate?.profilePopupUserAdded(self.userNameLabel.text!, isPrivate: self.displayPrivate)
+                      self.popupSearchConsistencyDelegate?.profilePopupUserAdded(self.otherUserName!, isPrivate: self.displayPrivate)
                     })
                 }
                 else
@@ -260,7 +269,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         let currentUserName = me
 
         // If currentUser is not trying to add themselves
-        if (currentUserName != userNameLabel.text!)
+        if (currentUserName != otherUserName!)
         {
           // Call lambda to store user connectons in database! If private account, we store in follow_requests. If public, we
           // store in follows
@@ -273,7 +282,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
 
         // Call lambda to store user connectons in database!
         let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action": targetAction, "target": userNameLabel.text!, "me": currentUserName]
+        let parameters = ["action": targetAction, "target": otherUserName!, "me": currentUserName]
 
         lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
 
@@ -291,7 +300,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
           // Perform update on UI on main thread
           dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.activateAddButton()
-            self.popupSearchConsistencyDelegate?.profilePopupUserDeleted(self.userNameLabel.text!, isPrivate: self.displayPrivate)
+            self.popupSearchConsistencyDelegate?.profilePopupUserDeleted(self.otherUserName!, isPrivate: self.displayPrivate)
           })
         }
         else
@@ -423,7 +432,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     // Let's use a re-usable view just for viewing user follows/followings!
     let storyboard = UIStoryboard(name: "PopUpAlert", bundle: nil)
     let viewController = storyboard.instantiateViewControllerWithIdentifier("AquaintsSingleFollowerListViewController") as! AquaintsSingleFollowerListViewController
-    viewController.currentUserName = self.userNameLabel.text
+    viewController.currentUserName = self.otherUserName
     viewController.lambdaAction = lambdaAction
     viewController.profilePopupView = self
     
@@ -437,6 +446,21 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     // which is why we pass in this class and it's data to the next view controller. 
     self.dismissPresentingPopup()
     topVC?.presentViewController(viewController, animated: true, completion: nil)
+
+  }
+  
+  func addVerifiedIcon() {
+    let attachment = NSTextAttachment()
+    attachment.image = UIImage(named: "Verified Button")
+    attachment.bounds = CGRect(x: 2, y: -2, width: 12, height: 12)
+    let attachmentStr = NSAttributedString(attachment: attachment)
+    let myString = NSMutableAttributedString(string: "")
+    let myString1 = NSMutableAttributedString(string: self.otherUserName)
+    myString.appendAttributedString(myString1)
+    myString.appendAttributedString(attachmentStr)
+    
+    userNameLabel.text = ""
+    userNameLabel.attributedText = myString
 
   }
   

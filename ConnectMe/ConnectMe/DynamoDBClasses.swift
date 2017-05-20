@@ -33,6 +33,7 @@ class User : AWSDynamoDBObjectModel
 // Derive class to adhere to new privacy model
 class UserPrivacyObjectModel : User {
   var isprivate : NSNumber!
+  var isverified : NSNumber!
 }
 
 // AWS DynamoDB minimal object model to just upload privacy settings
