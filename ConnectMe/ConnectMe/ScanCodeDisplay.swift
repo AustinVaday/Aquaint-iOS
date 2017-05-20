@@ -64,12 +64,21 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   let SCAN_CODE_PROCESSING_INTERVAL = 3.0  // this should be the maximum time taken to fully show the KLCPopup, so that we guarantee its completion handler is called
   var isShowingUserProfilePopup = false
 
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    
+    // Generate data right when object is generated
+    updateAnalyticsDisplayValues()
+
+    
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
     defaultCameraView = cameraView
     
-    updateAnalyticsDisplayValues()
+//    updateAnalyticsDisplayValues()
 
     maskView.transparentHoleView = self.scanCodeImageView
     maskView.drawRect(maskView.frame)
@@ -94,6 +103,9 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     updateAnalyticsDisplayValues()
     
     fetchUserScanCode()
+    
+    updateAnalyticsDisplayValues()
+
     awsMobileAnalyticsRecordPageVisitEventTrigger("ScanCodeDisplay", forKey: "page_name")
     
   }
@@ -243,11 +255,20 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   @IBAction func onYourWebProfileClicked(sender: AnyObject) {
     let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
     
+//    webDisplayVC.copyLinkButton.hidden = false
     webDisplayVC.webTitle = "aquaint.us/user/" + currentUser
     webDisplayVC.webURL = "http://www.aquaint.us/user/" + currentUser
     self.presentViewController(webDisplayVC, animated: true, completion: nil)
   }
   
+  @IBAction func onScanCodeImageClicked(sender: AnyObject) {
+    let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
+    
+//    webDisplayVC.copyLinkButton.hidden = false
+    webDisplayVC.webTitle = "aquaint.us/user/" + currentUser
+    webDisplayVC.webURL = "http://www.aquaint.us/user/" + currentUser
+    self.presentViewController(webDisplayVC, animated: true, completion: nil)
+  }
   
   func setUpCameraDisplay() {
     // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video as the media type parameter.

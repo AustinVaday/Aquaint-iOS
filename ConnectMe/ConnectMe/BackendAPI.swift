@@ -204,7 +204,12 @@ func setCachedUserFromAWS(userName: String!)
         {
             let userPoolData = result
             setCurrentCachedUserEmail(userPoolData!.email!)
-            setCurrentCachedUserPhone(userPoolData!.phoneNumber!)
+          
+            if userPoolData!.phoneNumber != nil {
+              setCurrentCachedUserPhone(userPoolData!.phoneNumber!)
+            } else {
+              print("No phone number to CACHE...")
+            }
         
         }
         
@@ -380,15 +385,18 @@ func getUserPoolData(userName: String!, completion: (result: UserPoolData?, erro
             print("User Pool fetch data in Settings SUCCESS:", resultTask.result)
             
             let response:AWSCognitoIdentityUserGetDetailsResponse = resultTask.result as! AWSCognitoIdentityUserGetDetailsResponse
-            
-            print("USAH ATTRIBUTEZ", response.userAttributes)
-            print("USAH ATTRIBUTEZ0", response.userAttributes![0]) // email_verified
-            print("USAH ATTRIBUTEZ1", response.userAttributes![1]) // phone_number_verified
-            print("USAH ATTRIBUTEZ2", response.userAttributes![2]) // phone_number
-            print("USAH ATTRIBUTEZ3", response.userAttributes![3]) // email
-            
+
+          
+//            print("USAH ATTRIBUTEZ", response.userAttributes)
+//            print("USAH ATTRIBUTEZ0", response.userAttributes![0]) // email_verified
+//            print("USAH ATTRIBUTEZ1", response.userAttributes![1]) // phone_number_verified
+//            print("USAH ATTRIBUTEZ2", response.userAttributes![2]) // phone_number
+//            print("USAH ATTRIBUTEZ3", response.userAttributes![3]) // email
+          
             var emailVerifiedString : String!
             var phoneVerifiedString : String!
+          
+          print("HELLO")
             
             for userAttribute in response.userAttributes!
             {
@@ -418,7 +426,7 @@ func getUserPoolData(userName: String!, completion: (result: UserPoolData?, erro
             }
             
             
-            if (emailVerifiedString == "true")
+            if (emailVerifiedString != nil && emailVerifiedString == "true")
             {
                 userData.emailVerified = true
             }
@@ -427,7 +435,7 @@ func getUserPoolData(userName: String!, completion: (result: UserPoolData?, erro
                 userData.emailVerified = false
             }
             
-            if (phoneVerifiedString == "true")
+            if (phoneVerifiedString != nil && phoneVerifiedString == "true")
             {
                 userData.phoneNumberVerified = true
             }

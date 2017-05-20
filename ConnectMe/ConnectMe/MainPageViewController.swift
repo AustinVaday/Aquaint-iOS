@@ -45,11 +45,16 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
         dataSource = self
         delegate = self
+      
+        let analyticsStoryBoard = UIStoryboard(name: "AnalyticsDisplay", bundle: nil)
+
         arrayOfViewControllers = Array<UIViewController>()
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeContainerViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("SearchViewController"))!)
       arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("ScanCodeDisplayStoryboardViewController"))!)
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("AnalyticsDisplayViewController"))!)
+        //arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("AnalyticsDisplayViewController"))!)
+        arrayOfViewControllers.append(analyticsStoryBoard.instantiateViewControllerWithIdentifier("AnalyticsDisplay"))
+
         arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))!)
         
         let firstViewController = arrayOfViewControllers[SCANCODE]
@@ -76,7 +81,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             return arrayOfViewControllers[ANALYTICS]
         }
         
-        if viewController.isKindOfClass(AnalyticsDisplayViewController)
+        if viewController.isKindOfClass(AnalyticsDisplay)
         {
             return arrayOfViewControllers[MENU]
         }
@@ -108,7 +113,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
           return arrayOfViewControllers[SEARCH]
         }
       
-        if viewController.isKindOfClass(AnalyticsDisplayViewController)
+        if viewController.isKindOfClass(AnalyticsDisplay)
         {
             return arrayOfViewControllers[SCANCODE]
         }
@@ -144,7 +149,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             currentPageIndex = MENU
         }
 
-        else if nextViewController.isKindOfClass(AnalyticsDisplayViewController)
+        else if nextViewController.isKindOfClass(AnalyticsDisplay)
         {
             currentPageIndex = ANALYTICS
         }
@@ -177,7 +182,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
 //    func goToFollowersPage()
 //    {
 //        changePage(ANALYTICS)
-//        let aquaintsVC = arrayOfViewControllers[ANALYTICS] as! AnalyticsDisplayViewController
+//        let aquaintsVC = arrayOfViewControllers[ANALYTICS] as! AnalyticsDisplay
 //        let dummyButton = UIButton()
 //        aquaintsVC.goToPage0(dummyButton) // Send in random button
 //        
@@ -188,7 +193,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
 //    func goToFollowingPage()
 //    {
 //        changePage(ANALYTICS)
-//        let aquaintsVC = arrayOfViewControllers[ANALYTICS] as! AnalyticsDisplayViewController
+//        let aquaintsVC = arrayOfViewControllers[ANALYTICS] as! AnalyticsDisplay
 //        let dummyButton = UIButton()
 //        aquaintsVC.goToPage1(dummyButton) // Send in random button
 //        

@@ -13,6 +13,7 @@ class AnalyticsContentTableViewCell: UITableViewCell {
   @IBOutlet weak var socialProviderLabel: UILabel!
   @IBOutlet weak var numericalValueLabel: UILabel!
   @IBOutlet weak var numericalTypeLabel: UILabel!
+  @IBOutlet weak var numericalValueLockImage: UIButton!
   
   override func awakeFromNib() {
     super.awakeFromNib()

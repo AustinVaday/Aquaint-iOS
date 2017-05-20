@@ -13,4 +13,6 @@ class MenuTableViewCell: UITableViewCell {
     @IBOutlet weak var menuLineSeparator: UIView!
     @IBOutlet weak var menuTitle: UILabel!
     @IBOutlet weak var menuValue: UITextField!
+    @IBOutlet weak var clickToAdd: UILabel!
+  
 }

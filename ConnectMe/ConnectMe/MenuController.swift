@@ -600,6 +600,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       case MyInformationData.PHONE.rawValue: //User phone
         cell.menuTitle.text = "Phone"
         cell.menuValue.text = currentUserPhone
+        
+        if currentUserPhone == nil || currentUserPhone.characters.count == 0 {
+          cell.clickToAdd.hidden = false
+        } else {
+          cell.clickToAdd.hidden = true
+        }
+        
         // Tag is needed so we can detect which text field is being modified later on
         cell.menuValue.tag  = MyInformationData.PHONE.rawValue
         
@@ -623,11 +630,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       {
         cell.menuLineSeparator.hidden = false
         cell.menuValue.enabled = true
+        cell.clickToAdd.hidden = true
       }
       else
       {
         cell.menuLineSeparator.hidden = true
         cell.menuValue.enabled = false
+        //cell.clickToAdd.hidden = false
       }
       return cell
       break;
@@ -892,6 +901,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       print("*** MenuController *** currentUser 2", pool.currentUser()?.username)
       pool.getUser(self.currentUserName).signOut()
       
+      pool.currentUser()?.signOutAndClearLastKnownUser()
       
       // Update new identity ID
       self.credentialsProvider.getIdentityId().continueWithBlock { (resultTask) -> AnyObject? in
@@ -1640,6 +1650,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // In case we need to revert changes -- if user cannot verify
         let oldPhoneNum = self.currentUserPhone
         
+        phoneCell.clickToAdd.hidden = true
+        
         // Update user pools with currentUserEmail
         phoneCell.menuValue.text = self.editedUserPhone
         self.currentUserPhone = self.editedUserPhone
@@ -1683,6 +1695,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
           //                })
           
           setCurrentCachedUserPhone(self.currentUserPhone)
+          
           
           print("SUCCESSFUL USER PHONE UPDATE IN USERPOOLS")
           return nil

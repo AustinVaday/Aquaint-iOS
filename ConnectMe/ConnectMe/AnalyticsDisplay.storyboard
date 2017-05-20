@@ -121,14 +121,27 @@
                                                         <constraint firstAttribute="width" constant="80" id="prO-fl-6BN"/>
                                                     </constraints>
                                                 </view>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rSY-fl-3BF">
+                                                    <rect key="frame" x="556" y="13" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="VCw-wL-08a"/>
+                                                    </constraints>
+                                                    <state key="normal" image="Password Icon Black"/>
+                                                    <connections>
+                                                        <action selector="unlockButtonClicked:" destination="kb8-eQ-3kS" eventType="touchUpInside" id="hT2-Id-ags"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="rKY-d3-z45" firstAttribute="top" secondItem="tjW-hR-09Y" secondAttribute="bottom" constant="2" id="ABU-jE-BSj"/>
                                                 <constraint firstItem="YyR-UH-Gys" firstAttribute="top" secondItem="4dX-Gh-M8c" secondAttribute="topMargin" constant="1" id="CHe-vy-jO7"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="hql-PC-OPw" secondAttribute="trailing" constant="16" id="Tst-a1-6gN"/>
+                                                <constraint firstItem="rSY-fl-3BF" firstAttribute="trailing" secondItem="YyR-UH-Gys" secondAttribute="trailing" id="Uex-CB-JmB"/>
                                                 <constraint firstItem="tjW-hR-09Y" firstAttribute="leading" secondItem="4dX-Gh-M8c" secondAttribute="leadingMargin" constant="16" id="aei-IP-Vs6"/>
+                                                <constraint firstItem="rSY-fl-3BF" firstAttribute="bottom" secondItem="YyR-UH-Gys" secondAttribute="bottom" id="dAr-Hh-SgN"/>
                                                 <constraint firstItem="rKY-d3-z45" firstAttribute="leading" secondItem="4dX-Gh-M8c" secondAttribute="leadingMargin" constant="13" id="ldV-LR-pFo"/>
+                                                <constraint firstItem="rSY-fl-3BF" firstAttribute="top" secondItem="4dX-Gh-M8c" secondAttribute="topMargin" constant="5" id="nr9-4q-vLc"/>
                                                 <constraint firstItem="tjW-hR-09Y" firstAttribute="top" secondItem="4dX-Gh-M8c" secondAttribute="topMargin" constant="11" id="o8q-K5-SJP"/>
                                                 <constraint firstItem="hql-PC-OPw" firstAttribute="top" secondItem="YyR-UH-Gys" secondAttribute="bottom" id="r9v-wh-VHM"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="YyR-UH-Gys" secondAttribute="trailing" constant="16" id="xVk-om-ZlH"/>
@@ -138,6 +151,7 @@
                                         <connections>
                                             <outlet property="numericalTypeLabel" destination="hql-PC-OPw" id="Sye-Ui-hJK"/>
                                             <outlet property="numericalValueLabel" destination="YyR-UH-Gys" id="1Ts-1E-pTM"/>
+                                            <outlet property="numericalValueLockImage" destination="rSY-fl-3BF" id="phy-7W-1CZ"/>
                                             <outlet property="socialProviderLabel" destination="tjW-hR-09Y" id="Vce-ky-xv7"/>
                                         </connections>
                                     </tableViewCell>
@@ -206,6 +220,21 @@
                                     <outlet property="delegate" destination="kb8-eQ-3kS" id="qKV-kG-xQy"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fgt-8v-FT5">
+                                <rect key="frame" x="0.0" y="555" width="600" height="45"/>
+                                <color key="backgroundColor" red="0.10980392160000001" green="0.83137254900000002" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="ULZ-af-o66"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="20"/>
+                                <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="UNLOCK YOUR DATA">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="unlockMoreDataButtonClicked:" destination="kb8-eQ-3kS" eventType="touchUpInside" id="xpa-Ab-jSr"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -213,10 +242,13 @@
                             <constraint firstItem="SRI-cj-RU1" firstAttribute="bottom" secondItem="gzF-nz-6fy" secondAttribute="top" id="4FQ-Jg-O14"/>
                             <constraint firstItem="ZPh-eI-Plv" firstAttribute="top" secondItem="1Ub-tc-NQO" secondAttribute="top" id="5c4-KM-eHi"/>
                             <constraint firstItem="SRI-cj-RU1" firstAttribute="top" secondItem="b6d-He-Wos" secondAttribute="bottom" id="8MA-N5-gXD"/>
+                            <constraint firstItem="Fgt-8v-FT5" firstAttribute="trailing" secondItem="SRI-cj-RU1" secondAttribute="trailing" id="AJ1-iG-3Xj"/>
                             <constraint firstItem="b6d-He-Wos" firstAttribute="top" secondItem="b7m-gN-MWn" secondAttribute="bottom" id="LHF-cX-Hcd"/>
                             <constraint firstAttribute="trailing" secondItem="b6d-He-Wos" secondAttribute="trailing" id="TYf-1G-e7e"/>
                             <constraint firstItem="b6d-He-Wos" firstAttribute="trailing" secondItem="SRI-cj-RU1" secondAttribute="trailing" id="Xj2-Db-EL0"/>
                             <constraint firstItem="b6d-He-Wos" firstAttribute="trailing" secondItem="ZPh-eI-Plv" secondAttribute="trailing" id="foR-rt-elV"/>
+                            <constraint firstItem="Fgt-8v-FT5" firstAttribute="leading" secondItem="SRI-cj-RU1" secondAttribute="leading" id="hlc-UM-vFg"/>
+                            <constraint firstItem="Fgt-8v-FT5" firstAttribute="bottom" secondItem="gzF-nz-6fy" secondAttribute="top" id="ieN-wL-umQ"/>
                             <constraint firstItem="b6d-He-Wos" firstAttribute="leading" secondItem="SRI-cj-RU1" secondAttribute="leading" id="kY7-lh-CQf"/>
                             <constraint firstItem="b6d-He-Wos" firstAttribute="leading" secondItem="1Ub-tc-NQO" secondAttribute="leading" id="mn9-ei-S85"/>
                             <constraint firstItem="ZPh-eI-Plv" firstAttribute="bottom" secondItem="b7m-gN-MWn" secondAttribute="bottom" id="qKa-5N-x2n"/>
@@ -231,4 +263,7 @@
             <point key="canvasLocation" x="436" y="231"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Password Icon Black" width="50" height="50"/>
+    </resources>
 </document>

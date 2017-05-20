@@ -273,6 +273,12 @@
                                                     </mask>
                                                 </variation>
                                             </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pZi-nm-OMF">
+                                                <rect key="frame" x="212" y="18" width="176" height="150"/>
+                                                <connections>
+                                                    <action selector="onScanCodeImageClicked:" destination="JFp-Qt-ONj" eventType="touchUpInside" id="AHk-sc-906"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -294,10 +300,14 @@
                                             <constraint firstItem="qRi-Ny-bNT" firstAttribute="leading" secondItem="HZr-E8-DXy" secondAttribute="leading" constant="20" id="d9G-MK-ecS"/>
                                             <constraint firstItem="kpl-tx-g96" firstAttribute="top" secondItem="T0e-4W-zzY" secondAttribute="bottom" constant="16" id="g4l-9w-XHW"/>
                                             <constraint firstItem="DfX-f9-Mmw" firstAttribute="centerX" secondItem="kpl-tx-g96" secondAttribute="centerX" id="iIV-eo-2L2"/>
+                                            <constraint firstItem="pZi-nm-OMF" firstAttribute="centerX" secondItem="BJs-EJ-hwK" secondAttribute="centerX" id="kST-oZ-b1z"/>
                                             <constraint firstItem="dN1-w4-145" firstAttribute="top" secondItem="qRi-Ny-bNT" secondAttribute="bottom" constant="8" symbolic="YES" id="knJ-jN-sVk"/>
                                             <constraint firstItem="qRi-Ny-bNT" firstAttribute="top" secondItem="DfX-f9-Mmw" secondAttribute="bottom" constant="-18" id="l13-x3-5id"/>
+                                            <constraint firstItem="pZi-nm-OMF" firstAttribute="top" secondItem="HZr-E8-DXy" secondAttribute="top" constant="18" id="mjQ-oK-iO7"/>
                                             <constraint firstAttribute="trailing" secondItem="DfX-f9-Mmw" secondAttribute="trailing" constant="114" id="nKI-Tl-IjL"/>
+                                            <constraint firstItem="2TT-of-IVn" firstAttribute="leading" secondItem="pZi-nm-OMF" secondAttribute="trailing" constant="8" symbolic="YES" id="viU-ot-3Ad"/>
                                             <constraint firstAttribute="bottom" secondItem="dN1-w4-145" secondAttribute="bottom" constant="3" id="vm4-cg-uDg"/>
+                                            <constraint firstItem="BJs-EJ-hwK" firstAttribute="top" secondItem="pZi-nm-OMF" secondAttribute="bottom" constant="6" id="ws1-9u-UJU"/>
                                             <constraint firstItem="DfX-f9-Mmw" firstAttribute="top" secondItem="HZr-E8-DXy" secondAttribute="top" constant="268" id="zAi-vu-ONv"/>
                                         </constraints>
                                         <variation key="default">

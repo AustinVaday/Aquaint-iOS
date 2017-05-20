@@ -11,7 +11,7 @@ import AWSLambda
 import Graphs
 
 // Will have the real displays and data
-class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSource, PaymentsDisplayDelegate {
   
   enum AnalyticsDataEnum: Int {
     case VIEW_BREAKDOWN
@@ -47,9 +47,11 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   var isGeneratingViewBreakdownAnalytics = false
   var viewBreakdownList = Array<Array<Int>>()
   var alreadyInitializedSection = [false, false, false] // NOTE: MODIFY TO SIZE OF AnalyticsDataEnum
+  var paymentsStoryboard: UIStoryboard?
+  var paymentsDisplayVC : PaymentsDisplay!
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
     
     // Get current username
     currentUserName = getCurrentCachedUser()
@@ -58,25 +60,33 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     tableViewSectionsList = Array<String>()
     tableViewSectionsList.append("PROFILE VIEWS PER DAY (LAST 10 DAYS)")
     tableViewSectionsList.append("ENGAGEMENT BREAKDOWN")
-//    tableViewSectionsList.append("VIEWER GENDER BREAKDOWN")
+    //    tableViewSectionsList.append("VIEWER GENDER BREAKDOWN")
     tableViewSectionsList.append("LOCATION OF VIEWERS")
-//    tableViewSectionsList.append("VIEWER DEVICE BREAKDOWN")
+    //    tableViewSectionsList.append("VIEWER DEVICE BREAKDOWN")
     
-    // Call this function to generate dummy data (before data actually loads)
-//    generateDummyAnalyticsData()
-    
-    // Set up refresh control for when user drags for a refresh.
-    refreshControl = CustomRefreshControl()
-    
-    // When user pulls, this function will be called
-    refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
-    analyticsTableView.addSubview(refreshControl)
     
     // Call this function to generate all analytics data for this page!
     generateAnalyticsData()
   }
   
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+      // Set up refresh control for when user drags for a refresh.
+      refreshControl = CustomRefreshControl()
+      
+      // When user pulls, this function will be called
+      refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+    
+      analyticsTableView.addSubview(refreshControl)
+
+      paymentsStoryboard = UIStoryboard(name: "PaymentsDisplay", bundle: nil)
+      paymentsDisplayVC = paymentsStoryboard!.instantiateViewControllerWithIdentifier("PaymentsDisplay") as! PaymentsDisplay
+      paymentsDisplayVC.paidDelegate = self
+     }
+  
   override func viewWillAppear(animated: Bool) {
+    
     // Do not generate if user is not subscribed -- no point in doing so
     let subscribed = getCurrentCachedSubscriptionStatus()
     if !subscribed {
@@ -90,9 +100,26 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 //    generateAnalyticsData()
     awsMobileAnalyticsRecordPageVisitEventTrigger("AnalyticsDisplay", forKey: "page_name")
    
+    // Since we preload data in init, sometimes data will appear stale. This will fix that.
+    self.analyticsTableView.reloadData()
+    
     // Call this function to generate all analytics data for this page!
 //    generateAnalyticsData()
   }
+  
+  @IBAction func unlockMoreDataButtonClicked(sender: AnyObject) {
+    self.presentViewController(paymentsDisplayVC, animated: true, completion: nil)
+  }
+  
+  
+  @IBAction func unlockButtonClicked(sender: AnyObject) {
+    self.presentViewController(paymentsDisplayVC, animated: true, completion: nil)
+  }
+  
+  func didPayForProduct() {
+    // REMOVE ALL LOCKS
+  }
+
   
   /**************************************************************************
    *    TABLE VIEW PROTOCOL
@@ -231,6 +258,29 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       cell.numericalTypeLabel.text = "CLICKS"
       cell.socialProviderLabel.text = String(engagementArray[0])
       
+      cell.numericalValueLabel.hidden = true
+      cell.numericalValueLockImage.hidden = false
+      
+      // Add blur to freemium users
+//      let lockIconImage = UIImage(named: "Password Icon Black")
+//      let lockIconView = UIImageView(image: lockIconImage)
+//
+////      lockIconView.frame = cell.numericalValueLabel.bounds
+//      lockIconView.frame = CGRect(x: cell.numericalValueLabel.bounds.width - 20, y: 2, width: 20 , height: 20)
+//      
+//      // Ensure lock icon is not stretched
+//      
+//      let blur = UIBlurEffect(style: .ExtraLight)
+//      let blurView = UIVisualEffectView(effect: blur)
+//      
+//      let whiteView = UIView()
+//      whiteView.backgroundColor = UIColor.whiteColor()
+////      blurView.alpha = 0.5
+//      blurView.frame = cell.numericalValueLabel.bounds
+////      cell.numericalValueLabel.addSubview(blurView)
+//      cell.numericalValueLabel.addSubview(whiteView)
+//      cell.numericalValueLabel.addSubview(lockIconView)
+      
       break;
       
 //    case AnalyticsDataEnum.GENDER.rawValue:
@@ -260,6 +310,15 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       let locationTemp = locationToCountList[indexPath.item] as! NSArray
       cell.numericalValueLabel.text = String(locationTemp[1])
       cell.numericalTypeLabel.text = "VIEWS"
+      
+      // Add blur to freemium users
+//      let blur = UIBlurEffect(style: .ExtraLight)
+//      let blurView = UIVisualEffectView(effect: blur)
+////      blurView.alpha = 0.5
+//      blurView.frame = cell.numericalValueLabel.bounds
+//      cell.numericalValueLabel.addSubview(blurView)
+      cell.numericalValueLabel.hidden = true
+      cell.numericalValueLockImage.hidden = false
       
       var city = locationTemp[0] as! String
       
@@ -383,7 +442,10 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 //              }
               
               self.viewBreakdownList = newViewBreakdownList
-              self.analyticsTableView.reloadData()
+              
+              if self.analyticsTableView != nil {
+                self.analyticsTableView.reloadData()
+              }
             
             })
           }
@@ -432,19 +494,26 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
               if runningRequests == 0 && !self.alreadyInitializedSection[AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue] {
                 dispatch_async(dispatch_get_main_queue(), {
                   self.socialProviderToEngagementCountList = newSocialProviderToEngagementCountList
-                  self.analyticsTableView.reloadData()
+                  
+                  if self.analyticsTableView != nil {
+                    self.analyticsTableView.reloadData()
+                  }
                   self.alreadyInitializedSection[AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue] = true
                 })
               } else if runningRequests == 0 && self.alreadyInitializedSection[AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue] {
                 dispatch_async(dispatch_get_main_queue(), {
                   self.socialProviderToEngagementCountList = newSocialProviderToEngagementCountList
-                  self.analyticsTableView.reloadData()
+                  if self.analyticsTableView != nil {
+                    self.analyticsTableView.reloadData()
+                  }
                 })
               }
               else if !self.alreadyInitializedSection[AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue]{
                 dispatch_async(dispatch_get_main_queue(), {
                   self.socialProviderToEngagementCountList = newSocialProviderToEngagementCountList
-                  self.analyticsTableView.reloadData()
+                  if self.analyticsTableView != nil {
+                    self.analyticsTableView.reloadData()
+                  }
                 })
               }
             }
@@ -466,8 +535,9 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
         self.locationToCountList = resultTask.result as! NSArray
         
         dispatch_async(dispatch_get_main_queue(), {
-          self.analyticsTableView.reloadData()
-          
+          if self.analyticsTableView != nil {
+            self.analyticsTableView.reloadData()
+          }
         })
       }
       

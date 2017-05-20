@@ -12,6 +12,8 @@ class ReusableWebViewController: UIViewController {
   
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var webView: UIWebView!
+  @IBOutlet weak var copyLinkButton: UIButton!
+  
   var webURL: String!
   var webTitle: String!
   override func viewDidLoad() {
@@ -44,6 +46,12 @@ class ReusableWebViewController: UIViewController {
     self.dismissViewControllerAnimated(true, completion: nil)
   }
   
+  @IBAction func copyLinkButtonClicked(sender: AnyObject) {
+    // Copy link to clipboard!
+    UIPasteboard.generalPasteboard().string = self.webURL
+    
+    showAlert("Done!", message: "You've copied " + self.webURL + " to your clipboard!", buttonTitle: "Ok", sender: self)
+  }
   /*
    // MARK: - Navigation
    

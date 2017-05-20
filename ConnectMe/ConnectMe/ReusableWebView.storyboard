@@ -22,18 +22,35 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kxI-Tr-CFd" userLabel="PageHeaderView">
                                 <rect key="frame" x="-1" y="18" width="601" height="45"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="pW1-DD-EL8">
-                                        <rect key="frame" x="280" y="9" width="42" height="28"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="pW1-DD-EL8">
+                                        <rect key="frame" x="52" y="9" width="480" height="28"/>
                                         <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="20"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbg-NC-XPb">
+                                        <rect key="frame" x="529" y="11" width="64" height="25"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="64" id="sHd-bb-qPW"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
+                                        <state key="normal" title="COPY LINK">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="copyLinkButtonClicked:" destination="1Va-Qh-tOT" eventType="touchUpInside" id="HDc-8F-f0o"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="pW1-DD-EL8" firstAttribute="bottom" secondItem="kxI-Tr-CFd" secondAttribute="bottomMargin" id="46J-n7-puV"/>
-                                    <constraint firstItem="pW1-DD-EL8" firstAttribute="centerX" secondItem="kxI-Tr-CFd" secondAttribute="centerX" id="EaY-fa-Y8V"/>
                                     <constraint firstAttribute="height" constant="45" id="Ev0-hL-Dd3"/>
+                                    <constraint firstAttribute="trailing" secondItem="pW1-DD-EL8" secondAttribute="trailing" constant="69" id="YMs-00-3Fd"/>
+                                    <constraint firstItem="dbg-NC-XPb" firstAttribute="top" secondItem="kxI-Tr-CFd" secondAttribute="top" constant="11" id="YR5-GJ-eys"/>
+                                    <constraint firstItem="pW1-DD-EL8" firstAttribute="leading" secondItem="kxI-Tr-CFd" secondAttribute="leading" constant="52" id="YpI-V5-jdK"/>
+                                    <constraint firstItem="dbg-NC-XPb" firstAttribute="trailing" secondItem="kxI-Tr-CFd" secondAttribute="trailingMargin" id="Zyf-8D-MNU"/>
+                                    <constraint firstAttribute="bottom" secondItem="dbg-NC-XPb" secondAttribute="bottom" constant="9" id="fgL-Sd-H2X"/>
+                                    <constraint firstItem="dbg-NC-XPb" firstAttribute="centerY" secondItem="pW1-DD-EL8" secondAttribute="centerY" id="vmE-H3-pZZ"/>
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login Background" translatesAutoresizingMaskIntoConstraints="NO" id="Swy-dO-exb">
@@ -87,6 +104,7 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="copyLinkButton" destination="dbg-NC-XPb" id="rx6-OJ-S4T"/>
                         <outlet property="titleLabel" destination="pW1-DD-EL8" id="pDQ-81-k9A"/>
                         <outlet property="webView" destination="u0s-NB-L6X" id="oMa-Ec-D5M"/>
                     </connections>

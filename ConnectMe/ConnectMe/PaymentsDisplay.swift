@@ -9,6 +9,7 @@
 import UIKit
 import StoreKit
 import LocalAuthentication
+import SCLAlertView
 
 
 protocol PaymentsDisplayDelegate {
@@ -49,6 +50,28 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
     awsMobileAnalyticsRecordPageVisitEventTrigger("PaymentsDisplay", forKey: "page_name")
   }
 
+  @IBAction func onPromoCodeButtonClicked(sender: AnyObject) {
+     //Prompt user to enter in confirmation code.
+      dispatch_async(dispatch_get_main_queue(), {
+          self.showPromoCodePopup({ (result) in
+              if result != nil
+              {
+                if result! == "x7AQUAINT89h" {
+                  print("SUCCESS")
+                }
+              }
+              else
+              {
+                  // Invalid entry or request, revert back to previous phone number
+                  print("INVALID REQUESTO")
+              }
+          })
+
+      })
+
+  }
+  
+  
   @IBAction func onClickBuyBottom(sender: AnyObject) {
     if transactionInProgress {
       return
@@ -90,6 +113,9 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
     
   }
   
+  @IBAction func backButtonClicked(sender: AnyObject) {
+    self.dismissViewControllerAnimated(true, completion: nil)
+  }
   func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
     if response.products.count != 0 {
       for product in response.products {
@@ -155,4 +181,89 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
       print("Cannot perform In App Purchases.")
     }
   }
+  
+  private func showPromoCodePopup(completion: (result:String?)->())
+  {
+    var alertViewResponder: SCLAlertViewResponder!
+    let subview = UIView(frame: CGRectMake(0,0,216,70))
+    let x = (subview.frame.width - 180) / 2
+    let colorDarkBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
+    
+    // Add text field for username
+    let textField = UITextField(frame: CGRectMake(x,10,180,25))
+    
+    //            textField.layer.borderColor = colorLightBlue.CGColor
+    //            textField.layer.borderWidth = 1.5
+    //            textField.layer.cornerRadius = 5
+    textField.font = UIFont(name: "Avenir Roman", size: 14.0)
+    textField.textColor = colorDarkBlue
+    textField.placeholder = "Enter Promo Code"
+    textField.textAlignment = NSTextAlignment.Center
+    
+    // Add target to text field to validate/fix user input of a proper input
+    //        textField.addTarget(self, action: #selector(usernameTextFieldDidChange), forControlEvents: UIControlEvents.EditingChanged)
+    subview.addSubview(textField)
+    //
+    let alertAppearance = SCLAlertView.SCLAppearance(
+      showCircularIcon: true,
+      kCircleIconHeight: 40,
+      kCircleHeight: 55,
+      shouldAutoDismiss: false,
+      hideWhenBackgroundViewIsTapped: true
+      
+    )
+    
+    let alertView = SCLAlertView(appearance: alertAppearance)
+    
+    alertView.customSubview = subview
+    alertView.addButton("Submit", action: {
+      print("Submit button clicked for textField data:", textField.text)
+      
+      if alertViewResponder == nil
+      {
+        print("Something went wrong...")
+        completion(result: nil)
+      }
+      
+      let code = textField.text!
+      
+      if code.isEmpty
+      {
+        //TODO: Nothing?
+      }
+      else if code.characters.count != 6
+      {
+        //TODO: Notify that username is too long
+        alertViewResponder.close()
+        completion(result: nil)
+        
+        
+        // Reset userpools to old phone number
+      }
+      else
+      {
+        print("SUCCESS RESULT:", code)
+        alertViewResponder.close()
+        completion(result: code)
+        // Update userpools with verification
+      }
+      
+      
+    })
+    
+    let alertViewIcon = UIImage(named: "Emblem White")
+    
+    alertViewResponder = alertView.showTitle("Promo Code",
+                                             subTitle: "",
+                                             duration:0.0,
+                                             completeText: "Cancel",
+                                             style: .Success,
+                                             colorStyle: 0x0F7A9D,
+                                             colorTextButton: 0xFFFFFF,
+                                             circleIconImage: alertViewIcon,
+                                             animationStyle: .BottomToTop
+    )
+    
+  }
+
 }
