@@ -100,12 +100,23 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       } else {
         self.lockAndHideProduct()
       }
+    
+    fetchAndSetCurrentCachedSubscriptionStatus(self.currentUserName, completion: {(result, error) in
+      dispatch_async(dispatch_get_main_queue(), {
+        if result! {
+          self.didPayForProduct()
+        } else {
+          self.lockAndHideProduct()
+        }
+      })
+      
+    })
 
 
    }
   
   override func viewWillAppear(animated: Bool) {
-    
+
   }
   
   override func viewDidAppear(animated: Bool) {

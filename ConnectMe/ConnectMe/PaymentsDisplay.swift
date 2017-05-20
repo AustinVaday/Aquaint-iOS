@@ -155,6 +155,9 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
         
         if paidDelegate != nil {
           self.paidDelegate!.didPayForProduct()
+          dispatch_async(dispatch_get_main_queue(), {
+            self.dismissViewControllerAnimated(true, completion: nil)
+          })
         }
 
         
@@ -170,6 +173,9 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
        
         if paidDelegate != nil {
           self.paidDelegate!.didPayForProduct()
+          dispatch_async(dispatch_get_main_queue(), {
+            self.dismissViewControllerAnimated(true, completion: nil)
+          })
         }
         
       default:
