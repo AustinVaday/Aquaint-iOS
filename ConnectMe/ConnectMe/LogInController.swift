@@ -14,7 +14,7 @@ import AWSCognitoIdentityProvider
 import AWSMobileHubHelper
 
 
-class LogInController: UIViewController, AWSCognitoIdentityPasswordAuthentication {
+class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthentication {
         
     @IBOutlet weak var userName: UITextField!
     @IBOutlet weak var userPassword: UITextField!
@@ -38,7 +38,8 @@ class LogInController: UIViewController, AWSCognitoIdentityPasswordAuthenticatio
     /* var wrongLogInCount: Int = 0 */
     
     override func viewDidLoad() {
-        
+        super.viewDidLoad()
+      
         // GET AWS IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
         
@@ -51,10 +52,12 @@ class LogInController: UIViewController, AWSCognitoIdentityPasswordAuthenticatio
         
         flipImageHorizontally(checkMarkFlippedCopy)
         
-        // Set up pan gesture recognizer for when the user wants to swipe left/right
-        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
-        edgePan.edges = .Left
-        view.addGestureRecognizer(edgePan)
+//        // Set up pan gesture recognizer for when the user wants to swipe left/right
+//        let edgePan = UIPanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
+////        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
+////        edgePan.edges = .Left
+//      
+//        view.addGestureRecognizer(edgePan)
 
     }
   
@@ -147,14 +150,45 @@ class LogInController: UIViewController, AWSCognitoIdentityPasswordAuthenticatio
      * END : Keyboard/Button Animations
      =======================================================*/
     
-    func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer)
+    func screenEdgeSwiped(recognizer: UIPanGestureRecognizer)
     {
-        if recognizer.state == .Ended
-        {
-            print("Screen swiped!")
-            dismissViewControllerAnimated(true, completion: nil)
-        }
-        
+      
+//      if recognizer.state == .Began || recognizer.state == .Changed {
+//        
+//        let translation = recognizer.translationInView(self.view)
+//        // note: 'view' is optional and need to be unwrapped
+//        recognizer.view!.center = CGPointMake(recognizer.view!.center.x + translation.x, recognizer.view!.center.y)
+//        recognizer.setTranslation(CGPointMake(0,0), inView: self.view)
+//      }
+//      let percent = max(recognizer.translationInView(view).x, 0) / view.frame.width
+//      
+//      switch recognizer.state {
+//        
+//      case .Began:
+//        self.dismissViewControllerAnimated(true, completion: nil)
+//        print("BEGAN")
+//      case .Changed:
+////        UIPercentDrivenInteractiveTransition.updateInteractiveTransition(percent)
+//        print("CHANGED")
+//      case .Ended:
+//        let velocity = recognizer.velocityInView(view).x
+//        
+//        // Continue if drag more than 50% of screen width or velocity is higher than 1000
+//        if percent > 0.5 || velocity > 1000 {
+////          percentDrivenInteractiveTransition.finishInteractiveTransition()
+//        } else {
+////          percentDrivenInteractiveTransition.cancelInteractiveTransition()
+//        }
+//        
+//        print("ENDED")
+//        
+////      case .Cancelled, .Failed: break
+////        percentDrivenInteractiveTransition.cancelInteractiveTransition()
+//        
+//      default:
+//        break
+//      }
+      
     }
     
 //    @IBAction func emailEditingDidEnd(sender: UITextField) {

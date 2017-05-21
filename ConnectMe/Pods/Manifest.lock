@@ -74,6 +74,7 @@ PODS:
   - ReactiveCocoa (4.2.1):
     - Result (~> 2.0)
   - Result (2.1.2)
+  - RSKImageCropper (1.6.1)
   - SCLAlertView (0.6.0)
   - SimpleAuth (0.3.9):
     - SimpleAuth/BoxWeb (= 0.3.9)
@@ -155,6 +156,7 @@ DEPENDENCIES:
   - Graphs (~> 0.1.2)
   - KLCPopup
   - ReachabilitySwift
+  - RSKImageCropper
   - SCLAlertView
   - SimpleAuth
 
@@ -181,19 +183,20 @@ SPEC CHECKSUMS:
   GoogleInterchangeUtilities: def8415a862effc67d549d5b5b0b9c7a2f97d4de
   GoogleNetworkingUtilities: 3e83269048cfb498dc7ec83ab36813360965c74f
   GoogleParsingUtilities: 30b3896f9ee167dc78747f013d3de157ced1cadf
-  GoogleSignIn: '09036ed61f8e75f1424100d63f7719480b2428c3'
+  GoogleSignIn: 09036ed61f8e75f1424100d63f7719480b2428c3
   GoogleSymbolUtilities: 33117db1b5f290c6fbf259585e4885b4c84b98d7
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
-  Graphs: '08e8c2ee01dc13c96222dfd92ccb018d14748f4c'
+  Graphs: 08e8c2ee01dc13c96222dfd92ccb018d14748f4c
   ISO8601: d3ea3ba9b752820cf92c6b47a9ee327e9f0e13fc
   KLCPopup: 76c5a19227977f1e53d85236f9ef42257c168d98
   NSData+Base64: 4e84902c4db907a15673474677e57763ef3903e4
   ReachabilitySwift: e0f6b6f280effb47731acfaaa2d5ffe223703793
   ReactiveCocoa: 5a42745f11ea236f405bb9ce5e97c5e3b23562dd
   Result: 6e722d4a66b1408680dbfcdf51c0b1c4b706316a
+  RSKImageCropper: 0df8c99e77a8ea7ca7a8b83ef468556f31584254
   SCLAlertView: 0f6b3c23a48b4993564ff1dd3c065782e4b2b687
   SimpleAuth: bc7d594f90711a7e6ef7624dce5aa8c8b09770ab
 
-PODFILE CHECKSUM: 163f35b839c1e05c051abfae336265cc1cb24a94
+PODFILE CHECKSUM: fca13608aba23bc0c1e508bcf6ba355ae7c050c9
 
 COCOAPODS: 1.2.0

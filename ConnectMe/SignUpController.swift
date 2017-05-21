@@ -14,8 +14,9 @@ import AWSS3
 import FBSDKCoreKit
 import FBSDKLoginKit
 import AWSDynamoDB
+import RSKImageCropper
 
-class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class SignUpController: UIViewController, UIImagePickerControllerDelegate, RSKImageCropViewControllerDelegate, UINavigationControllerDelegate {
     
     // UI variable data types
     @IBOutlet weak var userEmail: UITextField!
@@ -219,16 +220,29 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [NSObject : AnyObject]?) {
         
         // Close the image picker view when user is finished with it
-        self.dismissViewControllerAnimated(true, completion: nil)
-    
-        // Set the button's new image
-        userPhoto.setImage(image, forState: UIControlState.Normal)
-        
-        // Store the image into the userObject
-//        userObject.image = image
+        self.dismissViewControllerAnimated(true) { 
+          var imageCropVC : RSKImageCropViewController!
+          imageCropVC = RSKImageCropViewController(image: image, cropMode: RSKImageCropMode.Circle)
+          
+          imageCropVC.delegate = self
+          
+          self.presentViewController(imageCropVC, animated: true, completion: nil)
+      }
         
     }
-    
+  
+    // RSKImageCropViewController lets us easily crop our pictures!
+    func imageCropViewControllerDidCancelCrop(controller: RSKImageCropViewController) {
+      controller.dismissViewControllerAnimated(true, completion: nil)
+    }
+  
+    func imageCropViewController(controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
+      controller.dismissViewControllerAnimated(true, completion: nil)
+      
+      // Set the button's new image
+      userPhoto.setImage(croppedImage, forState: UIControlState.Normal)
+    }
+  
     // Ensure email is proper
     @IBAction func emailEditingDidEnd(sender: UITextField) {
         

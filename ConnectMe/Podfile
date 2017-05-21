@@ -20,6 +20,7 @@ pod 'SCLAlertView'
 pod 'FRHyperLabel'
 pod 'ReachabilitySwift'
 pod 'Graphs', '~> 0.1.2'
+pod 'RSKImageCropper'
 
 # Pod for phone kit parsing
 # -------------

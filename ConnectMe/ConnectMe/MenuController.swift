@@ -16,8 +16,9 @@ import AWSLambda
 import SCLAlertView
 import FBSDKLoginKit
 import FBSDKCoreKit
+import RSKImageCropper
 
-class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, EditSectionDelegate {
+class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, RSKImageCropViewControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, EditSectionDelegate {
   
   enum MenuData: Int {
     case LINKED_PROFILES
@@ -338,10 +339,27 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   
   func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
     // Close the image picker view when user is finished with it
-    self.dismissViewControllerAnimated(true, completion: nil)
+    self.dismissViewControllerAnimated(true) {
+      var imageCropVC : RSKImageCropViewController!
+      imageCropVC = RSKImageCropViewController(image: image, cropMode: RSKImageCropMode.Circle)
+      
+      imageCropVC.delegate = self
+      
+      self.presentViewController(imageCropVC, animated: true, completion: nil)
+    }
+    
+  }
+  
+  // RSKImageCropViewController lets us easily crop our pictures!
+  func imageCropViewControllerDidCancelCrop(controller: RSKImageCropViewController) {
+    controller.dismissViewControllerAnimated(true, completion: nil)
+  }
+  
+  func imageCropViewController(controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
+    controller.dismissViewControllerAnimated(true, completion: nil)
     
     // Set the button's new image
-    setUserS3Image(currentUserName, userImage: image) { (error) in
+    setUserS3Image(currentUserName, userImage: croppedImage) { (error) in
       
       // Perform update on UI on main thread
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -351,11 +369,15 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         else
         {
-          self.profileImageView.image = image
+          self.profileImageView.image = croppedImage
         }
       })
     }
+
+    
   }
+  
+  
   
   @IBAction func textFieldEditingDidEnd(sender: UITextField) {
     
@@ -1424,7 +1446,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Let's use a re-usable view just for viewing user follows/followings!
     let storyboard = UIStoryboard(name: "PopUpAlert", bundle: nil)
     let viewController = storyboard.instantiateViewControllerWithIdentifier("AquaintsSingleFollowerListViewController") as! AquaintsSingleFollowerListViewController
-    viewController.currentUserName = self.userNameLabel.text
+    viewController.currentUserName = self.currentUserName
     viewController.lambdaAction = lambdaAction
     viewController.profilePopupView = nil
     

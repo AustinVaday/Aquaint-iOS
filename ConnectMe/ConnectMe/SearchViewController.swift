@@ -37,6 +37,75 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     let searchOffset = 15
     let imageCache = NSCache()
 
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    
+    // WARM UP lambda for simplesearch function call. Speeds up initial search significantly 
+    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+    var parameters = ["action":"simplesearch", "target": "a", "start": 0, "end": 5]
+    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (result) -> AnyObject? in
+      return nil
+    }
+    
+    userName = getCurrentCachedUser()
+    
+    parameters = ["action":"getFolloweesDict", "target": userName]
+    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+      if resultTask.error != nil
+      {
+        print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+      }
+      else if resultTask.exception != nil
+      {
+        print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+        
+      }
+      else if resultTask.result != nil
+      {
+        
+        print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
+        self.followeesMapping = resultTask.result! as! [String: Int]
+        
+      }
+      else
+      {
+        print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+        
+      }
+      
+      return nil
+      
+    }
+    
+    parameters = ["action":"getFolloweeRequestsDict", "target": userName]
+    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+      if resultTask.error != nil
+      {
+        print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
+      }
+      else if resultTask.exception != nil
+      {
+        print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
+        
+      }
+      else if resultTask.result != nil
+      {
+        
+        print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT (REQUESTS): ", resultTask.result)
+        self.followeeRequestsMapping = resultTask.result! as! [String: Int]
+        
+      }
+      else
+      {
+        print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
+        
+      }
+      
+      return nil
+      
+    }
+
+  }
 
     override func viewDidLoad(){
         filteredUsers = Array<UserPrivacyObjectModel>()
@@ -44,72 +113,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         followeeRequestsMapping = [String: Int]()
         recentUsernameAdds = NSMutableDictionary()
         animatedObjects = Array<UIView>()
-        
+      
         noSearchResultsView.hidden = true
         
         configureCustomSearchController()
         
         userName = getCurrentCachedUser()
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
-        
-        
-        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        var parameters = ["action":"getFolloweesDict", "target": userName]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-            if resultTask.error != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-            }
-            else if resultTask.exception != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                
-            }
-            else if resultTask.result != nil
-            {
-                
-                print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
-                self.followeesMapping = resultTask.result! as! [String: Int]
-                
-            }
-            else
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-                
-            }
-            
-            return nil
-            
-        }
-      
-        parameters = ["action":"getFolloweeRequestsDict", "target": userName]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
-          if resultTask.error != nil
-          {
-            print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-          }
-          else if resultTask.exception != nil
-          {
-            print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-            
-          }
-          else if resultTask.result != nil
-          {
-            
-            print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT (REQUESTS): ", resultTask.result)
-            self.followeeRequestsMapping = resultTask.result! as! [String: Int]
-            
-          }
-          else
-          {
-            print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-            
-          }
-          
-          return nil
-          
-        }
-
 
     }
   
@@ -344,6 +354,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             else {
               cell.displayPrivate = false
             }
+          
         }
 
       
@@ -400,7 +411,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         cell.cellName.clearActionDictionary()
         cell.cellName.text = userFullName
         cell.cellName.setLinkForSubstring(userFullName, withLinkHandler: handler)
-        cell.cellUserName.text = userName
+      
+        // Check if verified account
+        if filteredUsers[indexPath.item].isverified != nil && filteredUsers[indexPath.item].isverified == 1 {
+          addVerifiedIconToLabel(userName, label: cell.cellUserName)
+        }
+        else {
+          cell.cellUserName.text = userName
+        }
       
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
@@ -569,43 +587,50 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                             let resultUser = result! as UserPrivacyObjectModel
                             
                             newFilteredUsersList.append(resultUser)
-                            
-                            getUserS3Image(searchUser, extraPath: nil, completion: { (result, error) in
+                          
+                            runningRequests = runningRequests - 1
+
+                            if runningRequests == 0
+                            {
+                              // Update UI when no more running requests! (last async call finished)
+                              // Update UI on main thread
+                              dispatch_async(dispatch_get_main_queue(), {
+                                self.spinner.stopAnimating()
                                 
+                                // Initial fetch, just store entire array
+                                if start == 0 && end == self.searchOffset
+                                {
+                                  self.filteredUsers = newFilteredUsersList
+                                }
+                                else // append to current filtered users list
+                                {
+                                  self.removeTableViewFooterSpinner()
+                                  self.isNewDataLoading = false
+                                  self.filteredUsers.appendContentsOf(newFilteredUsersList)
+                                  
+                                }
+                                
+                                self.searchTableView.reloadData()
+                                
+                              })
+
+                            }
+                          
+                          
+                            getUserS3Image(searchUser, extraPath: nil, completion: { (result, error) in
+                              
                                 if (result != nil)
                                 {
                                     // Cache user image so we don't have to reload it next time
                                     self.imageCache.setObject(result! as UIImage, forKey: searchUser)
-                                    
-                                }
-                                
-                                runningRequests = runningRequests - 1
-                                
-                                if runningRequests == 0
-                                {
-                                    // Update UI when no more running requests! (last async call finished)
-                                    // Update UI on main thread
-                                    dispatch_async(dispatch_get_main_queue(), {
-                                        self.spinner.stopAnimating()
-                                        
-                                        // Initial fetch, just store entire array
-                                        if start == 0 && end == self.searchOffset
-                                        {
-                                            self.filteredUsers = newFilteredUsersList
-                                        }
-                                        else // append to current filtered users list
-                                        {
-                                            self.removeTableViewFooterSpinner()
-                                            self.isNewDataLoading = false
-                                            self.filteredUsers.appendContentsOf(newFilteredUsersList)
-                                            
-                                        }
-                                        
-                                        self.searchTableView.reloadData()
-                                        
+                                  
+                                    dispatch_async(dispatch_get_main_queue(), { 
+                                      self.searchTableView.reloadData()
+
                                     })
-                                    
                                 }
+                                
+
                             })
                         }
                     })

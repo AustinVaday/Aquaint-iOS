@@ -96,6 +96,7 @@
 		FFBDD75A1CD59A2D0007A188 /* WorldNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7591CD59A2D0007A188 /* WorldNotificationsViewController.swift */; };
 		FFBDD75F1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD75E1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift */; };
 		FFBDD7611CD5B6190007A188 /* NewsfeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7601CD5B6190007A188 /* NewsfeedTableViewCell.swift */; };
+		FFDA62DC1ED131220095AA6E /* ViewControllerPannable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDA62DB1ED131220095AA6E /* ViewControllerPannable.swift */; };
 		FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */; };
 		FFF335901E899EFD00E8B70F /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFF3358F1E899EFD00E8B70F /* libGoogleAnalyticsServices.a */; };
 		FFF335921E89A38600E8B70F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFF335911E89A38600E8B70F /* GoogleService-Info.plist */; };
@@ -230,6 +231,7 @@
 		FFBDD7591CD59A2D0007A188 /* WorldNotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorldNotificationsViewController.swift; sourceTree = "<group>"; };
 		FFBDD75E1CD5B5FA0007A188 /* WorldNotificationsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorldNotificationsTableViewCell.swift; sourceTree = "<group>"; };
 		FFBDD7601CD5B6190007A188 /* NewsfeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsfeedTableViewCell.swift; sourceTree = "<group>"; };
+		FFDA62DB1ED131220095AA6E /* ViewControllerPannable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerPannable.swift; sourceTree = "<group>"; };
 		FFEBD2031CA48D2800736B69 /* ConnectionClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionClass.swift; sourceTree = "<group>"; };
 		FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Aquaint-Bridging-Header.h"; path = "ConnectMe/Aquaint-Bridging-Header.h"; sourceTree = "<group>"; };
 		FFF335851E899EEC00E8B70F /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
@@ -522,6 +524,7 @@
 				FF897C361C01AC63001B2634 /* ViewController.swift */,
 				FF90CFF51CD08DE8003DEA18 /* HomeViewController.swift */,
 				FF0BF0241CB6DCB3005188DA /* SearchViewController.swift */,
+				FFDA62DB1ED131220095AA6E /* ViewControllerPannable.swift */,
 				FF7878761C34EC4A00354936 /* RecentConnections.swift */,
 				FF78783F1C26A0A900354936 /* MenuController.swift */,
 				FF6813F11E0B7D1D007930BA /* AddSocialContactsViewController.swift */,
@@ -977,6 +980,7 @@
 				FFEBD2041CA48D2800736B69 /* ConnectionClass.swift in Sources */,
 				FF6813F21E0B7D1D007930BA /* AddSocialContactsViewController.swift in Sources */,
 				FF5D30401CBA55DE00BD417B /* RequestsTableViewCell.swift in Sources */,
+				FFDA62DC1ED131220095AA6E /* ViewControllerPannable.swift in Sources */,
 				FF7323F01C6EB5DD00A95A98 /* SocialMediaCollectionViewCell.swift in Sources */,
 				FF690F621E8B403F003FA5B4 /* AnalyticsDisplayViewController.swift in Sources */,
 				FFF335A91E89B1A200E8B70F /* HelpPopupView.swift in Sources */,
