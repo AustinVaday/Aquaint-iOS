@@ -14,7 +14,7 @@ import FRHyperLabel
 import FBSDKLoginKit
 
 
-class AddSocialContactsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SearchTableViewCellDelegate {
+class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSource, UITableViewDelegate, SearchTableViewCellDelegate {
 
   @IBOutlet weak var friendsTableView: UITableView!
   @IBOutlet weak var numberOfFriendsText: UILabel!
@@ -35,6 +35,8 @@ class AddSocialContactsViewController: UIViewController, UITableViewDataSource, 
   var listOfFBUserIDs = Set<String>()
   
   override func viewDidLoad() {
+    super.viewDidLoad()
+    
     users = Array<UserPrivacyObjectModel>()
     followeesMapping = [String: Int]()
     followeeRequestsMapping = [String: Int]()

@@ -17,7 +17,7 @@ protocol PaymentsDisplayDelegate {
   func didPayForProduct()
 }
 // Will have the real displays and data
-class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaymentTransactionObserver {
   
   var productIDs: Array<String!> = []
   var productsArray: Array<SKProduct!> = []
@@ -29,6 +29,8 @@ class PaymentsDisplay: UIViewController, SKProductsRequestDelegate, SKPaymentTra
   var productsRequestDidReceiveResponse = false
   
   override func viewDidLoad() {
+    super.viewDidLoad()
+    
     // TODO: Fetch list of apple IDs programmatically in future.
     self.productIDs.append("Aquaint_Subscription_1_mo")
     self.requestProductInfo()

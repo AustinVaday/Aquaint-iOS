@@ -12,7 +12,7 @@ import AWSS3
 import AWSMobileHubHelper
 import AWSDynamoDB
 
-class PasswordResetViewController: UIViewController {
+class PasswordResetViewController: ViewControllerPannable {
     
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var spinner: UIActivityIndicatorView!

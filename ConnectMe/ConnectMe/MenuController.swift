@@ -861,6 +861,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         webDisplayVC.webTitle = "Privacy Policy"
         webDisplayVC.webURL = "http://www.aquaint.us/static/privacy-policy"
+        webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
         self.presentViewController(webDisplayVC, animated: true, completion: nil)
         
       }
@@ -873,6 +874,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         webDisplayVC.webTitle = "Terms of Service"
         webDisplayVC.webURL = "http://www.aquaint.us/static/terms-of-service"
+        webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
         self.presentViewController(webDisplayVC, animated: true, completion: nil)
         
       }
@@ -888,6 +890,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         webDisplayVC.webTitle = "About Subscription"
         webDisplayVC.webURL = "http://www.aquaint.us/static/about-subscription"
+        webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
         self.presentViewController(webDisplayVC, animated: true, completion: nil)
         
       }
@@ -1449,6 +1452,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     viewController.currentUserName = self.currentUserName
     viewController.lambdaAction = lambdaAction
     viewController.profilePopupView = nil
+    viewController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
     
     //    // Fetch VC on top view
     //    var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController

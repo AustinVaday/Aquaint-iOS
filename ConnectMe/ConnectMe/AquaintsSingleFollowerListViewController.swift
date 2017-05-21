@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AquaintsSingleFollowerListViewController: UIViewController, FollowerListSetUserAndActionDelegate {
+class AquaintsSingleFollowerListViewController: ViewControllerPannable, FollowerListSetUserAndActionDelegate {
   
   @IBOutlet weak var dataView: UIView!
   @IBOutlet weak var nameHeaderLabel: UILabel!
@@ -19,6 +19,7 @@ class AquaintsSingleFollowerListViewController: UIViewController, FollowerListSe
   var profilePopupView : ProfilePopupView!
   
   override func viewDidLoad() {
+    super.viewDidLoad()
     
     if lambdaAction == "getFollowers" {
       nameHeaderLabel.text = "Followers"

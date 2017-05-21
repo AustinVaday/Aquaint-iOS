@@ -16,7 +16,7 @@ import FBSDKLoginKit
 import AWSDynamoDB
 import RSKImageCropper
 
-class SignUpController: UIViewController, UIImagePickerControllerDelegate, RSKImageCropViewControllerDelegate, UINavigationControllerDelegate {
+class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate, RSKImageCropViewControllerDelegate, UINavigationControllerDelegate {
     
     // UI variable data types
     @IBOutlet weak var userEmail: UITextField!

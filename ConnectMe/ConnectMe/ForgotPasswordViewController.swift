@@ -13,7 +13,7 @@ import AWSMobileHubHelper
 import AWSDynamoDB
 import SCLAlertView
 
-class ForgotPasswordViewController: UIViewController {
+class ForgotPasswordViewController: ViewControllerPannable {
 
   
   //    @IBOutlet weak var realNameField: UITextField!

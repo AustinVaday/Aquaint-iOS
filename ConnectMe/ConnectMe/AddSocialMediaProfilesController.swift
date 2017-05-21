@@ -21,12 +21,14 @@ protocol AddSocialMediaProfileDelegate {
   )
 }
 
-class AddSocialMediaProfilesController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDelegate, UITableViewDataSource {
   var socialMediaImageDictionary: Dictionary<String, UIImage>!
   var socialMediaUserNames: NSMutableDictionary!
   var delegate: AddSocialMediaProfileDelegate?
 
   override func viewDidLoad() {
+    super.viewDidLoad()
+    
     // Set up dictionary for user's social media names
     socialMediaUserNames = NSMutableDictionary()
 

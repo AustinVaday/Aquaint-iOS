@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ReusableWebViewController: UIViewController {
+class ReusableWebViewController: ViewControllerPannable {
   
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var webView: UIWebView!

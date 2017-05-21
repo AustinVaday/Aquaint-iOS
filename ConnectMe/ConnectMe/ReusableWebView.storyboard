@@ -23,7 +23,7 @@
                                 <rect key="frame" x="-1" y="18" width="601" height="45"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="pW1-DD-EL8">
-                                        <rect key="frame" x="52" y="9" width="480" height="28"/>
+                                        <rect key="frame" x="52" y="7" width="480" height="28"/>
                                         <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="20"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -50,7 +50,7 @@
                                     <constraint firstItem="pW1-DD-EL8" firstAttribute="leading" secondItem="kxI-Tr-CFd" secondAttribute="leading" constant="52" id="YpI-V5-jdK"/>
                                     <constraint firstItem="dbg-NC-XPb" firstAttribute="trailing" secondItem="kxI-Tr-CFd" secondAttribute="trailingMargin" id="Zyf-8D-MNU"/>
                                     <constraint firstAttribute="bottom" secondItem="dbg-NC-XPb" secondAttribute="bottom" constant="9" id="fgL-Sd-H2X"/>
-                                    <constraint firstItem="dbg-NC-XPb" firstAttribute="centerY" secondItem="pW1-DD-EL8" secondAttribute="centerY" id="vmE-H3-pZZ"/>
+                                    <constraint firstItem="dbg-NC-XPb" firstAttribute="centerY" secondItem="pW1-DD-EL8" secondAttribute="centerY" constant="2.5" id="vmE-H3-pZZ"/>
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Login Background" translatesAutoresizingMaskIntoConstraints="NO" id="Swy-dO-exb">

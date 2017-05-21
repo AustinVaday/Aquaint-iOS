@@ -13,7 +13,7 @@ import AWSMobileHubHelper
 import AWSDynamoDB
 import AWSLambda
 
-class SignUpFetchMoreDataController: UIViewController {
+class SignUpFetchMoreDataController: ViewControllerPannable {
     
 
 //    @IBOutlet weak var realNameField: UITextField!

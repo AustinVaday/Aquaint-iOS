@@ -214,6 +214,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
   
           // This is important. If we do not set delegate, user cannot add in profiles properly.
           addSocialMediaVC.delegate = menuVC
+          addSocialMediaVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
 
           dispatch_async(dispatch_get_main_queue(), {
             self.presentViewController(addSocialMediaVC, animated: true, completion: nil)

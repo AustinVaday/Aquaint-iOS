@@ -93,6 +93,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       paymentsStoryboard = UIStoryboard(name: "PaymentsDisplay", bundle: nil)
       paymentsDisplayVC = paymentsStoryboard!.instantiateViewControllerWithIdentifier("PaymentsDisplay") as! PaymentsDisplay
       paymentsDisplayVC.paidDelegate = self
+      paymentsDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
 
     
       if getCurrentCachedPromoUserStatus() == true || getCurrentCachedSubscriptionStatus() == true {
@@ -186,7 +187,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     switch indexPath.section
     {
     case AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue:
-      if viewBreakdownList.isEmpty {
+      if viewBreakdownList.isEmpty || allZeroDisplayValues(viewBreakdownList) {
         returnHeight = noDataToDisplayCellHeight
       } else {
         returnHeight = graphTableViewCellHeight
@@ -261,7 +262,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     {
       
     case AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue:
-      if viewBreakdownList.isEmpty {
+      if viewBreakdownList.isEmpty || allZeroDisplayValues(viewBreakdownList) {
         return tableView.dequeueReusableCellWithIdentifier("noDataToDisplayCell")!
       }
       // Configure cell for graph

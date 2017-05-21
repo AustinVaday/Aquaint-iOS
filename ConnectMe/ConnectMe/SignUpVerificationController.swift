@@ -13,7 +13,7 @@ import AWSDynamoDB
 import AWSS3
 import AWSLambda
 
-class SignUpVerificationController: UIViewController {
+class SignUpVerificationController: ViewControllerPannable {
     
     @IBOutlet weak var verificationCodeField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!

@@ -249,6 +249,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     
     webDisplayVC.webTitle = "Cool Tricks"
     webDisplayVC.webURL = "http://www.aquaint.us/static/cool-tricks"
+    webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
     self.presentViewController(webDisplayVC, animated: true, completion: nil)
   }
 
@@ -258,6 +259,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
 //    webDisplayVC.copyLinkButton.hidden = false
     webDisplayVC.webTitle = "aquaint.us/user/" + currentUser
     webDisplayVC.webURL = "http://www.aquaint.us/user/" + currentUser
+    webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
     self.presentViewController(webDisplayVC, animated: true, completion: nil)
   }
   
@@ -267,6 +269,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
 //    webDisplayVC.copyLinkButton.hidden = false
     webDisplayVC.webTitle = "aquaint.us/user/" + currentUser
     webDisplayVC.webURL = "http://www.aquaint.us/user/" + currentUser
+    webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
     self.presentViewController(webDisplayVC, animated: true, completion: nil)
   }
   

@@ -65,6 +65,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
   @IBAction func onFindFacebookFriendsButtonClicked(sender: AnyObject) {
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     let findFBFriendsVC = storyboard.instantiateViewControllerWithIdentifier("AddSocialContactsViewController") as! AddSocialContactsViewController
+    findFBFriendsVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
     self.presentViewController(findFBFriendsVC, animated: true, completion: nil)
   }
   
