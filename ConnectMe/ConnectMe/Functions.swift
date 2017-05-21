@@ -1084,6 +1084,62 @@ func registerToReceivePushNotifications()
   
 }
 
+// prompt the user if he/she wants to enable app push notification. If yes, register system-level remote notification
+func askUserForPushNotificationPermission(viewController: UIViewController) {
+  
+  // TODO: if user disables notification permission in system Settings later, the prompt would still show up but cannot register for push notification. Have to distinguish "Declined" or "Uninitialized"
+  let timeIntervalThreshold = 604800.0  // setting to one week (in seconds)
+  var willRemindUser = 1
+  
+  let lastNotificationDate = getCurrentNotificationTimestamp()
+  let currentDate = NSDate()
+  if let lastNotification = lastNotificationDate {
+    let timeInterval = currentDate.timeIntervalSinceDate(lastNotification)
+    // if we have reminded user to enable push notification before (a timestamp entry exists in NSUserDefaults), in less than timeIntervalThreshold, we don't ask again
+    if timeInterval < timeIntervalThreshold {
+      willRemindUser = 0
+    }
+  }
+  
+  let isRegisteredForNotification = UIApplication.sharedApplication().isRegisteredForRemoteNotifications()
+  
+  if ((UIApplication.sharedApplication().isRegisteredForRemoteNotifications() == false) && (willRemindUser == 1)) {
+    
+    let alertTitle = "Enable Push Notification"
+    let alertMessage = "Aquaint will notify you when you have new followers, new follow requests or your follow requests to others get accepted! "
+    let notificationAlert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .Alert)
+    
+    let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) {
+      UIAlertAction in
+      
+      print("askUserForPushNotificationPermission: user chooses to enable push notification. ")
+      registerToReceivePushNotifications()
+    }
+    
+    let noAction = UIAlertAction(title: "Not Now", style: UIAlertActionStyle.Default) {
+      UIAlertAction in
+      
+      print("askUserForPushNotificationPermission: user chooses NOT to enable push notification. ")
+      
+      let currentDate = NSDate.init()
+      setCurrentNotificationTimestamp(currentDate)
+    }
+    
+    notificationAlert.addAction(noAction)
+    notificationAlert.addAction(yesAction)
+    
+    dispatch_async(dispatch_get_main_queue()) {
+      viewController.presentViewController(notificationAlert, animated: true, completion: nil)
+    }
+    
+  } else if (isRegisteredForNotification == true) {
+    // app has registered system-level push notification service before.
+    // register with APN server every time the app launches, to check any update on deviceToken
+    registerToReceivePushNotifications()
+  }
+  
+}
+
 func downloadImageFromURL(url: String, completion: (result: UIImage?, error: NSError?)->())
 {
   let nsurl = NSURL(string: url)

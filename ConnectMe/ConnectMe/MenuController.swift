@@ -1428,6 +1428,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     //        print("REFRESH COLLECTION VIEW")
     //        currentUserAccountsDirty = true
     //        viewDidLoad()
+    
+    // request permission for sending Push Notifications when user finishes signing up
+    askUserForPushNotificationPermission(self)
   }
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
