@@ -443,8 +443,11 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     // Note: Need to dismiss this popup so we can display another VC. We will restore the popup later,
-    // which is why we pass in this class and it's data to the next view controller. 
+    // which is why we pass in this class and it's data to the next view controller.
     self.dismissPresentingPopup()
+    
+    // This will display a black screen in the background due to the fact we dismiss this popup view prior
+//    topVC?.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
     topVC?.presentViewController(viewController, animated: true, completion: nil)
 
   }

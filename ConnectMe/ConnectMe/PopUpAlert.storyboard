@@ -121,7 +121,7 @@
                                                                 <constraint firstAttribute="height" constant="32" id="bp3-U0-Ei3"/>
                                                                 <constraint firstAttribute="width" constant="32" id="ucN-BE-Dnd"/>
                                                             </constraints>
-                                                            <state key="normal" image="AB6DA7B1-B427-46BC-B548-F361959B5358"/>
+                                                            <state key="normal" image="83892B07-206C-42DA-A906-502D231DB2FD"/>
                                                         </button>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Password Icon Black" translatesAutoresizingMaskIntoConstraints="NO" id="Vk3-pm-Jmg">
                                                             <rect key="frame" x="13" y="14" width="18" height="18"/>
@@ -406,7 +406,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="AB6DA7B1-B427-46BC-B548-F361959B5358" width="32" height="32">
+        <image name="83892B07-206C-42DA-A906-502D231DB2FD" width="32" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
