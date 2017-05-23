@@ -342,8 +342,12 @@ func verifyUrl (urlString: String?) -> Bool {
 //    }
 //  }
 //  return false
-  let urlRegEx = "(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+"
-  return NSPredicate(format: "SELF MATCHES %@", urlRegEx).evaluateWithObject(urlString)
+  
+  // The following does not always check valid URLs. For Example the ? and = sign in: https://itunes.apple.com/us/app/aquaint/id1142094794?mt=8
+  let urlRegEx1 = "(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+"
+  let urlRegEx2 = "(?i)(http|https)(:\\/\\/)([^ .]+)(\\.)([^ \n]+)"
+  return NSPredicate(format: "SELF MATCHES %@", urlRegEx1).evaluateWithObject(urlString) ||
+         NSPredicate(format: "SELF MATCHES %@", urlRegEx2).evaluateWithObject(urlString)
 }
 
 // Check if username format is proper
