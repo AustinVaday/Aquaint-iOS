@@ -29,11 +29,16 @@ class ViewControllerPannable: UIViewController {
       originalPosition = view.center
       currentPositionTouched = panGesture.locationInView(view)
     } else if panGesture.state == .Changed {
-      view.frame.origin = CGPoint(
-        x: translation.x,
-        y: view.frame.origin.y
-      )
       
+      // Ignore if user tries to swipe in opposite direction
+      if translation.x >= 0 {
+        view.frame.origin = CGPoint(
+          x: translation.x,
+          y: view.frame.origin.y
+        )
+      }
+      
+      print("TRANSLATION X IS: ", translation.x)
       print("VIEW SIZE: ", view.frame.size.width)
       print("CURRENT POSITION TOUCHED X: ", view.frame.origin.x)
     } else if panGesture.state == .Ended {

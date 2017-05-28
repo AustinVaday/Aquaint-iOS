@@ -277,11 +277,24 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       })
       
       let barGraphData = extractDataArray(viewBreakdownList) as Array<Int>
-    
-      graphViewForViews = barGraphData.barGraph().view(graphCell.viewDisplay.bounds).barGraphConfiguration({ BarGraphViewConfig(barColor: UIColor(hex: "#ff6699"), contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
+//    let barGraphData = [10000000, 10000000, 9000000, 20000, 95000,20000,20000,20000, 10, 2000 ]
+//      graphViewForViews = barGraphData.barGraph().view(graphCell.viewDisplay.bounds).barGraphConfiguration({ BarGraphViewConfig(barColor: UIColor(hex: "#ff6699"), contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
 
 //      graphViewForViews = [8, 12, 13, 10, 7, 11, 9, 14, 12, 6].lineGraph(GraphRange(min: 5, max: 14)).view(graphCell.viewDisplay.bounds).lineGraphConfiguration({ LineGraphViewConfig(lineColor: UIColor(hex: "#ff6699"), lineWidth: 2.0, dotDiameter: 10.0) })
 
+      
+      var graphFont = UIFont(name: "avenir", size: CGFloat(10))
+      
+      // Decrease size in font to display millions of digits
+      barGraphData.forEach({ (val) in
+        if val > 99000 {
+          graphFont = UIFont(name: "avenir", size: CGFloat(6.5))
+        }
+      })
+      // Test to see how it looks with large numbers --> not bad.
+      graphViewForViews = barGraphData.barGraph().view(graphCell.viewDisplay.bounds).barGraphConfiguration({ BarGraphViewConfig(barColor: UIColor(hex: "#ff6699"), textFont: graphFont, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
+      
+      
       
       graphCell.viewDisplay.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
       graphCell.viewDisplay.addSubview(graphViewForViews)
