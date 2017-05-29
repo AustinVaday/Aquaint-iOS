@@ -347,6 +347,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         let leaderboardCell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell") as! SearchTableViewLeaderboardCell
         
         leaderboardCell.setCollectionViewDataSourceDelegate(self)
+        
+        leaderboardCell.userCollectionView.backgroundColor = UIColor.whiteColor()
+        
         leaderboardCell.userCollectionView.reloadData()
         return leaderboardCell
       }
@@ -820,7 +823,8 @@ extension SearchViewController {
   
   // MARK: - UICollectionViewDataSource
   func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-    return 2;
+    //return 2;
+    return 1;
   }
   
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -828,8 +832,8 @@ extension SearchViewController {
     switch section {
     case 0:
       return mostFollowersList.count
-    case 1:
-      return mostFollowingList.count
+//    case 1:
+//      return mostFollowingList.count
     default:
       return 0
     }
@@ -839,12 +843,12 @@ extension SearchViewController {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("userCollectionViewCell", forIndexPath: indexPath) as! UserCollectionViewCell
     //cell.backgroundColor = UIColor.blackColor()
     //cell.delegate = self
-    
-    switch indexPath.row {
+
+    switch indexPath.section {
     case 0:
       cell.followNumberLabel.text = String(mostFollowersList[indexPath.item].1)
-    case 1:
-      cell.followNumberLabel.text = String(mostFollowingList[indexPath.item].1)
+//    case 1:
+//      cell.followNumberLabel.text = String(mostFollowingList[indexPath.item].1)
     default:
       break;
     }
