@@ -11,7 +11,7 @@ import AWSDynamoDB
 import AWSLambda
 import FRHyperLabel
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate, SearchTableViewCellDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate, SearchTableViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
     @IBOutlet weak var searchTableView: UITableView!
     @IBOutlet weak var noSearchResultsView: UIView!
@@ -332,6 +332,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     // **** SEARCH TABLE VIEW *****
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+      
+      if (!shouldShowSearchResults) {
+        let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell", forIndexPath: indexPath) as! SearchTableViewLeaderboardCell
+        return cell
+      }
         
         let cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! SearchTableViewCell
         
@@ -781,5 +786,21 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         self.currentSearchBegin = 0
         self.currentSearchEnd = self.searchOffset
     }
-    
+  
+  // MARK: - UICollectionViewDataSource
+  func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    return 1;
+  }
+  
+  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 2;
+  }
+  
+  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("usersCollectionViewCell", forIndexPath: indexPath)
+    cell.backgroundColor = UIColor.blackColor()
+    return cell
+  }
+  
+  
 }
