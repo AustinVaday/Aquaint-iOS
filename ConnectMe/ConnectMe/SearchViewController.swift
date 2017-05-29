@@ -38,9 +38,32 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     let imageCache = NSCache()
   
     // TESTING
-    var mostFollowersList = [("austin", 100), ("navid", 90), ("max", 80), ("nish", 10), ("powerfulGuy", 5), ("theMan", 2)]
-    var mostFollowingList = [("jackie", 2000), ("henry", 140), ("ethan", 10)]
-
+  var mostFollowersList = [("austin", 100), ("navid", 90), ("maxwyb", 80), ("aquaint", 10), ("samsung", 5), ("auz", 2)]
+  var mostFollowingList = [("navid", 2000), ("austin", 140), ("aquaint", 10)]
+  var userProfileImages = [String: UIImage]()
+  
+  func getLeaderboardUserImages() {
+    for user in mostFollowersList {
+      getUserS3Image(user.0, extraPath: nil, completion: { (result, error) in
+        if (result != nil) {
+          self.userProfileImages[user.0] = result
+          self.searchTableView.reloadData()
+        }
+      })
+    }
+    
+    for user in mostFollowingList {
+      if (self.userProfileImages[user.0] == nil) {
+        getUserS3Image(user.0, extraPath: nil, completion: { (result, error) in
+          if (result != nil) {
+            self.userProfileImages[user.0] = result
+            self.searchTableView.reloadData()
+          }
+        })
+      }
+    }
+  }
+  
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     
@@ -124,6 +147,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         userName = getCurrentCachedUser()
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
+      
+      // Leaderboard
+      getLeaderboardUserImages()
 
     }
   
@@ -870,8 +896,20 @@ extension SearchViewController {
     switch collectionView.tag {
     case 0:
       cell.followNumberLabel.text = String(mostFollowersList[indexPath.item].1)
+      let leaderboardUsername = mostFollowersList[indexPath.item].0
+      if let profileImage = userProfileImages[leaderboardUsername] {
+        cell.userProfileImage.image = profileImage
+        cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFit
+      }
+      
     case 1:
       cell.followNumberLabel.text = String(mostFollowingList[indexPath.item].1)
+      let leaderboardUsername = mostFollowingList[indexPath.item].0
+      if let profileImage = userProfileImages[leaderboardUsername] {
+        cell.userProfileImage.image = profileImage
+        cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFit
+      }
+      
     default:
       break
     }
