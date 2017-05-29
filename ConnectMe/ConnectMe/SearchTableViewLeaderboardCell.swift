@@ -11,5 +11,7 @@ import UIKit
 class SearchTableViewLeaderboardCell: UITableViewCell {
   
   @IBOutlet weak var userCollectionView: UICollectionView!
+  
+  @IBOutlet weak var testButton: UIButton!
 
 }

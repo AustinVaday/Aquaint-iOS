@@ -332,11 +332,20 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     // **** SEARCH TABLE VIEW *****
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+//      // DEBUG
+//      if (true) {
+//        let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell") as! SearchTableViewLeaderboardCell
+//        return cell
+//      }
       
       if (!shouldShowSearchResults) {
-        let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell", forIndexPath: indexPath) as! SearchTableViewLeaderboardCell
+        //let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell", forIndexPath: indexPath) as! SearchTableViewLeaderboardCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell") as! SearchTableViewLeaderboardCell
+        
+        //cell.userCollectionView.reloadData()
         return cell
       }
+      
         
         let cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! SearchTableViewCell
         
@@ -466,7 +475,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
         else
         {
-             return 0
+          // SearchTableViewLeaderboardCell
+             return 1
         }
         
     }
