@@ -37,10 +37,18 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     let searchOffset = 15
     let imageCache = NSCache()
   
-    // TESTING
-  var mostFollowersList = [("austin", 100), ("navid", 90), ("maxwyb", 80), ("aquaint", 10), ("samsung", 5), ("auz", 2)]
-  var mostFollowingList = [("navid", 2000), ("austin", 140), ("aquaint", 10)]
+    // Leaderboard
+  var mostFollowersList = [("austin", 4240), ("navid", 1200), ("maxwyb", 80), ("aquaint", 10), ("gyukawa7", 5), ("nicholasrudar", 2)]
+  var mostFollowingList = [("navid", 2100), ("austin", 140), ("aquaint", 10)]
   var userProfileImages = [String: UIImage]()
+  
+  enum leaderboardType: Int {
+    case MOST_FOLLOWERS = 0
+    case MOST_FOLLOWINGS = 1
+  }
+  
+  let MOST_FOLLOWERS_LABEL = "Most Followers"
+  let MOST_FOLLOWINGS_LABEL = "Most Followings"
   
   func getLeaderboardUserImages() {
     for user in mostFollowersList {
@@ -374,8 +382,16 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         leaderboardCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.row)
         
-        leaderboardCell.userCollectionView.backgroundColor = UIColor.whiteColor()
+        switch indexPath.row {
+        case leaderboardType.MOST_FOLLOWERS.rawValue:
+          leaderboardCell.titleLabel.text = MOST_FOLLOWERS_LABEL
+        case leaderboardType.MOST_FOLLOWINGS.rawValue:
+          leaderboardCell.titleLabel.text = MOST_FOLLOWINGS_LABEL
+        default:
+          break
+        }
         
+        leaderboardCell.userCollectionView.backgroundColor = UIColor.whiteColor()
         leaderboardCell.userCollectionView.reloadData()
         return leaderboardCell
       }
@@ -840,7 +856,7 @@ extension SearchViewController {
   // MARK: - UITableViewDelegate
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     if (!shouldShowSearchResults) {
-      return 120
+      return 150
     } else {
       // Default TableViewCell row height for showing search results
       return 61
@@ -868,9 +884,9 @@ extension SearchViewController {
     }
     */
     switch collectionView.tag {
-    case 0:
+    case leaderboardType.MOST_FOLLOWERS.rawValue:
       return mostFollowersList.count
-    case 1:
+    case leaderboardType.MOST_FOLLOWINGS.rawValue:
       return mostFollowingList.count
     default:
       return 0
@@ -894,16 +910,29 @@ extension SearchViewController {
     */
     
     switch collectionView.tag {
-    case 0:
-      cell.followNumberLabel.text = String(mostFollowersList[indexPath.item].1)
+    case leaderboardType.MOST_FOLLOWERS.rawValue:
+      let followNumber = mostFollowersList[indexPath.item].1
+      // If the leaderboard user has too many followers, simplify the representation string
+      if (followNumber > 1000) {
+        cell.followNumberLabel.text = String(followNumber / 1000) + " k"
+      } else {
+        cell.followNumberLabel.text = String(followNumber)
+      }
+      
       let leaderboardUsername = mostFollowersList[indexPath.item].0
       if let profileImage = userProfileImages[leaderboardUsername] {
         cell.userProfileImage.image = profileImage
         cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFit
       }
       
-    case 1:
-      cell.followNumberLabel.text = String(mostFollowingList[indexPath.item].1)
+    case leaderboardType.MOST_FOLLOWINGS.rawValue:
+      let followNumber = mostFollowingList[indexPath.item].1
+      if (followNumber > 1000) {
+        cell.followNumberLabel.text = String(followNumber / 1000) + " k"
+      } else {
+        cell.followNumberLabel.text = String(followNumber)
+      }
+
       let leaderboardUsername = mostFollowingList[indexPath.item].0
       if let profileImage = userProfileImages[leaderboardUsername] {
         cell.userProfileImage.image = profileImage
@@ -929,14 +958,18 @@ extension SearchViewController {
   
   // MARK: - UICollectionViewDelegate
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    
     switch collectionView.tag {
-    case 0:
+    case leaderboardType.MOST_FOLLOWERS.rawValue:
       showPopupForUser(String(mostFollowersList[indexPath.row].0), me: userName)
-    case 1:
+      
+    case leaderboardType.MOST_FOLLOWINGS.rawValue:
       showPopupForUser(String(mostFollowersList[indexPath.row].0), me: userName)
+      
     default:
       return
     }
+    
     collectionView.deselectItemAtIndexPath(indexPath, animated: true)
   }
   

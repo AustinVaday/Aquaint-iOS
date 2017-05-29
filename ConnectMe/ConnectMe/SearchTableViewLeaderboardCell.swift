@@ -10,6 +10,7 @@ import UIKit
 
 class SearchTableViewLeaderboardCell: UITableViewCell {
   
+  @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var userCollectionView: UICollectionView!
 
 
