@@ -347,7 +347,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         let leaderboardCell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell") as! SearchTableViewLeaderboardCell
         
         leaderboardCell.setCollectionViewDataSourceDelegate(self)
-        //cell.userCollectionView.reloadData()
+        leaderboardCell.userCollectionView.reloadData()
         return leaderboardCell
       }
       
@@ -848,6 +848,13 @@ extension SearchViewController {
     default:
       break;
     }
+    
+    // DEBUG
+    //Add code to set selectedBackgroundView property
+    let view = UIView(frame: cell.bounds)
+    // Set background color that you want
+    view.backgroundColor = UIColor(colorLiteralRed: 0.278, green: 0.694, blue: 0.537, alpha: 1.00)
+    cell.selectedBackgroundView = view
     
     return cell
   }
