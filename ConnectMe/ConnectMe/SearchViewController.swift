@@ -11,7 +11,7 @@ import AWSDynamoDB
 import AWSLambda
 import FRHyperLabel
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate, SearchTableViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate, SearchTableViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UserCollectionViewDelegate {
 
     @IBOutlet weak var searchTableView: UITableView!
     @IBOutlet weak var noSearchResultsView: UIView!
@@ -797,9 +797,15 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
   }
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("usersCollectionViewCell", forIndexPath: indexPath)
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("userCollectionViewCell", forIndexPath: indexPath) as! UserCollectionViewCell
     cell.backgroundColor = UIColor.blackColor()
+    cell.delegate = self
     return cell
+  }
+  
+  // MARK: - UserCollectionViewDelegate (self-designed protocol for custom class)
+  func didClickUserProfile() {
+    print ("TODO")
   }
   
   

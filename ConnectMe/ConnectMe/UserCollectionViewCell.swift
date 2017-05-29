@@ -8,9 +8,21 @@
 
 import UIKit
 
+protocol UserCollectionViewDelegate {
+  // TODO
+  func didClickUserProfile()
+}
+
 class UserCollectionViewCell: UICollectionViewCell {
   
   @IBOutlet weak var userProfileImage: UIImageView!
-  
   @IBOutlet weak var usernameLabel: UILabel!
+  
+  var delegate: UserCollectionViewDelegate?
+  
+  @IBAction func onUserProfileClicked(sender: AnyObject) {
+    if delegate != nil {
+      delegate!.didClickUserProfile()
+    }
+  }
 }
