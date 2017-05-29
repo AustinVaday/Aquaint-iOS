@@ -346,7 +346,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         //let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell", forIndexPath: indexPath) as! SearchTableViewLeaderboardCell
         let leaderboardCell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell") as! SearchTableViewLeaderboardCell
         
-        leaderboardCell.setCollectionViewDataSourceDelegate(self)
+        leaderboardCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.row)
         
         leaderboardCell.userCollectionView.backgroundColor = UIColor.whiteColor()
         
@@ -486,7 +486,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         else
         {
           // SearchTableViewLeaderboardCell
-             return 1
+             return 2
         }
         
     }
@@ -811,7 +811,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
 extension SearchViewController {
   
-  // MARK: - UITableViewDataSource
+  // MARK: - UITableViewDelegate
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     if (!shouldShowSearchResults) {
       return 120
@@ -831,11 +831,21 @@ extension SearchViewController {
   
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
+    /*
     switch section {
     case 0:
       return mostFollowersList.count
 //    case 1:
 //      return mostFollowingList.count
+    default:
+      return 0
+    }
+    */
+    switch collectionView.tag {
+    case 0:
+      return mostFollowersList.count
+    case 1:
+      return mostFollowingList.count
     default:
       return 0
     }
@@ -846,6 +856,7 @@ extension SearchViewController {
     //cell.backgroundColor = UIColor.blackColor()
     //cell.delegate = self
 
+    /*
     switch indexPath.section {
     case 0:
       cell.followNumberLabel.text = String(mostFollowersList[indexPath.item].1)
@@ -853,6 +864,16 @@ extension SearchViewController {
 //      cell.followNumberLabel.text = String(mostFollowingList[indexPath.item].1)
     default:
       break;
+    }
+    */
+    
+    switch collectionView.tag {
+    case 0:
+      cell.followNumberLabel.text = String(mostFollowersList[indexPath.item].1)
+    case 1:
+      cell.followNumberLabel.text = String(mostFollowingList[indexPath.item].1)
+    default:
+      break
     }
     
     // DEBUG
