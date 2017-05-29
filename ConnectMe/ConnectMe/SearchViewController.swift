@@ -38,7 +38,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     let imageCache = NSCache()
   
     // TESTING
-    var mostFollowersList = [("austin", 100), ("navid", 90), ("max", 80)]
+    var mostFollowersList = [("austin", 100), ("navid", 90), ("max", 80), ("nish", 10), ("powerfulGuy", 5), ("theMan", 2)]
     var mostFollowingList = [("jackie", 2000), ("henry", 140), ("ethan", 10)]
 
   required init?(coder aDecoder: NSCoder) {
@@ -822,10 +822,12 @@ extension SearchViewController {
   }
   
   // MARK: - UICollectionViewDataSource
+  /*
   func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
     //return 2;
     return 1;
   }
+  */
   
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
