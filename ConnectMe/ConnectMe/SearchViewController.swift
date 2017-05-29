@@ -914,14 +914,30 @@ extension SearchViewController {
       break
     }
     
+    /*
     // DEBUG
     //Add code to set selectedBackgroundView property
     let view = UIView(frame: cell.bounds)
     // Set background color that you want
     view.backgroundColor = UIColor(colorLiteralRed: 0.278, green: 0.694, blue: 0.537, alpha: 1.00)
     cell.selectedBackgroundView = view
+    */
     
+
     return cell
+  }
+  
+  // MARK: - UICollectionViewDelegate
+  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    switch collectionView.tag {
+    case 0:
+      showPopupForUser(String(mostFollowersList[indexPath.row].0), me: userName)
+    case 1:
+      showPopupForUser(String(mostFollowersList[indexPath.row].0), me: userName)
+    default:
+      return
+    }
+    collectionView.deselectItemAtIndexPath(indexPath, animated: true)
   }
   
   /*
