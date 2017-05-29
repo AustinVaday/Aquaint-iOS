@@ -11,7 +11,7 @@ import AWSDynamoDB
 import AWSLambda
 import FRHyperLabel
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate, SearchTableViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UserCollectionViewDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate, SearchTableViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
     @IBOutlet weak var searchTableView: UITableView!
     @IBOutlet weak var noSearchResultsView: UIView!
@@ -36,6 +36,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var currentSearchEnd = 15
     let searchOffset = 15
     let imageCache = NSCache()
+  
+    // TESTING
+    var mostFollowersList = [("austin", 100), ("navid", 90), ("max", 80)]
+    var mostFollowingList = [("jackie", 2000), ("henry", 140), ("ethan", 10)]
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -340,10 +344,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
       
       if (!shouldShowSearchResults) {
         //let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell", forIndexPath: indexPath) as! SearchTableViewLeaderboardCell
-        let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell") as! SearchTableViewLeaderboardCell
+        let leaderboardCell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell") as! SearchTableViewLeaderboardCell
         
+        leaderboardCell.setCollectionViewDataSourceDelegate(self)
         //cell.userCollectionView.reloadData()
-        return cell
+        return leaderboardCell
       }
       
         
@@ -439,7 +444,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         // IMPORTANT!!!! If we don't have this we can't get data when user adds/deletes people.
         cell.searchDelegate = self
-        
+      
+        print("SearchViewController default cell height for showing search result: \(tableView.rowHeight)")
+      
         return cell
         
     }
@@ -797,26 +804,58 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         self.currentSearchEnd = self.searchOffset
     }
   
+}
+
+extension SearchViewController {
+  
+  // MARK: - UITableViewDataSource
+  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    if (!shouldShowSearchResults) {
+      return 120
+    } else {
+      // Default TableViewCell row height for showing search results
+      return 61
+    }
+  }
+  
   // MARK: - UICollectionViewDataSource
   func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-    return 1;
+    return 2;
   }
   
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 2;
+
+    switch section {
+    case 0:
+      return mostFollowersList.count
+    case 1:
+      return mostFollowingList.count
+    default:
+      return 0
+    }
   }
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("userCollectionViewCell", forIndexPath: indexPath) as! UserCollectionViewCell
-    cell.backgroundColor = UIColor.blackColor()
-    cell.delegate = self
+    //cell.backgroundColor = UIColor.blackColor()
+    //cell.delegate = self
+    
+    switch indexPath.row {
+    case 0:
+      cell.followNumberLabel.text = String(mostFollowersList[indexPath.item].1)
+    case 1:
+      cell.followNumberLabel.text = String(mostFollowingList[indexPath.item].1)
+    default:
+      break;
+    }
+    
     return cell
   }
   
-  // MARK: - UserCollectionViewDelegate (self-designed protocol for custom class)
-  func didClickUserProfile() {
-    print ("TODO")
-  }
-  
-  
+  /*
+   // MARK: - UserCollectionViewDelegate (self-designed protocol for custom class)
+   func didClickUserProfile() {
+   print ("TODO")
+   }
+   */
 }

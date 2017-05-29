@@ -11,7 +11,14 @@ import UIKit
 class SearchTableViewLeaderboardCell: UITableViewCell {
   
   @IBOutlet weak var userCollectionView: UICollectionView!
-  
-  @IBOutlet weak var testButton: UIButton!
 
+
+}
+
+extension SearchTableViewLeaderboardCell {
+  
+  func setCollectionViewDataSourceDelegate<D where D:UICollectionViewDataSource, D:UICollectionViewDelegate>(dataSourceDelegate: D) {
+    userCollectionView.dataSource = dataSourceDelegate
+    userCollectionView.delegate = dataSourceDelegate
+  }
 }

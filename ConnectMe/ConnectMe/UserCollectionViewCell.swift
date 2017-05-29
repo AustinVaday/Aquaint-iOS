@@ -8,16 +8,19 @@
 
 import UIKit
 
+/*
 protocol UserCollectionViewDelegate {
   // TODO
   func didClickUserProfile()
 }
+*/
 
 class UserCollectionViewCell: UICollectionViewCell {
   
   @IBOutlet weak var userProfileImage: UIImageView!
-  @IBOutlet weak var usernameLabel: UILabel!
+  @IBOutlet weak var followNumberLabel: UILabel!
   
+  /*
   var delegate: UserCollectionViewDelegate?
   
   @IBAction func onUserProfileClicked(sender: AnyObject) {
@@ -25,4 +28,5 @@ class UserCollectionViewCell: UICollectionViewCell {
       delegate!.didClickUserProfile()
     }
   }
+  */
 }
