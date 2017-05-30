@@ -38,8 +38,12 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     let imageCache = NSCache()
   
   // Leaderboard
+  /*
   var mostFollowersList = [("austin", 4240), ("navid", 1200), ("maxwyb", 80), ("aquaint", 10), ("gyukawa7", 5), ("nicholasrudar", 2)]
   var mostFollowingList = [("navid", 2100), ("austin", 140), ("aquaint", 10)]
+  */
+  var mostFollowersList = [(String, Int)]()
+  var mostFollowingList = [(String, Int)]()
   var userProfileImages = [String: UIImage]()
   
   enum leaderboardType: Int {
@@ -50,13 +54,53 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
   let MOST_FOLLOWERS_LABEL = "Most Followers"
   let MOST_FOLLOWINGS_LABEL = "Most Followings"
   
+  // NOTE: this DynamoDB access function is written here rather than in BackendAPI,
+  // because its retrieval result need to be passed into local variables inside SearchViewController.swift
+  // Otherwise we would have to pass in SearchViewController as a parameter to this function
+  func retrieveLeaderboardDynamoDB(targetMetric: String) {
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+    
+    dynamoDBObjectMapper.load(Leaderboard.self, hashKey: targetMetric, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+      
+      if (resultTask.error != nil || resultTask.exception != nil || resultTask.result == nil) {
+        return nil
+      }
+      
+      let leaderboardInfo = resultTask.result as! Leaderboard
+      // Every username on the leaderboard should correspond to an attribute entry (his number of followers, number of followings, etc.)
+      if leaderboardInfo.usernames.count != leaderboardInfo.attributes.count {
+        print("aquaint-leaderboards DynamoDB data has format error.")
+      }
+      
+      // create the list of tuples following format: [(username, attributeNumber)]
+      var leaderboardTupleList = [(String, Int)]()
+      for i in 0..<leaderboardInfo.usernames.count {
+        let leaderboardTuple = (leaderboardInfo.usernames[i], leaderboardInfo.attributes[i])
+        leaderboardTupleList.append(leaderboardTuple)
+      }
+      
+      if (targetMetric == "mostFollowers") {
+        self.mostFollowersList = leaderboardTupleList
+      } else if (targetMetric == "mostFollowing") {
+        self.mostFollowingList = leaderboardTupleList
+      }
+
+      self.getLeaderboardUserImages()
+      //self.searchTableView.reloadData()
+      
+      return nil
+    })
+    
+    
+  }
+  
   // fetch all profile images of users on the leaderboard
   func getLeaderboardUserImages() {
     for user in mostFollowersList {
       getUserS3Image(user.0, extraPath: nil, completion: { (result, error) in
         if (result != nil) {
           self.userProfileImages[user.0] = result
-          self.searchTableView.reloadData()
+          //self.searchTableView.reloadData()
         }
       })
     }
@@ -66,11 +110,12 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         getUserS3Image(user.0, extraPath: nil, completion: { (result, error) in
           if (result != nil) {
             self.userProfileImages[user.0] = result
-            self.searchTableView.reloadData()
           }
         })
       }
     }
+    
+    self.searchTableView.reloadData()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -158,7 +203,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
       
       // Leaderboard
-      getLeaderboardUserImages()
+      retrieveLeaderboardDynamoDB("mostFollowers")
+      retrieveLeaderboardDynamoDB("mostFollowing")
 
     }
   
