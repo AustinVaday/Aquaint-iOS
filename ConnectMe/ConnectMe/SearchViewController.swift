@@ -57,10 +57,19 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
   // NOTE: this DynamoDB access function is written here rather than in BackendAPI,
   // because its retrieval result need to be passed into local variables inside SearchViewController.swift
   // Otherwise we would have to pass in SearchViewController as a parameter to this function
-  func retrieveLeaderboardDynamoDB(targetMetric: String) {
+  func retrieveLeaderboardDynamoDB(targetMetric: leaderboardType) {
+    
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
     
-    dynamoDBObjectMapper.load(Leaderboard.self, hashKey: targetMetric, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+    var hashKeyMetric: String
+    switch targetMetric {
+    case leaderboardType.MOST_FOLLOWERS:
+      hashKeyMetric = "mostFollowers"
+    case leaderboardType.MOST_FOLLOWINGS:
+      hashKeyMetric = "mostFollowings"
+    }
+    
+    dynamoDBObjectMapper.load(Leaderboard.self, hashKey: hashKeyMetric, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
       
       if (resultTask.error != nil || resultTask.exception != nil || resultTask.result == nil) {
         return nil
@@ -79,9 +88,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         leaderboardTupleList.append(leaderboardTuple)
       }
       
-      if (targetMetric == "mostFollowers") {
+      if (targetMetric == leaderboardType.MOST_FOLLOWERS) {
         self.mostFollowersList = leaderboardTupleList
-      } else if (targetMetric == "mostFollowing") {
+      } else if (targetMetric == leaderboardType.MOST_FOLLOWINGS) {
         self.mostFollowingList = leaderboardTupleList
       }
 
@@ -203,8 +212,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
       
       // Leaderboard
-      retrieveLeaderboardDynamoDB("mostFollowers")
-      retrieveLeaderboardDynamoDB("mostFollowing")
+      retrieveLeaderboardDynamoDB(leaderboardType.MOST_FOLLOWERS)
+      retrieveLeaderboardDynamoDB(leaderboardType.MOST_FOLLOWINGS)
 
     }
   
