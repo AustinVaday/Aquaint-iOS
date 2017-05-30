@@ -852,9 +852,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 extension SearchViewController {
   
   // MARK: - UITableViewDelegate
+  
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     if (!shouldShowSearchResults) {
-      return 150
+      return 125
     } else {
       // Default TableViewCell row height for showing search results
       return 61
@@ -931,7 +932,7 @@ extension SearchViewController {
     cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFit
     cell.userProfileImage.layer.cornerRadius = cell.userProfileImage.frame.size.width / 2
     cell.userProfileImage.clipsToBounds = true
-    cell.userProfileImage.layer.borderWidth = 3.0
+    cell.userProfileImage.layer.borderWidth = 5.0
     cell.userProfileImage.layer.borderColor = UIColor.whiteColor().CGColor
 
     return cell
