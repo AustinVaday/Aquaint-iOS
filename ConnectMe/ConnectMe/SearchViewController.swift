@@ -908,6 +908,7 @@ extension SearchViewController {
       break;
     }
     */
+  
     
     switch collectionView.tag {
     case leaderboardType.MOST_FOLLOWERS.rawValue:
@@ -922,7 +923,7 @@ extension SearchViewController {
       let leaderboardUsername = mostFollowersList[indexPath.item].0
       if let profileImage = userProfileImages[leaderboardUsername] {
         cell.userProfileImage.image = profileImage
-        cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFit
+
       }
       
     case leaderboardType.MOST_FOLLOWINGS.rawValue:
@@ -936,7 +937,6 @@ extension SearchViewController {
       let leaderboardUsername = mostFollowingList[indexPath.item].0
       if let profileImage = userProfileImages[leaderboardUsername] {
         cell.userProfileImage.image = profileImage
-        cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFit
       }
       
     default:
@@ -952,6 +952,12 @@ extension SearchViewController {
     cell.selectedBackgroundView = view
     */
     
+    // Adjust user's profile image: to fit the frame and be circular
+    cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFit
+    cell.userProfileImage.layer.cornerRadius = cell.userProfileImage.frame.size.width / 2
+    cell.userProfileImage.clipsToBounds = true
+    cell.userProfileImage.layer.borderWidth = 3.0
+    cell.userProfileImage.layer.borderColor = UIColor.whiteColor().CGColor
 
     return cell
   }
