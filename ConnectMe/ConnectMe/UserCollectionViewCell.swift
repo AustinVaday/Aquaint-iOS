@@ -20,6 +20,7 @@ class UserCollectionViewCell: UICollectionViewCell {
   @IBOutlet weak var userProfileImage: UIImageView!
   @IBOutlet weak var followNumberLabel: UILabel!
   
+  // Self-designed UserCollectionViewCellDelegate protocol
   /*
   var delegate: UserCollectionViewDelegate?
   

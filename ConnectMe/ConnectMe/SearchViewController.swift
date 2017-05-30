@@ -37,7 +37,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     let searchOffset = 15
     let imageCache = NSCache()
   
-    // Leaderboard
+  // Leaderboard
   var mostFollowersList = [("austin", 4240), ("navid", 1200), ("maxwyb", 80), ("aquaint", 10), ("gyukawa7", 5), ("nicholasrudar", 2)]
   var mostFollowingList = [("navid", 2100), ("austin", 140), ("aquaint", 10)]
   var userProfileImages = [String: UIImage]()
@@ -50,6 +50,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
   let MOST_FOLLOWERS_LABEL = "Most Followers"
   let MOST_FOLLOWINGS_LABEL = "Most Followings"
   
+  // fetch all profile images of users on the leaderboard
   func getLeaderboardUserImages() {
     for user in mostFollowersList {
       getUserS3Image(user.0, extraPath: nil, completion: { (result, error) in
@@ -370,12 +371,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     // **** SEARCH TABLE VIEW *****
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//      // DEBUG
-//      if (true) {
-//        let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell") as! SearchTableViewLeaderboardCell
-//        return cell
-//      }
       
+      // If it's not time to show search results, show Leaderboard users instead
       if (!shouldShowSearchResults) {
         //let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell", forIndexPath: indexPath) as! SearchTableViewLeaderboardCell
         let leaderboardCell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell") as! SearchTableViewLeaderboardCell
@@ -527,6 +524,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
         else
         {
+          // If it's not time to show search results, count how many Leaderboard types we have (Essentially count of LeaderboardType
           // SearchTableViewLeaderboardCell
              return 2
         }
@@ -864,6 +862,7 @@ extension SearchViewController {
   }
   
   // MARK: - UICollectionViewDataSource
+  // sections are not needed in Leaderboard CollectionViews
   /*
   func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
     //return 2;
@@ -873,16 +872,6 @@ extension SearchViewController {
   
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
-    /*
-    switch section {
-    case 0:
-      return mostFollowersList.count
-//    case 1:
-//      return mostFollowingList.count
-    default:
-      return 0
-    }
-    */
     switch collectionView.tag {
     case leaderboardType.MOST_FOLLOWERS.rawValue:
       return mostFollowersList.count
@@ -895,23 +884,10 @@ extension SearchViewController {
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("userCollectionViewCell", forIndexPath: indexPath) as! UserCollectionViewCell
-    //cell.backgroundColor = UIColor.blackColor()
-    //cell.delegate = self
-
-    /*
-    switch indexPath.section {
-    case 0:
-      cell.followNumberLabel.text = String(mostFollowersList[indexPath.item].1)
-//    case 1:
-//      cell.followNumberLabel.text = String(mostFollowingList[indexPath.item].1)
-    default:
-      break;
-    }
-    */
-  
     
     switch collectionView.tag {
     case leaderboardType.MOST_FOLLOWERS.rawValue:
+      // Add label of the number of followers to the leaderboard user
       let followNumber = mostFollowersList[indexPath.item].1
       // If the leaderboard user has too many followers, simplify the representation string
       if (followNumber > 1000) {
@@ -920,6 +896,7 @@ extension SearchViewController {
         cell.followNumberLabel.text = String(followNumber)
       }
       
+      // add profile picture of the leaderboard user
       let leaderboardUsername = mostFollowersList[indexPath.item].0
       if let profileImage = userProfileImages[leaderboardUsername] {
         cell.userProfileImage.image = profileImage
@@ -944,10 +921,8 @@ extension SearchViewController {
     }
     
     /*
-    // DEBUG
-    //Add code to set selectedBackgroundView property
+    // Change the background color of one CollectionViewCell
     let view = UIView(frame: cell.bounds)
-    // Set background color that you want
     view.backgroundColor = UIColor(colorLiteralRed: 0.278, green: 0.694, blue: 0.537, alpha: 1.00)
     cell.selectedBackgroundView = view
     */
@@ -965,12 +940,13 @@ extension SearchViewController {
   // MARK: - UICollectionViewDelegate
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     
+    // Show the user's popup profile if a leaderboard user is clicked
     switch collectionView.tag {
     case leaderboardType.MOST_FOLLOWERS.rawValue:
       showPopupForUser(String(mostFollowersList[indexPath.row].0), me: userName)
       
     case leaderboardType.MOST_FOLLOWINGS.rawValue:
-      showPopupForUser(String(mostFollowersList[indexPath.row].0), me: userName)
+      showPopupForUser(String(mostFollowingList[indexPath.row].0), me: userName)
       
     default:
       return
@@ -982,7 +958,7 @@ extension SearchViewController {
   /*
    // MARK: - UserCollectionViewDelegate (self-designed protocol for custom class)
    func didClickUserProfile() {
-   print ("TODO")
+     print ("TODO")
    }
    */
 }

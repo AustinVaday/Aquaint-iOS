@@ -22,6 +22,7 @@ extension SearchTableViewLeaderboardCell {
 
     userCollectionView.dataSource = dataSourceDelegate
     userCollectionView.delegate = dataSourceDelegate
+    // use tag to differentiate CollectionViews on different SearchTableViewLeaderboardCells
     userCollectionView.tag = row
     
     userCollectionView.reloadData()
