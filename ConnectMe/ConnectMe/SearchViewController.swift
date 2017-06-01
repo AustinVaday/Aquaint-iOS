@@ -105,11 +105,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
   
   // fetch all profile images of users on the leaderboard
   func getLeaderboardUserImages() {
+    
+    // Whenever we get ONE user profile image, we refresh data in CollectionView for seemingly faster performance
     for user in mostFollowersList {
       getUserS3Image(user.0, extraPath: nil, completion: { (result, error) in
         if (result != nil) {
           self.userProfileImages[user.0] = result
-          //self.searchTableView.reloadData()
+          self.searchTableView.reloadData()
         }
       })
     }
@@ -119,12 +121,12 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         getUserS3Image(user.0, extraPath: nil, completion: { (result, error) in
           if (result != nil) {
             self.userProfileImages[user.0] = result
+            self.searchTableView.reloadData()
           }
         })
       }
     }
     
-    self.searchTableView.reloadData()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -984,11 +986,18 @@ extension SearchViewController {
     */
     
     // Adjust user's profile image: to fit the frame and be circular
-    cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFit
+    //cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFit
+    cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFill
     cell.userProfileImage.layer.cornerRadius = cell.userProfileImage.frame.size.width / 2
     cell.userProfileImage.clipsToBounds = true
-    cell.userProfileImage.layer.borderWidth = 5.0
-    cell.userProfileImage.layer.borderColor = UIColor.whiteColor().CGColor
+    //cell.userProfileImage.layer.borderWidth = 5.0
+    cell.userProfileImage.layer.borderWidth = 2.0
+    
+    // try to select a color for each user profile image's border
+    //cell.userProfileImage.layer.borderColor = UIColor.whiteColor().CGColor
+    //cell.userProfileImage.layer.borderColor = generateRandomColor().CGColor
+    cell.userProfileImage.layer.borderColor = UIColor.init(RGBInt: 0xFF6699).CGColor  // Pink for Aqualytics bar charts
+
 
     return cell
   }
