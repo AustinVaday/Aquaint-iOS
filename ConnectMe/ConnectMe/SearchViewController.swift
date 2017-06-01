@@ -106,24 +106,31 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
   // fetch all profile images of users on the leaderboard
   func getLeaderboardUserImages() {
     
+    let defaultImage = UIImage(imageLiteral: "Person Icon Black")
     // Whenever we get ONE user profile image, we refresh data in CollectionView for seemingly faster performance
     for user in mostFollowersList {
       getUserS3Image(user.0, extraPath: nil, completion: { (result, error) in
-        if (result != nil) {
+        if (error == nil && result != nil) {
           self.userProfileImages[user.0] = result
-          self.searchTableView.reloadData()
+        } else {
+          // if there is no user image on S3, explictly specify to use the default blank image
+          // Otherwide the imageView may be overwritten by another user's profile image
+          self.userProfileImages[user.0] = defaultImage
         }
       })
+      self.searchTableView.reloadData()
     }
     
     for user in mostFollowingList {
       if (self.userProfileImages[user.0] == nil) {
         getUserS3Image(user.0, extraPath: nil, completion: { (result, error) in
-          if (result != nil) {
+          if (error == nil && result != nil) {
             self.userProfileImages[user.0] = result
-            self.searchTableView.reloadData()
+          } else {
+            self.userProfileImages[user.0] = defaultImage
           }
         })
+        self.searchTableView.reloadData()
       }
     }
     
