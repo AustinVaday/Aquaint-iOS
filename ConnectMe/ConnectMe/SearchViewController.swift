@@ -117,8 +117,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
           // Otherwide the imageView may be overwritten by another user's profile image
           self.userProfileImages[user.0] = defaultImage
         }
+        self.searchTableView.reloadData()
       })
-      self.searchTableView.reloadData()
     }
     
     for user in mostFollowingList {
@@ -129,8 +129,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
           } else {
             self.userProfileImages[user.0] = defaultImage
           }
+          self.searchTableView.reloadData()
         })
-        self.searchTableView.reloadData()
       }
     }
     
@@ -588,7 +588,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
         else
         {
-          // If it's not time to show search results, count how many Leaderboard types we have (Essentially count of LeaderboardType
+          // If it's not time to show search results, count how many Leaderboard types we have (Essentially count of LeaderboardType)
           // SearchTableViewLeaderboardCell
              return 2
         }
@@ -784,7 +784,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     private func setUpAnimations(viewController: UIViewController)
     {
       
-        setUpSocialMediaAnimations(self, subView: self.view, animatedObjects: &animatedObjects!, animationLocation: AnimationLocation.Middle, theme: AnimationAquaintEmblemTheme.DarkTheme)
+      // Since we have Leaderboards now, floating social media emblems now becomes a legacy feature
+        //setUpSocialMediaAnimations(self, subView: self.view, animatedObjects: &animatedObjects!, animationLocation: AnimationLocation.Middle, theme: AnimationAquaintEmblemTheme.DarkTheme)
 //        // Only add more animations if none exist already. Prevents user abuse
 //        if !animatedObjects.isEmpty
 //        {
