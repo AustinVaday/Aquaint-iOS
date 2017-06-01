@@ -22,17 +22,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ConnectMe/SearchViewController.swift"
-            timestampString = "517017942.535583"
+            timestampString = "518049959.64399"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "init(coder:)"
-            landmarkType = "5">
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "SearchViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -138,12 +138,12 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/AddSocialMediaProfilesController.swift"
-                  timestampString = "517269175.727144"
+                  timestampString = "518049220.142155"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "784"
-                  endingLineNumber = "784"
-                  offsetFromSymbolStart = "4432">
+                  startingLineNumber = "786"
+                  endingLineNumber = "786"
+                  offsetFromSymbolStart = "4573">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -153,11 +153,11 @@
                   moduleName = "Aquaint"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/AustinVaday/git/Aquaint-iOS/ConnectMe/ConnectMe/AddSocialMediaProfilesController.swift"
-                  timestampString = "517269175.727308"
+                  timestampString = "518049220.142442"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "785"
-                  endingLineNumber = "785"
+                  startingLineNumber = "787"
+                  endingLineNumber = "787"
                   offsetFromSymbolStart = "34">
                </Location>
             </Locations>

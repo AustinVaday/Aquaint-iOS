@@ -45,6 +45,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
   var mostFollowersList = [(String, Int)]()
   var mostFollowingList = [(String, Int)]()
   var userProfileImages = [String: UIImage]()
+  var verifiedUserList = [String: Bool]()
   
   enum leaderboardType: Int {
     case MOST_FOLLOWERS = 0
@@ -93,9 +94,28 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
       } else if (targetMetric == leaderboardType.MOST_FOLLOWINGS) {
         self.mostFollowingList = leaderboardTupleList
       }
+      
 
       self.getLeaderboardUserImages()
       //self.searchTableView.reloadData()
+      
+      // Retrieve verified status for each user
+      for user in leaderboardInfo.usernames {
+        
+        getUserVerifiedData(user, completion: { (result, error) in
+          if result != nil && error == nil {
+            let userData = result! as UserVerifiedMinimalObjectModel
+            
+            if userData.isverified != nil && userData.isverified == 1
+            {
+              self.verifiedUserList[user] = true
+            } else {
+              self.verifiedUserList[user] = false
+            }
+          }
+          
+        })
+      }
       
       return nil
     })
@@ -539,7 +559,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
       
         // Check if verified account
         if filteredUsers[indexPath.item].isverified != nil && filteredUsers[indexPath.item].isverified == 1 {
-          addVerifiedIconToLabel(userName, label: cell.cellUserName)
+          addVerifiedIconToLabel(userName, label: cell.cellUserName, size: 12)
         }
         else {
           cell.cellUserName.text = userName
@@ -920,7 +940,7 @@ extension SearchViewController {
   
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     if (!shouldShowSearchResults) {
-      return 125
+      return 160
     } else {
       // Default TableViewCell row height for showing search results
       return 61
@@ -964,6 +984,14 @@ extension SearchViewController {
       
       // add profile picture of the leaderboard user
       let leaderboardUsername = mostFollowersList[indexPath.item].0
+      
+      if (self.verifiedUserList[leaderboardUsername] == true) {
+        addVerifiedIconToLabel(leaderboardUsername, label: cell.userNameLabel, size:10)
+
+      } else {
+        cell.userNameLabel.text = leaderboardUsername
+      }
+      
       if let profileImage = userProfileImages[leaderboardUsername] {
         cell.userProfileImage.image = profileImage
 
@@ -978,6 +1006,14 @@ extension SearchViewController {
       }
 
       let leaderboardUsername = mostFollowingList[indexPath.item].0
+      
+      if (self.verifiedUserList[leaderboardUsername] == true) {
+        addVerifiedIconToLabel(leaderboardUsername, label: cell.userNameLabel, size:10)
+        
+      } else {
+        cell.userNameLabel.text = leaderboardUsername
+      }
+      
       if let profileImage = userProfileImages[leaderboardUsername] {
         cell.userProfileImage.image = profileImage
       }

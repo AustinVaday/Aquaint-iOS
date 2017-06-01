@@ -1273,7 +1273,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         if resultUser.isverified != nil && resultUser.isverified == 1 {
           dispatch_async(dispatch_get_main_queue(), { 
-            addVerifiedIconToLabel(self.currentUserName, label: self.userNameLabel)
+            addVerifiedIconToLabel(self.currentUserName, label: self.userNameLabel, size: 12)
           })
           
         }

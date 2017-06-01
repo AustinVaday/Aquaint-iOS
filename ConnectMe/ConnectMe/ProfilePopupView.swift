@@ -111,7 +111,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                 // CHECK IF USER IS A VERIFIED ACCOUNT
                 if resultUser.isverified != nil && resultUser.isverified == 1 {
                   dispatch_async(dispatch_get_main_queue(), { 
-                    addVerifiedIconToLabel(self.otherUserName, label: self.userNameLabel)
+                    addVerifiedIconToLabel(self.otherUserName, label: self.userNameLabel, size: 12)
                   })
                 }
                 
