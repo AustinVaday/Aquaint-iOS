@@ -115,7 +115,22 @@ class Leaderboard: AWSDynamoDBObjectModel {
   var lastupdated: Int!
   var usernames = [String]()
   var attributes = [Int]()
+  var displayname: String!
+  var index: NSNumber!
   
+  class func dynamoDBTableName() -> String {
+    return "aquaint-leaderboards"
+  }
+  
+  class func hashKeyAttribute() -> String {
+    return "metric"
+  }
+}
+
+// AWS DynamoDB database to store leaderboard users in the search tab, managed by Backend script
+class LeaderboardMinimal: AWSDynamoDBObjectModel {
+  var metric: String!
+  var index: NSNumber!
   class func dynamoDBTableName() -> String {
     return "aquaint-leaderboards"
   }
