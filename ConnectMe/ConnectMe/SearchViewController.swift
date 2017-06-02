@@ -11,7 +11,7 @@ import AWSDynamoDB
 import AWSLambda
 import FRHyperLabel
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate, SearchTableViewCellDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CustomSearchControllerDelegate, SearchTableViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
     @IBOutlet weak var searchTableView: UITableView!
     @IBOutlet weak var noSearchResultsView: UIView!
@@ -36,7 +36,153 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var currentSearchEnd = 15
     let searchOffset = 15
     let imageCache = NSCache()
+  
+  // Leaderboard
+  /*
+  var mostFollowersList = [("austin", 4240), ("navid", 1200), ("maxwyb", 80), ("aquaint", 10), ("gyukawa7", 5), ("nicholasrudar", 2)]
+  var mostFollowingList = [("navid", 2100), ("austin", 140), ("aquaint", 10)]
+  */
+//  var mostFollowersList = [(String, Int)]()
+//  var mostFollowingList = [(String, Int)]()
+  
+//  var metricLists = []()
+  var metricLists = [Int: [(String, Int)]]()
+  
+  var userProfileImages = [String: UIImage]()
+  var verifiedUserList = [String: Bool]()
+  var leaderboardMetricsMap = [Int: String]() // map an index to a metric
+  var leaderboardDisplayNameMap = [Int: String]() // map an index to a display name
+//  enum leaderboardType: Int {
+//    case MOST_FOLLOWERS = 0
+//    case MOST_FOLLOWINGS = 1
+//  }
+//  
+//  let MOST_FOLLOWERS_LABEL = "Most Followers"
+//  let MOST_FOLLOWINGS_LABEL = "Most Followings"
+  
+  // NOTE: this DynamoDB access function is written here rather than in BackendAPI,
+  // because its retrieval result need to be passed into local variables inside SearchViewController.swift
+  // Otherwise we would have to pass in SearchViewController as a parameter to this function
+  func retrieveLeaderboardDynamoDB(targetMetric: String) {
+    
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+    
+//    var hashKeyMetric: String
+//    switch targetMetric {
+//    case leaderboardType.MOST_FOLLOWERS:
+//      hashKeyMetric = "mostFollowers"
+//    case leaderboardType.MOST_FOLLOWINGS:
+//      hashKeyMetric = "mostFollowings"
+//    }
 
+    let hashKeyMetric = targetMetric
+    
+    dynamoDBObjectMapper.load(Leaderboard.self, hashKey: hashKeyMetric, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+      
+      if (resultTask.error != nil || resultTask.exception != nil || resultTask.result == nil) {
+        return nil
+      }
+      
+      let leaderboardInfo = resultTask.result as! Leaderboard
+      // Every username on the leaderboard should correspond to an attribute entry (his number of followers, number of followings, etc.)  
+      if leaderboardInfo.usernames.count != leaderboardInfo.attributes.count {
+        print("aquaint-leaderboards DynamoDB data has format error.")
+      }
+      
+      // create the list of tuples following format: [(username, attributeNumber)]
+      var leaderboardTupleList = [(String, Int)]()
+      for i in 0..<leaderboardInfo.usernames.count {
+        let leaderboardTuple = (leaderboardInfo.usernames[i], leaderboardInfo.attributes[i])
+        leaderboardTupleList.append(leaderboardTuple)
+      }
+      
+      self.metricLists[leaderboardInfo.index as Int] = leaderboardTupleList
+      self.leaderboardDisplayNameMap[leaderboardInfo.index as Int] = leaderboardInfo.displayname
+      
+//      if (targetMetric == leaderboardType.MOST_FOLLOWERS) {
+//        self.mostFollowersList = leaderboardTupleList
+//      } else if (targetMetric == leaderboardType.MOST_FOLLOWINGS) {
+//        self.mostFollowingList = leaderboardTupleList
+//      }
+      
+
+      self.getLeaderboardUserImages()
+      //self.searchTableView.reloadData()
+      
+      // Retrieve verified status for each user
+      for user in leaderboardInfo.usernames {
+        
+        getUserVerifiedData(user, completion: { (result, error) in
+          if result != nil && error == nil {
+            let userData = result! as UserVerifiedMinimalObjectModel
+            
+            if userData.isverified != nil && userData.isverified == 1
+            {
+              self.verifiedUserList[user] = true
+            } else {
+              self.verifiedUserList[user] = false
+            }
+          }
+          
+        })
+      }
+      
+      return nil
+    })
+    
+    
+  }
+  
+  // fetch all profile images of users on the leaderboard
+  func getLeaderboardUserImages() {
+    
+    let defaultImage = UIImage(imageLiteral: "Person Icon Black")
+    // Whenever we get ONE user profile image, we refresh data in CollectionView for seemingly faster performance
+    
+    for (_,list) in metricLists {
+      for user in list {
+        getUserS3Image(user.0, extraPath: nil, completion: { (result, error) in
+          if (error == nil && result != nil) {
+            self.userProfileImages[user.0] = result
+          } else {
+            // if there is no user image on S3, explictly specify to use the default blank image
+            // Otherwide the imageView may be overwritten by another user's profile image
+            self.userProfileImages[user.0] = defaultImage
+          }
+          self.searchTableView.reloadData()
+        })
+      }
+    }
+    
+    
+//    for user in mostFollowersList {
+//      getUserS3Image(user.0, extraPath: nil, completion: { (result, error) in
+//        if (error == nil && result != nil) {
+//          self.userProfileImages[user.0] = result
+//        } else {
+//          // if there is no user image on S3, explictly specify to use the default blank image
+//          // Otherwide the imageView may be overwritten by another user's profile image
+//          self.userProfileImages[user.0] = defaultImage
+//        }
+//        self.searchTableView.reloadData()
+//      })
+//    }
+//    
+//    for user in mostFollowingList {
+//      if (self.userProfileImages[user.0] == nil) {
+//        getUserS3Image(user.0, extraPath: nil, completion: { (result, error) in
+//          if (error == nil && result != nil) {
+//            self.userProfileImages[user.0] = result
+//          } else {
+//            self.userProfileImages[user.0] = defaultImage
+//          }
+//          self.searchTableView.reloadData()
+//        })
+//      }
+//    }
+    
+  }
+  
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     
@@ -120,6 +266,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         userName = getCurrentCachedUser()
         defaultImage = UIImage(imageLiteral: "Person Icon Black")
+      
+      // Leaderboard
+//      retrieveLeaderboardDynamoDB(leaderboardType.MOST_FOLLOWERS)
+//      retrieveLeaderboardDynamoDB(leaderboardType.MOST_FOLLOWINGS)
+        self.fetchLeaderboardsMetricsMap()
 
     }
   
@@ -332,6 +483,30 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     // **** SEARCH TABLE VIEW *****
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+      
+      // If it's not time to show search results, show Leaderboard users instead
+      if (!shouldShowSearchResults) {
+        //let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell", forIndexPath: indexPath) as! SearchTableViewLeaderboardCell
+        let leaderboardCell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell") as! SearchTableViewLeaderboardCell
+        
+        leaderboardCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.row)
+        
+//        switch indexPath.row {
+//        case leaderboardType.MOST_FOLLOWERS.rawValue:
+//          leaderboardCell.titleLabel.text = MOST_FOLLOWERS_LABEL
+//        case leaderboardType.MOST_FOLLOWINGS.rawValue:
+//          leaderboardCell.titleLabel.text = MOST_FOLLOWINGS_LABEL
+//        default:
+//          break
+//        }
+        
+        leaderboardCell.titleLabel.text = leaderboardDisplayNameMap[indexPath.row]
+        
+        leaderboardCell.userCollectionView.backgroundColor = UIColor.whiteColor()
+        leaderboardCell.userCollectionView.reloadData()
+        return leaderboardCell
+      }
+      
         
         let cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! SearchTableViewCell
         
@@ -414,7 +589,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
       
         // Check if verified account
         if filteredUsers[indexPath.item].isverified != nil && filteredUsers[indexPath.item].isverified == 1 {
-          addVerifiedIconToLabel(userName, label: cell.cellUserName)
+          addVerifiedIconToLabel(userName, label: cell.cellUserName, size: 12)
         }
         else {
           cell.cellUserName.text = userName
@@ -425,7 +600,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         // IMPORTANT!!!! If we don't have this we can't get data when user adds/deletes people.
         cell.searchDelegate = self
-        
+      
+        print("SearchViewController default cell height for showing search result: \(tableView.rowHeight)")
+      
         return cell
         
     }
@@ -461,7 +638,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
         else
         {
-             return 0
+          // If it's not time to show search results, count how many Leaderboard types we have (Essentially count of LeaderboardType)
+          // SearchTableViewLeaderboardCell
+             return metricLists.count
         }
         
     }
@@ -655,7 +834,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     private func setUpAnimations(viewController: UIViewController)
     {
       
-        setUpSocialMediaAnimations(self, subView: self.view, animatedObjects: &animatedObjects!, animationLocation: AnimationLocation.Middle, theme: AnimationAquaintEmblemTheme.DarkTheme)
+      // Since we have Leaderboards now, floating social media emblems now becomes a legacy feature
+        //setUpSocialMediaAnimations(self, subView: self.view, animatedObjects: &animatedObjects!, animationLocation: AnimationLocation.Middle, theme: AnimationAquaintEmblemTheme.DarkTheme)
 //        // Only add more animations if none exist already. Prevents user abuse
 //        if !animatedObjects.isEmpty
 //        {
@@ -781,5 +961,209 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         self.currentSearchBegin = 0
         self.currentSearchEnd = self.searchOffset
     }
+  
+}
+
+extension SearchViewController {
+  
+  // MARK: - UITableViewDelegate
+  
+  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    if (!shouldShowSearchResults) {
+      return 160
+    } else {
+      // Default TableViewCell row height for showing search results
+      return 61
+    }
+  }
+  
+  // MARK: - UICollectionViewDataSource
+  // sections are not needed in Leaderboard CollectionViews
+  /*
+  func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    //return 2;
+    return 1;
+  }
+  */
+  
+  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+
+    if metricLists.isEmpty || metricLists[collectionView.tag] == nil {
+      return 0
+    }
     
+    return metricLists[collectionView.tag]!.count
+    
+//    switch collectionView.tag {
+//    case leaderboardType.MOST_FOLLOWERS.rawValue:
+//      return mostFollowersList.count
+//    case leaderboardType.MOST_FOLLOWINGS.rawValue:
+//      return mostFollowingList.count
+//    default:
+//      return 0
+//    }
+  }
+  
+  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("userCollectionViewCell", forIndexPath: indexPath) as! UserCollectionViewCell
+    
+    let list = metricLists[collectionView.tag]!
+    // Add label of the number of followers to the leaderboard user
+    let followNumber = list[indexPath.item].1
+    // If the leaderboard user has too many followers, simplify the representation string
+    if (followNumber > 1000) {
+      cell.followNumberLabel.text = String(followNumber / 1000) + " k"
+    } else {
+      cell.followNumberLabel.text = String(followNumber)
+    }
+    
+    // add profile picture of the leaderboard user
+    let leaderboardUsername = list[indexPath.item].0
+    
+    if (self.verifiedUserList[leaderboardUsername] == true) {
+      addVerifiedIconToLabel(leaderboardUsername, label: cell.userNameLabel, size:10)
+      
+    } else {
+      cell.userNameLabel.text = leaderboardUsername
+    }
+    
+    if let profileImage = userProfileImages[leaderboardUsername] {
+      cell.userProfileImage.image = profileImage
+      
+    }
+    
+//    switch collectionView.tag {
+//    case leaderboardType.MOST_FOLLOWERS.rawValue:
+//      // Add label of the number of followers to the leaderboard user
+//      let followNumber = mostFollowersList[indexPath.item].1
+//      // If the leaderboard user has too many followers, simplify the representation string
+//      if (followNumber > 1000) {
+//        cell.followNumberLabel.text = String(followNumber / 1000) + " k"
+//      } else {
+//        cell.followNumberLabel.text = String(followNumber)
+//      }
+//      
+//      // add profile picture of the leaderboard user
+//      let leaderboardUsername = mostFollowersList[indexPath.item].0
+//      
+//      if (self.verifiedUserList[leaderboardUsername] == true) {
+//        addVerifiedIconToLabel(leaderboardUsername, label: cell.userNameLabel, size:10)
+//
+//      } else {
+//        cell.userNameLabel.text = leaderboardUsername
+//      }
+//      
+//      if let profileImage = userProfileImages[leaderboardUsername] {
+//        cell.userProfileImage.image = profileImage
+//
+//      }
+//      
+//    case leaderboardType.MOST_FOLLOWINGS.rawValue:
+//      let followNumber = mostFollowingList[indexPath.item].1
+//      if (followNumber > 1000) {
+//        cell.followNumberLabel.text = String(followNumber / 1000) + " k"
+//      } else {
+//        cell.followNumberLabel.text = String(followNumber)
+//      }
+//
+//      let leaderboardUsername = mostFollowingList[indexPath.item].0
+//      
+//      if (self.verifiedUserList[leaderboardUsername] == true) {
+//        addVerifiedIconToLabel(leaderboardUsername, label: cell.userNameLabel, size:10)
+//        
+//      } else {
+//        cell.userNameLabel.text = leaderboardUsername
+//      }
+//      
+//      if let profileImage = userProfileImages[leaderboardUsername] {
+//        cell.userProfileImage.image = profileImage
+//      }
+//      
+//    default:
+//      break
+//    }
+    
+    /*
+    // Change the background color of one CollectionViewCell
+    let view = UIView(frame: cell.bounds)
+    view.backgroundColor = UIColor(colorLiteralRed: 0.278, green: 0.694, blue: 0.537, alpha: 1.00)
+    cell.selectedBackgroundView = view
+    */
+    
+    // Adjust user's profile image: to fit the frame and be circular
+    //cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFit
+    cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFill
+    cell.userProfileImage.layer.cornerRadius = cell.userProfileImage.frame.size.width / 2
+    cell.userProfileImage.clipsToBounds = true
+    //cell.userProfileImage.layer.borderWidth = 5.0
+    cell.userProfileImage.layer.borderWidth = 2.0
+    
+    // try to select a color for each user profile image's border
+    //cell.userProfileImage.layer.borderColor = UIColor.whiteColor().CGColor
+    //cell.userProfileImage.layer.borderColor = generateRandomColor().CGColor
+    cell.userProfileImage.layer.borderColor = UIColor.init(RGBInt: 0xFF6699).CGColor  // Pink for Aqualytics bar charts
+
+
+    return cell
+  }
+  
+  // MARK: - UICollectionViewDelegate
+  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    
+    
+    showPopupForUser(String(metricLists[collectionView.tag]![indexPath.row].0), me: userName)
+
+    
+//    // Show the user's popup profile if a leaderboard user is clicked
+//    switch collectionView.tag {
+//    case leaderboardType.MOST_FOLLOWERS.rawValue:
+//      showPopupForUser(String(mostFollowersList[indexPath.row].0), me: userName)
+//      
+//    case leaderboardType.MOST_FOLLOWINGS.rawValue:
+//      showPopupForUser(String(mostFollowingList[indexPath.row].0), me: userName)
+//      
+//    default:
+//      return
+//    }
+    
+    collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+  }
+  
+  /*
+   // MARK: - UserCollectionViewDelegate (self-designed protocol for custom class)
+   func didClickUserProfile() {
+     print ("TODO")
+   }
+   */
+  
+  private func fetchLeaderboardsMetricsMap() {
+    let dynamoDB = AWSDynamoDB.defaultDynamoDB()
+    let scanInput = AWSDynamoDBScanInput()
+    scanInput.tableName = "aquaint-leaderboards"
+    scanInput.limit = 200
+    scanInput.exclusiveStartKey = nil
+    
+    dynamoDB.scan(scanInput).continueWithBlock { (resultTask) -> AnyObject? in
+      if resultTask.result != nil && resultTask.error == nil
+      {
+        print("DB QUERY SUCCESS:", resultTask.result)
+        let results = resultTask.result as! AWSDynamoDBScanOutput
+        
+        for result in results.items! {
+          let metricName = (result["metric"]?.S)! as String
+          let indexString = (result["index"]?.N)! as String
+          let index = Int(indexString)!
+          self.leaderboardMetricsMap[index] = metricName
+          
+          self.retrieveLeaderboardDynamoDB(metricName)
+        }
+        
+      } else {
+        print(resultTask.error)
+      }
+      
+      return nil
+    }
+  }
+  
 }

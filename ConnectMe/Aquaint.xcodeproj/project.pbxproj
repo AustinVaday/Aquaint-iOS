@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1E03A7848D4BE5F856CE241B /* Pods_Aquaint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34EEF12311B0D735B7FE379F /* Pods_Aquaint.framework */; };
 		4D2DB745884A414A67AEC73E /* Pods_AquaintUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D42B7474E582FDC3F9AFB8 /* Pods_AquaintUITests.framework */; };
+		50B2BBC61EDBB1EE00E1E9FF /* SearchTableViewLeaderboardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B2BBC51EDBB1EE00E1E9FF /* SearchTableViewLeaderboardCell.swift */; };
+		50B2BBC81EDBCCD300E1E9FF /* UserCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B2BBC71EDBCCD300E1E9FF /* UserCollectionViewCell.swift */; };
 		50F99A2E1EB9B6B100411C53 /* NoticeOfSubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F99A2D1EB9B6B100411C53 /* NoticeOfSubscriptionViewController.swift */; };
 		76209F1DB6FBD0F8C19CC5AC /* Pods_AquaintTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510A69C38AC090A6E7B973F /* Pods_AquaintTests.framework */; };
 		FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */; };
@@ -135,6 +137,8 @@
 		01D42B7474E582FDC3F9AFB8 /* Pods_AquaintUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AquaintUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E8833267EF2168C25287F83 /* Pods-AquaintUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintUITests/Pods-AquaintUITests.release.xcconfig"; sourceTree = "<group>"; };
 		34EEF12311B0D735B7FE379F /* Pods_Aquaint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Aquaint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		50B2BBC51EDBB1EE00E1E9FF /* SearchTableViewLeaderboardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewLeaderboardCell.swift; sourceTree = "<group>"; };
+		50B2BBC71EDBCCD300E1E9FF /* UserCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCollectionViewCell.swift; sourceTree = "<group>"; };
 		50F99A2D1EB9B6B100411C53 /* NoticeOfSubscriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoticeOfSubscriptionViewController.swift; sourceTree = "<group>"; };
 		671137205723932265B11D03 /* Pods-Aquaint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aquaint.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint.debug.xcconfig"; sourceTree = "<group>"; };
 		80DE6A0B04CCD15219F58E87 /* Pods-AquaintTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintTests/Pods-AquaintTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -383,6 +387,8 @@
 		FF7C0A471D13A20700C1502D /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				50B2BBC51EDBB1EE00E1E9FF /* SearchTableViewLeaderboardCell.swift */,
+				50B2BBC71EDBCCD300E1E9FF /* UserCollectionViewCell.swift */,
 				FFF3A2A81D49BF18009EF4F2 /* MenuButtonTableViewCell.swift */,
 				FFF3A2A61D488F12009EF4F2 /* MenuProfilesCell.swift */,
 				FF47274C1D48750F0065F418 /* SectionHeaderCell.swift */,
@@ -942,6 +948,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FFF335A41E89B13F00E8B70F /* ScanCodeDisplay.swift in Sources */,
+				50B2BBC61EDBB1EE00E1E9FF /* SearchTableViewLeaderboardCell.swift in Sources */,
 				FF47274D1D48750F0065F418 /* SectionHeaderCell.swift in Sources */,
 				FF3C9CA21E8CD00700C32C34 /* AnalyticsFreeViewTableViewCell.swift in Sources */,
 				FF6197A31E59B4DA00B94618 /* Animations.swift in Sources */,
@@ -959,6 +966,7 @@
 				FF8972941E14B10C00A4D9C4 /* CustomRefreshControl.swift in Sources */,
 				FF9BFCD31D3F308A00987D78 /* CustomSearchBar.swift in Sources */,
 				FF4D07B61E9DA706004919D3 /* ReusableWebViewController.swift in Sources */,
+				50B2BBC81EDBCCD300E1E9FF /* UserCollectionViewCell.swift in Sources */,
 				FF1D95E91D89EA960012066C /* PasswordResetViewController.swift in Sources */,
 				FF7878461C281A2500354936 /* FriendRequestsController.swift in Sources */,
 				FFF335A21E89B13F00E8B70F /* QRScannerController.swift in Sources */,
