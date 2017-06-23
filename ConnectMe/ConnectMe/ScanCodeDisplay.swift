@@ -461,6 +461,20 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           }
           
         }
+        else {
+          
+          // Show URL in browser
+          let reusableWebViewStoryboard = UIStoryboard(name: "ReusableWebView", bundle: nil)
+          let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
+          webDisplayVC.webTitle = url?.host
+          webDisplayVC.webURL = url?.absoluteString
+          webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+          
+          // Present only if not presented
+          if self.presentingViewController?.presentedViewController == nil {
+            self.presentViewController(webDisplayVC, animated: true, completion: nil)
+          }
+        }
         
       }
     }

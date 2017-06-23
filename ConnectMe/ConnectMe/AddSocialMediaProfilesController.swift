@@ -89,14 +89,14 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
           login.loginBehavior = FBSDKLoginBehavior.Native
           
           // Request basic profile permissions just to get user ID. UPDATE: also get friends list for 'find friends via facebook' feature
-          login.logInWithReadPermissions(["public_profile", "user_friends"], fromViewController: self) { (result, error) in
+          login.logInWithPublishPermissions(["public_profile", "user_friends" /*, "manage_pages"*/], fromViewController: self) { (result, error) in
             // If no error, store facebook user ID
             if (error == nil && result != nil) {
               print("SUCCESS LOG IN!", result.debugDescription)
               print(result.description)
               
+            
               print("RESULTOO: ", result)
-              
               if (FBSDKAccessToken.currentAccessToken() != nil) {
                 print("FBSDK userID is:", FBSDKAccessToken.currentAccessToken().userID)
                 
@@ -107,6 +107,21 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
                 uploadUserFBUIDToDynamo(currentUserName, fbUID: fbUID)
                 
                 socialMediaName = FBSDKAccessToken.currentAccessToken().userID
+                
+//                //Get user-specific data including name, email, and ID.
+//                let request = FBSDKGraphRequest(graphPath: "/me/accounts", parameters: nil)
+//                request.startWithCompletionHandler { (connection, result, error) in
+//                  if error == nil {
+//                    let resultMap = result as! Dictionary<String, Array<Dictionary<String,String>>>
+//                    let dataArray = resultMap["data"]!
+//                    print("PRINTING PAGES")
+//                    for data in dataArray {
+//                      print(data["name"])
+//                    }
+//                  }
+//                }
+                
+
                 
                 if self.delegate != nil {
                   self.delegate?.userDidAddNewProfile(
