@@ -65,7 +65,7 @@ func setUpSocialMediaAnimations(viewController: UIViewController, subView: UIVie
     imageView.layer.cornerRadius = imageView.frame.size.width / 2
     object.addSubview(imageView)
     
-    object.frame = CGRect(x:0, y:0, width:20 + randomSizeOffset, height:20 + randomSizeOffset)
+    object.frame = CGRect(x:0, y:-40, width:20 + randomSizeOffset, height:20 + randomSizeOffset)
     //      object.backgroundColor = generateRandomColor()
     //      object.layer.cornerRadius = object.frame.size.width / 2
     
