@@ -9,7 +9,7 @@
 import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
-import SimpleAuth
+//import SimpleAuth
 import Firebase
 
 
@@ -155,7 +155,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBAction func onGetTwitterInfoClicked(sender: UIButton) {
 //        showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
 
-        
+        /*
         SimpleAuth.authorize("twitter-web") { (result, error) in
 
             if (result == nil)
@@ -172,11 +172,13 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
             
         }
+       */
     
     }
     
     @IBAction func onGetInstagramInfoClicked(sender: UIButton) {
 
+        /*
         SimpleAuth.authorize("instagram") { (result, error) in
             
             if (result == nil)
@@ -193,6 +195,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
             
         }
+       */
     }
     
     @IBAction func onGetYoutubeInfoClicked(sender: UIButton) {
@@ -201,7 +204,8 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     @IBAction func onGetLinkedinInfoClicked(sender: UIButton) {
-        
+      
+        /*
         SimpleAuth.authorize("linkedin-web") { (result, error) in
             
             if (result == nil)
@@ -218,8 +222,8 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
             
         }
-
-        
+        */
+      
     }
     
 }

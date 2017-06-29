@@ -9,7 +9,7 @@
 import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
-import SimpleAuth
+//import SimpleAuth
 import AWSDynamoDB
 import SCLAlertView
 
@@ -156,6 +156,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         /*************************************************************************
         * TWITTER DATA FETCH
         **************************************************************************/
+        /*
         SimpleAuth.authorize("twitter-web") { (result, error) in
           if (result == nil) {
             print("CANCELLED REQUEST")
@@ -181,6 +182,9 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
           }
         }
         break
+        */
+        showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        break
 
       case "instagram" :
         // Make sure to clear Instagram cookies. This will allow users to obtain a fresh login page every time.
@@ -189,6 +193,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         /*************************************************************************
         * INSTAGRAM DATA FETCH
         **************************************************************************/
+        /*
         SimpleAuth.authorize("instagram") { (result, error) in
           print("INSTAGRAM")
 
@@ -213,11 +218,15 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
 
         }
         break
+        */
+        showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        break
 
       case "linkedin" :
         /*************************************************************************
         * LINKEDIN DATA FETCH
         **************************************************************************/
+        /*
         // Create alert to send to user
         let alert = UIAlertController(title: nil, message: "Are you a company?", preferredStyle: UIAlertControllerStyle.Alert)
         
@@ -266,6 +275,10 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         self.showViewController(alert, sender: nil)
         
         break
+        */
+        showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        break
+      
 
       case "snapchat" :
         /*************************************************************************
@@ -306,6 +319,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         /*************************************************************************
         * TUMBLR DATA FETCH
         **************************************************************************/
+        /*
         SimpleAuth.authorize("tumblr") { (result, error) in
           if (result == nil) {
             print("CANCELLED REQUEST")
@@ -328,6 +342,9 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
           }
         }
         break
+       */
+      showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+      break
       
     case "website" :
       showAndProcessUsernameAlert(socialMediaType, forCell: cell)
@@ -730,8 +747,14 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
       textField.placeholder = "Enter App Store URL"
     } else if socialMediaType == "android" {
       textField.placeholder = "Enter Play Store URL"
-    }else {
-      textField.placeholder   = "Enter Username"
+    } else if socialMediaType == "linkedin" {
+      textField.placeholder = "Enter Personal Profile URL"  // example: https://www.linkedin.com/in/yingbo-wang-104b12b3/
+    } else if socialMediaType == "tumblr" {
+      textField.placeholder = "Enter Nickname"  // example: yeshelloworldthings
+    } else {
+      textField.placeholder = "Enter Username"
+      // twitter example: wybmax
+      // instagram example: wybmax
       
       // Add target to text field to validate/fix user input of a proper input
       textField.addTarget(
@@ -781,7 +804,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
           print(socialMediaType, " username returned is: ", socialMediaName)
           
           
-          if socialMediaType == "website" || socialMediaType == "ios" || socialMediaType == "android"
+          if socialMediaType == "website" || socialMediaType == "ios" || socialMediaType == "android" || socialMediaType == "linkedin"
           {
             // If website url does not have 'http://' or 'https://', add http:// it in
             if !socialMediaName.hasPrefix("http://") && !socialMediaName.hasPrefix("https://") {
@@ -805,11 +828,15 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
               alertViewResponder.close()
               return 
             }
-          } else if socialMediaType == "linkedin" {
+          }
+          // TODO: separate Linkedin company page support should be added after implementing OAuth2 authentication
+          /*
+          else if socialMediaType == "linkedin" {
             // LinkedIn requires company/ before all company names. So this should only be appended for company accounts
             socialMediaName = "company/" + socialMediaName
             
           }
+          */
           
           if self.delegate != nil {
             self.delegate?.userDidAddNewProfile(

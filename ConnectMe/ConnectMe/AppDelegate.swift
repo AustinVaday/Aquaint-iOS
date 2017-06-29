@@ -10,7 +10,7 @@
 import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
-import SimpleAuth
+//import SimpleAuth
 import AWSCore
 import AWSCognito
 import AWSCognitoIdentityProvider
@@ -117,7 +117,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     gai.logger.logLevel = GAILogLevel.Verbose  // remove before app release
     gai.trackerWithTrackingId("UA-61394116-2")
     
-    
+    // SimpleAuth is no longer compatible with Swift 3+ due to interface changes of dependent pods (ReactiveSwift, for example)
+    // social media platform-specific OAuth2 authentication will be gradually added in
+    /*
     SimpleAuth.configuration()["facebook"] = [
       "app_id"  : "544667035683597"
     ]
@@ -152,6 +154,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       "consumer_key": "tIjbRWwLaDWzczQ7OvD9afEzI9clVEBrRcPF3ll0ncoIhuhBfA",
       "consumer_secret": "aOWaAIe92RsV0ddP3yEDQLCwgF307CXOlyngosvbE28DLGCYVm"
     ]
+   */
 
     // Connect to Amazon Core Services
     /* let credentialsProvider = AWSCognitoCredentialsProvider(
