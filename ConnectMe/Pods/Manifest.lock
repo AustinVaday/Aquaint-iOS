@@ -1,42 +1,47 @@
 PODS:
-  - AWSCognito (2.4.5):
-    - AWSCore (= 2.4.5)
-  - AWSCognitoIdentityProvider (2.4.5):
-    - AWSCore (= 2.4.5)
-  - AWSCore (2.4.5)
-  - AWSDynamoDB (2.4.5):
-    - AWSCore (= 2.4.5)
-  - AWSEC2 (2.4.5):
-    - AWSCore (= 2.4.5)
-  - AWSLambda (2.4.5):
-    - AWSCore (= 2.4.5)
-  - AWSMobileAnalytics (2.4.5):
-    - AWSCore (= 2.4.5)
-  - AWSS3 (2.4.5):
-    - AWSCore (= 2.4.5)
-  - AWSSNS (2.4.5):
-    - AWSCore (= 2.4.5)
-  - FRHyperLabel (1.0.2)
-  - GoogleAppUtilities (1.1.1):
-    - GoogleSymbolUtilities (~> 1.0)
-  - GoogleAuthUtilities (2.0.1):
-    - GoogleNetworkingUtilities (~> 1.0)
-    - GoogleSymbolUtilities (~> 1.0)
-  - GoogleNetworkingUtilities (1.2.1):
-    - GoogleSymbolUtilities (~> 1.0)
-  - GoogleSignIn (4.0.0):
-    - GoogleAppUtilities (~> 1.1)
-    - GoogleAuthUtilities (~> 2.0)
-    - GoogleNetworkingUtilities (~> 1.2)
-    - GoogleUtilities (~> 1.3)
-  - GoogleSymbolUtilities (1.1.1)
-  - GoogleUtilities (1.3.1):
-    - GoogleSymbolUtilities (~> 1.0)
+  - AWSCognito (2.5.8):
+    - AWSCore (= 2.5.8)
+  - AWSCognitoIdentityProvider (2.5.8):
+    - AWSCore (= 2.5.8)
+  - AWSCore (2.5.8)
+  - AWSDynamoDB (2.5.8):
+    - AWSCore (= 2.5.8)
+  - AWSEC2 (2.5.8):
+    - AWSCore (= 2.5.8)
+  - AWSLambda (2.5.8):
+    - AWSCore (= 2.5.8)
+  - AWSMobileAnalytics (2.5.8):
+    - AWSCore (= 2.5.8)
+  - AWSS3 (2.5.8):
+    - AWSCore (= 2.5.8)
+  - AWSSNS (2.5.8):
+    - AWSCore (= 2.5.8)
+  - FRHyperLabel (1.0.4)
+  - GoogleSignIn (4.0.2):
+    - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
+    - GoogleToolboxForMac/NSString+URLArguments (~> 2.1)
+    - GTMOAuth2 (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleToolboxForMac/DebugUtils (2.1.1):
+    - GoogleToolboxForMac/Defines (= 2.1.1)
+  - GoogleToolboxForMac/Defines (2.1.1)
+  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.1):
+    - GoogleToolboxForMac/DebugUtils (= 2.1.1)
+    - GoogleToolboxForMac/Defines (= 2.1.1)
+    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
+  - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - Graphs (0.1.2)
+  - GTMOAuth2 (1.1.4):
+    - GTMSessionFetcher (~> 1.1)
+  - GTMSessionFetcher (1.1.10):
+    - GTMSessionFetcher/Full (= 1.1.10)
+  - GTMSessionFetcher/Core (1.1.10)
+  - GTMSessionFetcher/Full (1.1.10):
+    - GTMSessionFetcher/Core (= 1.1.10)
   - KLCPopup (1.0)
   - ReachabilitySwift (3)
-  - RSKImageCropper (1.6.1)
-  - SCLAlertView (0.6.0)
+  - RSKImageCropper (1.6.2)
+  - SCLAlertView (0.7.0)
 
 DEPENDENCIES:
   - AWSCognito
@@ -66,27 +71,25 @@ CHECKOUT OPTIONS:
     :git: https://github.com/maxwyb/Graphs
 
 SPEC CHECKSUMS:
-  AWSCognito: 96e1762404831ffb87f67c87a5ee68fde543bb69
-  AWSCognitoIdentityProvider: 3085d7d30b2bead2dc97efe286e02bda1a6a8325
-  AWSCore: 2f356385bcea9b81ea47f9be0228c71697d9597d
-  AWSDynamoDB: 284308e0f5164aa8178dd06505410390deb44a49
-  AWSEC2: 103802d5499bc5e710940beb1e518b198413b919
-  AWSLambda: 295ed268e30556aa55b13b01495a1d47593af178
-  AWSMobileAnalytics: 8546db78fa7f3ff66099902199fed47c68f148e3
-  AWSS3: 8f73b439f12c4aaaea39fbec87f67a1f1e15bd42
-  AWSSNS: aaf565330d8f2f7c4f2cb13d2a20bceae8259f2f
-  FRHyperLabel: 967b8b7ffdd86b9f2d44f2981a5688c4d3faa9ac
-  GoogleAppUtilities: f1730f91f67767b453c289577040dd3f425ffdc7
-  GoogleAuthUtilities: d7a19615cd7627688afcf181737f1011ee8b5a23
-  GoogleNetworkingUtilities: 3e83269048cfb498dc7ec83ab36813360965c74f
-  GoogleSignIn: '09036ed61f8e75f1424100d63f7719480b2428c3'
-  GoogleSymbolUtilities: 33117db1b5f290c6fbf259585e4885b4c84b98d7
-  GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
+  AWSCognito: 8eb74039f4dc5f2d929999c4f531eeb4bd83e6cb
+  AWSCognitoIdentityProvider: 6c0c276a16b622914563350c64d723bcecaa9e75
+  AWSCore: cf101c44d2cc5da32abc27d5529cddc63c010415
+  AWSDynamoDB: 53ead656801e1a40b415fc0bebd85f1dc0dc0ead
+  AWSEC2: d2817357186d4cc18c23ec0b9deb136bfea88b3a
+  AWSLambda: d83a31bca72ce8e6a6b81a5a3a03e7ea2a44ec3d
+  AWSMobileAnalytics: d0eefb1dbcab87cb97f78961bb847f61396380bb
+  AWSS3: addf558f9cf2368e7fb520440867fea5596db0fb
+  AWSSNS: 812baa3f5dd5e53da69c37fb8b451e52d0735821
+  FRHyperLabel: f4a127d5f8ffb211040554615e93f936d5a576a6
+  GoogleSignIn: d7ad83f13480e1f30453471d00d19b5293ac46af
+  GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   Graphs: '08e8c2ee01dc13c96222dfd92ccb018d14748f4c'
+  GTMOAuth2: 7fc9c10f5c745f4d9850419ea88889fe3baa6b7d
+  GTMSessionFetcher: 30d874b96d0d76028f61fbd122801e3f030d47db
   KLCPopup: 76c5a19227977f1e53d85236f9ef42257c168d98
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
-  RSKImageCropper: 0df8c99e77a8ea7ca7a8b83ef468556f31584254
-  SCLAlertView: 0f6b3c23a48b4993564ff1dd3c065782e4b2b687
+  RSKImageCropper: 3e579d0000945a8be1c0efdad728fd9e25c2fd79
+  SCLAlertView: 8a14ffc40590c619e183eed2298b854385f30be1
 
 PODFILE CHECKSUM: cb9762dd7f1be34806a6b2e25460bd4ae9096cd3
 

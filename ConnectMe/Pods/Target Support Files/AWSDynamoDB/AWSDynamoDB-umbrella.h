@@ -13,6 +13,7 @@
 #import "AWSDynamoDB.h"
 #import "AWSDynamoDBModel.h"
 #import "AWSDynamoDBObjectMapper.h"
+#import "AWSDynamoDBRequestRetryHandler.h"
 #import "AWSDynamoDBResources.h"
 #import "AWSDynamoDBService.h"
 
