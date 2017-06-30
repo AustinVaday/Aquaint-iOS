@@ -49,6 +49,7 @@ class SignUpVerificationController: ViewControllerPannable {
         
         // Set up fileManager for uploading prof pics
         fileManager = AWSUserFileManager.default()
+        
       
         // Set up DB
         dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()

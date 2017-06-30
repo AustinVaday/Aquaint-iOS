@@ -860,7 +860,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
       colorStyle: 0x0F7A9D,
       colorTextButton: 0xFFFFFF,
       circleIconImage: alertViewIcon,
-      animationStyle: .BottomToTop
+      animationStyle: .bottomToTop
     )
   }
 
