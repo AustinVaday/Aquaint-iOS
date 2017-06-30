@@ -48,7 +48,7 @@ class SignUpVerificationController: ViewControllerPannable {
         super.viewDidLoad()
         
         // Set up fileManager for uploading prof pics
-        fileManager = AWSUserFileManager.default()
+        fileManager = AWSUserFileManager.init()
         
       
         // Set up DB
@@ -251,14 +251,16 @@ class SignUpVerificationController: ViewControllerPannable {
                 
                 // LOG IN
                 // Attempt to log user in
-              self.pool.getUser(self.userName).getSession(self.userName, password: self.userPassword, validationData: nil, scopes: nil).continueWith(block: { (sessionResultTask) -> AnyObject? in
+              self.pool.getUser(self.userName).getSession(self.userName, password: self.userPassword, validationData: nil).continueWith(block:
+              //self.pool.getUser(self.userName).getSession(self.userName, password: self.userPassword, validationData: nil, scopes: nil).continueWith(block: 
+                { (sessionResultTask) -> AnyObject? in
                     
                     // If success login
                     if sessionResultTask.error == nil
                     {
                         
                         // Print credentials provider
-                        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.usEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
+                        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
                         
                         
                         // Update new identity ID
@@ -282,7 +284,7 @@ class SignUpVerificationController: ViewControllerPannable {
                                 
                                 // Resize photo for cheaper storage
                                 let targetSize = CGSize(width: 150, height: 150)
-                                let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
+                                let newImage = RBResizeImage(userPhoto!, targetSize: targetSize)
                                 
                                 // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
                                 let imageFileURL = URL(fileURLWithPath: NSTemporaryDirectory() + "temp")
@@ -293,12 +295,12 @@ class SignUpVerificationController: ViewControllerPannable {
                                 
                                 // AWS TRANSFER REQUEST
                                 let transferRequest = AWSS3TransferManagerUploadRequest()
-                                transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
-                                transferRequest.key = "public/" + self.userName
-                                transferRequest.body = imageFileURL
+                                transferRequest?.bucket = "aquaint-userfiles-mobilehub-146546989"
+                                transferRequest?.key = "public/" + self.userName
+                                transferRequest?.body = imageFileURL
                                 let transferManager = AWSS3TransferManager.default()
                                 
-                                transferManager.upload(transferRequest).continue(with: AWSExecutor.mainThread(), with:
+                                transferManager.upload(transferRequest!).continueWith(executor: AWSExecutor.mainThread(), block:
                                     { (resultTask) -> AnyObject? in
                                         
                                         // if sucessful file transfer
@@ -330,11 +332,6 @@ class SignUpVerificationController: ViewControllerPannable {
                                 {
                                     print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
                                 }
-                                else if resultTask.exception != nil
-                                {
-                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                                    
-                                }
                                 else if resultTask.result != nil
                                 {
                                     print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
@@ -357,11 +354,6 @@ class SignUpVerificationController: ViewControllerPannable {
                                 if resultTask.error != nil
                                 {
                                     print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-                                }
-                                else if resultTask.exception != nil
-                                {
-                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                                    
                                 }
                                 else if resultTask.result != nil
                                 {
@@ -410,9 +402,6 @@ class SignUpVerificationController: ViewControllerPannable {
                               if resultTask.error != nil {
                                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
                               }
-                              else if resultTask.exception != nil {
-                                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                              }
                               else if resultTask.result != nil {
                                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
                               }
@@ -428,10 +417,10 @@ class SignUpVerificationController: ViewControllerPannable {
                             // Upload user DATA to DynamoDB
                             let dynamoDBUser = User()
                             
-                            dynamoDBUser.realname = self.userFullName
+                            dynamoDBUser?.realname = self.userFullName
                            // dynamoDBUser.timestamp = getTimestampAsInt()
                            // dynamoDBUser.userId = task.result as! String
-                            dynamoDBUser.username = self.userName
+                            dynamoDBUser?.username = self.userName
                             
                             // No account data to store yet.
 //                            let accountData = NSMutableDictionary()
@@ -439,7 +428,7 @@ class SignUpVerificationController: ViewControllerPannable {
 //                            accountData.setValue(["austinvaday","avtheman"], forKey: "instagram")
 //                            dynamoDBUser.accounts = accountData
                             
-                            self.dynamoDBObjectMapper.save(dynamoDBUser).continueWith(block: { (resultTask) -> AnyObject? in
+                            self.dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block: { (resultTask) -> AnyObject? in
                                 
                                 // If successful save
                                 if (resultTask.error == nil)
@@ -479,11 +468,7 @@ class SignUpVerificationController: ViewControllerPannable {
                                 {
                                     print ("DYNAMODB ERROR: ", resultTask.error)
                                 }
-                                
-                                if (resultTask.exception != nil)
-                                {
-                                    print ("DYNAMODB EXCEPTION: ", resultTask.exception)
-                                }
+                              
                                 
                                 return nil
                             })

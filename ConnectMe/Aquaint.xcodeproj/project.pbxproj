@@ -12,6 +12,7 @@
 		50B2BBC61EDBB1EE00E1E9FF /* SearchTableViewLeaderboardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B2BBC51EDBB1EE00E1E9FF /* SearchTableViewLeaderboardCell.swift */; };
 		50B2BBC81EDBCCD300E1E9FF /* UserCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B2BBC71EDBCCD300E1E9FF /* UserCollectionViewCell.swift */; };
 		50F99A2E1EB9B6B100411C53 /* NoticeOfSubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F99A2D1EB9B6B100411C53 /* NoticeOfSubscriptionViewController.swift */; };
+		50FD48461F06C9F0000226AD /* AWSMobileHubHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48451F06C9F0000226AD /* AWSMobileHubHelper.framework */; };
 		76209F1DB6FBD0F8C19CC5AC /* Pods_AquaintTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510A69C38AC090A6E7B973F /* Pods_AquaintTests.framework */; };
 		FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */; };
 		FF0BF0231CB6DC78005188DA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */; };
@@ -34,7 +35,6 @@
 		FF6331681D286BAB00967266 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6331671D286BAB00967266 /* AddressBook.framework */; };
 		FF63316A1D286BB200967266 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6331691D286BB200967266 /* SafariServices.framework */; };
 		FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF63316B1D286D4300967266 /* AWSMobileClient.swift */; };
-		FF63316E1D286D4300967266 /* AWSMobileHubHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF63316C1D286D4300967266 /* AWSMobileHubHelper.framework */; };
 		FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF65D31C1C1E0BFC0015C99F /* Main.storyboard */; };
 		FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF65D3211C1EA3D60015C99F /* SignUpController.swift */; };
 		FF6813F21E0B7D1D007930BA /* AddSocialContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6813F11E0B7D1D007930BA /* AddSocialContactsViewController.swift */; };
@@ -137,9 +137,11 @@
 		01D42B7474E582FDC3F9AFB8 /* Pods_AquaintUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AquaintUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E8833267EF2168C25287F83 /* Pods-AquaintUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintUITests/Pods-AquaintUITests.release.xcconfig"; sourceTree = "<group>"; };
 		34EEF12311B0D735B7FE379F /* Pods_Aquaint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Aquaint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5089EC1B1F06C828002EF7EF /* AWSMobileHubHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSMobileHubHelper.framework; path = "../../../../Downloads/Aquaint-integration-lib-aws-my-sample-app-ios-swift/AmazonAws/AWSMobileHubHelper.framework"; sourceTree = "<group>"; };
 		50B2BBC51EDBB1EE00E1E9FF /* SearchTableViewLeaderboardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewLeaderboardCell.swift; sourceTree = "<group>"; };
 		50B2BBC71EDBCCD300E1E9FF /* UserCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCollectionViewCell.swift; sourceTree = "<group>"; };
 		50F99A2D1EB9B6B100411C53 /* NoticeOfSubscriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoticeOfSubscriptionViewController.swift; sourceTree = "<group>"; };
+		50FD48451F06C9F0000226AD /* AWSMobileHubHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSMobileHubHelper.framework; path = AmazonAws/AWSMobileHubHelper.framework; sourceTree = "<group>"; };
 		671137205723932265B11D03 /* Pods-Aquaint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aquaint.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint.debug.xcconfig"; sourceTree = "<group>"; };
 		80DE6A0B04CCD15219F58E87 /* Pods-AquaintTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintTests/Pods-AquaintTests.debug.xcconfig"; sourceTree = "<group>"; };
 		820A230C1F41AD15AF685EEB /* Pods-Aquaint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aquaint.release.xcconfig"; path = "Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint.release.xcconfig"; sourceTree = "<group>"; };
@@ -269,8 +271,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50FD48461F06C9F0000226AD /* AWSMobileHubHelper.framework in Frameworks */,
 				FF4D07B11E9D9FF6004919D3 /* LocalAuthentication.framework in Frameworks */,
-				FF63316E1D286D4300967266 /* AWSMobileHubHelper.framework in Frameworks */,
 				FF7878711C30268C00354936 /* SystemConfiguration.framework in Frameworks */,
 				FF78786F1C30268500354936 /* StoreKit.framework in Frameworks */,
 				FFF335901E899EFD00E8B70F /* libGoogleAnalyticsServices.a in Frameworks */,
@@ -580,6 +582,8 @@
 		FFBB87251C5307B700500FAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				50FD48451F06C9F0000226AD /* AWSMobileHubHelper.framework */,
+				5089EC1B1F06C828002EF7EF /* AWSMobileHubHelper.framework */,
 				FF4D07B01E9D9FF6004919D3 /* LocalAuthentication.framework */,
 				FF6331691D286BB200967266 /* SafariServices.framework */,
 				FF6331671D286BAB00967266 /* AddressBook.framework */,
@@ -1160,11 +1164,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/ConnectMe",
 					"$(PROJECT_DIR)/Sdk/Google",
+					"$(PROJECT_DIR)/AmazonAws",
 				);
 				INFOPLIST_FILE = ConnectMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1201,10 +1208,7 @@
 					"-framework",
 					"\"CFNetwork\"",
 					"-framework",
-					"\"CMDQueryStringSerialization\"",
-					"-framework",
 					"\"CoreGraphics\"",
-					"-framework",
 					"\"FirebaseAnalytics\"",
 					"-framework",
 					"\"FirebaseAuth\"",
@@ -1234,8 +1238,6 @@
 					"\"SafariServices\"",
 					"-framework",
 					"\"Security\"",
-					"-framework",
-					"\"SimpleAuth\"",
 					"-framework",
 					"\"StoreKit\"",
 					"-framework",
@@ -1260,11 +1262,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/ConnectMe",
 					"$(PROJECT_DIR)/Sdk/Google",
+					"$(PROJECT_DIR)/AmazonAws",
 				);
 				INFOPLIST_FILE = ConnectMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1301,10 +1306,7 @@
 					"-framework",
 					"\"CFNetwork\"",
 					"-framework",
-					"\"CMDQueryStringSerialization\"",
-					"-framework",
 					"\"CoreGraphics\"",
-					"-framework",
 					"\"FirebaseAnalytics\"",
 					"-framework",
 					"\"FirebaseAuth\"",
@@ -1334,8 +1336,6 @@
 					"\"SafariServices\"",
 					"-framework",
 					"\"Security\"",
-					"-framework",
-					"\"SimpleAuth\"",
 					"-framework",
 					"\"StoreKit\"",
 					"-framework",

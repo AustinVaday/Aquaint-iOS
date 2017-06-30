@@ -233,11 +233,6 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                 {
                     print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
                 }
-                else if resultTask.exception != nil
-                {
-                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                    
-                }
                 else if resultTask.result != nil
                 {
                     // Perform update on UI on main thread
@@ -289,11 +284,6 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         if resultTask.error != nil
         {
           print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-        }
-        else if resultTask.exception != nil
-        {
-          print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-
         }
         else if resultTask.result != nil
         {
@@ -398,7 +388,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         // Perform the request, go to external application and let the user do whatever they want!
         if socialMediaURL != nil
         {
-            UIApplication.shared.openURL(socialMediaURL)
+            UIApplication.shared.openURL(socialMediaURL!)
         }
       }
       

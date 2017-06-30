@@ -98,11 +98,6 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
                 {
                     print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
                 }
-                else if resultTask.exception != nil
-                {
-                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                    
-                }
                 else if resultTask.result != nil
                 {
                   if self.displayPrivate {
@@ -185,11 +180,6 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
                 if resultTask.error != nil
                 {
                     print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-                }
-                else if resultTask.exception != nil
-                {
-                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                    
                 }
                 else if resultTask.result != nil
                 {

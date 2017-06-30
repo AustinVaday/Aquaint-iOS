@@ -285,7 +285,8 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
         
         
         // Attempt to log user in
-        pool.getUser(userNameString).getSession(userNameString, password: userPasswordString, validationData: nil, scopes: nil).continueWith({ (sessionResultTask) -> AnyObject? in
+        pool.getUser(userNameString).getSession(userNameString, password: userPasswordString, validationData: nil).continueWith(block:
+          { (sessionResultTask) -> AnyObject? in
             
             // If success login
             if sessionResultTask.error == nil
@@ -326,12 +327,12 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
                 
 
                 // Print credentials provider
-                let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.usEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
+                let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
                 
                 
                 
                 // Fetch new identity ID
-                credentialsProvider.getIdentityId().continueWith({ (task) -> AnyObject? in
+                credentialsProvider.getIdentityId().continueWith(block: { (task) -> AnyObject? in
                     print("^^^USER LOGGED IN:", task.result)
   
                     // Cache username, user full name, user image, and user accounts
@@ -385,7 +386,7 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
   
   
   
-  func didCompleteStepWithError(_ error: Error) {
+  func didCompleteStepWithError(_ error: Error?) {
     
   }
 

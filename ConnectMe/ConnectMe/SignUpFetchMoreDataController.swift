@@ -420,7 +420,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
         // If sign up performed successfully.
         if (resultTask.error == nil)
         {
-          self.pool.getUser(userNameString).getSession(lowerCaseUserNameString, password: userPasswordString, validationData: nil, scopes: nil).continueWith(block: { (sessionResultTask) -> AnyObject? in
+          self.pool.getUser(userNameString).getSession(lowerCaseUserNameString, password: userPasswordString, validationData: nil).continueWith(block: { (sessionResultTask) -> AnyObject? in
             
             setCurrentCachedUserName(lowerCaseUserNameString)
             setCurrentCachedFullName(self.userFullName)
@@ -438,7 +438,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
               
               // Resize photo for cheaper storage
               let targetSize = CGSize(width: 150, height: 150)
-              let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
+              let newImage = RBResizeImage(userPhoto!, targetSize: targetSize)
               
               // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
               let imageFileURL = URL(fileURLWithPath: NSTemporaryDirectory() + "temp")
@@ -449,12 +449,12 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
               
               // AWS TRANSFER REQUEST
               let transferRequest = AWSS3TransferManagerUploadRequest()
-              transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
-              transferRequest.key = "public/" + lowerCaseUserNameString
-              transferRequest.body = imageFileURL
+              transferRequest?.bucket = "aquaint-userfiles-mobilehub-146546989"
+              transferRequest?.key = "public/" + lowerCaseUserNameString
+              transferRequest?.body = imageFileURL
               let transferManager = AWSS3TransferManager.default()
               
-              transferManager.upload(transferRequest).continue(with: AWSExecutor.mainThread(), with:
+              transferManager.upload(transferRequest!).continueWith(executor: AWSExecutor.mainThread(), block:
                 { (resultTask) -> AnyObject? in
                   
                   // if sucessful file transfer
@@ -486,11 +486,6 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
               {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
               }
-              else if resultTask.exception != nil
-              {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                
-              }
               else if resultTask.result != nil
               {
                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
@@ -514,11 +509,6 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
               {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
               }
-              else if resultTask.exception != nil
-              {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                
-              }
               else if resultTask.result != nil
               {
                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
@@ -540,9 +530,6 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
               if resultTask.error != nil {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
               }
-              else if resultTask.exception != nil {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-              }
               else if resultTask.result != nil {
                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
               }
@@ -558,13 +545,12 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
             // Upload user DATA to DynamoDB
             let dynamoDBUser = User()
             
-            dynamoDBUser.realname = self.userFullName
+            dynamoDBUser?.realname = self.userFullName
             // dynamoDBUser.timestamp = getTimestampAsInt()
             // dynamoDBUser.userId = task.result as! String
-            dynamoDBUser.username = lowerCaseUserNameString
+            dynamoDBUser?.username = lowerCaseUserNameString
             
-            
-            self.dynamoDBObjectMapper.save(dynamoDBUser).continueWith({ (resultTask) -> AnyObject? in
+            self.dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block: { (resultTask) -> AnyObject? in
               
               // If successful save
               if (resultTask.error == nil)
@@ -601,11 +587,6 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
               if (resultTask.error != nil)
               {
                 print ("DYNAMODB ERROR: ", resultTask.error)
-              }
-              
-              if (resultTask.exception != nil)
-              {
-                print ("DYNAMODB EXCEPTION: ", resultTask.exception)
               }
               
               return nil

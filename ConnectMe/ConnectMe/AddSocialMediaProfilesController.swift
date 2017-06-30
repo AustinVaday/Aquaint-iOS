@@ -813,7 +813,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
             
             // With android apps, URL is tough to check because of the 'com.appName' url scheme. Instead check for google.com domain
             if socialMediaType == "android" {
-              if !socialMediaName.containsString("google.com") && !socialMediaName.contains("goo.gl") {
+              if !socialMediaName.contains("google.com") && !socialMediaName.contains("goo.gl") {
                 showAlert("Invalid Play Store URL", message: "Please enter a valid Android Play Store URL", buttonTitle: "Try again", sender: self)
                 alertViewResponder.close()
                 return
