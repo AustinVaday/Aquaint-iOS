@@ -373,7 +373,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
             var newsfeedResultObjectMapper : NewsfeedResultObjectModel!
             
             // If successfull find, use that data
-            if (result.error == nil && result.exception == nil && result.result != nil)
+            if (result.error == nil && result.result != nil)
             {
                 newsfeedResultObjectMapper = result.result as! NewsfeedResultObjectModel
                 

@@ -188,7 +188,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
     let lambdaInvoker = AWSLambdaInvoker.default()
     let parameters = ["action":"getFollowerRequests", "target": currentUserName, "start": start, "end": end] as [String : Any]
     
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)

@@ -92,8 +92,8 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
             let lambdaInvoker = AWSLambdaInvoker.default()
             let parameters = ["action": targetAction, "target": cellUserName.text!, "me": currentUserName]
             
-            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue({ (resultTask) -> AnyObject? in
-                
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith(block: { (resultTask) -> AnyObject? in
+              
                 if resultTask.error != nil
                 {
                     print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -180,7 +180,7 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
             let lambdaInvoker = AWSLambdaInvoker.default()
             let parameters = ["action": targetAction, "target": cellUserName.text!, "me": currentUserName]
             
-            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue({ (resultTask) -> AnyObject? in
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith(block: { (resultTask) -> AnyObject? in
                 
                 if resultTask.error != nil
                 {

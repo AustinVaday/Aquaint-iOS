@@ -240,7 +240,7 @@ class ForgotPasswordViewController: ViewControllerPannable {
     
           // If phone numbers match...
           // What if userNameString is nil?
-          poolUser.forgotPassword().continue { (resultTask) -> AnyObject? in
+          poolUser.forgotPassword().continueWith { (resultTask) -> AnyObject? in
             // Success
             if resultTask.error == nil && resultTask.result != nil {
               // Popup - say that we sent code to a number. Enter code here
@@ -279,7 +279,7 @@ class ForgotPasswordViewController: ViewControllerPannable {
   }
   
   func confirmForgottenPassword(_ poolUser: AWSCognitoIdentityUser, password: String, confirmationCode: String) {
-    poolUser.confirmForgotPassword(confirmationCode, password: password).continue { (resultTask) -> AnyObject? in
+    poolUser.confirmForgotPassword(confirmationCode, password: password).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil {
         print("Great success.")
         // Perform update on UI on main thread

@@ -50,7 +50,7 @@ func fetchAndSetCurrentCachedSubscriptionStatus(_ userName: String, completion: 
     let receiptData: NSString = receipt.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) as NSString
     let lambdaInnvoker = AWSLambdaInvoker.default()
     let parameters = ["action": "subscriptionGetExpiresDate", "target": userName, "receipt_json": receiptData] as [String : Any]
-    lambdaInnvoker.invokeFunction("mock_api", jsonObject: parameters).continue({
+    lambdaInnvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith({
       (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil {
         print("Result task for subscriptionGetExpiresDate is: ", resultTask.result!)
@@ -117,7 +117,7 @@ func setCachedUserFromAWS(_ userName: String!)
     ********************************************/
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
     
-    dynamoDBObjectMapper.load(UserPrivacyObjectModel.self, hashKey: userName, rangeKey: nil).continue { (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.load(UserPrivacyObjectModel.self, hashKey: userName, rangeKey: nil).continueWith { (resultTask) -> AnyObject? in
         if (resultTask.error != nil)
         {
             print("Error caching user from dynamoDB: ", resultTask.error)
@@ -199,7 +199,7 @@ func setCachedUserFromAWS(_ userName: String!)
         // User may not have a scan code, so generate one for them
         let lambdaInvoker = AWSLambdaInvoker.default()
         let parameters = ["action":"createScanCodeForUser", "target": userName]
-        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
           if resultTask.result != nil && resultTask.error == nil {
             print("Succesfully generated scan code on login!")
             getUserS3Image(userName, extraPath: "scancodes/", completion: { (result, error) in
@@ -258,7 +258,7 @@ func getUserDynamoData(_ userName: String!, completion: @escaping (_ result: Use
      ********************************************/
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
     
-    dynamoDBObjectMapper.load(UserPrivacyObjectModel.self, hashKey: userName, rangeKey: nil).continue { (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.load(UserPrivacyObjectModel.self, hashKey: userName, rangeKey: nil).continueWith { (resultTask) -> AnyObject? in
         if (resultTask.error != nil)
         {
             print("Error getting user from dynamoDB: ", resultTask.error)
@@ -297,7 +297,7 @@ func getUserPromoCodeDynamoData(_ userName: String!, completion: @escaping (_ re
    ********************************************/
   let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
   
-  dynamoDBObjectMapper.load(UserPromoCodeMinimalObjectModel.self, hashKey: userName, rangeKey: nil).continue { (resultTask) -> AnyObject? in
+  dynamoDBObjectMapper.load(UserPromoCodeMinimalObjectModel.self, hashKey: userName, rangeKey: nil).continueWith { (resultTask) -> AnyObject? in
     if (resultTask.error != nil)
     {
       print("Error getting user from dynamoDB: ", resultTask.error)
@@ -336,7 +336,7 @@ func getUserVerifiedData(_ userName: String!, completion: @escaping (_ result: U
    ********************************************/
   let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
   
-  dynamoDBObjectMapper.load(UserVerifiedMinimalObjectModel.self, hashKey: userName, rangeKey: nil).continue { (resultTask) -> AnyObject? in
+  dynamoDBObjectMapper.load(UserVerifiedMinimalObjectModel.self, hashKey: userName, rangeKey: nil).continueWith { (resultTask) -> AnyObject? in
     if (resultTask.error != nil)
     {
       print("Error getting user from dynamoDB: ", resultTask.error)
@@ -393,7 +393,7 @@ func getUserS3Image(_ userName: String!, extraPath: String!, completion: @escapi
     
     let transferManager = AWSS3TransferManager.default()
     
-    transferManager?.download(downloadRequest).continue(with: AWSExecutor.mainThread(), with: { (resultTask) -> AnyObject? in
+    transferManager.download(downloadRequest!).continue(with: AWSExecutor.mainThread(), with: { (resultTask) -> AnyObject? in
         
         // if sucessful file transfer
         if resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil
@@ -442,7 +442,7 @@ func setUserS3Image(_ userName: String!, userImage: UIImage!, completion: @escap
     transferRequest?.body = imageFileURL
     let transferManager = AWSS3TransferManager.default()
     
-    transferManager?.upload(transferRequest).continue(with: AWSExecutor.mainThread(), with:
+    transferManager.upload(transferRequest!).continue(with: AWSExecutor.mainThread(), with:
         { (resultTask) -> AnyObject? in
             
             // if sucessful file transfer
@@ -478,7 +478,7 @@ func getUserPoolData(_ userName: String!, completion: @escaping (_ result: UserP
     // Get AWS UserPool
     let pool:AWSCognitoIdentityUserPool = getAWSCognitoIdentityUserPool()
     //Fetch UserPool Data
-    pool.getUser(userName).getDetails().continue { (resultTask) -> AnyObject? in
+    pool.getUser(userName).getDetails().continueWith { (resultTask) -> AnyObject? in
         
         if resultTask.error != nil
         {
@@ -628,7 +628,7 @@ func updateCurrentUserProfilesDynamoDB(_ currentUserProfiles: NSMutableDictionar
 
     print(currentUser, " BEEP ", currentRealName, " BEEP ", currentAccounts)
     
-    dynamoDBObjectMapper.save(dynamoDBUser!).continue({ (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.save(dynamoDBUser!).continueWith({ (resultTask) -> AnyObject? in
         
         if (resultTask.error != nil)
         {
@@ -665,15 +665,17 @@ func uploadUserFBUIDToDynamo(_ userName: String, fbUID: String)
   dynamoDBUser?.username = userName
   dynamoDBUser?.fbuid = fbUID
   
-  dynamoDBObjectMapper.save(dynamoDBUser!).continue(
+  dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block:
     { (resultTask) -> AnyObject? in
       if (resultTask.error != nil) {
         print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
       }
       
-      if (resultTask.exception != nil) {
+      /*
+      if (resultTask.is != nil) {
         print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
       }
+      */
       
       if (resultTask.result == nil) {
         print ("DYNAMODB ADD PROFILE result is nil....: ")
@@ -696,7 +698,7 @@ func uploadDeviceIDDynamoDB(_ currentDeviceID: String) {
   let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
   let currentUser = getCurrentCachedUser()
   
-  dynamoDBObjectMapper.load(Device.self, hashKey: currentUser, rangeKey: nil).continue { (
+  dynamoDBObjectMapper.load(Device.self, hashKey: currentUser, rangeKey: nil).continueWith { (
     resultTask) -> AnyObject? in
     
     if (resultTask.error != nil || resultTask.exception != nil) {
@@ -723,14 +725,14 @@ func uploadDeviceIDDynamoDB(_ currentDeviceID: String) {
     
     // Now we upload to dynamo
     let dynamoDBDevice = Device()
-    dynamoDBDevice.username = currentUser
+    dynamoDBDevice?.username = currentUser
     print("uploadDeviceIDDynamoDB: dynamoDBDevice.username = ", currentUser)
-    dynamoDBDevice.deviceidlist = listOfDeviceIDs
+    dynamoDBDevice?.deviceidlist = listOfDeviceIDs
     print("uploadDeviceIDDynamoDB: dynamoDBDevice.deviceidlist = ", listOfDeviceIDs)
     
-    dynamoDBObjectMapper.save(dynamoDBDevice).continue(
+    dynamoDBObjectMapper.save(dynamoDBDevice!).continueWith(block:
       { (resultTask) -> AnyObject? in
-        if (resultTask.error != nil || resultTask.exception != nil) {
+        if (resultTask.error != nil) {
           print("uploadDeviceIDDynamoDB: error or exception during upload.")
         }
         
@@ -750,7 +752,7 @@ func warmUpLambda()
     print("WARMING UP LAMBDA")
     let lambdaInvoker = AWSLambdaInvoker.default()
     let parameters = ["action":"doIFollow", "target": "aquaint", "me": "aquaint"]
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
         return nil
     }
 }

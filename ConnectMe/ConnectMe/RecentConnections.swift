@@ -227,7 +227,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         let lambdaInvoker = AWSLambdaInvoker.default()
         let parameters = ["action":"getFollowees", "target": currentUserName]
         
-        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
             if resultTask.error != nil
             {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)

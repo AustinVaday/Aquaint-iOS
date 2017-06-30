@@ -22,8 +22,8 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     var currentUserName : String!
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
     var socialMediaUserNames: NSMutableDictionary!
-    var firebaseLinkedAccountsRef: FIRDatabaseReference!
-    var firebaseRootRef : FIRDatabaseReference!
+//    var firebaseLinkedAccountsRef: FIRDatabaseReference!
+//    var firebaseRootRef : FIRDatabaseReference!
 
     
     
@@ -39,6 +39,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         socialMediaUserNames = NSMutableDictionary()
         
         // Firebase LinkedSocialMediaAccoutns for user, our data is stored here
+        /*
         firebaseRootRef = FIRDatabase.database().reference()
         firebaseLinkedAccountsRef = firebaseRootRef.child("LinkedSocialMediaAccounts/" + currentUserName)
         
@@ -58,6 +59,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
             
             
         })
+        */
         
         
         socialMediaImageDictionary = getAllPossibleSocialMediaImages()

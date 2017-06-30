@@ -233,7 +233,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       didFinishLaunchingWithOptions: launchOptions
     )
     
-    let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.usEast1, credentialsProvider: nil)
+    let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: nil)
     let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "41v7gese46ar214saeurloufe7", clientSecret: "1lr1abieg6g8fpq06hngo9edqg4qtf63n3cql1rgsvomc11jvs9b", poolId: "us-east-1_yyImSiaeD")
     
     AWSCognitoIdentityUserPool.register(with: serviceConfiguration, userPoolConfiguration: userPoolConfiguration, forKey: "UserPool")
@@ -241,12 +241,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     userPool =  AWSCognitoIdentityUserPool(forKey: "UserPool")
     
     // Get credentials provider
-    credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.usEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e", identityProviderManager: userPool)
+    credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e", identityProviderManager: userPool)
     
     // Initialize Amazon Cognito Credentials Provider
     // let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
     let configuration = AWSServiceConfiguration(
-      region: AWSRegionType.usEast1,
+      region: AWSRegionType.USEast1,
       credentialsProvider: credentialsProvider
     )
     AWSServiceManager.default().defaultServiceConfiguration = configuration

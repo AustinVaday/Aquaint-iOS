@@ -166,12 +166,12 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
       
       // Get dynamo mapper if it exists
-      dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: currentUserName, rangeKey: nil).continue({ (resultTask) -> AnyObject? in
+      dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: currentUserName, rangeKey: nil).continueWith(block: { (resultTask) -> AnyObject? in
         
         var newsfeedObjectMapper : NewsfeedEventListObjectModel!
         
         // If successfull find, use that data
-        if (resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil)
+        if (resultTask.error == nil && resultTask.result != nil)
         {
           newsfeedObjectMapper = resultTask.result as! NewsfeedEventListObjectModel
         }
@@ -192,7 +192,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         
         print ("YOLO24: ", newKeyValSocialMediaPairList)
-        for pair in newKeyValSocialMediaPairList
+        for pair in newKeyValSocialMediaPairList!
         {
           // Prevent too many adds at once
           index = index + 1
@@ -209,7 +209,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
           newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
         }
         
-        dynamoDBObjectMapper.save(newsfeedObjectMapper).continue { (resultTask) -> AnyObject? in
+        dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWith { (resultTask) -> AnyObject? in
           print("DynamoObjectMapper sucessful save for newsfeedObject with new social media profile")
           
           return nil
@@ -931,7 +931,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       pool.currentUser()?.signOutAndClearLastKnownUser()
       
       // Update new identity ID
-      self.credentialsProvider.getIdentityId().continue { (resultTask) -> AnyObject? in
+      self.credentialsProvider.getIdentityId().continueWith { (resultTask) -> AnyObject? in
         
         print("LOGOUT, identity id is:", resultTask.result)
         print("LOG2, ", self.credentialsProvider.identityId)
@@ -1201,7 +1201,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Fetch num followers from lambda
     let lambdaInvoker = AWSLambdaInvoker.default()
     var parameters = ["action":"getNumFollowers", "target": currentUserName]
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -1302,7 +1302,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     dynamoDBUser?.realname = currentRealName
     dynamoDBUser?.accounts = currentAccounts
     
-    dynamoDBObjectMapper.save(dynamoDBUser!).continue({ (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block: { (resultTask) -> AnyObject? in
       
       if (resultTask.error != nil)
       {
@@ -1554,7 +1554,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         
-        dynamoDBObjectMapper.save(dynamoDBUser!).continue({ (resultTask) -> AnyObject? in
+        dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block: { (resultTask) -> AnyObject? in
           
           // If successful save
           if (resultTask.error == nil && resultTask.result != nil)
@@ -1688,7 +1688,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         phone?.value = self.currentUserPhone
         
         
-        userPool.getUser(self.currentUserName).update([email!, phone!]).continue { (resultTask) -> AnyObject? in
+        userPool.getUser(self.currentUserName).update([email!, phone!]).continueWith { (resultTask) -> AnyObject? in
           
           print("SUCCESSFUL USER EMAIL UPDATE IN USERPOOLS")
           return nil
@@ -1710,7 +1710,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         email?.value = self.currentUserEmail
         phone?.value = self.currentUserPhone
         
-        userPool.getUser(self.currentUserName).update([email!, phone!]).continue { (resultTask) -> AnyObject? in
+        userPool.getUser(self.currentUserName).update([email!, phone!]).continueWith { (resultTask) -> AnyObject? in
           
           
           //                // Prompt user to enter in confirmation code.
@@ -1782,7 +1782,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         
-        dynamoDBObjectMapper.save(dynamoDBUser!).continue({ (resultTask) -> AnyObject? in
+        dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block: { (resultTask) -> AnyObject? in
           
           // If successful save
           if (resultTask.error == nil && resultTask.result != nil)
@@ -1808,7 +1808,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Update user real name in lambda as well
         let lambdaInvoker = AWSLambdaInvoker.default()
         let parameters = ["action":"updatern", "target": self.currentUserName, "realname": self.currentRealName]
-        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
           if resultTask.error != nil
           {
             print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)

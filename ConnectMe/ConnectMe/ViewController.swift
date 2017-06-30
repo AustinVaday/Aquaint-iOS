@@ -54,7 +54,7 @@ class ViewController: UIViewController {
           let provider = FacebookProvider()
           
           credentialsProvider = AWSCognitoCredentialsProvider(
-            regionType: AWSRegionType.usEast1,
+            regionType: AWSRegionType.USEast1,
             identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e",
             identityProviderManager: provider)
           
@@ -65,7 +65,7 @@ class ViewController: UIViewController {
           
           AWSServiceManager.default().defaultServiceConfiguration = configuration
           
-          credentialsProvider!.getIdentityId().continue({ (resultTask) -> AnyObject? in
+          credentialsProvider!.getIdentityId().continueWith(block: { (resultTask) -> AnyObject? in
             if resultTask.error == nil && resultTask.result != nil {
               let id = resultTask.result
               print("Cred Prov. ID is: \(id)")
@@ -77,7 +77,7 @@ class ViewController: UIViewController {
             return nil
           })
           
-          userPool.getUser().getDetails().continue({ (resultTask) -> AnyObject? in
+          userPool.getUser().getDetails().continueWith(block: { (resultTask) -> AnyObject? in
             if resultTask.error == nil && resultTask.result != nil {
               print ("lala:", resultTask.result)
             }
@@ -114,7 +114,7 @@ class ViewController: UIViewController {
               scanInput.expressionAttributeValues = [":val" : UIDValue]
               scanInput.filterExpression = "fbuid = :val"
               
-              dynamoDB.scan(scanInput).continue { (resultTask) -> AnyObject? in
+              dynamoDB.scan(scanInput).continueWith { (resultTask) -> AnyObject? in
                 if resultTask.result != nil && resultTask.error == nil
                 {
                   print("DB QUERY SUCCESS:", resultTask.result)

@@ -15,6 +15,17 @@ import AWSMobileHubHelper
 
 
 class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthentication {
+  /**
+   Obtain username and password from end user.
+   @param authenticationInput input details including last known username
+   @param passwordAuthenticationCompletionSource set passwordAuthenticationCompletionSource.result
+   with the username and password received from the end user.
+   */
+  func getDetails(_ authenticationInput: AWSCognitoIdentityPasswordAuthenticationInput, passwordAuthenticationCompletionSource: AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails>) {
+    // [Swift 3 Migration] reqquired by AWSCognitoIdentityPasswordAuthentication
+    return
+  }
+
         
     @IBOutlet weak var userName: UITextField!
     @IBOutlet weak var userPassword: UITextField!
@@ -274,7 +285,7 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
         
         
         // Attempt to log user in
-        pool.getUser(userNameString).getSession(userNameString, password: userPasswordString, validationData: nil, scopes: nil).continue({ (sessionResultTask) -> AnyObject? in
+        pool.getUser(userNameString).getSession(userNameString, password: userPasswordString, validationData: nil, scopes: nil).continueWith({ (sessionResultTask) -> AnyObject? in
             
             // If success login
             if sessionResultTask.error == nil
@@ -320,7 +331,7 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
                 
                 
                 // Fetch new identity ID
-                credentialsProvider.getIdentityId().continue({ (task) -> AnyObject? in
+                credentialsProvider.getIdentityId().continueWith({ (task) -> AnyObject? in
                     print("^^^USER LOGGED IN:", task.result)
   
                     // Cache username, user full name, user image, and user accounts
@@ -366,13 +377,15 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
         
     }
   
+  /*
   func getDetails(_ authenticationInput: AWSCognitoIdentityPasswordAuthenticationInput, passwordAuthenticationCompletionSource: AWSTaskCompletionSource<AnyObject>) {
     
   }
-    
+  */
   
   
-  func didCompleteStepWithError(_ error: NSError) {
+  
+  func didCompleteStepWithError(_ error: Error) {
     
   }
 

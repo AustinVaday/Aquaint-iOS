@@ -295,7 +295,7 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
     }
     
     let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
-    dynamoDBObjectMapper.save(dynamoDBUser!).continue({ (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block: { (resultTask) -> AnyObject? in
       
       if (resultTask.error != nil)
       {

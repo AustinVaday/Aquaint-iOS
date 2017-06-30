@@ -241,7 +241,7 @@ class SignUpVerificationController: ViewControllerPannable {
         // Show activity indicator (spinner)
         spinner.startAnimating()
         
-        pool.getUser(userName).confirmSignUp(verificationString).continue { (resultTask) -> AnyObject? in
+        pool.getUser(userName).confirmSignUp(verificationString).continueWith { (resultTask) -> AnyObject? in
             
             // If success code
             if resultTask.error == nil
@@ -250,7 +250,7 @@ class SignUpVerificationController: ViewControllerPannable {
                 
                 // LOG IN
                 // Attempt to log user in
-                self.pool.getUser(self.userName).getSession(self.userName, password: self.userPassword, validationData: nil, scopes: nil).continue({ (sessionResultTask) -> AnyObject? in
+              self.pool.getUser(self.userName).getSession(self.userName, password: self.userPassword, validationData: nil, scopes: nil).continueWith(block: { (sessionResultTask) -> AnyObject? in
                     
                     // If success login
                     if sessionResultTask.error == nil
@@ -261,7 +261,7 @@ class SignUpVerificationController: ViewControllerPannable {
                         
                         
                         // Update new identity ID
-                        credentialsProvider.getIdentityId().continue({ (task) -> AnyObject? in
+                        credentialsProvider.getIdentityId().continueWith(block: { (task) -> AnyObject? in
                             print("^^^USER LOGGGGGED IN with credentials:", task.result)
                             
                             setCurrentCachedUserName(self.userName)
@@ -324,7 +324,7 @@ class SignUpVerificationController: ViewControllerPannable {
                             // Store username and user realname
                             let lambdaInvoker = AWSLambdaInvoker.default()
                             var parameters = ["action":"adduser", "target": self.userName, "realname": self.userFullName]
-                            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+                            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
                                 if resultTask.error != nil
                                 {
                                     print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -352,7 +352,7 @@ class SignUpVerificationController: ViewControllerPannable {
                             
                             // Have user automatically follow and be followed by Aquaint Team!
                             parameters = ["action":"follow", "target": self.userName, "me": "aquaint"]
-                            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+                            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
                                 if resultTask.error != nil
                                 {
                                     print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -405,7 +405,7 @@ class SignUpVerificationController: ViewControllerPannable {
                           
                             // Generate scan code for user
                             parameters = ["action":"createScanCodeForUser", "target": self.userName]
-                            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+                            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
                               if resultTask.error != nil {
                                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
                               }
@@ -438,7 +438,7 @@ class SignUpVerificationController: ViewControllerPannable {
 //                            accountData.setValue(["austinvaday","avtheman"], forKey: "instagram")
 //                            dynamoDBUser.accounts = accountData
                             
-                            self.dynamoDBObjectMapper.save(dynamoDBUser).continue({ (resultTask) -> AnyObject? in
+                            self.dynamoDBObjectMapper.save(dynamoDBUser).continueWith(block: { (resultTask) -> AnyObject? in
                                 
                                 // If successful save
                                 if (resultTask.error == nil)

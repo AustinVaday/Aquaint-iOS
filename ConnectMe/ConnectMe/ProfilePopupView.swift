@@ -64,7 +64,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         var lambdaInvoker = AWSLambdaInvoker.default()
         var parameters = ["action":"doIFollow", "me": self.me, "target": username]
       
-        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
           if resultTask.error == nil && resultTask.result != nil
           {
             
@@ -78,7 +78,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             
             
             parameters = ["action":"didISendFollowRequest", "me": self.me, "target": username]
-            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
               if resultTask.error == nil && resultTask.result != nil {
                 let didISendRequest = resultTask.result as? Int
                 if didISendRequest == 1 {
@@ -172,7 +172,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         // Fetch num followers from lambda
         lambdaInvoker = AWSLambdaInvoker.default()
         parameters = ["action":"getNumFollowers", "target": username]
-        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
             if resultTask.error == nil && resultTask.result != nil
             {
                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
@@ -189,7 +189,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         
         // Fetch num followees from lambda
         parameters = ["action":"getNumFollowees", "target": username]
-        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
             if resultTask.error == nil && resultTask.result != nil
             {
                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
@@ -227,8 +227,8 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             let lambdaInvoker = AWSLambdaInvoker.default()
             let parameters = ["action": targetAction, "target": otherUserName!, "me": currentUserName]
             
-            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue({ (resultTask) -> AnyObject? in
-                
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith(block: { (resultTask) -> AnyObject? in
+              
                 if resultTask.error != nil
                 {
                     print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -284,7 +284,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         let lambdaInvoker = AWSLambdaInvoker.default()
         let parameters = ["action": targetAction, "target": otherUserName!, "me": currentUserName]
 
-        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue({ (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith(block: { (resultTask) -> AnyObject? in
 
         if resultTask.error != nil
         {

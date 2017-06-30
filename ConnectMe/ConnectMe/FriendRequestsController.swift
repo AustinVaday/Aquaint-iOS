@@ -29,7 +29,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
     
     var userName : String!
     var userId   : String!
-    var firebaseRootRef : FIRDatabaseReference!
+//    var firebaseRootRef : FIRDatabaseReference!
     var defaultImage : UIImage!
     
     let awsBucketName = "aquaint-userimages"

@@ -53,7 +53,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     
     connectionList = Array<Connection>()
     
-    defaultImage = UIImage(imageLiteral: "Person Icon Black")
+    defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
     
     
     // Fill the dictionary of all social media names (key) with an image (val).
@@ -225,15 +225,10 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     let lambdaInvoker = AWSLambdaInvoker.default()
     let parameters = ["action": lambdaAction, "target": currentUserName, "start": start, "end": end] as [String : Any]
     
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-      }
-      else if resultTask.exception != nil
-      {
-        print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-        
       }
       else if resultTask.result != nil
       {
@@ -272,8 +267,8 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
         for userData in connectionsFetchedList
         {
           let con = Connection()
-          con.userName = userData.object(at: 0) as! String
-          con.timestampGMT = userData.object(at: 1) as! Int
+          con.userName = (userData as AnyObject).object(at: 0) as! String
+          con.timestampGMT = (userData as AnyObject).object(at: 1) as! Int
           
           newConnectionList.append(con)
         }

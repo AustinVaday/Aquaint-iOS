@@ -77,7 +77,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     let hashKeyMetric = targetMetric
     
-    dynamoDBObjectMapper.load(Leaderboard.self, hashKey: hashKeyMetric, rangeKey: nil).continue({ (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.load(Leaderboard.self, hashKey: hashKeyMetric, rangeKey: nil).continueWith(block: { (resultTask) -> AnyObject? in
       
       if (resultTask.error != nil || resultTask.exception != nil || resultTask.result == nil) {
         return nil
@@ -189,14 +189,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     // WARM UP lambda for simplesearch function call. Speeds up initial search significantly 
     let lambdaInvoker = AWSLambdaInvoker.default()
     var parameters = ["action":"simplesearch", "target": "a", "start": 0, "end": 5] as [String : Any]
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (result) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (result) -> AnyObject? in
       return nil
     }
     
     userName = getCurrentCachedUser()
     
     parameters = ["action":"getFolloweesDict", "target": userName]
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -224,7 +224,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     parameters = ["action":"getFolloweeRequestsDict", "target": userName]
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -306,8 +306,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
             
             // Get dynamo mapper if it exists
-            dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: self.userName, rangeKey: nil).continue({ (resultTask) -> AnyObject? in
-                
+            dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: self.userName, rangeKey: nil).continueWith(block: { (resultTask) -> AnyObject? in
+              
                 var newsfeedObjectMapper : NewsfeedEventListObjectModel!
 
                 // If successfull find, use that data
@@ -357,7 +357,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                     
                 }
                 
-                dynamoDBObjectMapper.save(newsfeedObjectMapper).continue { (resultTask) -> AnyObject? in
+                dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWith { (resultTask) -> AnyObject? in
                     print("DynamoObjectMapper sucessful save for newsfeedObject #1")
                     
                     return nil
@@ -377,8 +377,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 
                 // Get dynamo mapper if it exists
-                dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: user, rangeKey: nil).continue({ (resultTask) -> AnyObject? in
-                    
+                dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: user, rangeKey: nil).continueWith(block: { (resultTask) -> AnyObject? in
+                  
                     var newsfeedObjectMapper : NewsfeedEventListObjectModel!
                     
                     // If successfull find, use that data
@@ -400,7 +400,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                     let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollower", "other":  otherUsersArray, "time" : timestamp] )
                     newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
                     
-                    dynamoDBObjectMapper.save(newsfeedObjectMapper).continue { (resultTask) -> AnyObject? in
+                    dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWith { (resultTask) -> AnyObject? in
                         print("DynamoObjectMapper sucessful save for newsfeedObject #2")
                         
                         return nil
@@ -705,7 +705,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         let lambdaInvoker = AWSLambdaInvoker.default()
         let parameters = ["action":"simplesearch", "target": searchText, "start": start, "end": end] as [String : Any]
-        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
             if resultTask.error != nil
             {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -1143,7 +1143,7 @@ extension SearchViewController {
     scanInput?.limit = 200
     scanInput?.exclusiveStartKey = nil
     
-    dynamoDB.scan(scanInput!).continue { (resultTask) -> AnyObject? in
+    dynamoDB.scan(scanInput!).continueWith { (resultTask) -> AnyObject? in
       if resultTask.result != nil && resultTask.error == nil
       {
         print("DB QUERY SUCCESS:", resultTask.result)

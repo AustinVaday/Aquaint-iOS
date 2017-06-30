@@ -490,7 +490,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
         print("Fetching data for ", daysAgo, " days ago...")
         // Get engagement info
         parameters = ["action":"getUserSinglePayViewsForDay", "target": currentUserName, "days_ago": daysAgo]
-        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
           if resultTask.error == nil && resultTask.result != nil
           {
             print("Result task for getUserSinglePayViewsForDay is: ", resultTask.result!)
@@ -558,7 +558,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
           runningRequests = runningRequests + 1
           // Get engagement info
           parameters = ["action":"getUserSingleEngagements", "target": currentUserName, "social_platform": platform]
-          lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+          lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
             if resultTask.error == nil && resultTask.result != nil
             {
               print("Result task for getUserSingleEngagements is: ", resultTask.result!)
@@ -613,7 +613,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     // Get location info
     parameters = ["action":"getUserPageViewsLocations", "target": currentUserName, "max_results": 15]
     
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil
       {
         print("Result task for getUserPageViewsLocations is: ", resultTask.result!)

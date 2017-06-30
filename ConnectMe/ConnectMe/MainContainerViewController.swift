@@ -34,7 +34,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     @IBOutlet weak var noInternetBanner: UIView!
     
     var connectionRequestList : Array<String>! // MAKE IT Connection type LATER
-    var firebaseRootRef : FIRDatabaseReference!
+//    var firebaseRootRef : FIRDatabaseReference!
     var userName : String!
     var reachability: Reachability!
     var arrivedFromWalkthrough = false
@@ -78,8 +78,8 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
 //      }
       let lambdaInnvoker = AWSLambdaInvoker.default()
       let parameters = ["action": "verifyAppleReceipt", "target": userName, "receipt_json": receiptData] as [String : Any]
-      lambdaInnvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith({
-        (resultTask) -> AnyObject? in
+      lambdaInnvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith(block:
+        { (resultTask) -> AnyObject? in
         if resultTask.error == nil && resultTask.result != nil {
           print("Result task for verifyAppleReceipt is: ", resultTask.result!)
         } else {

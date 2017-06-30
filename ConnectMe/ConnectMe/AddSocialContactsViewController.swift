@@ -43,11 +43,11 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
     recentUsernameAdds = NSMutableDictionary()
 
     userName = getCurrentCachedUser()
-    defaultImage = UIImage(imageLiteral: "Person Icon Black")
+    defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
     
     let lambdaInvoker = AWSLambdaInvoker.default()
     var parameters = ["action":"getFolloweesDict", "target": userName]
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.result != nil && resultTask.error == nil
       {
         self.followeesMapping = resultTask.result! as! [String: Int]
@@ -58,7 +58,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
     }
     
     parameters = ["action":"getFolloweeRequestsDict", "target": userName]
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.result != nil && resultTask.error == nil
       {
         self.followeeRequestsMapping = resultTask.result! as! [String: Int]
@@ -109,7 +109,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
       let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
       
       // Get dynamo mapper if it exists
-      dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: self.userName, rangeKey: nil).continue({ (resultTask) -> AnyObject? in
+      dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: self.userName, rangeKey: nil).continueWith(block: { (resultTask) -> AnyObject? in
         
         var newsfeedObjectMapper : NewsfeedEventListObjectModel!
         
@@ -160,7 +160,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
           
         }
         
-        dynamoDBObjectMapper.save(newsfeedObjectMapper).continue { (resultTask) -> AnyObject? in
+        dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWith { (resultTask) -> AnyObject? in
           print("DynamoObjectMapper sucessful save for newsfeedObject #1")
           
           return nil
@@ -180,7 +180,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
         
         
         // Get dynamo mapper if it exists
-        dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: user, rangeKey: nil).continue({ (resultTask) -> AnyObject? in
+        dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: user, rangeKey: nil).continueWith({ (resultTask) -> AnyObject? in
           
           var newsfeedObjectMapper : NewsfeedEventListObjectModel!
           
@@ -203,7 +203,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
           let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollower", "other":  otherUsersArray, "time" : timestamp] )
           newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
           
-          dynamoDBObjectMapper.save(newsfeedObjectMapper).continue { (resultTask) -> AnyObject? in
+          dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWith { (resultTask) -> AnyObject? in
             print("DynamoObjectMapper sucessful save for newsfeedObject #2")
             
             return nil
@@ -458,7 +458,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
     scanInput?.filterExpression = "fbuid = :val"
     
     
-    dynamoDB.scan(scanInput!).continue { (resultTask) -> AnyObject? in
+    dynamoDB.scan(scanInput!).continueWith { (resultTask) -> AnyObject? in
       print("SCAN FOR UID ", fbUID)
       if resultTask.result != nil && resultTask.error == nil
       {

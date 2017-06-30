@@ -18,11 +18,11 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     var currentUserName : String!
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
-    var firebaseRootRef : FIRDatabaseReference!
-    var firebaseUsersRef: FIRDatabaseReference!
-    var firebaseLinkedAccountsRef: FIRDatabaseReference!
-    var firebaseConnectionsRef: FIRDatabaseReference!
-    var firebaseUserImagesRef: FIRDatabaseReference!
+//    var firebaseRootRef : FIRDatabaseReference!
+//    var firebaseUsersRef: FIRDatabaseReference!
+//    var firebaseLinkedAccountsRef: FIRDatabaseReference!
+//    var firebaseConnectionsRef: FIRDatabaseReference!
+//    var firebaseUserImagesRef: FIRDatabaseReference!
     var refreshControl : CustomRefreshControl!
     var connectionList : Array<Connection>!
     var defaultImage : UIImage!
@@ -36,16 +36,18 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         currentUserName = getCurrentCachedUser()
         
         // Firebase root, our data is stored here
+        /*
         firebaseRootRef = FIRDatabase.database().reference()
         firebaseUsersRef = firebaseRootRef.child("Users/")
         firebaseUserImagesRef = firebaseRootRef.child("UserImages/")
         firebaseLinkedAccountsRef = firebaseRootRef.child("LinkedSocialMediaAccounts/")
         firebaseConnectionsRef = firebaseRootRef.child("Connections/" + currentUserName)
-        
+        */
+      
         connectionList = Array<Connection>()
         expansionObj = CellExpansion()
         
-        defaultImage = UIImage(imageLiteral: "Person Icon Black")
+        defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
         
         //TEMP : USED TO MAKE WEBSITE IMAGES
         // ---------------------------------
@@ -53,14 +55,14 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         var connection = Connection()
         connection.timestampGMT = 1462085382
         connection.userFullName = "Jane Stevens"
-        connection.userImage = UIImage(imageLiteral: "1")
+        connection.userImage = UIImage(imageLiteralResourceName: "1")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
         connection = Connection()
         connection.timestampGMT = 1462085372
         connection.userFullName = "Cooper Elisha"
-        connection.userImage = UIImage(imageLiteral: "9")
+        connection.userImage = UIImage(imageLiteralResourceName: "9")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -68,7 +70,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         connection = Connection()
         connection.timestampGMT = 1462084282
         connection.userFullName = "Aaron Konani"
-        connection.userImage = UIImage(imageLiteral: "10")
+        connection.userImage = UIImage(imageLiteralResourceName: "10")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -76,7 +78,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
           connection = Connection()
         connection.timestampGMT = 1462082382
         connection.userFullName = "Hoyt Tim"
-        connection.userImage = UIImage(imageLiteral: "11")
+        connection.userImage = UIImage(imageLiteralResourceName: "11")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -84,7 +86,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
           connection = Connection()
         connection.timestampGMT = 1462075382
         connection.userFullName = "Mathis Antonio"
-        connection.userImage = UIImage(imageLiteral: "14")
+        connection.userImage = UIImage(imageLiteralResourceName: "14")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -92,7 +94,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
           connection = Connection()
         connection.timestampGMT = 1462025382
         connection.userFullName = "Sophos Hudde"
-        connection.userImage = UIImage(imageLiteral: "3")
+        connection.userImage = UIImage(imageLiteralResourceName: "3")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -100,7 +102,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
           connection = Connection()
         connection.timestampGMT = 1462025381
         connection.userFullName = "Juliana Olivia"
-        connection.userImage = UIImage(imageLiteral: "2")
+        connection.userImage = UIImage(imageLiteralResourceName: "2")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -108,7 +110,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
           connection = Connection()
         connection.timestampGMT = 1462025381
         connection.userFullName = "Tamara Ava"
-        connection.userImage = UIImage(imageLiteral: "5")
+        connection.userImage = UIImage(imageLiteralResourceName: "5")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         

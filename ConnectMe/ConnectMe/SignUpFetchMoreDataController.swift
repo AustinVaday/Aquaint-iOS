@@ -235,7 +235,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
         
 
         // Remember, AWSTask is ASYNCHRONOUS.
-        pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email!, phone!], validationData: nil).continue { (resultTask) -> AnyObject? in
+        pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email!, phone!], validationData: nil).continueWith { (resultTask) -> AnyObject? in
 
         
             // If sign up performed successfully.
@@ -282,7 +282,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                 if (attemptedUserName != nil && attemptedUserName == self.userName.text)
                 {
                     //Proceed only if user is not confirmed
-                    if (self.pool.getUser(attemptedUserName).confirmedStatus.rawValue == 0)
+                    if (self.pool.getUser(attemptedUserName!).confirmedStatus.rawValue == 0)
                     {
                         // Perform update on UI on main thread
                         DispatchQueue.main.async(execute: { () -> Void in
@@ -415,12 +415,12 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
       
       
       // Remember, AWSTask is ASYNCHRONOUS.
-      pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email!], validationData: nil).continue { (resultTask) -> AnyObject? in
+      pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email!], validationData: nil).continueWith { (resultTask) -> AnyObject? in
 
         // If sign up performed successfully.
         if (resultTask.error == nil)
         {
-           self.pool.getUser(userNameString).getSession(lowerCaseUserNameString, password: userPasswordString, validationData: nil, scopes: nil).continue({ (sessionResultTask) -> AnyObject? in
+          self.pool.getUser(userNameString).getSession(lowerCaseUserNameString, password: userPasswordString, validationData: nil, scopes: nil).continueWith(block: { (sessionResultTask) -> AnyObject? in
             
             setCurrentCachedUserName(lowerCaseUserNameString)
             setCurrentCachedFullName(self.userFullName)
@@ -481,7 +481,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
             // Store username and user realname
             let lambdaInvoker = AWSLambdaInvoker.default()
             var parameters = ["action":"adduser", "target": lowerCaseUserNameString, "realname": self.userFullName]
-            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
               if resultTask.error != nil
               {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -509,7 +509,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
             
             // Have user automatically follow and be followed by Aquaint Team!
             parameters = ["action":"follow", "target": lowerCaseUserNameString, "me": "aquaint"]
-            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
               if resultTask.error != nil
               {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -536,7 +536,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
             
             // Generate scan code for user
             parameters = ["action":"createScanCodeForUser", "target": lowerCaseUserNameString]
-            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
               if resultTask.error != nil {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
               }
@@ -564,7 +564,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
             dynamoDBUser.username = lowerCaseUserNameString
             
             
-            self.dynamoDBObjectMapper.save(dynamoDBUser).continue({ (resultTask) -> AnyObject? in
+            self.dynamoDBObjectMapper.save(dynamoDBUser).continueWith({ (resultTask) -> AnyObject? in
               
               // If successful save
               if (resultTask.error == nil)

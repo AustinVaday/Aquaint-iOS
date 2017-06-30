@@ -903,7 +903,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
       dynamoDBUser?.realname = currentRealName
       dynamoDBUser?.accounts = currentAccounts
 
-      dynamoDBObjectMapper.save(dynamoDBUser!).continue(
+      dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(
         { (resultTask) -> AnyObject? in
           if (resultTask.error != nil) {
             print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
