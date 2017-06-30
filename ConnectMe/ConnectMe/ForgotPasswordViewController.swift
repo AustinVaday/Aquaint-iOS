@@ -402,10 +402,10 @@ class ForgotPasswordViewController: ViewControllerPannable {
                                              subTitle: "",
                                              duration:0.0,
                                              completeText: "Cancel",
-                                             style: .Success,
+                                             style: .success,
                                              colorStyle: 0x0F7A9D,
                                              colorTextButton: 0xFFFFFF,
-                                             animationStyle: .BottomToTop
+                                             animationStyle: .bottomToTop
     )
   }
   

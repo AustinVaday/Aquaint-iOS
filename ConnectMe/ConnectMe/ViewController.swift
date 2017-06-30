@@ -59,7 +59,7 @@ class ViewController: UIViewController {
             identityProviderManager: provider)
           
           let configuration = AWSServiceConfiguration(
-            region: AWSRegionType.usEast1,
+            region: AWSRegionType.USEast1,
             credentialsProvider: credentialsProvider
           )
           
@@ -89,7 +89,7 @@ class ViewController: UIViewController {
           delay(2) {
           // Get user-specific data including name, email, and ID.
           let request = FBSDKGraphRequest(graphPath: "/me?locale=en_US&fields=name,email", parameters: nil)
-          request.start { (connection, result, error) in
+          request?.start { (connection, result, error) in
             if error == nil {
               print("Result is FB!!: ", result)
               let resultMap = result as! Dictionary<String, String>
@@ -104,17 +104,17 @@ class ViewController: UIViewController {
               // If we don't have a user -> create one
               let dynamoDB = AWSDynamoDB.default()
               let scanInput = AWSDynamoDBScanInput()
-              scanInput.tableName = "aquaint-users"
-              scanInput.limit = 100
-              scanInput.exclusiveStartKey = nil
+              scanInput?.tableName = "aquaint-users"
+              scanInput?.limit = 100
+              scanInput?.exclusiveStartKey = nil
               
               let UIDValue = AWSDynamoDBAttributeValue()
-              UIDValue.s = fbUID
+              UIDValue?.s = fbUID
               
-              scanInput.expressionAttributeValues = [":val" : UIDValue]
-              scanInput.filterExpression = "fbuid = :val"
+              scanInput?.expressionAttributeValues = [":val" : UIDValue!]
+              scanInput?.filterExpression = "fbuid = :val"
               
-              dynamoDB.scan(scanInput).continueWith { (resultTask) -> AnyObject? in
+              dynamoDB.scan(scanInput!).continueWith { (resultTask) -> AnyObject? in
                 if resultTask.result != nil && resultTask.error == nil
                 {
                   print("DB QUERY SUCCESS:", resultTask.result)

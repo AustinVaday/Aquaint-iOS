@@ -429,16 +429,16 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                         
                         var getImageAndProfilesForUser : String!
                         
-                        newAquaintsNewsfeed[index].event = entry.value(forKey: "event")! as! String
-                        newAquaintsNewsfeed[index].timestamp = entry.value(forKey: "time")! as! Int
+                        newAquaintsNewsfeed[index].event = (entry as AnyObject).value(forKey: "event")! as! String
+                        newAquaintsNewsfeed[index].timestamp = (entry as AnyObject).value(forKey: "time")! as! Int
                         
                         switch newAquaintsNewsfeed[index].event
                         {
                         // If someone I follow starts following another person
                         case "newfollowing":
                             
-                            newAquaintsNewsfeed[index].user = entry.value(forKey: "user")! as! String
-                            newAquaintsNewsfeed[index].other = NSArray(array: entry.value(forKey: "other") as! NSArray)
+                            newAquaintsNewsfeed[index].user = (entry as AnyObject).value(forKey: "user")! as! String
+                            newAquaintsNewsfeed[index].other = NSArray(array: (entry as AnyObject).value(forKey: "other") as! NSArray)
                             let otherUser = newAquaintsNewsfeed[index].other[0] as! String
                             
                             newAquaintsNewsfeed[index].textString = newAquaintsNewsfeed[index].user +  " started following " + otherUser + ".  "
@@ -451,8 +451,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                         // If someone I follow has a new follower
                         case "newfollower":
                             
-                            newAquaintsNewsfeed[index].user = entry.value(forKey: "user")! as! String
-                            newAquaintsNewsfeed[index].other = NSArray(array: entry.value(forKey: "other") as! NSArray)
+                            newAquaintsNewsfeed[index].user = (entry as AnyObject).value(forKey: "user")! as! String
+                            newAquaintsNewsfeed[index].other = NSArray(array: (entry as AnyObject).value(forKey: "other") as! NSArray)
                             let otherUser = newAquaintsNewsfeed[index].other[0] as! String
                             
                             // Note: Extra characters needed at end to fix weird bug where hyperlink would extend as a 'ghost link' near the end
@@ -467,8 +467,8 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                         // If a friend adds in a new profile
                         case "newprofile":
                             
-                            newAquaintsNewsfeed[index].user = entry.value(forKey: "user")! as! String
-                            let profileData = NSArray(array: entry.value(forKey: "other") as! NSArray)
+                            newAquaintsNewsfeed[index].user = (entry as AnyObject).value(forKey: "user")! as! String
+                            let profileData = NSArray(array: (entry as AnyObject).value(forKey: "other") as! NSArray)
                             
                             newAquaintsNewsfeed[index].socialMediaType = profileData[0] as! String // Social platform name (i.e. facebook)
                             newAquaintsNewsfeed[index].socialMediaName = profileData[1] as! String // User's username on the platform

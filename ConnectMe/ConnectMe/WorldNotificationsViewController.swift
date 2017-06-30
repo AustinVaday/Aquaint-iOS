@@ -371,7 +371,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         urlString = ""
         altString = ""
         
-        switch (socialMediaName)
+        switch (socialMediaName!)
         {
         case "facebook":
             

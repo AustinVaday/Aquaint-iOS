@@ -19,15 +19,16 @@ class RequestsTableViewCell: UITableViewCell {
     @IBOutlet weak var cellUserName: UILabel!
     
     var currentUser : String!
-    var firebaseRootRef: FIRDatabaseReference!
-    let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
+    //var firebaseRootRef: FIRDatabaseReference!
+    //let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
     @IBAction func onAddButtonClicked(_ sender: UIButton) {
         
         // Get your user name. Get your connection's user name
         let currentUser = getCurrentCachedUser()
         let connectedUserToAdd = cellUserName.text!
-        
+      
+       /*
         firebaseRootRef = FIRDatabase.database().reference()
         
         // Remove relationship in ReceivedRequests
@@ -63,7 +64,7 @@ class RequestsTableViewCell: UITableViewCell {
 
         // Add friend info to connectionUserToAdd's database info
         firebaseConnectionsRef.child(connectedUserToAdd + "/" + currentUser).setValue(connectionTime)
-        
+        */
     }
     
     
@@ -75,7 +76,7 @@ class RequestsTableViewCell: UITableViewCell {
         let currentUser = getCurrentCachedUser()
         let connectedUserToAdd = cellUserName.text!
         
-        
+        /*
         // Remove relationship in ReceivedRequests
         let firebaseReceivedRequestsRef = firebaseRootRef.child("ReceivedRequests/" + currentUser + "/" + connectedUserToAdd)
         
@@ -98,7 +99,7 @@ class RequestsTableViewCell: UITableViewCell {
         }
         
         // That's it
-        
+        */
         
         
     }

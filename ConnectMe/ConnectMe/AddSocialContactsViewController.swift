@@ -114,7 +114,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
         var newsfeedObjectMapper : NewsfeedEventListObjectModel!
         
         // If successfull find, use that data
-        if (resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil)
+        if (resultTask.error == nil && resultTask.result != nil)
         {
           newsfeedObjectMapper = resultTask.result as! NewsfeedEventListObjectModel
         }
@@ -180,12 +180,12 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
         
         
         // Get dynamo mapper if it exists
-        dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: user, rangeKey: nil).continueWith({ (resultTask) -> AnyObject? in
+        dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: user, rangeKey: nil).continueWith(block: { (resultTask) -> AnyObject? in
           
           var newsfeedObjectMapper : NewsfeedEventListObjectModel!
           
           // If successfull find, use that data
-          if (resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil)
+          if (resultTask.error == nil && resultTask.result != nil)
           {
             newsfeedObjectMapper = resultTask.result as! NewsfeedEventListObjectModel
           }
@@ -468,21 +468,21 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
           print("RESULT for UID ", fbUID, " IS: ", result)
           
           let user = UserPrivacyObjectModel()
-          user.realname = (result["realname"]?.s)! as String
-          user.username = (result["username"]?.s)! as String
+          user?.realname = (result["realname"]?.s)! as String
+          user?.username = (result["username"]?.s)! as String
           if result["isprivate"] != nil {
             let isprivateString = (result["isprivate"]?.n)! as String
-            user.isprivate = Int(isprivateString)! as NSNumber
+            user?.isprivate = Int(isprivateString)! as NSNumber
           }
           
-          self.users.append(user)
+          self.users.append(user!)
 
-          getUserS3Image(user.username, extraPath: nil, completion: { (result, error) in
+          getUserS3Image(user?.username, extraPath: nil, completion: { (result, error) in
             
             if (result != nil)
             {
               // Cache user image so we don't have to reload it next time
-              self.imageCache.setObject(result! as UIImage, forKey: user.username)
+              self.imageCache.setObject(result! as UIImage, forKey: user!.username as AnyObject)
               DispatchQueue.main.async(execute: {
                 self.friendsTableView.reloadData()
               })

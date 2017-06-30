@@ -431,7 +431,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       // Perform the request, go to external application and let the user do whatever they want!
       if socialMediaURL != nil
       {
-        UIApplication.shared.openURL(socialMediaURL)
+        UIApplication.shared.openURL(socialMediaURL!)
       }
     }
   }
@@ -790,7 +790,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   
     cell?.sectionTitle.text = sectionTitle
     
-    switch sectionTitle {
+    switch sectionTitle! {
     case LINKED_PROFILES_TITLE:
       cell?.editView.isHidden = false
       if (enableEditingArray[MenuData.linked_PROFILES.rawValue]) {
@@ -1206,11 +1206,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
       }
-      else if resultTask.exception != nil
-      {
-        print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-        
-      }
       else if resultTask.result != nil
       {
         print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
@@ -1234,15 +1229,10 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // Fetch num followees from lambda
     parameters = ["action":"getNumFollowees", "target": currentUserName]
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-      }
-      else if resultTask.exception != nil
-      {
-        print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-        
       }
       else if resultTask.result != nil
       {
@@ -1309,11 +1299,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         print ("DYNAMODB MODIFY PROFILE ERROR: ", resultTask.error)
       }
       
-      if (resultTask.exception != nil)
-      {
-        print ("DYNAMODB MODIFY PROFILE EXCEPTION: ", resultTask.exception)
-      }
-      
       if (resultTask.result == nil)
       {
         print ("DYNAMODB MODIFY PROFILE result is nil....: ")
@@ -1358,15 +1343,16 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Add target to text field to validate/fix user input of a proper input
     //        textField.addTarget(self, action: #selector(usernameTextFieldDidChange), forControlEvents: UIControlEvents.EditingChanged)
     subview.addSubview(textField)
-    //
+    // NOTE: for function calls skipping parameters with default values in Swift 3, arguments must be passed in order
     let alertAppearance = SCLAlertView.SCLAppearance(
-      showCircularIcon: true,
-      kCircleIconHeight: 40,
       kCircleHeight: 55,
+      kCircleIconHeight: 40,
+      showCircularIcon: true,
       shouldAutoDismiss: false,
       hideWhenBackgroundViewIsTapped: true
       
     )
+    
     
     let alertView = SCLAlertView(appearance: alertAppearance)
     
@@ -1377,7 +1363,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       if alertViewResponder == nil
       {
         print("Something went wrong...")
-        completion(result: nil)
+        completion(nil)
       }
       
       let code = textField.text!
@@ -1390,7 +1376,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       {
         //TODO: Notify that username is too long
         alertViewResponder.close()
-        completion(result: nil)
+        completion(nil)
         
         
         // Reset userpools to old phone number
@@ -1399,7 +1385,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       {
         print("SUCCESS RESULT:", code)
         alertViewResponder.close()
-        completion(result: code)
+        completion(code)
         // Update userpools with verification
       }
       
@@ -1412,11 +1398,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                                              subTitle: "",
                                              duration:0.0,
                                              completeText: "Cancel",
-                                             style: .Success,
+                                             style: .success,
                                              colorStyle: 0x0F7A9D,
                                              colorTextButton: 0xFFFFFF,
                                              circleIconImage: alertViewIcon,
-                                             animationStyle: .BottomToTop
+                                             animationStyle: .bottomToTop
     )
     
   }
@@ -1579,11 +1565,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
           if (resultTask.error != nil)
           {
             print ("DYNAMODB ERROR: ", resultTask.error)
-          }
-          
-          if (resultTask.exception != nil)
-          {
-            print ("DYNAMODB EXCEPTION: ", resultTask.exception)
           }
           
           return nil
@@ -1797,11 +1778,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             print ("DYNAMODB ERROR: ", resultTask.error)
           }
           
-          if (resultTask.exception != nil)
-          {
-            print ("DYNAMODB EXCEPTION: ", resultTask.exception)
-          }
-          
           return nil
         })
         
@@ -1812,11 +1788,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
           if resultTask.error != nil
           {
             print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-          }
-          else if resultTask.exception != nil
-          {
-            print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-            
           }
           else if resultTask.result != nil
           {

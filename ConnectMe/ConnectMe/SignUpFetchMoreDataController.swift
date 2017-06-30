@@ -341,7 +341,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                         // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
                         if (self.presentedViewController == nil)
                         {
-                            let error = (resultTask.error?.userInfo["__type"])! as! String
+                            let error = (resultTask.error?._userInfo?["__type"])! as! String
                             
                             if (error == "UsernameExistsException")
                             {
@@ -349,7 +349,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                             }
                             else
                             {
-                                showAlert("Error signing up", message: (resultTask.error?.userInfo["message"])! as! String, buttonTitle: "Try again", sender: self)
+                                showAlert("Error signing up", message: (resultTask.error?._userInfo?["message"])! as! String, buttonTitle: "Try again", sender: self)
 
                             }
                             
@@ -623,7 +623,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
           if (attemptedUserName != nil && attemptedUserName == self.userName.text)
           {
             //Proceed only if user is not confirmed
-            if (self.pool.getUser(attemptedUserName).confirmedStatus.rawValue == 0)
+            if (self.pool.getUser(attemptedUserName!).confirmedStatus.rawValue == 0)
             {
               // Perform update on UI on main thread
               DispatchQueue.main.async(execute: { () -> Void in
@@ -682,7 +682,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
               // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
               if (self.presentedViewController == nil)
               {
-                let error = (resultTask.error?.userInfo["__type"])! as! String
+                let error = (resultTask.error?._userInfo?["__type"])! as! String
                 
                 if (error == "UsernameExistsException")
                 {
@@ -690,7 +690,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                 }
                 else
                 {
-                  showAlert("Error signing up", message: (resultTask.error?.userInfo["message"])! as! String, buttonTitle: "Try again", sender: self)
+                  showAlert("Error signing up", message: (resultTask.error?._userInfo?["message"])! as! String, buttonTitle: "Try again", sender: self)
                   
                 }
                 

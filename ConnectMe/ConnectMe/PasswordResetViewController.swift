@@ -190,7 +190,7 @@ class PasswordResetViewController: ViewControllerPannable {
         let currentUser = getCurrentCachedUser()
         
         pool.getUser(currentUser!).changePassword(oldPasswordString, proposedPassword: newPasswordString).continueWith { (resultTask) -> AnyObject? in
-            if resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil
+            if resultTask.error == nil && resultTask.result != nil
             {
                 // Show the special checkmark animation
                 // Perform update on UI on main thread

@@ -79,7 +79,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     dynamoDBObjectMapper.load(Leaderboard.self, hashKey: hashKeyMetric, rangeKey: nil).continueWith(block: { (resultTask) -> AnyObject? in
       
-      if (resultTask.error != nil || resultTask.exception != nil || resultTask.result == nil) {
+      if (resultTask.error != nil || resultTask.result == nil) {
         return nil
       }
       
@@ -136,7 +136,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
   // fetch all profile images of users on the leaderboard
   func getLeaderboardUserImages() {
     
-    let defaultImage = UIImage(imageLiteral: "Person Icon Black")
+    let defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
     // Whenever we get ONE user profile image, we refresh data in CollectionView for seemingly faster performance
     
     for (_,list) in metricLists {
@@ -201,11 +201,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
       }
-      else if resultTask.exception != nil
-      {
-        print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-        
-      }
       else if resultTask.result != nil
       {
         
@@ -228,11 +223,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-      }
-      else if resultTask.exception != nil
-      {
-        print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-        
       }
       else if resultTask.result != nil
       {
@@ -265,7 +255,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         configureCustomSearchController()
         
         userName = getCurrentCachedUser()
-        defaultImage = UIImage(imageLiteral: "Person Icon Black")
+        defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
       
       // Leaderboard
 //      retrieveLeaderboardDynamoDB(leaderboardType.MOST_FOLLOWERS)
@@ -311,7 +301,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 var newsfeedObjectMapper : NewsfeedEventListObjectModel!
 
                 // If successfull find, use that data
-                if (resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil)
+                if (resultTask.error == nil && resultTask.result != nil)
                 {
                     newsfeedObjectMapper = resultTask.result as! NewsfeedEventListObjectModel
                 }
@@ -382,7 +372,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                     var newsfeedObjectMapper : NewsfeedEventListObjectModel!
                     
                     // If successfull find, use that data
-                    if (resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil)
+                    if (resultTask.error == nil && resultTask.result != nil)
                     {
                         newsfeedObjectMapper = resultTask.result as! NewsfeedEventListObjectModel
                     }
@@ -710,11 +700,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
             }
-            else if resultTask.exception != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                
-            }
             else if resultTask.result != nil
             {
                 
@@ -801,7 +786,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                                 if (result != nil)
                                 {
                                     // Cache user image so we don't have to reload it next time
-                                    self.imageCache.setObject(result! as UIImage, forKey: searchUser)
+                                    self.imageCache.setObject(result! as UIImage, forKey: searchUser as AnyObject)
                                   
                                     DispatchQueue.main.async(execute: { 
                                       self.searchTableView.reloadData()

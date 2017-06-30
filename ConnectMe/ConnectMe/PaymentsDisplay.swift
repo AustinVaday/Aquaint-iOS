@@ -224,9 +224,9 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
     subview.addSubview(textField)
     //
     let alertAppearance = SCLAlertView.SCLAppearance(
-      showCircularIcon: true,
-      kCircleIconHeight: 40,
       kCircleHeight: 55,
+      kCircleIconHeight: 40,
+      showCircularIcon: true,
       shouldAutoDismiss: false,
       hideWhenBackgroundViewIsTapped: true
       
@@ -241,7 +241,7 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
       if alertViewResponder == nil
       {
         print("Something went wrong...")
-        completion(result: nil)
+        completion(nil)
       }
       
       let code = textField.text!
@@ -254,7 +254,7 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
       {
         print("SUCCESS RESULT:", code)
         alertViewResponder.close()
-        completion(result: code)
+        completion(code)
         // Update userpools with verification
       }
       
@@ -267,11 +267,11 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
                                              subTitle: "",
                                              duration:0.0,
                                              completeText: "Cancel",
-                                             style: .Success,
+                                             style: .success,
                                              colorStyle: 0x0F7A9D,
                                              colorTextButton: 0xFFFFFF,
                                              circleIconImage: alertViewIcon,
-                                             animationStyle: .BottomToTop
+                                             animationStyle: .bottomToTop
     )
     
   }

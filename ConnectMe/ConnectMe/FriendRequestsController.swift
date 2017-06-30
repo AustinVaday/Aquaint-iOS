@@ -41,7 +41,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
         
         connectionRequestList = Array<Connection>()
         
-        defaultImage = UIImage(imageLiteral: "Person Icon Black")
+        defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
         
 //        // SET UP NOTIFICATIONS
 //        // ----------------------------------------------
@@ -63,7 +63,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
 //        sectionUnderlineView2.hidden = false
         
         
-        firebaseRootRef = FIRDatabase.database().reference()
+        //firebaseRootRef = FIRDatabase.database().reference()
         
         //*** NOTE: This is an extra check for top-notch security. It is not necessary.
         // If we're not logged in, immediately go back to beginning page.
@@ -163,7 +163,8 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
 //        
 //        
         // FOR FILLING THE TABLE:
-        
+      
+        /*
         let firebaseUsersRef = firebaseRootRef.child("Users/")
         let firebaseUserImagesRef = firebaseRootRef.child("UserImages/")
         print (userName)
@@ -227,7 +228,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
                 self.requestsTableView.reloadData()
             
         })
-        
+        */
         
         
     }

@@ -30,7 +30,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 
         connectionList = Array<Connection>()
       
-        defaultImage = UIImage(imageLiteral: "Person Icon Black")
+        defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
 
         
         // Fill the dictionary of all social media names (key) with an image (val).
@@ -186,7 +186,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 
                 DispatchQueue.main.async(execute: {
                     // Generate a UI image for the respective social media type
-                    cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
+                    cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType!]
                     
                     cell.socialMediaType = socialMediaType //i.e. facebook, twitter, ..
                     cell.socialMediaName = socialMediaUserName //i.e. austinvaday, avtheman, ..
@@ -215,7 +215,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Perform the request, go to external application and let the user do whatever they want!
         if socialMediaURL != nil
         {
-            UIApplication.shared.openURL(socialMediaURL)
+            UIApplication.shared.openURL(socialMediaURL!)
         }
     }
     
@@ -231,11 +231,6 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             if resultTask.error != nil
             {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-            }
-            else if resultTask.exception != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                
             }
             else if resultTask.result != nil
             {
@@ -265,8 +260,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 for userData in connectionsFetchedList
                 {
                     let con = Connection()
-                    con.userName = userData.object(at: 0) as! String
-                    con.timestampGMT = userData.object(at: 1) as! Int
+                    con.userName = (userData as AnyObject).object(at: 0) as! String
+                    con.timestampGMT = (userData as AnyObject).object(at: 1) as! Int
                     
                     newConnectionList.append(con)
                 }

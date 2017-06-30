@@ -16,7 +16,11 @@ import FBSDKLoginKit
 import AWSMobileAnalytics
 
 class FacebookProvider: NSObject, AWSIdentityProviderManager {
-  func logins() -> AWSTask<AnyObject> {
+  /**
+   Each entry in logins represents a single login with an identity provider. The key is the domain of the login provider (e.g. 'graph.facebook.com') and the value is the OAuth/OpenId Connect token that results from an authentication with that login provider.
+   */
+
+  func logins() -> AWSTask<NSDictionary> {
     let token = FBSDKAccessToken.current()
     if token != nil {
       return AWSTask(result: [AWSIdentityProviderFacebook:token])
@@ -50,7 +54,7 @@ func fetchAndSetCurrentCachedSubscriptionStatus(_ userName: String, completion: 
     let receiptData: NSString = receipt.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) as NSString
     let lambdaInnvoker = AWSLambdaInvoker.default()
     let parameters = ["action": "subscriptionGetExpiresDate", "target": userName, "receipt_json": receiptData] as [String : Any]
-    lambdaInnvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith({
+    lambdaInnvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith(block: {
       (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil {
         print("Result task for subscriptionGetExpiresDate is: ", resultTask.result!)
@@ -122,10 +126,6 @@ func setCachedUserFromAWS(_ userName: String!)
         {
             print("Error caching user from dynamoDB: ", resultTask.error)
         }
-        else if (resultTask.exception != nil)
-        {
-            print("Exception caching user from dynamoDB: ", resultTask.exception)
-        }
         else if (resultTask.result == nil)
         {
             print("Error caching user from dynamoDB: nil result")
@@ -164,11 +164,11 @@ func setCachedUserFromAWS(_ userName: String!)
     downloadRequest?.downloadingFileURL = downloadingFileURL
     
     let transferManager = AWSS3TransferManager.default()
-    
-    transferManager?.download(downloadRequest).continue(with: AWSExecutor.mainThread(), with: { (resultTask) -> AnyObject? in
+  
+    transferManager.download(downloadRequest!).continueWith(executor: AWSExecutor.mainThread(), block: { (resultTask) -> AnyObject? in
         
         // if sucessful file transfer
-        if resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil
+        if resultTask.error == nil && resultTask.result != nil
         {
             print("CACHE: SUCCESS FILE DOWNLOAD")
             
@@ -262,26 +262,20 @@ func getUserDynamoData(_ userName: String!, completion: @escaping (_ result: Use
         if (resultTask.error != nil)
         {
             print("Error getting user from dynamoDB: ", resultTask.error)
-            completion(result: nil, error: resultTask.error)
-
-        }
-        else if (resultTask.exception != nil)
-        {
-            print("Exception getting user from dynamoDB: ", resultTask.exception)
-            completion(result: nil, error: nil)
+            completion(nil, resultTask.error as! NSError)
 
         }
         else if (resultTask.result == nil)
         {
             print("Error getting user from dynamoDB: nil result")
-            completion(result: nil, error: nil)
+            completion(nil, nil)
 
         }
         else
         {
             let user = resultTask.result as! UserPrivacyObjectModel
             
-            completion(result: user, error: nil)
+            completion(user, nil)
         }
         
         return nil
@@ -301,26 +295,20 @@ func getUserPromoCodeDynamoData(_ userName: String!, completion: @escaping (_ re
     if (resultTask.error != nil)
     {
       print("Error getting user from dynamoDB: ", resultTask.error)
-      completion(result: nil, error: resultTask.error)
-      
-    }
-    else if (resultTask.exception != nil)
-    {
-      print("Exception getting user from dynamoDB: ", resultTask.exception)
-      completion(result: nil, error: nil)
+      completion(nil, resultTask.error as! NSError)
       
     }
     else if (resultTask.result == nil)
     {
       print("Error getting user from dynamoDB: nil result")
-      completion(result: nil, error: nil)
+      completion(nil, nil)
       
     }
     else
     {
       let user = resultTask.result as! UserPromoCodeMinimalObjectModel
       
-      completion(result: user, error: nil)
+      completion(user, nil)
     }
     
     return nil
@@ -340,26 +328,20 @@ func getUserVerifiedData(_ userName: String!, completion: @escaping (_ result: U
     if (resultTask.error != nil)
     {
       print("Error getting user from dynamoDB: ", resultTask.error)
-      completion(result: nil, error: resultTask.error)
-      
-    }
-    else if (resultTask.exception != nil)
-    {
-      print("Exception getting user from dynamoDB: ", resultTask.exception)
-      completion(result: nil, error: nil)
+      completion(nil, resultTask.error as! NSError)
       
     }
     else if (resultTask.result == nil)
     {
       print("Error getting user from dynamoDB: nil result")
-      completion(result: nil, error: nil)
+      completion(nil, nil)
       
     }
     else
     {
       let user = resultTask.result as! UserVerifiedMinimalObjectModel
       
-      completion(result: user, error: nil)
+      completion(user, nil)
     }
     
     return nil
@@ -393,10 +375,10 @@ func getUserS3Image(_ userName: String!, extraPath: String!, completion: @escapi
     
     let transferManager = AWSS3TransferManager.default()
     
-    transferManager.download(downloadRequest!).continue(with: AWSExecutor.mainThread(), with: { (resultTask) -> AnyObject? in
+    transferManager.download(downloadRequest!).continueWith(executor: AWSExecutor.mainThread(), block: { (resultTask) -> AnyObject? in
         
         // if sucessful file transfer
-        if resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil
+        if resultTask.error == nil && resultTask.result != nil
         {
             print("fetch s3 user image: SUCCESS FILE DOWNLOAD")
             
@@ -442,7 +424,7 @@ func setUserS3Image(_ userName: String!, userImage: UIImage!, completion: @escap
     transferRequest?.body = imageFileURL
     let transferManager = AWSS3TransferManager.default()
     
-    transferManager.upload(transferRequest!).continue(with: AWSExecutor.mainThread(), with:
+    transferManager.upload(transferRequest!).continueWith(executor: AWSExecutor.mainThread(), block:
         { (resultTask) -> AnyObject? in
             
             // if sucessful file transfer
@@ -483,12 +465,12 @@ func getUserPoolData(_ userName: String!, completion: @escaping (_ result: UserP
         if resultTask.error != nil
         {
             print("User Pool fetch data Error:", resultTask.error)
-            completion(result: nil, error: resultTask.error)
+            completion(nil, resultTask.error as! NSError)
         }
         else if resultTask.result == nil
         {
             print("User Pool fetch data IS NIL...")
-            completion(result: nil, error: nil)
+            completion(nil, nil)
 
         }
         else
@@ -528,7 +510,7 @@ func getUserPoolData(_ userName: String!, completion: @escaping (_ result: UserP
                     break;
                     
                 default:
-                    completion(result: nil, error: nil)
+                    completion(nil, nil)
 
                     
                 }
@@ -557,7 +539,7 @@ func getUserPoolData(_ userName: String!, completion: @escaping (_ result: UserP
             
             
             
-            completion(result: userData, error: nil)
+            completion(userData, nil)
 
             
         }
@@ -628,7 +610,7 @@ func updateCurrentUserProfilesDynamoDB(_ currentUserProfiles: NSMutableDictionar
 
     print(currentUser, " BEEP ", currentRealName, " BEEP ", currentAccounts)
     
-    dynamoDBObjectMapper.save(dynamoDBUser!).continueWith({ (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block: { (resultTask) -> AnyObject? in
         
         if (resultTask.error != nil)
         {
@@ -701,7 +683,7 @@ func uploadDeviceIDDynamoDB(_ currentDeviceID: String) {
   dynamoDBObjectMapper.load(Device.self, hashKey: currentUser, rangeKey: nil).continueWith { (
     resultTask) -> AnyObject? in
     
-    if (resultTask.error != nil || resultTask.exception != nil) {
+    if (resultTask.error != nil) {
       return nil
     }
     

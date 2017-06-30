@@ -70,7 +70,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
     // This will store the username that will be uploaded to Dynamo
     var socialMediaName: String!
 
-    switch (socialMediaType){
+    switch (socialMediaType!){
       case "facebook" :
         // Create alert to send to user
         let alert = UIAlertController(title: nil, message: "Are you a company?", preferredStyle: UIAlertControllerStyle.alert)
@@ -104,7 +104,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
                 let currentUserName = getCurrentCachedUser()
                 
                 // Needed for 'find friends via facebook' feature
-                uploadUserFBUIDToDynamo(currentUserName, fbUID: fbUID!)
+                uploadUserFBUIDToDynamo(currentUserName!, fbUID: fbUID!)
                 
                 socialMediaName = FBSDKAccessToken.current().userID
                 
@@ -768,9 +768,9 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
 
 
     let alertAppearance = SCLAlertView.SCLAppearance(
-      showCircularIcon: true,
-      kCircleIconHeight: 60,
       kCircleHeight: 55,
+      kCircleIconHeight: 60,
+      showCircularIcon: true,
       shouldAutoDismiss: false,
       hideWhenBackgroundViewIsTapped: true
     )
@@ -793,7 +793,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         if username.isEmpty {
           // TODO: Nothing?
         } else if username.characters.count > 100 {
-          dispatch_async(dispatch_get_main_queue(), {
+          DispatchQueue.main.async(execute: {
             showAlert("Too long entry", message: "Please enter a valid entry", buttonTitle: "Try again", sender: self)
           })
           
@@ -813,7 +813,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
             
             // With android apps, URL is tough to check because of the 'com.appName' url scheme. Instead check for google.com domain
             if socialMediaType == "android" {
-              if !socialMediaName.containsString("google.com") && !socialMediaName.containsString("goo.gl") {
+              if !socialMediaName.containsString("google.com") && !socialMediaName.contains("goo.gl") {
                 showAlert("Invalid Play Store URL", message: "Please enter a valid Android Play Store URL", buttonTitle: "Try again", sender: self)
                 alertViewResponder.close()
                 return
@@ -821,7 +821,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
             }
             else if !verifyUrl(socialMediaName){
               
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                   showAlert("Invalid Website URL", message: "Please enter a valid URL", buttonTitle: "Try again", sender: self)
                 })
               
@@ -856,7 +856,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
       subTitle: "",
       duration:0.0,
       completeText: "Cancel",
-      style: .Success,
+      style: .success,
       colorStyle: 0x0F7A9D,
       colorTextButton: 0xFFFFFF,
       circleIconImage: alertViewIcon,
@@ -904,15 +904,10 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
       dynamoDBUser?.accounts = currentAccounts
 
       dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(
-        { (resultTask) -> AnyObject? in
+        block: { (resultTask) -> AnyObject? in
           if (resultTask.error != nil) {
             print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
           }
-
-          if (resultTask.exception != nil) {
-            print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
-          }
-
           if (resultTask.result == nil) {
             print ("DYNAMODB ADD PROFILE result is nil....: ")
           } else if (resultTask.error == nil) {
