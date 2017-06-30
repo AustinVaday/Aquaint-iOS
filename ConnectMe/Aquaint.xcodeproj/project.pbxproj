@@ -1180,7 +1180,7 @@
 					"$(PROJECT_DIR)/Pods/Firebase",
 					"$(PROJECT_DIR)",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aquaintapp;
 				PRODUCT_NAME = Aquaint;
 				PROVISIONING_PROFILE = "";
@@ -1214,7 +1214,7 @@
 					"$(PROJECT_DIR)/Pods/Firebase",
 					"$(PROJECT_DIR)",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aquaintapp;
 				PRODUCT_NAME = Aquaint;
 				PROVISIONING_PROFILE = "";
