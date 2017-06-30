@@ -23,10 +23,10 @@ class CustomSearchBar: UISearchBar {
         preferredTextColor = textColor
         
         // Configure search bar -- results in translucent bg and opaque search field
-        searchBarStyle = UISearchBarStyle.Prominent
+        searchBarStyle = UISearchBarStyle.prominent
         
         // Take out translucent bg
-        translucent = false
+        isTranslucent = false
         
         
     }
@@ -39,7 +39,7 @@ class CustomSearchBar: UISearchBar {
     
     
     // Set up the UI for the custom search bar
-    override func drawRect(rect: CGRect)
+    override func draw(_ rect: CGRect)
     {
         // Find the index of the search field in the search bar subviews
         if let index = indexOfSearchFieldInSubviews()
@@ -48,7 +48,7 @@ class CustomSearchBar: UISearchBar {
             let searchField: UITextField = (subviews[0]).subviews[index] as! UITextField
             
             // Set its frame.
-            searchField.frame = CGRectMake(5.0, 5.0, frame.size.width - 10.0, frame.size.height - 10.0)
+            searchField.frame = CGRect(x: 5.0, y: 5.0, width: frame.size.width - 10.0, height: frame.size.height - 10.0)
 
             // Set the font and text color of the search field.
             searchField.font = preferredFont
@@ -56,10 +56,10 @@ class CustomSearchBar: UISearchBar {
             
             // Change placeholder color. Warning: This may violate Swift public APIs and the app may be
             // rejected from submition into the app store
-            let placeHolderLabel = searchField.valueForKey("placeholderLabel") as! UILabel
+            let placeHolderLabel = searchField.value(forKey: "placeholderLabel") as! UILabel
             placeHolderLabel.textColor = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
             
-            setImage(UIImage(named: "Mini Search Icon"), forSearchBarIcon: .Search, state: .Normal)
+            setImage(UIImage(named: "Mini Search Icon"), for: .search, state: UIControlState())
             
             // Set the background color of the search field.
             searchField.backgroundColor = barTintColor
@@ -79,11 +79,11 @@ class CustomSearchBar: UISearchBar {
 //
 //        layer.addSublayer(shapeLayer)
         
-        super.drawRect(rect)
+        super.draw(rect)
     }
     
     // Helper functions
-    private func indexOfSearchFieldInSubviews() -> Int!
+    fileprivate func indexOfSearchFieldInSubviews() -> Int!
     {
         var index = 0
         
@@ -94,7 +94,7 @@ class CustomSearchBar: UISearchBar {
         // In the view that was fetched, find the index of the search field
         for view in searchBarView.subviews
         {
-            if view.isKindOfClass(UITextField)
+            if view.isKind(of: UITextField.self)
             {
                 return index
             }

@@ -13,8 +13,8 @@ import FRHyperLabel
 
 protocol SearchTableViewCellDelegate
 {
-  func addedUser(username: String, isPrivate: Bool)
-  func removedUser(username: String, isPrivate: Bool)
+  func addedUser(_ username: String, isPrivate: Bool)
+  func removedUser(_ username: String, isPrivate: Bool)
 }
 
 class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDelegate {
@@ -37,7 +37,7 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
       
       let aquaBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
       let attributes = [NSForegroundColorAttributeName: aquaBlue,
-                        NSFontAttributeName: UIFont.boldSystemFontOfSize(cellName.font.pointSize)]
+                        NSFontAttributeName: UIFont.boldSystemFont(ofSize: cellName.font.pointSize)]
       cellName.linkAttributeDefault = attributes
       
     }
@@ -45,35 +45,35 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
     func hideAllButtons()
     {
         // Deactivate the pending button
-        cellAddButton.hidden  = true
-        cellDeleteButton.hidden  = true
-        cellAddPendingButton.hidden = true
+        cellAddButton.isHidden  = true
+        cellDeleteButton.isHidden  = true
+        cellAddPendingButton.isHidden = true
     }
     
     func unHideAllButtons()
     {
         // Deactivate the pending button
-        cellAddButton.hidden  = false
-        cellDeleteButton.hidden  = false
-        cellAddPendingButton.hidden = false
+        cellAddButton.isHidden  = false
+        cellDeleteButton.isHidden  = false
+        cellAddPendingButton.isHidden = false
     }
     
     func activateAddButton()
     {
-        cellAddButton.superview?.bringSubviewToFront(cellAddButton)
+        cellAddButton.superview?.bringSubview(toFront: cellAddButton)
     }
     
     func activateDeleteButton()
     {
-        cellDeleteButton.superview?.bringSubviewToFront(cellDeleteButton)
+        cellDeleteButton.superview?.bringSubview(toFront: cellDeleteButton)
     }
     
     func activatePendingButton()
     {
-        cellAddPendingButton.superview?.bringSubviewToFront(cellAddPendingButton)
+        cellAddPendingButton.superview?.bringSubview(toFront: cellAddPendingButton)
     }
 
-    @IBAction func onAddConnectionButtonClicked(sender: UIButton) {
+    @IBAction func onAddConnectionButtonClicked(_ sender: UIButton) {
         
         // Fetch current user from NSUserDefaults
         let currentUserName = getCurrentCachedUser()
@@ -89,10 +89,10 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
             }
           
             // Call lambda to store user connectons in database!
-            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+            let lambdaInvoker = AWSLambdaInvoker.default()
             let parameters = ["action": targetAction, "target": cellUserName.text!, "me": currentUserName]
             
-            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue({ (resultTask) -> AnyObject? in
                 
                 if resultTask.error != nil
                 {
@@ -106,12 +106,12 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
                 else if resultTask.result != nil
                 {
                   if self.displayPrivate {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                       self.activatePendingButton()
                     })
                   }
                   else {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         self.activateDeleteButton()
                     })
                     
@@ -161,7 +161,7 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
 //        
 //    }
 
-    @IBAction func onRemoveButtonClicked(sender: UIButton) {
+    @IBAction func onRemoveButtonClicked(_ sender: UIButton) {
         
         // Fetch current user from NSUserDefaults
         let currentUserName = getCurrentCachedUser()
@@ -177,10 +177,10 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
             }
 
             // Call lambda to store user connectons in database!
-            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+            let lambdaInvoker = AWSLambdaInvoker.default()
             let parameters = ["action": targetAction, "target": cellUserName.text!, "me": currentUserName]
             
-            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue({ (resultTask) -> AnyObject? in
                 
                 if resultTask.error != nil
                 {
@@ -194,7 +194,7 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
                 else if resultTask.result != nil
                 {
                     // Perform update on UI on main thread
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         self.activateAddButton()
                     })
                   
@@ -220,7 +220,7 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
   
   
   // Implement delegate actions for ProfilePopupSearchCellConsistencyDelegate
-  func profilePopupUserAdded(username: String, isPrivate: Bool) {
+  func profilePopupUserAdded(_ username: String, isPrivate: Bool) {
     if self.displayPrivate {
       self.activatePendingButton()
     } else {
@@ -232,7 +232,7 @@ class SearchTableViewCell: UITableViewCell, ProfilePopupSearchCellConsistencyDel
   
 
   
-  func profilePopupUserDeleted(username: String, isPrivate: Bool) {
+  func profilePopupUserDeleted(_ username: String, isPrivate: Bool) {
     self.activateAddButton()
     
     searchDelegate?.removedUser(username, isPrivate: isPrivate)

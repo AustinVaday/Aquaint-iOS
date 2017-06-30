@@ -9,7 +9,7 @@
 import Foundation
 
 class NoticeOfSubscriptionViewController: UIViewController {
-  @IBAction func doneButtonClicked(sender: UIButton) {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  @IBAction func doneButtonClicked(_ sender: UIButton) {
+    self.dismiss(animated: true, completion: nil)
   }
 }

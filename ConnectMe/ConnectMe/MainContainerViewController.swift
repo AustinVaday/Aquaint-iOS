@@ -55,19 +55,19 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     // Hides all the section bars for the section underline view/bars under the footer icons
     func hideAllSectionUnderlineViews()
     {
-        sectionUnderlineView0.hidden = true
-        sectionUnderlineView1.hidden = true
-        sectionUnderlineView2.hidden = true
-        sectionUnderlineView3.hidden = true
-        sectionUnderlineView4.hidden = true
+        sectionUnderlineView0.isHidden = true
+        sectionUnderlineView1.isHidden = true
+        sectionUnderlineView2.isHidden = true
+        sectionUnderlineView3.isHidden = true
+        sectionUnderlineView4.isHidden = true
     }
   
 
     func isCustomerSubscribed() {
       // Validate receipt first
-      let receiptUrl = NSBundle.mainBundle().appStoreReceiptURL
-      let receipt: NSData = NSData(contentsOfURL: receiptUrl!)!
-      let receiptData: NSString = receipt.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+      let receiptUrl = Bundle.main.appStoreReceiptURL
+      let receipt: Data = try! Data(contentsOf: receiptUrl!)
+      let receiptData: NSString = receipt.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) as NSString
 
       print ("RECEIPTDATA IS: ", receiptData)
 //      do {
@@ -76,9 +76,9 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
 //      } catch _ {
 //        print ("FAILED TO PARSE RECEIPT DATA")
 //      }
-      let lambdaInnvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-      let parameters = ["action": "verifyAppleReceipt", "target": userName, "receipt_json": receiptData]
-      lambdaInnvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({
+      let lambdaInnvoker = AWSLambdaInvoker.default()
+      let parameters = ["action": "verifyAppleReceipt", "target": userName, "receipt_json": receiptData] as [String : Any]
+      lambdaInnvoker.invokeFunction("mock_api", jsonObject: parameters).continue({
         (resultTask) -> AnyObject? in
         if resultTask.error == nil && resultTask.result != nil {
           print("Result task for verifyAppleReceipt is: ", resultTask.result!)
@@ -139,10 +139,10 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         hideAllSectionUnderlineViews()
         
         // Show only the bar for the home icon
-        sectionUnderlineView2.hidden = false
+        sectionUnderlineView2.isHidden = false
         
         // Set banner hidden by default
-        noInternetBanner.hidden = true
+        noInternetBanner.isHidden = true
 
         // Make user add profiles if they just signed up
         if arrivedFromWalkthrough {
@@ -152,16 +152,16 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
           
           // Take user to AddSocialMediaProfilesController so they can add in profiles
           let storyboard = UIStoryboard(name: "Main", bundle: nil)
-          let addSocialMediaVC = storyboard.instantiateViewControllerWithIdentifier("AddSocialMediaProfilesController") as! AddSocialMediaProfilesController
+          let addSocialMediaVC = storyboard.instantiateViewController(withIdentifier: "AddSocialMediaProfilesController") as! AddSocialMediaProfilesController
           
           let menuVC = mainPageViewController.childViewControllers.last as! MenuController
   
           // This is important. If we do not set delegate, user cannot add in profiles properly.
           addSocialMediaVC.delegate = menuVC
-          addSocialMediaVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+          addSocialMediaVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
 
-          dispatch_async(dispatch_get_main_queue(), {
-            self.presentViewController(addSocialMediaVC, animated: true, completion: nil)
+          DispatchQueue.main.async(execute: {
+            self.present(addSocialMediaVC, animated: true, completion: nil)
           })
           
         }
@@ -188,7 +188,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
       askUserForPushNotificationPermission(self)
       
       // clear all badges from previous notifications on the app icon
-      UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+      UIApplication.shared.applicationIconBadgeNumber = 0
       
       //
       /*
@@ -201,12 +201,12 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
       */
     }
   
-  override func viewDidDisappear(animated: Bool) {
+  override func viewDidDisappear(_ animated: Bool) {
 //    NSNotificationCenter.defaultCenter().removeObserver(self)
 
   }
   
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         // Set up notifications for determining whether to display the "No Internet" Banner.
         do {
           reachability = try Reachability(hostname: "www.google.com")
@@ -215,7 +215,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
           print("Could not create reachability object to www.google.com")
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: reachability)
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: reachability)
         
         do {
           try reachability.startNotifier()
@@ -225,13 +225,13 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
         }
     }
     
-    func reachabilityChanged(note: NSNotification)
+    func reachabilityChanged(_ note: Notification)
     {
         let reachability = note.object as! Reachability
         
-        if reachability.isReachable()
+        if reachability.isReachable
         {
-            if reachability.isReachableViaWiFi()
+            if reachability.isReachableViaWiFi
             {
                 print ("Reachable via WIFI")
             }
@@ -239,28 +239,28 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
             {
                 print ("Reachable via CELLULAR DATA")
             }
-            noInternetBanner.hidden = true
+            noInternetBanner.isHidden = true
         }
         else
         {
             print ("Internet not reachable")
-            noInternetBanner.hidden = false
+            noInternetBanner.isHidden = false
         }
     }
 
-    override func viewWillDisappear(animated: Bool){
+    override func viewWillDisappear(_ animated: Bool){
         // Get rid of all notifications we set for wifi connectivity
         reachability.stopNotifier()
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotification, object: reachability)
+        NotificationCenter.default.removeObserver(self, name: ReachabilityChangedNotification, object: reachability)
     }
     // BUTTONS TO CHANGE THE PAGE
     
-    @IBAction func goToPage0(sender: UIButton) {
+    @IBAction func goToPage0(_ sender: UIButton) {
                 
         mainPageViewController.changePage(0)
         
         hideAllSectionUnderlineViews()
-        sectionUnderlineView0.hidden = false
+        sectionUnderlineView0.isHidden = false
     }
   
   // a special case for goToPage0 used for push notification handling
@@ -270,78 +270,78 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
     mainPageViewController.changePageToFollowRequests()
     
     hideAllSectionUnderlineViews()
-    sectionUnderlineView0.hidden = false
+    sectionUnderlineView0.isHidden = false
   }
   
-    @IBAction func goToPage1(sender: UIButton) {
+    @IBAction func goToPage1(_ sender: UIButton) {
 
         mainPageViewController.changePage(1)
         
         hideAllSectionUnderlineViews()
-        sectionUnderlineView1.hidden = false
+        sectionUnderlineView1.isHidden = false
     }
     
-    @IBAction func goToPage2(sender: UIButton) {
+    @IBAction func goToPage2(_ sender: UIButton) {
 
         mainPageViewController.changePage(2)
         
         hideAllSectionUnderlineViews()
-        sectionUnderlineView2.hidden = false
+        sectionUnderlineView2.isHidden = false
     }
   
-  @IBAction func goToPage3(sender: UIButton) {
+  @IBAction func goToPage3(_ sender: UIButton) {
     
     mainPageViewController.changePage(3)
     
     hideAllSectionUnderlineViews()
-    sectionUnderlineView3.hidden = false
+    sectionUnderlineView3.isHidden = false
   }
 
-  @IBAction func goToPage4(sender: AnyObject) {
+  @IBAction func goToPage4(_ sender: AnyObject) {
     
     mainPageViewController.changePage(4)
     
     hideAllSectionUnderlineViews()
-    sectionUnderlineView4.hidden = false
+    sectionUnderlineView4.isHidden = false
   }
   
   // NOTE: After adding Aqualytics, Previous page 2 is NOW PAGE 3.
   // a special case for goToPage4() used for push notification handling. Displaying Followers or Following section in MenuController
-  func goToPage4OfSection(section: Int) {
+  func goToPage4OfSection(_ section: Int) {
     mainPageViewController.changePageToFollows(section)
     
     hideAllSectionUnderlineViews()
-    sectionUnderlineView3.hidden = false
+    sectionUnderlineView3.isHidden = false
   }
 
   
-    func updateSectionUnderLineView(newViewNum: Int) {
+    func updateSectionUnderLineView(_ newViewNum: Int) {
         hideAllSectionUnderlineViews()
         
         print("DELEGATE showApprop.... WAS CALLED")
         
         switch newViewNum
         {
-        case 0: sectionUnderlineView0.hidden = false
+        case 0: sectionUnderlineView0.isHidden = false
         break;
-        case 1: sectionUnderlineView1.hidden = false
+        case 1: sectionUnderlineView1.isHidden = false
         break;
-        case 2: sectionUnderlineView2.hidden = false
+        case 2: sectionUnderlineView2.isHidden = false
         break;
-        case 3: sectionUnderlineView3.hidden = false
+        case 3: sectionUnderlineView3.isHidden = false
         break;
-        case 4: sectionUnderlineView4.hidden = false
+        case 4: sectionUnderlineView4.isHidden = false
         break;
-        default: sectionUnderlineView2.hidden = false
+        default: sectionUnderlineView2.isHidden = false
         }
 
     }
     
     // Prepare for segues and set up delegates so we can get information back
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       if segue.identifier == "toMainPageViewController" {
         
-        let controller = segue.destinationViewController as! MainPageViewController
+        let controller = segue.destination as! MainPageViewController
         
         // IMPORTANT!!!! If we don't have this we can't get data back.
         controller.sectionDelegate = self

@@ -35,7 +35,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var currentSearchBegin = 0
     var currentSearchEnd = 15
     let searchOffset = 15
-    let imageCache = NSCache()
+    let imageCache = NSCache<AnyObject, AnyObject>()
   
   // Leaderboard
   /*
@@ -63,9 +63,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
   // NOTE: this DynamoDB access function is written here rather than in BackendAPI,
   // because its retrieval result need to be passed into local variables inside SearchViewController.swift
   // Otherwise we would have to pass in SearchViewController as a parameter to this function
-  func retrieveLeaderboardDynamoDB(targetMetric: String) {
+  func retrieveLeaderboardDynamoDB(_ targetMetric: String) {
     
-    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
     
 //    var hashKeyMetric: String
 //    switch targetMetric {
@@ -77,7 +77,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     let hashKeyMetric = targetMetric
     
-    dynamoDBObjectMapper.load(Leaderboard.self, hashKey: hashKeyMetric, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.load(Leaderboard.self, hashKey: hashKeyMetric, rangeKey: nil).continue({ (resultTask) -> AnyObject? in
       
       if (resultTask.error != nil || resultTask.exception != nil || resultTask.result == nil) {
         return nil
@@ -187,16 +187,16 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     super.init(coder: aDecoder)
     
     // WARM UP lambda for simplesearch function call. Speeds up initial search significantly 
-    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-    var parameters = ["action":"simplesearch", "target": "a", "start": 0, "end": 5]
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (result) -> AnyObject? in
+    let lambdaInvoker = AWSLambdaInvoker.default()
+    var parameters = ["action":"simplesearch", "target": "a", "start": 0, "end": 5] as [String : Any]
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (result) -> AnyObject? in
       return nil
     }
     
     userName = getCurrentCachedUser()
     
     parameters = ["action":"getFolloweesDict", "target": userName]
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -224,7 +224,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     parameters = ["action":"getFolloweeRequestsDict", "target": userName]
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -260,7 +260,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         recentUsernameAdds = NSMutableDictionary()
         animatedObjects = Array<UIView>()
       
-        noSearchResultsView.hidden = true
+        noSearchResultsView.isHidden = true
         
         configureCustomSearchController()
         
@@ -274,7 +274,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     }
   
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
 
         // If this is not here, then we will upload same user events to dynamo every time.
         recentUsernameAdds = NSMutableDictionary()
@@ -291,11 +291,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     // When the view disappears, upload action data to Dynamo (used for newsfeed)
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         
         // Clear any animations that were deployed
         clearUpAnimations()
-        noSearchResultsView.hidden = true
+        noSearchResultsView.isHidden = true
         
         // Only update dynamo if there are changes to account for.
         if recentUsernameAdds.count != 0
@@ -303,10 +303,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
             // Here's what we'll do: When the user leaves this page, we will take the recent additions (100 max)
             // and store them in dynamo. This information will be used for the newsfeed.
-            let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+            let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
             
             // Get dynamo mapper if it exists
-            dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: self.userName, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+            dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: self.userName, rangeKey: nil).continue({ (resultTask) -> AnyObject? in
                 
                 var newsfeedObjectMapper : NewsfeedEventListObjectModel!
 
@@ -324,13 +324,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 newsfeedObjectMapper.username = self.userName
                 
                 // Sort datastructure by value (sort by timestamp)
-                let sortedKeys = self.recentUsernameAdds.allKeys.sort({ (firstKey, secondKey) -> Bool in
+                let sortedKeys = self.recentUsernameAdds.allKeys.sorted(by: { (firstKey, secondKey) -> Bool in
                     // Sort time in ascending order
                     let string1 = firstKey as! String
                     let string2 = secondKey as! String
                     
-                    let timestamp1 = self.recentUsernameAdds.valueForKey(string1) as! Int
-                    let timestamp2 = self.recentUsernameAdds.valueForKey(string2) as! Int
+                    let timestamp1 = self.recentUsernameAdds.value(forKey: string1) as! Int
+                    let timestamp2 = self.recentUsernameAdds.value(forKey: string2) as! Int
                     
                     return timestamp1 < timestamp2
                 })
@@ -351,13 +351,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                     }
                     
                     let otherUsersArray = NSArray(object: otherUser)
-                    let timestamp = self.recentUsernameAdds.objectForKey(otherUser) as! Int
+                    let timestamp = self.recentUsernameAdds.object(forKey: otherUser) as! Int
                     let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollowing", "other": otherUsersArray, "time" : timestamp])
                     newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
                     
                 }
                 
-                dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+                dynamoDBObjectMapper.save(newsfeedObjectMapper).continue { (resultTask) -> AnyObject? in
                     print("DynamoObjectMapper sucessful save for newsfeedObject #1")
                     
                     return nil
@@ -373,11 +373,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             for user in recentUsernameAdds.allKeys
             {
                 
-                let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+                let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
                 
                 
                 // Get dynamo mapper if it exists
-                dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: user, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+                dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: user, rangeKey: nil).continue({ (resultTask) -> AnyObject? in
                     
                     var newsfeedObjectMapper : NewsfeedEventListObjectModel!
                     
@@ -396,11 +396,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                     
                     // Upload to Dynamo - Indicate that this user has a new follower
                     let otherUsersArray = NSArray(object: self.userName)
-                    let timestamp = self.recentUsernameAdds.objectForKey(user) as! Int
+                    let timestamp = self.recentUsernameAdds.object(forKey: user) as! Int
                     let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollower", "other":  otherUsersArray, "time" : timestamp] )
                     newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
                     
-                    dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+                    dynamoDBObjectMapper.save(newsfeedObjectMapper).continue { (resultTask) -> AnyObject? in
                         print("DynamoObjectMapper sucessful save for newsfeedObject #2")
                         
                         return nil
@@ -417,7 +417,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == searchTableView
         {
             let location = scrollView.contentOffset.y + scrollView.frame.size.height
@@ -472,22 +472,22 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    func didChangeSearchText(searchText: String) {
+    func didChangeSearchText(_ searchText: String) {
         // Implement throttle search to limit network activity and reload x seconds after key press
         resetCurrentSearchOffsets()
         selectorSearchText = searchText
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(SearchViewController.simpleSearchSelector), object: nil)
-        self.performSelector(#selector(SearchViewController.simpleSearchSelector), withObject: nil, afterDelay: 0.3)
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(SearchViewController.simpleSearchSelector), object: nil)
+        self.perform(#selector(SearchViewController.simpleSearchSelector), with: nil, afterDelay: 0.3)
     }
     
     // **** SEARCH TABLE VIEW *****
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       
       // If it's not time to show search results, show Leaderboard users instead
       if (!shouldShowSearchResults) {
         //let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell", forIndexPath: indexPath) as! SearchTableViewLeaderboardCell
-        let leaderboardCell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell") as! SearchTableViewLeaderboardCell
+        let leaderboardCell = tableView.dequeueReusableCell(withIdentifier: "leaderboardCell") as! SearchTableViewLeaderboardCell
         
         leaderboardCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.row)
         
@@ -502,13 +502,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         leaderboardCell.titleLabel.text = leaderboardDisplayNameMap[indexPath.row]
         
-        leaderboardCell.userCollectionView.backgroundColor = UIColor.whiteColor()
+        leaderboardCell.userCollectionView.backgroundColor = UIColor.white
         leaderboardCell.userCollectionView.reloadData()
         return leaderboardCell
       }
       
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! SearchTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! SearchTableViewCell
         
         // Set default image immediately for smooth transitions
         cell.cellImage.image = defaultImage
@@ -534,7 +534,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
       
       
-        let image = imageCache.objectForKey(userName) as? UIImage
+        let image = imageCache.object(forKey: userName as AnyObject) as? UIImage
         
         if image != nil
         {
@@ -607,7 +607,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if (shouldShowSearchResults)
         {
@@ -620,17 +620,17 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 if isTypingSearch
                 {
-                    searchResultsInfoLabel.hidden = false
+                    searchResultsInfoLabel.isHidden = false
                 }
                 else
                 {
-                    searchResultsInfoLabel.hidden = true
+                    searchResultsInfoLabel.isHidden = true
                 }
             }
             else
             {
                 clearUpAnimations()
-                searchResultsInfoLabel.hidden = true
+                searchResultsInfoLabel.isHidden = true
 
             }
             
@@ -647,15 +647,15 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
 
     // If you want custom (beautiful) Aquaint search bar
-    private func configureCustomSearchController()
+    fileprivate func configureCustomSearchController()
     {
-        let frame =  CGRectMake(0.0, 0.0, searchTableView.frame.size.width, 48.0)
+        let frame =  CGRect(x: 0.0, y: 0.0, width: searchTableView.frame.size.width, height: 48.0)
         let font = UIFont(name: "Avenir", size: 14.0)!
         
         // UI Color for #12BBD5 (www.uicolor.xyz)
 //        let textColor = UIColor(red:0.07, green:0.73, blue:0.84, alpha:1.0)
 
-        let textColor = UIColor.whiteColor()
+        let textColor = UIColor.white
         
         // UI Color for #0F7A9D (www.uicolor.xyz)
         let tintColor = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
@@ -680,7 +680,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         self.performSimpleSearch(self.selectorSearchText, start: 0, end: 15)
     }
 
-    func performSimpleSearch(searchText: String, start: Int, end: Int)
+    func performSimpleSearch(_ searchText: String, start: Int, end: Int)
     {
         if searchText.characters.count < 1
         {
@@ -703,9 +703,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             spinner.startAnimating()
         }
         
-        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-        let parameters = ["action":"simplesearch", "target": searchText, "start": start, "end": end]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+        let lambdaInvoker = AWSLambdaInvoker.default()
+        let parameters = ["action":"simplesearch", "target": searchText, "start": start, "end": end] as [String : Any]
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
             if resultTask.error != nil
             {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -725,9 +725,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 if searchResultArray.count == 0 && start == 0
                 {
                     
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.spinner.stopAnimating()
-                        self.noSearchResultsView.hidden = false
+                        self.noSearchResultsView.isHidden = false
                         self.filteredUsers = Array<UserPrivacyObjectModel>()
                         self.searchTableView.reloadData()
                         
@@ -736,15 +736,15 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 else if searchResultArray.count == 0 && start != 0
                 {
                     self.isNewDataLoading = false
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.removeTableViewFooterSpinner()
                     })
                     
                 }
                 else if start == 0
                 {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.noSearchResultsView.hidden = true
+                    DispatchQueue.main.async(execute: {
+                        self.noSearchResultsView.isHidden = true
                     })
                 }
         
@@ -773,7 +773,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                             {
                               // Update UI when no more running requests! (last async call finished)
                               // Update UI on main thread
-                              dispatch_async(dispatch_get_main_queue(), {
+                              DispatchQueue.main.async(execute: {
                                 self.spinner.stopAnimating()
                                 
                                 // Initial fetch, just store entire array
@@ -785,7 +785,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                                 {
                                   self.removeTableViewFooterSpinner()
                                   self.isNewDataLoading = false
-                                  self.filteredUsers.appendContentsOf(newFilteredUsersList)
+                                  self.filteredUsers.append(contentsOf: newFilteredUsersList)
                                   
                                 }
                                 
@@ -803,7 +803,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                                     // Cache user image so we don't have to reload it next time
                                     self.imageCache.setObject(result! as UIImage, forKey: searchUser)
                                   
-                                    dispatch_async(dispatch_get_main_queue(), { 
+                                    DispatchQueue.main.async(execute: { 
                                       self.searchTableView.reloadData()
 
                                     })
@@ -831,7 +831,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     }
 
-    private func setUpAnimations(viewController: UIViewController)
+    fileprivate func setUpAnimations(_ viewController: UIViewController)
     {
       
       // Since we have Leaderboards now, floating social media emblems now becomes a legacy feature
@@ -896,7 +896,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     
-    private func clearUpAnimations()
+    fileprivate func clearUpAnimations()
     {
       
         clearUpSocialMediaAnimations(&animatedObjects!)
@@ -916,11 +916,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
 
     // Implement delegate actions for SearchTableViewCellDelegate
-  func addedUser(username: String, isPrivate: Bool) {
+  func addedUser(_ username: String, isPrivate: Bool) {
       if !isPrivate {
           // When user is added from tableview cell
           // Add to set to keep track of recently added users
-          recentUsernameAdds.setObject(getTimestampAsInt(), forKey: username)
+          recentUsernameAdds.setObject(getTimestampAsInt(), forKey: username as NSCopying)
           followeesMapping[username] = getTimestampAsInt()
           print("OKOK. USER ADDED: ", username)
       }
@@ -929,35 +929,35 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
       }
     }
     
-  func removedUser(username: String, isPrivate: Bool) {
+  func removedUser(_ username: String, isPrivate: Bool) {
       if !isPrivate {
           // When user is removed from tableview cell
-          if recentUsernameAdds.objectForKey(username) != nil
+          if recentUsernameAdds.object(forKey: username) != nil
           {
-              recentUsernameAdds.removeObjectForKey(username)
+              recentUsernameAdds.removeObject(forKey: username)
           }
           
-          followeesMapping.removeValueForKey(username)
+          followeesMapping.removeValue(forKey: username)
           
           print("OKOK. USER REMOVED: ", username)
       } else {
-        followeeRequestsMapping.removeValueForKey(username)
+        followeeRequestsMapping.removeValue(forKey: username)
       }
 
     }
     
-    private func addTableViewFooterSpinner() {
-        let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+    fileprivate func addTableViewFooterSpinner() {
+        let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         footerSpinner.startAnimating()
-        footerSpinner.frame = CGRectMake(0, 0, self.view.frame.width, 44)
+        footerSpinner.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44)
         self.searchTableView.tableFooterView = footerSpinner
     }
     
-    private func removeTableViewFooterSpinner() {
+    fileprivate func removeTableViewFooterSpinner() {
         self.searchTableView.tableFooterView = nil
     }
     
-    private func resetCurrentSearchOffsets() {
+    fileprivate func resetCurrentSearchOffsets() {
         self.currentSearchBegin = 0
         self.currentSearchEnd = self.searchOffset
     }
@@ -968,7 +968,7 @@ extension SearchViewController {
   
   // MARK: - UITableViewDelegate
   
-  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     if (!shouldShowSearchResults) {
       return 160
     } else {
@@ -986,7 +986,7 @@ extension SearchViewController {
   }
   */
   
-  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
     if metricLists.isEmpty || metricLists[collectionView.tag] == nil {
       return 0
@@ -1004,8 +1004,8 @@ extension SearchViewController {
 //    }
   }
   
-  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("userCollectionViewCell", forIndexPath: indexPath) as! UserCollectionViewCell
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "userCollectionViewCell", for: indexPath) as! UserCollectionViewCell
     
     let list = metricLists[collectionView.tag]!
     // Add label of the number of followers to the leaderboard user
@@ -1092,7 +1092,7 @@ extension SearchViewController {
     
     // Adjust user's profile image: to fit the frame and be circular
     //cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFit
-    cell.userProfileImage.contentMode = UIViewContentMode.ScaleAspectFill
+    cell.userProfileImage.contentMode = UIViewContentMode.scaleAspectFill
     cell.userProfileImage.layer.cornerRadius = cell.userProfileImage.frame.size.width / 2
     cell.userProfileImage.clipsToBounds = true
     //cell.userProfileImage.layer.borderWidth = 5.0
@@ -1101,14 +1101,14 @@ extension SearchViewController {
     // try to select a color for each user profile image's border
     //cell.userProfileImage.layer.borderColor = UIColor.whiteColor().CGColor
     //cell.userProfileImage.layer.borderColor = generateRandomColor().CGColor
-    cell.userProfileImage.layer.borderColor = UIColor.init(RGBInt: 0xFF6699).CGColor  // Pink for Aqualytics bar charts
+    cell.userProfileImage.layer.borderColor = UIColor.init(RGBInt: 0xFF6699).cgColor  // Pink for Aqualytics bar charts
 
 
     return cell
   }
   
   // MARK: - UICollectionViewDelegate
-  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     
     
     showPopupForUser(String(metricLists[collectionView.tag]![indexPath.row].0), me: userName)
@@ -1126,7 +1126,7 @@ extension SearchViewController {
 //      return
 //    }
     
-    collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+    collectionView.deselectItem(at: indexPath, animated: true)
   }
   
   /*
@@ -1136,22 +1136,22 @@ extension SearchViewController {
    }
    */
   
-  private func fetchLeaderboardsMetricsMap() {
-    let dynamoDB = AWSDynamoDB.defaultDynamoDB()
+  fileprivate func fetchLeaderboardsMetricsMap() {
+    let dynamoDB = AWSDynamoDB.default()
     let scanInput = AWSDynamoDBScanInput()
-    scanInput.tableName = "aquaint-leaderboards"
-    scanInput.limit = 200
-    scanInput.exclusiveStartKey = nil
+    scanInput?.tableName = "aquaint-leaderboards"
+    scanInput?.limit = 200
+    scanInput?.exclusiveStartKey = nil
     
-    dynamoDB.scan(scanInput).continueWithBlock { (resultTask) -> AnyObject? in
+    dynamoDB.scan(scanInput!).continue { (resultTask) -> AnyObject? in
       if resultTask.result != nil && resultTask.error == nil
       {
         print("DB QUERY SUCCESS:", resultTask.result)
         let results = resultTask.result as! AWSDynamoDBScanOutput
         
         for result in results.items! {
-          let metricName = (result["metric"]?.S)! as String
-          let indexString = (result["index"]?.N)! as String
+          let metricName = (result["metric"]?.s)! as String
+          let indexString = (result["index"]?.n)! as String
           let index = Int(indexString)!
           self.leaderboardMetricsMap[index] = metricName
           

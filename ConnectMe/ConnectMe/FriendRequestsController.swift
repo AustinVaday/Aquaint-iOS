@@ -253,7 +253,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
     */
     
     
-    @IBAction func menuButtonClicked(sender: AnyObject) {
+    @IBAction func menuButtonClicked(_ sender: AnyObject) {
         // Transition to page on left (menu)
         
         //        let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("MainPageViewController") as! MainPageViewController
@@ -279,7 +279,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-    @IBAction func recentConnectionsButtonClicked(sender: UIButton) {
+    @IBAction func recentConnectionsButtonClicked(_ sender: UIButton) {
 //
 //        let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("MainPageViewController") as! MainPageViewController
 //        
@@ -290,9 +290,9 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
     
     // **** REQUESTS TABLE VIEW *****
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("requestsCell", forIndexPath: indexPath) as! RequestsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "requestsCell", for: indexPath) as! RequestsTableViewCell
         
         let userFullName = connectionRequestList[indexPath.item].userFullName
         let userName     = connectionRequestList[indexPath.item].userName
@@ -305,7 +305,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return connectionRequestList.count
         

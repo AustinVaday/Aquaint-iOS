@@ -11,37 +11,37 @@ import AWSDynamoDB
 
 class MenuButtonTableViewCell: UITableViewCell {
   enum ToggleType: Int {
-    case PRIVATE_PROFILE
+    case private_PROFILE
   }
 
   @IBOutlet weak var menuButtonLabel: UITextField!
   @IBOutlet weak var menuToggleSwitch: UISwitch!
   var toggleType : ToggleType!
   
-  @IBAction func toggleButtonToggled(sender: AnyObject) {
-    if toggleType == ToggleType.PRIVATE_PROFILE {
+  @IBAction func toggleButtonToggled(_ sender: AnyObject) {
+    if toggleType == ToggleType.private_PROFILE {
       print ("toggle for private profile initiated")
       
       // Upload user DATA to DynamoDB
       let dynamoDBUser = UserPrivacyMinimalObjectModel()
       
-      dynamoDBUser.username = getCurrentCachedUser()
+      dynamoDBUser?.username = getCurrentCachedUser()
       
-      if menuToggleSwitch.on
+      if menuToggleSwitch.isOn
       {
         // Privacy settings initiated
-        dynamoDBUser.isprivate = 1
+        dynamoDBUser?.isprivate = 1
         setCurrentCachedPrivacyStatus("private")
 
       } else {
         // Default public settings
-        dynamoDBUser.isprivate = 0
+        dynamoDBUser?.isprivate = 0
         setCurrentCachedPrivacyStatus("public")
 
       }
       
-      let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-      dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+      let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+      dynamoDBObjectMapper.save(dynamoDBUser!).continue({ (resultTask) -> AnyObject? in
         
         if (resultTask.error != nil)
         {

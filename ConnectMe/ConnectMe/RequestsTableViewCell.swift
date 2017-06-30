@@ -22,7 +22,7 @@ class RequestsTableViewCell: UITableViewCell {
     var firebaseRootRef: FIRDatabaseReference!
     let firebaseRootRefString = "https://torrid-fire-8382.firebaseio.com/"
     
-    @IBAction func onAddButtonClicked(sender: UIButton) {
+    @IBAction func onAddButtonClicked(_ sender: UIButton) {
         
         // Get your user name. Get your connection's user name
         let currentUser = getCurrentCachedUser()
@@ -68,7 +68,7 @@ class RequestsTableViewCell: UITableViewCell {
     
     
     
-    @IBAction func onDeleteButtonClicked(sender: UIButton) {
+    @IBAction func onDeleteButtonClicked(_ sender: UIButton) {
         
         
         // Get your user name. Get your connection's user name

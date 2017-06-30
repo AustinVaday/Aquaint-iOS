@@ -14,8 +14,8 @@ class CutTransparentHoleInView: UIView {
   
   // MARK: - Drawing
   
-  override func drawRect(rect: CGRect) {
-    super.drawRect(rect)
+  override func draw(_ rect: CGRect) {
+    super.draw(rect)
     
     if self.transparentHoleView != nil {
       // Ensures to use the current background color to set the filling color
@@ -23,7 +23,7 @@ class CutTransparentHoleInView: UIView {
       UIRectFill(rect)
       
       let layer = CAShapeLayer()
-      let path = CGPathCreateMutable()
+      let path = CGMutablePath()
       
       // Make hole in view's overlay
       // NOTE: Here, instead of using the transparentHoleView UIView we could use a specific CFRect location instead...

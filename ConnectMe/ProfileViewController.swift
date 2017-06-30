@@ -65,22 +65,22 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return socialMediaUserNames.count
     }
     
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accountsCollectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "accountsCollectionViewCell", for: indexPath) as! SocialMediaCollectionViewCell
         
          //Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
         // an array so that we can easily get the social media mediums that the user has (i.e. facebook, twitter, etc).
         var userSocialMediaNames = socialMediaUserNames.allKeys as! Array<String>
     
-        userSocialMediaNames = userSocialMediaNames.sort()
+        userSocialMediaNames = userSocialMediaNames.sorted()
 
         let socialMediaName = userSocialMediaNames[indexPath.item % getNumberPossibleSocialMedia()]
 
@@ -96,7 +96,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         
     }
     
-    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
 
         
     }
@@ -105,7 +105,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     
     
-    @IBAction func onGetFacebookInfoButtonClicked(sender: UIButton) {
+    @IBAction func onGetFacebookInfoButtonClicked(_ sender: UIButton) {
 //        
 //        SimpleAuth.authorize("facebook-web") { (result, error) in
 //            
@@ -119,23 +119,23 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
 //        }
 
         // If no user currently logged in with access token, get one
-        if (FBSDKAccessToken.currentAccessToken() == nil)
+        if (FBSDKAccessToken.current() == nil)
         {
             let login = FBSDKLoginManager.init()
             
             // Open in app instead of web browser!
-            login.loginBehavior = FBSDKLoginBehavior.Native
+            login.loginBehavior = FBSDKLoginBehavior.native
             
             // Request basic profile permissions just to get user ID
-            login.logInWithReadPermissions(["public_profile"], fromViewController: self) { (result, error) in
+            login.logIn(withReadPermissions: ["public_profile"], from: self) { (result, error) in
                 
                 // If no error, store facebook user ID
                 if (error == nil)
                 {
                     print("SUCCESS LOG IN!", result.debugDescription)
-                    print(FBSDKAccessToken.currentAccessToken().userID)
+                    print(FBSDKAccessToken.current().userID)
                 }
-                else if (result.isCancelled)
+                else if (result?.isCancelled)!
                 {
                     print ("LOG IN CANCELLED")
                 }
@@ -152,7 +152,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
 
     
-    @IBAction func onGetTwitterInfoClicked(sender: UIButton) {
+    @IBAction func onGetTwitterInfoClicked(_ sender: UIButton) {
 //        showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
 
         /*
@@ -176,7 +176,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     }
     
-    @IBAction func onGetInstagramInfoClicked(sender: UIButton) {
+    @IBAction func onGetInstagramInfoClicked(_ sender: UIButton) {
 
         /*
         SimpleAuth.authorize("instagram") { (result, error) in
@@ -198,12 +198,12 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
        */
     }
     
-    @IBAction func onGetYoutubeInfoClicked(sender: UIButton) {
+    @IBAction func onGetYoutubeInfoClicked(_ sender: UIButton) {
         showAlert("Hold Tight!", message: "Feature coming soon.", buttonTitle: "Ok", sender: self)
 
     }
     
-    @IBAction func onGetLinkedinInfoClicked(sender: UIButton) {
+    @IBAction func onGetLinkedinInfoClicked(_ sender: UIButton) {
       
         /*
         SimpleAuth.authorize("linkedin-web") { (result, error) in

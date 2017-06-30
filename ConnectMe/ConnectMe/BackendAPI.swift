@@ -16,8 +16,8 @@ import FBSDKLoginKit
 import AWSMobileAnalytics
 
 class FacebookProvider: NSObject, AWSIdentityProviderManager {
-  func logins() -> AWSTask {
-    let token = FBSDKAccessToken.currentAccessToken()
+  func logins() -> AWSTask<AnyObject> {
+    let token = FBSDKAccessToken.current()
     if token != nil {
       return AWSTask(result: [AWSIdentityProviderFacebook:token])
     }
@@ -37,20 +37,20 @@ func getAWSCognitoIdentityUserPool() -> AWSCognitoIdentityUserPool
   return userPool
 }
 
-func fetchAndSetCurrentCachedSubscriptionStatus(userName: String, completion: (result: Bool?, error: NSError?)->())
+func fetchAndSetCurrentCachedSubscriptionStatus(_ userName: String, completion: @escaping (_ result: Bool?, _ error: NSError?)->())
 {
   // Validate receipt first
-  let receiptUrl = NSBundle.mainBundle().appStoreReceiptURL
+  let receiptUrl = Bundle.main.appStoreReceiptURL
   
   if receiptUrl == nil {
     return
   }
   
-  if let receipt: NSData = NSData(contentsOfURL: receiptUrl!) {
-    let receiptData: NSString = receipt.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-    let lambdaInnvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-    let parameters = ["action": "subscriptionGetExpiresDate", "target": userName, "receipt_json": receiptData]
-    lambdaInnvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({
+  if let receipt: Data = try? Data(contentsOf: receiptUrl!) {
+    let receiptData: NSString = receipt.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) as NSString
+    let lambdaInnvoker = AWSLambdaInvoker.default()
+    let parameters = ["action": "subscriptionGetExpiresDate", "target": userName, "receipt_json": receiptData] as [String : Any]
+    lambdaInnvoker.invokeFunction("mock_api", jsonObject: parameters).continue({
       (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil {
         print("Result task for subscriptionGetExpiresDate is: ", resultTask.result!)
@@ -63,11 +63,11 @@ func fetchAndSetCurrentCachedSubscriptionStatus(userName: String, completion: (r
         let current_timestamp = getTimestampAsInt()
         
         // SUBSCRIBED
-        if expiration_timestamp > current_timestamp {
+        if expiration_timestamp > current_timestamp! {
           setCurrentCachedSubscriptionStatus(true) // Should be inferred automatically, but good to be explicit
           
           
-          completion(result: true, error: nil)
+          completion(true, nil)
         } else {
           // NOT SUBSCRIBED
           setCurrentCachedSubscriptionStatus(false)
@@ -81,12 +81,12 @@ func fetchAndSetCurrentCachedSubscriptionStatus(userName: String, completion: (r
               
               if resultUser.promouser != nil && resultUser.promouser == 1 {
                 setCurrentCachedPromoUserStatus(true)
-                completion(result: true, error: nil)
+                completion(true, nil)
 
               }
               else {
                 setCurrentCachedPromoUserStatus(false)
-                completion(result: false, error: nil)
+                completion(false, nil)
 
               }
 
@@ -95,7 +95,7 @@ func fetchAndSetCurrentCachedSubscriptionStatus(userName: String, completion: (r
           
           
           
-          completion(result: false, error: nil)
+          completion(false, nil)
 
         }
         
@@ -110,14 +110,14 @@ func fetchAndSetCurrentCachedSubscriptionStatus(userName: String, completion: (r
 
  }
 
-func setCachedUserFromAWS(userName: String!)
+func setCachedUserFromAWS(_ userName: String!)
 {
     /*******************************************
     * username, accounts, full name from DYNAMODB
     ********************************************/
-    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
     
-    dynamoDBObjectMapper.load(UserPrivacyObjectModel.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.load(UserPrivacyObjectModel.self, hashKey: userName, rangeKey: nil).continue { (resultTask) -> AnyObject? in
         if (resultTask.error != nil)
         {
             print("Error caching user from dynamoDB: ", resultTask.error)
@@ -156,23 +156,23 @@ func setCachedUserFromAWS(userName: String!)
      * user image from S3
      ********************************************/
     // AWS TRANSFER REQUEST
-    var downloadingFilePath = NSTemporaryDirectory().stringByAppendingString("temp")
-    var downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath)
+    var downloadingFilePath = NSTemporaryDirectory() + "temp"
+    var downloadingFileURL = URL(fileURLWithPath: downloadingFilePath)
     var downloadRequest = AWSS3TransferManagerDownloadRequest()
-    downloadRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
-    downloadRequest.key = "public/" + userName
-    downloadRequest.downloadingFileURL = downloadingFileURL
+    downloadRequest?.bucket = "aquaint-userfiles-mobilehub-146546989"
+    downloadRequest?.key = "public/" + userName
+    downloadRequest?.downloadingFileURL = downloadingFileURL
     
-    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+    let transferManager = AWSS3TransferManager.default()
     
-    transferManager.download(downloadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: { (resultTask) -> AnyObject? in
+    transferManager?.download(downloadRequest).continue(with: AWSExecutor.mainThread(), with: { (resultTask) -> AnyObject? in
         
         // if sucessful file transfer
         if resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil
         {
             print("CACHE: SUCCESS FILE DOWNLOAD")
             
-            let data = NSData(contentsOfURL: downloadingFileURL)
+            let data = try? Data(contentsOf: downloadingFileURL)
             setCurrentCachedUserImage(UIImage(data: data!)!)
             
         }
@@ -197,9 +197,9 @@ func setCachedUserFromAWS(userName: String!)
         setCurrentCachedUserScanCode(scanCode)
       } else {
         // User may not have a scan code, so generate one for them
-        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let lambdaInvoker = AWSLambdaInvoker.default()
         let parameters = ["action":"createScanCodeForUser", "target": userName]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
           if resultTask.result != nil && resultTask.error == nil {
             print("Succesfully generated scan code on login!")
             getUserS3Image(userName, extraPath: "scancodes/", completion: { (result, error) in
@@ -250,15 +250,15 @@ func setCachedUserFromAWS(userName: String!)
     
 }
 
-func getUserDynamoData(userName: String!, completion: (result: UserPrivacyObjectModel?, error: NSError?)->())
+func getUserDynamoData(_ userName: String!, completion: @escaping (_ result: UserPrivacyObjectModel?, _ error: NSError?)->())
 {
     
     /*******************************************
      * username, accounts, full name from DYNAMODB
      ********************************************/
-    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
     
-    dynamoDBObjectMapper.load(UserPrivacyObjectModel.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.load(UserPrivacyObjectModel.self, hashKey: userName, rangeKey: nil).continue { (resultTask) -> AnyObject? in
         if (resultTask.error != nil)
         {
             print("Error getting user from dynamoDB: ", resultTask.error)
@@ -289,15 +289,15 @@ func getUserDynamoData(userName: String!, completion: (result: UserPrivacyObject
 
 }
 
-func getUserPromoCodeDynamoData(userName: String!, completion: (result: UserPromoCodeMinimalObjectModel?, error: NSError?)->())
+func getUserPromoCodeDynamoData(_ userName: String!, completion: @escaping (_ result: UserPromoCodeMinimalObjectModel?, _ error: NSError?)->())
 {
   
   /*******************************************
    * username, accounts, full name from DYNAMODB
    ********************************************/
-  let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+  let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
   
-  dynamoDBObjectMapper.load(UserPromoCodeMinimalObjectModel.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
+  dynamoDBObjectMapper.load(UserPromoCodeMinimalObjectModel.self, hashKey: userName, rangeKey: nil).continue { (resultTask) -> AnyObject? in
     if (resultTask.error != nil)
     {
       print("Error getting user from dynamoDB: ", resultTask.error)
@@ -328,15 +328,15 @@ func getUserPromoCodeDynamoData(userName: String!, completion: (result: UserProm
   
 }
 
-func getUserVerifiedData(userName: String!, completion: (result: UserVerifiedMinimalObjectModel?, error: NSError?)->())
+func getUserVerifiedData(_ userName: String!, completion: @escaping (_ result: UserVerifiedMinimalObjectModel?, _ error: NSError?)->())
 {
   
   /*******************************************
    * username, accounts, full name from DYNAMODB
    ********************************************/
-  let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+  let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
   
-  dynamoDBObjectMapper.load(UserVerifiedMinimalObjectModel.self, hashKey: userName, rangeKey: nil).continueWithBlock { (resultTask) -> AnyObject? in
+  dynamoDBObjectMapper.load(UserVerifiedMinimalObjectModel.self, hashKey: userName, rangeKey: nil).continue { (resultTask) -> AnyObject? in
     if (resultTask.error != nil)
     {
       print("Error getting user from dynamoDB: ", resultTask.error)
@@ -369,7 +369,7 @@ func getUserVerifiedData(userName: String!, completion: (result: UserVerifiedMin
 
 
 
-func getUserS3Image(userName: String!, extraPath: String!, completion: (result: UIImage?, error: NSError?)->())
+func getUserS3Image(_ userName: String!, extraPath: String!, completion: @escaping (_ result: UIImage?, _ error: NSError?)->())
 {
     var imgPath = "public/"
     if extraPath != nil
@@ -381,38 +381,38 @@ func getUserS3Image(userName: String!, extraPath: String!, completion: (result: 
      * user image from S3
      ********************************************/
     // AWS TRANSFER REQUEST
-    let randomNum = 1000 + rand() % 999999
-    let downloadingFilePath = NSTemporaryDirectory().stringByAppendingString(String(randomNum))
+    let randomNum = 1000 + arc4random() % 999999
+    let downloadingFilePath = NSTemporaryDirectory() + String(randomNum)
 
     print("DOWNLOADING FILEPATH FOR ", userName, " IS: ", downloadingFilePath)
-    let downloadingFileURL = NSURL(fileURLWithPath: downloadingFilePath)
+    let downloadingFileURL = URL(fileURLWithPath: downloadingFilePath)
     let downloadRequest = AWSS3TransferManagerDownloadRequest()
-    downloadRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
-    downloadRequest.key = imgPath + userName
-    downloadRequest.downloadingFileURL = downloadingFileURL
+    downloadRequest?.bucket = "aquaint-userfiles-mobilehub-146546989"
+    downloadRequest?.key = imgPath + userName
+    downloadRequest?.downloadingFileURL = downloadingFileURL
     
-    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+    let transferManager = AWSS3TransferManager.default()
     
-    transferManager.download(downloadRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock: { (resultTask) -> AnyObject? in
+    transferManager?.download(downloadRequest).continue(with: AWSExecutor.mainThread(), with: { (resultTask) -> AnyObject? in
         
         // if sucessful file transfer
         if resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil
         {
             print("fetch s3 user image: SUCCESS FILE DOWNLOAD")
             
-            let data = NSData(contentsOfURL: downloadingFileURL)
+            let data = try? Data(contentsOf: downloadingFileURL)
             let image = UIImage(data: data!)!
             
             
-            try! NSFileManager.defaultManager().removeItemAtPath(downloadingFilePath)
-            completion(result: image, error: nil)
+            try! FileManager.default.removeItem(atPath: downloadingFilePath)
+            completion(image, nil)
             
         }
         else // If fail file transfer
         {
             print("fetch s3 user image: ERROR FILE DOWNLOAD: ", resultTask.error)
             
-            completion(result: nil, error: resultTask.error)
+            completion(nil, resultTask.error as! NSError)
         }
         
         return nil
@@ -421,7 +421,7 @@ func getUserS3Image(userName: String!, extraPath: String!, completion: (result: 
     
 }
 
-func setUserS3Image(userName: String!, userImage: UIImage!, completion: (error: NSError?)->())
+func setUserS3Image(_ userName: String!, userImage: UIImage!, completion: @escaping (_ error: NSError?)->())
 {
     
     // Resize photo for cheaper storage
@@ -429,20 +429,20 @@ func setUserS3Image(userName: String!, userImage: UIImage!, completion: (error: 
     let newImage = RBResizeImage(userImage, targetSize: targetSize)
     
     // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
-    let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
+    let imageFileURL = URL(fileURLWithPath: NSTemporaryDirectory() + "temp")
     
     // Force PNG format
     let data = UIImagePNGRepresentation(newImage)
-    try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+    try! data?.write(to: imageFileURL, options: NSData.WritingOptions.atomicWrite)
     
     // AWS TRANSFER REQUEST
     let transferRequest = AWSS3TransferManagerUploadRequest()
-    transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
-    transferRequest.key = "public/" + userName
-    transferRequest.body = imageFileURL
-    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+    transferRequest?.bucket = "aquaint-userfiles-mobilehub-146546989"
+    transferRequest?.key = "public/" + userName
+    transferRequest?.body = imageFileURL
+    let transferManager = AWSS3TransferManager.default()
     
-    transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
+    transferManager?.upload(transferRequest).continue(with: AWSExecutor.mainThread(), with:
         { (resultTask) -> AnyObject? in
             
             // if sucessful file transfer
@@ -450,12 +450,12 @@ func setUserS3Image(userName: String!, userImage: UIImage!, completion: (error: 
             {
                 // Also cache it.. only if file successfully uploadsd
                 setCurrentCachedUserImage(userImage)
-                completion(error: nil)
+                completion(nil)
                 
             }
             else // If fail file transfer
             {
-                completion(error: resultTask.error)
+                completion(resultTask.error as! NSError)
             }
             
             return nil
@@ -472,13 +472,13 @@ struct UserPoolData
     
 }
 
-func getUserPoolData(userName: String!, completion: (result: UserPoolData?, error: NSError?)->())
+func getUserPoolData(_ userName: String!, completion: @escaping (_ result: UserPoolData?, _ error: NSError?)->())
 {
     var userData = UserPoolData()
     // Get AWS UserPool
     let pool:AWSCognitoIdentityUserPool = getAWSCognitoIdentityUserPool()
     //Fetch UserPool Data
-    pool.getUser(userName).getDetails().continueWithBlock { (resultTask) -> AnyObject? in
+    pool.getUser(userName).getDetails().continue { (resultTask) -> AnyObject? in
         
         if resultTask.error != nil
         {
@@ -569,9 +569,9 @@ func getUserPoolData(userName: String!, completion: (result: UserPoolData?, erro
     
 }
 
-func updateCurrentUserProfilesDynamoDB(currentUserProfiles: NSMutableDictionary!, socialMediaType:String, socialMediaName:String, isAdding:Bool, completion: (result: User?, error: NSError?)->())
+func updateCurrentUserProfilesDynamoDB(_ currentUserProfiles: NSMutableDictionary!, socialMediaType:String, socialMediaName:String, isAdding:Bool, completion: @escaping (_ result: User?, _ error: NSError?)->())
 {
-    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
     let currentUser = getCurrentCachedUser()
     let currentRealName = getCurrentCachedFullName()
     var currentAccounts = currentUserProfiles
@@ -579,18 +579,18 @@ func updateCurrentUserProfilesDynamoDB(currentUserProfiles: NSMutableDictionary!
     if (isAdding && currentAccounts == nil)
     {
         currentAccounts = NSMutableDictionary()
-        currentAccounts.setValue([ socialMediaName ], forKey: socialMediaType)
+        currentAccounts?.setValue([ socialMediaName ], forKey: socialMediaType)
 
     }
-    else if (isAdding && currentAccounts.valueForKey(socialMediaType) == nil)
+    else if (isAdding && currentAccounts?.value(forKey: socialMediaType) == nil)
     {
-        currentAccounts.setValue([ socialMediaName ], forKey: socialMediaType)
+        currentAccounts?.setValue([ socialMediaName ], forKey: socialMediaType)
         
     } // If it already exists, append value to end of list
     else
     {
         
-        var list = currentAccounts.valueForKey(socialMediaType) as! Array<String>
+        var list = currentAccounts?.value(forKey: socialMediaType) as! Array<String>
         
         if isAdding
         {
@@ -599,54 +599,54 @@ func updateCurrentUserProfilesDynamoDB(currentUserProfiles: NSMutableDictionary!
         else
         {
             // Get list without this socialMediaName (i.e. remove it...)
-            list.removeAtIndex(list.indexOf(socialMediaName)!)
+            list.remove(at: list.index(of: socialMediaName)!)
         }
     
         // If nothing in list, we need to delete the key
         if list.count == 0
         {
-            currentAccounts.removeObjectForKey(socialMediaType)
+            currentAccounts?.removeObject(forKey: socialMediaType)
         }
         else
         {
-            currentAccounts.setValue(list, forKey: socialMediaType)
+            currentAccounts?.setValue(list, forKey: socialMediaType)
         }
     }
     
     // Upload user DATA to DynamoDB
     let dynamoDBUser = User()
     
-    dynamoDBUser.username = currentUser
-    dynamoDBUser.realname = currentRealName
+    dynamoDBUser?.username = currentUser
+    dynamoDBUser?.realname = currentRealName
     
     // Only add this object if there is data to consider. If we give an empty dictionary,
     // dynamo will throw an error.
-    if currentAccounts.count != 0
+    if currentAccounts?.count != 0
     {
-        dynamoDBUser.accounts = currentAccounts
+        dynamoDBUser?.accounts = currentAccounts
     }
 
     print(currentUser, " BEEP ", currentRealName, " BEEP ", currentAccounts)
     
-    dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.save(dynamoDBUser!).continue({ (resultTask) -> AnyObject? in
         
         if (resultTask.error != nil)
         {
             print ("DYNAMODB MODIFY PROFILE ERROR: ", resultTask.error)
-            completion(result: nil, error: resultTask.error)
+            completion(nil, resultTask.error as! NSError)
         }
         
         if (resultTask.result == nil)
         {
             print ("DYNAMODB MODIFY PROFILE result is nil....: ")
-            completion(result: nil, error: nil)
+            completion(nil, nil)
             
         }
         // If successful save
         else if (resultTask.error == nil)
         {
             print ("DYNAMODB MODIFY PROFILE SUCCESS: ", resultTask.result)
-            completion(result: dynamoDBUser, error: nil)
+            completion(dynamoDBUser, nil)
         }
         
         
@@ -655,17 +655,17 @@ func updateCurrentUserProfilesDynamoDB(currentUserProfiles: NSMutableDictionary!
     
 }
 
-func uploadUserFBUIDToDynamo(userName: String, fbUID: String)
+func uploadUserFBUIDToDynamo(_ userName: String, fbUID: String)
 {
-  let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+  let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
   
   // Upload user DATA to DynamoDB
   let dynamoDBUser = UserFBObjectModel()
   
-  dynamoDBUser.username = userName
-  dynamoDBUser.fbuid = fbUID
+  dynamoDBUser?.username = userName
+  dynamoDBUser?.fbuid = fbUID
   
-  dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock(
+  dynamoDBObjectMapper.save(dynamoDBUser!).continue(
     { (resultTask) -> AnyObject? in
       if (resultTask.error != nil) {
         print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
@@ -691,12 +691,12 @@ func uploadUserFBUIDToDynamo(userName: String, fbUID: String)
 // First attempt to get user's corresponding device ID list from dynamo.
 // If no list, create a new one and upload to dynamo
 // If it has a list already, append to that list and upload back to dynamo (ensure no duplicates)
-func uploadDeviceIDDynamoDB(currentDeviceID: String) {
+func uploadDeviceIDDynamoDB(_ currentDeviceID: String) {
   
-  let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+  let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
   let currentUser = getCurrentCachedUser()
   
-  dynamoDBObjectMapper.load(Device.self, hashKey: currentUser, rangeKey: nil).continueWithBlock { (
+  dynamoDBObjectMapper.load(Device.self, hashKey: currentUser, rangeKey: nil).continue { (
     resultTask) -> AnyObject? in
     
     if (resultTask.error != nil || resultTask.exception != nil) {
@@ -728,7 +728,7 @@ func uploadDeviceIDDynamoDB(currentDeviceID: String) {
     dynamoDBDevice.deviceidlist = listOfDeviceIDs
     print("uploadDeviceIDDynamoDB: dynamoDBDevice.deviceidlist = ", listOfDeviceIDs)
     
-    dynamoDBObjectMapper.save(dynamoDBDevice).continueWithBlock(
+    dynamoDBObjectMapper.save(dynamoDBDevice).continue(
       { (resultTask) -> AnyObject? in
         if (resultTask.error != nil || resultTask.exception != nil) {
           print("uploadDeviceIDDynamoDB: error or exception during upload.")
@@ -748,14 +748,14 @@ func uploadDeviceIDDynamoDB(currentDeviceID: String) {
 func warmUpLambda()
 {
     print("WARMING UP LAMBDA")
-    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+    let lambdaInvoker = AWSLambdaInvoker.default()
     let parameters = ["action":"doIFollow", "target": "aquaint", "me": "aquaint"]
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
         return nil
     }
 }
 
-func awsMobileAnalyticsRecordPageVisitEventTrigger(page: String!, forKey: String!)
+func awsMobileAnalyticsRecordPageVisitEventTrigger(_ page: String!, forKey: String!)
 {
   let eventClient = AWSMobileAnalytics(forAppId: "806eb8fb1f0c4af39af73c945a87e108").eventClient
 
@@ -764,17 +764,17 @@ func awsMobileAnalyticsRecordPageVisitEventTrigger(page: String!, forKey: String
     return
   }
 
-  guard let event = client.createEventWithEventType("PageVisits") else {
+  guard let event = client.createEvent(withEventType: "PageVisits") else {
     print("Error creating AMA event for ", page, "with key: ", forKey)
     return
   }
 
   event.addAttribute(page, forKey: forKey)
-  client.recordEvent(event)
+  client.record(event)
 //  client.submitEvents()
 }
 
-func awsMobileAnalyticsRecordButtonClickEventTrigger(button: String!, forKey: String!)
+func awsMobileAnalyticsRecordButtonClickEventTrigger(_ button: String!, forKey: String!)
 {
   let eventClient = AWSMobileAnalytics(forAppId: "806eb8fb1f0c4af39af73c945a87e108").eventClient
   
@@ -783,12 +783,12 @@ func awsMobileAnalyticsRecordButtonClickEventTrigger(button: String!, forKey: St
     return
   }
   
-  guard let event = client.createEventWithEventType("ButtonClicks") else {
+  guard let event = client.createEvent(withEventType: "ButtonClicks") else {
     print("Error creating AMA event for ", button, "with key: ", forKey)
     return
   }
   
   event.addAttribute(button, forKey: forKey)
-  client.recordEvent(event)
+  client.record(event)
   //  client.submitEvents()
 }

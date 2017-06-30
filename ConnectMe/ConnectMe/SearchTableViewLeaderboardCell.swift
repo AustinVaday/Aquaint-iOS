@@ -18,7 +18,7 @@ class SearchTableViewLeaderboardCell: UITableViewCell {
 
 extension SearchTableViewLeaderboardCell {
   
-  func setCollectionViewDataSourceDelegate<D where D:UICollectionViewDataSource, D:UICollectionViewDelegate>(dataSourceDelegate: D, forRow row: Int) {
+  func setCollectionViewDataSourceDelegate<D>(_ dataSourceDelegate: D, forRow row: Int) where D:UICollectionViewDataSource, D:UICollectionViewDelegate {
 
     userCollectionView.dataSource = dataSourceDelegate
     userCollectionView.delegate = dataSourceDelegate

@@ -10,7 +10,7 @@ import UIKit
 import FRHyperLabel
 
 protocol SponsoredProfileButtonDelegate {
-    func didClickSponsoredProfileButton(sponsoredProfileImageName: String, sponsoredProfileImageType: String)
+    func didClickSponsoredProfileButton(_ sponsoredProfileImageName: String, sponsoredProfileImageType: String)
 }
 
 class NewsfeedTableViewCell: UITableViewCell {
@@ -36,7 +36,7 @@ class NewsfeedTableViewCell: UITableViewCell {
         
         let aquaBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
         let attributes = [NSForegroundColorAttributeName: aquaBlue,
-                          NSFontAttributeName: UIFont.boldSystemFontOfSize(cellMessage.font.pointSize)]
+                          NSFontAttributeName: UIFont.boldSystemFont(ofSize: cellMessage.font.pointSize)]
         cellMessage.linkAttributeDefault = attributes
         
     }
@@ -55,7 +55,7 @@ class NewsfeedTableViewCell: UITableViewCell {
             // Reset attributes
             let aquaBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
             let attributes = [NSForegroundColorAttributeName: aquaBlue,
-                              NSFontAttributeName: UIFont.boldSystemFontOfSize(11)]
+                              NSFontAttributeName: UIFont.boldSystemFont(ofSize: 11)]
             cellMessage.linkAttributeDefault = attributes
             
             cellMessage.reloadInputViews()
@@ -71,11 +71,11 @@ class NewsfeedTableViewCell: UITableViewCell {
         
         print("ROTATE")
         
-        caretImageView.transform = CGAffineTransformRotate(caretImageView.transform, CGFloat(M_PI))
+        caretImageView.transform = caretImageView.transform.rotated(by: CGFloat(M_PI))
     }
     
 
-    @IBAction func onSponsoredProfileImageClicked(sender: UIButton) {
+    @IBAction func onSponsoredProfileImageClicked(_ sender: UIButton) {
         
         print("SPONSORED BUTTON CLICKED")
         

@@ -28,7 +28,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
   var currentSearchBegin = 0
   var currentSearchEnd = 25
   let searchOffset = 25
-  let imageCache = NSCache()
+  let imageCache = NSCache<AnyObject, AnyObject>()
   var users: Array<UserPrivacyObjectModel>!
   var userName: String!
 
@@ -45,9 +45,9 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
     userName = getCurrentCachedUser()
     defaultImage = UIImage(imageLiteral: "Person Icon Black")
     
-    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+    let lambdaInvoker = AWSLambdaInvoker.default()
     var parameters = ["action":"getFolloweesDict", "target": userName]
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
       if resultTask.result != nil && resultTask.error == nil
       {
         self.followeesMapping = resultTask.result! as! [String: Int]
@@ -58,7 +58,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
     }
     
     parameters = ["action":"getFolloweeRequestsDict", "target": userName]
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
       if resultTask.result != nil && resultTask.error == nil
       {
         self.followeeRequestsMapping = resultTask.result! as! [String: Int]
@@ -68,7 +68,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
       
     }
 
-    dispatch_async(dispatch_get_main_queue()) { 
+    DispatchQueue.main.async { 
       self.getFacebookFriendsUsingApp { (error) in
         if error == nil {
           
@@ -77,9 +77,9 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
           // Use arbirtary indicator until we can be certain that the numFriendsFound number is consistent with
           // the number of cells that it displays. Right now, it is not.
           let numFriendsFoundStr = "We found some of your Facebook friends on Aquaint!"
-          dispatch_async(dispatch_get_main_queue(), {
+          DispatchQueue.main.async(execute: {
             self.numberOfFriendsText.text = numFriendsFoundStr
-            self.numberOfFriendsText.hidden = false
+            self.numberOfFriendsText.isHidden = false
           })
           
           self.generateData(self.currentSearchBegin, end: self.currentSearchEnd)
@@ -90,7 +90,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
 
   }
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     // If this is not here, then we will upload same user events to dynamo every time.
     recentUsernameAdds = NSMutableDictionary()
 
@@ -98,7 +98,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
   }
   
   // When the view disappears, upload action data to Dynamo (used for newsfeed)
-  override func viewDidDisappear(animated: Bool) {
+  override func viewDidDisappear(_ animated: Bool) {
     
     // Only update dynamo if there are changes to account for.
     if recentUsernameAdds.count != 0
@@ -106,10 +106,10 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
       
       // Here's what we'll do: When the user leaves this page, we will take the recent additions (100 max)
       // and store them in dynamo. This information will be used for the newsfeed.
-      let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+      let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
       
       // Get dynamo mapper if it exists
-      dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: self.userName, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+      dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: self.userName, rangeKey: nil).continue({ (resultTask) -> AnyObject? in
         
         var newsfeedObjectMapper : NewsfeedEventListObjectModel!
         
@@ -127,13 +127,13 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
         newsfeedObjectMapper.username = self.userName
         
         // Sort datastructure by value (sort by timestamp)
-        let sortedKeys = self.recentUsernameAdds.allKeys.sort({ (firstKey, secondKey) -> Bool in
+        let sortedKeys = self.recentUsernameAdds.allKeys.sorted(by: { (firstKey, secondKey) -> Bool in
           // Sort time in ascending order
           let string1 = firstKey as! String
           let string2 = secondKey as! String
           
-          let timestamp1 = self.recentUsernameAdds.valueForKey(string1) as! Int
-          let timestamp2 = self.recentUsernameAdds.valueForKey(string2) as! Int
+          let timestamp1 = self.recentUsernameAdds.value(forKey: string1) as! Int
+          let timestamp2 = self.recentUsernameAdds.value(forKey: string2) as! Int
           
           return timestamp1 < timestamp2
         })
@@ -154,13 +154,13 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
           }
           
           let otherUsersArray = NSArray(object: otherUser)
-          let timestamp = self.recentUsernameAdds.objectForKey(otherUser) as! Int
+          let timestamp = self.recentUsernameAdds.object(forKey: otherUser) as! Int
           let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollowing", "other": otherUsersArray, "time" : timestamp])
           newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
           
         }
         
-        dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+        dynamoDBObjectMapper.save(newsfeedObjectMapper).continue { (resultTask) -> AnyObject? in
           print("DynamoObjectMapper sucessful save for newsfeedObject #1")
           
           return nil
@@ -176,11 +176,11 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
       for user in recentUsernameAdds.allKeys
       {
         
-        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         
         
         // Get dynamo mapper if it exists
-        dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: user, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+        dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: user, rangeKey: nil).continue({ (resultTask) -> AnyObject? in
           
           var newsfeedObjectMapper : NewsfeedEventListObjectModel!
           
@@ -199,11 +199,11 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
           
           // Upload to Dynamo - Indicate that this user has a new follower
           let otherUsersArray = NSArray(object: self.userName)
-          let timestamp = self.recentUsernameAdds.objectForKey(user) as! Int
+          let timestamp = self.recentUsernameAdds.object(forKey: user) as! Int
           let newsfeedObject = NSMutableDictionary(dictionary: ["event": "newfollower", "other":  otherUsersArray, "time" : timestamp] )
           newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
           
-          dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+          dynamoDBObjectMapper.save(newsfeedObjectMapper).continue { (resultTask) -> AnyObject? in
             print("DynamoObjectMapper sucessful save for newsfeedObject #2")
             
             return nil
@@ -220,11 +220,11 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
     
   }
 
-  @IBAction func backButtonClicked(sender: AnyObject) {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  @IBAction func backButtonClicked(_ sender: AnyObject) {
+    self.dismiss(animated: true, completion: nil)
   }
   
-  func scrollViewDidScroll(scrollView: UIScrollView) {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
     /*
     if scrollView == friendsTableView
     {
@@ -253,9 +253,9 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
   }
 
   
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-    let cell = tableView.dequeueReusableCellWithIdentifier("searchCell", forIndexPath: indexPath) as! SearchTableViewCell
+    let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! SearchTableViewCell
     
     // Set default image immediately for smooth transitions
     cell.cellImage.image = defaultImage
@@ -274,7 +274,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
       cell.displayPrivate = false
     }
     
-    let image = imageCache.objectForKey(userName) as? UIImage
+    let image = imageCache.object(forKey: userName as AnyObject) as? UIImage
     
     if image != nil
     {
@@ -335,7 +335,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
     
   }
   
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
       if users.count == 0
       {
       }
@@ -348,7 +348,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
     
   }
   
-  func generateData(start: Int, end: Int)
+  func generateData(_ start: Int, end: Int)
   {
 //    if start != 0 && end != self.searchOffset
 //    {
@@ -374,26 +374,26 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
   }
 
 
-  func getFacebookFriendsUsingApp(completion: (error: NSError?)->())
+  func getFacebookFriendsUsingApp(_ completion: @escaping (_ error: NSError?)->())
   {
     let login = FBSDKLoginManager.init()
 //    login.logOut()
     
     // Open in app instead of web browser!
-    login.loginBehavior = FBSDKLoginBehavior.Native
+    login.loginBehavior = FBSDKLoginBehavior.native
     
     // Request basic profile permissions just to get user ID
-    login.logInWithReadPermissions(["public_profile", "user_friends"], fromViewController: self) { (result, error) in
+    login.logIn(withReadPermissions: ["public_profile", "user_friends"], from: self) { (result, error) in
       // If no error, store facebook user ID
       if (error == nil && result != nil) {
         print("SUCCESS LOG IN!", result.debugDescription)
-        print(result.description)
+        print(result?.description)
         
         print("RESULTOO: ", result)
         
-        if (FBSDKAccessToken.currentAccessToken() != nil) {
+        if (FBSDKAccessToken.current() != nil) {
           
-          print("Current access user id: ", FBSDKAccessToken.currentAccessToken().userID)
+          print("Current access user id: ", FBSDKAccessToken.current().userID)
           
           let currentGraphPath = "/me/friends?fields=id"
           
@@ -401,7 +401,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
         
         }
       } else {
-        completion(error: error)
+        completion(error as! NSError)
       }
     }
     
@@ -411,9 +411,9 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
     
   }
   
-  private func startGraphRequest(path: String, completion: (error: NSError?)->()) {
+  fileprivate func startGraphRequest(_ path: String, completion: @escaping (_ error: NSError?)->()) {
     let request = FBSDKGraphRequest(graphPath: path, parameters: ["limit": "100"])
-    request.startWithCompletionHandler { (connection, result, error) in
+    request?.start { (connection, result, error) in
       if error == nil {
         let resultMap = result as! Dictionary<String, AnyObject>
         let resultIds = resultMap["data"] as! Array<Dictionary<String, String>>
@@ -434,31 +434,31 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
           self.listOfFBUserIDs.insert(id)
         }
         
-        completion(error: nil)
+        completion(nil)
         
       } else {
         print("Error getting **FB friends", error)
-        completion(error: error)
+        completion(error as! NSError)
       }
     }
     
   }
 
-  private func fetchDynamoUserDataFromFBUID(fbUID: String) {
-    let dynamoDB = AWSDynamoDB.defaultDynamoDB()
+  fileprivate func fetchDynamoUserDataFromFBUID(_ fbUID: String) {
+    let dynamoDB = AWSDynamoDB.default()
     let scanInput = AWSDynamoDBScanInput()
-    scanInput.tableName = "aquaint-users"
-    scanInput.limit = 200
-    scanInput.exclusiveStartKey = nil
+    scanInput?.tableName = "aquaint-users"
+    scanInput?.limit = 200
+    scanInput?.exclusiveStartKey = nil
       
     let UIDValue = AWSDynamoDBAttributeValue()
-    UIDValue.S = fbUID
+    UIDValue?.s = fbUID
     
-    scanInput.expressionAttributeValues = [":val" : UIDValue]
-    scanInput.filterExpression = "fbuid = :val"
+    scanInput?.expressionAttributeValues = [":val" : UIDValue!]
+    scanInput?.filterExpression = "fbuid = :val"
     
     
-    dynamoDB.scan(scanInput).continueWithBlock { (resultTask) -> AnyObject? in
+    dynamoDB.scan(scanInput!).continue { (resultTask) -> AnyObject? in
       print("SCAN FOR UID ", fbUID)
       if resultTask.result != nil && resultTask.error == nil
       {
@@ -468,10 +468,10 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
           print("RESULT for UID ", fbUID, " IS: ", result)
           
           let user = UserPrivacyObjectModel()
-          user.realname = (result["realname"]?.S)! as String
-          user.username = (result["username"]?.S)! as String
+          user.realname = (result["realname"]?.s)! as String
+          user.username = (result["username"]?.s)! as String
           if result["isprivate"] != nil {
-            let isprivateString = (result["isprivate"]?.N)! as String
+            let isprivateString = (result["isprivate"]?.n)! as String
             user.isprivate = Int(isprivateString)! as NSNumber
           }
           
@@ -483,7 +483,7 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
             {
               // Cache user image so we don't have to reload it next time
               self.imageCache.setObject(result! as UIImage, forKey: user.username)
-              dispatch_async(dispatch_get_main_queue(), {
+              DispatchQueue.main.async(execute: {
                 self.friendsTableView.reloadData()
               })
 
@@ -509,36 +509,36 @@ class AddSocialContactsViewController: ViewControllerPannable, UITableViewDataSo
   
   
   // Implement delegate actions for SearchTableViewCellDelegate
-  func addedUser(username: String, isPrivate: Bool) {
+  func addedUser(_ username: String, isPrivate: Bool) {
     // When user is added from tableview cell
     // Add to set to keep track of recently added users
-    recentUsernameAdds.setObject(getTimestampAsInt(), forKey: username)
+    recentUsernameAdds.setObject(getTimestampAsInt(), forKey: username as NSCopying)
     followeesMapping[username] = getTimestampAsInt()
   }
   
-  func removedUser(username: String, isPrivate: Bool) {
+  func removedUser(_ username: String, isPrivate: Bool) {
     // When user is removed from tableview cell
-    if recentUsernameAdds.objectForKey(username) != nil
+    if recentUsernameAdds.object(forKey: username) != nil
     {
-      recentUsernameAdds.removeObjectForKey(username)
+      recentUsernameAdds.removeObject(forKey: username)
     }
     
-    followeesMapping.removeValueForKey(username)
+    followeesMapping.removeValue(forKey: username)
     
   }
   
-  private func addTableViewFooterSpinner() {
-    let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+  fileprivate func addTableViewFooterSpinner() {
+    let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
     footerSpinner.startAnimating()
-    footerSpinner.frame = CGRectMake(0, 0, self.view.frame.width, 44)
+    footerSpinner.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44)
     self.friendsTableView.tableFooterView = footerSpinner
   }
   
-  private func removeTableViewFooterSpinner() {
+  fileprivate func removeTableViewFooterSpinner() {
     self.friendsTableView.tableFooterView = nil
   }
   
-  private func resetCurrentSearchOffsets() {
+  fileprivate func resetCurrentSearchOffsets() {
     self.currentSearchBegin = 0
     self.currentSearchEnd = self.searchOffset
   }

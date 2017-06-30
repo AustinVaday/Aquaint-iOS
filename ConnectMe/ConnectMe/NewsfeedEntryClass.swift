@@ -22,7 +22,7 @@ class NewsfeedEntry
     var socialMediaName : String!
     var socialMediaType : String!
     
-    func addHyperlinkToLabel(label: FRHyperLabel)
+    func addHyperlinkToLabel(_ label: FRHyperLabel)
     {
         
     }

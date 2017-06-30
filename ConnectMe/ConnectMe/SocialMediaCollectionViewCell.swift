@@ -10,7 +10,7 @@ import UIKit
 
 protocol SocialMediaCollectionDeletionDelegate
 {
-    func userDidDeleteSocialMediaProfile(socialMediaType:String, socialMediaName:String)
+    func userDidDeleteSocialMediaProfile(_ socialMediaType:String, socialMediaName:String)
 }
 
 class SocialMediaCollectionViewCell: UICollectionViewCell {
@@ -24,7 +24,7 @@ class SocialMediaCollectionViewCell: UICollectionViewCell {
     var delegate: SocialMediaCollectionDeletionDelegate?
     
     
-    @IBAction func onDeleteSocialMediaButtonClicked(sender: AnyObject) {
+    @IBAction func onDeleteSocialMediaButtonClicked(_ sender: AnyObject) {
         if delegate != nil
         {
             delegate?.userDidDeleteSocialMediaProfile(socialMediaType, socialMediaName: socialMediaName)

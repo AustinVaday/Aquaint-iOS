@@ -195,7 +195,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         refreshControl = CustomRefreshControl()
         //        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         // When user pulls, this function will be called
-        refreshControl.addTarget(self, action: #selector(WorldNotificationsViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(WorldNotificationsViewController.refreshTable(_:)), for: UIControlEvents.valueChanged)
         worldConnectionsTableView.addSubview(refreshControl)
         
         
@@ -203,7 +203,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     }
     
     // Function that is called when user drags/pulls table with intention of refreshing it
-    func refreshTable(sender:AnyObject)
+    func refreshTable(_ sender:AnyObject)
     {
         self.refreshControl.beginRefreshing()
       
@@ -219,7 +219,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     
     
     // TABLE VIEW
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         // TODO: If more than one user,
         // Display up to 30 users immediately
@@ -228,9 +228,9 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         return connectionList.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! WorldNotificationsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! WorldNotificationsTableViewCell
         
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
@@ -257,7 +257,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     }
     
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Set the new selectedRowIndex
         updateCurrentlyExpandedRow(&expansionObj, currentRow: indexPath.row)
@@ -273,7 +273,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         let currentRow = indexPath.row
         
@@ -282,7 +282,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     }
     
     // COLLECTION VIEW
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         //        print("------------------------------------")
         //        for (var i = 0; i < connectionList.count; i++)
@@ -306,11 +306,11 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         print("COLLECTIONVIEW 2")
         
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath) as! SocialMediaCollectionViewCell
         
         print("CVTAG IS:", collectionView.tag)
         
@@ -318,7 +318,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         // Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
         // an array so that we can easily get the social media mediums that the user has (i.e. facebook, twitter, etc).
         var userSocialMediaNames = connectionList[collectionView.tag].socialMediaUserNames.allKeys as! Array<String>
-        userSocialMediaNames = userSocialMediaNames.sort()
+        userSocialMediaNames = userSocialMediaNames.sorted()
         
         print(indexPath.item)
         let socialMediaName = userSocialMediaNames[indexPath.item % getNumberPossibleSocialMedia()]
@@ -352,15 +352,15 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     //
     //    }
     
-    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         print("SELECTED ITEM AT ", indexPath.item)
         
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
+        let cell = collectionView.cellForItem(at: indexPath) as! SocialMediaCollectionViewCell
         let socialMediaName = cell.socialMediaName
         
         var urlString:String!
         var altString:String!
-        var socialMediaURL:NSURL!
+        var socialMediaURL:URL!
         
         //        let userName = "AustinVaday"
         let connectionSocialMediaUserNames = connectionList[collectionView.tag].socialMediaUserNames
@@ -371,44 +371,44 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         
         switch (socialMediaName)
         {
-        case "facebook":
+        case ?"facebook":
             
             let facebookUserName = connectionSocialMediaUserNames["facebook"] as! String
             urlString = "fb://requests/" + facebookUserName
             altString = "http://www.facebook.com/" + facebookUserName
             break;
-        case "snapchat":
+        case ?"snapchat":
             
             let snapchatUserName = connectionSocialMediaUserNames["snapchat"] as! String
             urlString = "snapchat://add/" + snapchatUserName
             altString = ""
             break;
-        case "instagram":
+        case ?"instagram":
             
             let instagramUserName = connectionSocialMediaUserNames["instagram"] as! String
             urlString = "instagram://user?username=" + instagramUserName
             altString = "http://www.instagram.com/" + instagramUserName
             break;
-        case "twitter":
+        case ?"twitter":
             
             let twitterUserName = connectionSocialMediaUserNames["twitter"] as! String
             urlString = "twitter:///user?screen_name=" + twitterUserName
             altString = "http://www.twitter.com/" + twitterUserName
             break;
-        case "linkedin":
+        case ?"linkedin":
             
             let linkedinUserName = connectionSocialMediaUserNames["linkedin"] as! String
             urlString = "linkedin://profile/" + linkedinUserName
             altString = "http://www.linkedin.com/in/" + linkedinUserName
             
             break;
-        case "youtube":
+        case ?"youtube":
             
             let youtubeUserName = connectionSocialMediaUserNames["youtube"] as! String
             urlString = "youtube:www.youtube.com/user/" + youtubeUserName
             altString = "http://www.youtube.com/" + youtubeUserName
             break;
-        case "phone":
+        case ?"phone":
             print ("COMING SOON")
             
             //                contact.familyName = "Vaday"
@@ -431,14 +431,14 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
             break;
         }
         
-        socialMediaURL = NSURL(string: urlString)
+        socialMediaURL = URL(string: urlString)
         
         // If user doesn't have social media app installed, open using default browser instead (use altString)
-        if (!UIApplication.sharedApplication().canOpenURL(socialMediaURL))
+        if (!UIApplication.shared.canOpenURL(socialMediaURL))
         {
             if (altString != "")
             {
-                socialMediaURL = NSURL(string: altString)
+                socialMediaURL = URL(string: altString)
             }
             else
             {
@@ -457,7 +457,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         // Perform the request, go to external application and let the user do whatever they want!
         if socialMediaURL != nil
         {
-            UIApplication.sharedApplication().openURL(socialMediaURL)
+            UIApplication.shared.openURL(socialMediaURL)
         }
     }
     

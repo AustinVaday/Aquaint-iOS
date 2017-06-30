@@ -106,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
   }
  
 
-  func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
     // Configure Google Analytics
     guard let gai = GAI.sharedInstance() else {
@@ -114,8 +114,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       return false
     }
     gai.trackUncaughtExceptions = true  // report uncaught exceptions
-    gai.logger.logLevel = GAILogLevel.Verbose  // remove before app release
-    gai.trackerWithTrackingId("UA-61394116-2")
+    gai.logger.logLevel = GAILogLevel.verbose  // remove before app release
+    gai.tracker(withTrackingId: "UA-61394116-2")
     
     // SimpleAuth is no longer compatible with Swift 3+ due to interface changes of dependent pods (ReactiveSwift, for example)
     // social media platform-specific OAuth2 authentication will be gradually added in
@@ -180,13 +180,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       print("User already logged in!")
       print (getCurrentCachedUser())
 
-      let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+      let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
       let viewControllerIdentifier = "MainContainerViewController"
       
       // handle push notificiations when app is killed and relaunched
-      let vcMainContainer = storyboard.instantiateViewControllerWithIdentifier(viewControllerIdentifier) as! MainContainerViewController
+      let vcMainContainer = storyboard.instantiateViewController(withIdentifier: viewControllerIdentifier) as! MainContainerViewController
       
-      if let payload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary, identifier = payload["identifier"] as? NSString {
+      if let payload = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary, let identifier = payload["identifier"] as? NSString {
         print("application(didFinishLaunchingWithOptions): with RemoteNotificaitonKey: ", payload)
         
         if identifier == "newFollower" {
@@ -197,7 +197,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
           vcMainContainer.arrivedFromPushNotification = vcMainContainer.NEW_FOLLOW_REQUESTS
         }
         
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        UIApplication.shared.applicationIconBadgeNumber = 0
       }
       
       // Go to home page, as if user was logged in already!
@@ -233,27 +233,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       didFinishLaunchingWithOptions: launchOptions
     )
     
-    let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: nil)
+    let serviceConfiguration = AWSServiceConfiguration(region: AWSRegionType.usEast1, credentialsProvider: nil)
     let userPoolConfiguration = AWSCognitoIdentityUserPoolConfiguration(clientId: "41v7gese46ar214saeurloufe7", clientSecret: "1lr1abieg6g8fpq06hngo9edqg4qtf63n3cql1rgsvomc11jvs9b", poolId: "us-east-1_yyImSiaeD")
     
-    AWSCognitoIdentityUserPool.registerCognitoIdentityUserPoolWithConfiguration(serviceConfiguration, userPoolConfiguration: userPoolConfiguration, forKey: "UserPool")
+    AWSCognitoIdentityUserPool.register(with: serviceConfiguration, userPoolConfiguration: userPoolConfiguration, forKey: "UserPool")
     
     userPool =  AWSCognitoIdentityUserPool(forKey: "UserPool")
     
     // Get credentials provider
-    credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e", identityProviderManager: userPool)
+    credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.usEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e", identityProviderManager: userPool)
     
     // Initialize Amazon Cognito Credentials Provider
     // let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
     let configuration = AWSServiceConfiguration(
-      region: AWSRegionType.USEast1,
+      region: AWSRegionType.usEast1,
       credentialsProvider: credentialsProvider
     )
-    AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
+    AWSServiceManager.default().defaultServiceConfiguration = configuration
     
     // App Analytics
     let analyticsConfiguration = AWSMobileAnalyticsConfiguration.init()
-    analyticsConfiguration.serviceConfiguration = AWSServiceManager.defaultServiceManager().defaultServiceConfiguration
+    analyticsConfiguration.serviceConfiguration = AWSServiceManager.default().defaultServiceConfiguration
     _ = AWSMobileAnalytics.init(forAppId: "806eb8fb1f0c4af39af73c945a87e108", configuration: analyticsConfiguration, completionBlock: nil)
     
     userPool.delegate = self
@@ -267,20 +267,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
   func startPasswordAuthentication() -> AWSCognitoIdentityPasswordAuthentication {
     
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    let controller = storyboard.instantiateViewControllerWithIdentifier("loginController") as! LogInController
+    let controller = storyboard.instantiateViewController(withIdentifier: "loginController") as! LogInController
     
-    dispatch_async(dispatch_get_main_queue()) {
-      self.window?.rootViewController?.presentViewController(controller, animated: true, completion: nil)
+    DispatchQueue.main.async {
+      self.window?.rootViewController?.present(controller, animated: true, completion: nil)
     }
     
       return controller
   }
   
   // Process results & set up for Facebook API integration
-  func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+  func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
     let handled = FBSDKApplicationDelegate.sharedInstance().application(
       application,
-      openURL: url,
+      open: url,
       sourceApplication: sourceApplication,
       annotation: annotation
     )
@@ -290,7 +290,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
   }
   
   // Apple Push Notifications  
-  func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     
     /* previous attempts at deviceToken parsing
     let deviceTokenStr = String(data: deviceToken, encoding: NSUTF8StringEncoding);
@@ -300,9 +300,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     */
     
     var deviceTokenStr = "\(deviceToken)"
-    deviceTokenStr.removeAtIndex(deviceTokenStr.endIndex.predecessor())
-    deviceTokenStr.removeAtIndex(deviceTokenStr.startIndex)
-    deviceTokenStr = deviceTokenStr.stringByReplacingOccurrencesOfString(" ", withString: "")
+    deviceTokenStr.remove(at: deviceTokenStr.characters.index(before: deviceTokenStr.endIndex))
+    deviceTokenStr.remove(at: deviceTokenStr.startIndex)
+    deviceTokenStr = deviceTokenStr.replacingOccurrences(of: " ", with: "")
     
     print("application(didRegisterForRemoteNotificationsWithDeviceToken): deviceToken = ", deviceTokenStr)
     
@@ -310,17 +310,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
     uploadDeviceIDDynamoDB(deviceTokenStr)
   }
 
-  func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+  func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
     print("Failed to register for remote notification: ", error)
   }
   
-  func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+  func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
     
     print("application(didReceiveRemoteNotification): ", userInfo)
     
     // handle push notifications when app is in foreground or background
-    let state: UIApplicationState = UIApplication.sharedApplication().applicationState
-    if (state == .Background) || (state == .Inactive) {
+    let state: UIApplicationState = UIApplication.shared.applicationState
+    if (state == .background) || (state == .inactive) {
       if let identifier = userInfo["identifier"] as? NSString {
         presentSectionfromPushNotification(withIdentifier: identifier)
       }
@@ -328,28 +328,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       print("\(state): application not in Background or Inactive state, not doing anything.")
     }
     
-    UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    UIApplication.shared.applicationIconBadgeNumber = 0
  }
 
-  func applicationWillResignActive(application: UIApplication) {
+  func applicationWillResignActive(_ application: UIApplication) {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
   }
 
-  func applicationDidEnterBackground(application: UIApplication) {
+  func applicationDidEnterBackground(_ application: UIApplication) {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
   }
 
-  func applicationWillEnterForeground(application: UIApplication) {
+  func applicationWillEnterForeground(_ application: UIApplication) {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
   }
 
-  func applicationDidBecomeActive(application: UIApplication) {
+  func applicationDidBecomeActive(_ application: UIApplication) {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
   }
 
-  func applicationWillTerminate(application: UIApplication) {
+  func applicationWillTerminate(_ application: UIApplication) {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
   

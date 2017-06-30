@@ -22,15 +22,15 @@ class ReusableWebViewController: ViewControllerPannable {
     // Do any additional setup after loading the view.
   }
   
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     
-    let url = NSURL(string: webURL)
-    let urlRequest = NSURLRequest(URL: url!)
+    let url = URL(string: webURL)
+    let urlRequest = URLRequest(url: url!)
     webView.loadRequest(urlRequest)
     titleLabel.text = webTitle
   }
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     
     if webTitle != nil {
       awsMobileAnalyticsRecordPageVisitEventTrigger("ReusableWebViewController - " + webTitle, forKey: "page_name")
@@ -42,13 +42,13 @@ class ReusableWebViewController: ViewControllerPannable {
     // Dispose of any resources that can be recreated.
   }
   
-  @IBAction func backButtonClicked(sender: AnyObject) {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  @IBAction func backButtonClicked(_ sender: AnyObject) {
+    self.dismiss(animated: true, completion: nil)
   }
   
-  @IBAction func copyLinkButtonClicked(sender: AnyObject) {
+  @IBAction func copyLinkButtonClicked(_ sender: AnyObject) {
     // Copy link to clipboard!
-    UIPasteboard.generalPasteboard().string = self.webURL
+    UIPasteboard.general.string = self.webURL
     
     showAlert("Done!", message: "You've copied " + self.webURL + " to your clipboard!", buttonTitle: "Ok", sender: self)
   }

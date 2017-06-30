@@ -17,7 +17,7 @@ protocol CustomSearchControllerDelegate
     
     func didTapOnCancelButton()
     
-    func didChangeSearchText(searchText: String)
+    func didChangeSearchText(_ searchText: String)
 }
 
 
@@ -35,7 +35,7 @@ class CustomSearchController: UISearchController, UISearchBarDelegate {
     }
     
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?)
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
     {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -47,30 +47,30 @@ class CustomSearchController: UISearchController, UISearchBarDelegate {
     
     
     // **** REQUIRED PROTOCOLS FOR SEARCH BAR DELEGATE ****
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar)
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar)
     {
         customDelegate.didStartSearching()
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar)
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar)
     {
         customSearchBar.resignFirstResponder()
         customDelegate.didTapOnSearchButton()
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar)
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar)
     {
         customSearchBar.resignFirstResponder()
         customDelegate.didTapOnCancelButton()
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String)
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
     {
         customDelegate.didChangeSearchText(searchText)
     }
     
     // Helper functions
-    private func configureSearchBar(frame: CGRect, font: UIFont, textColor: UIColor, bgColor: UIColor)
+    fileprivate func configureSearchBar(_ frame: CGRect, font: UIFont, textColor: UIColor, bgColor: UIColor)
     {
         // Initializes an instance of our own created custom search bar!
         customSearchBar = CustomSearchBar(frame: frame, font: font , textColor: textColor)

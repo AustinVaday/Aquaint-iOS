@@ -13,10 +13,10 @@ class ScanCodeDisplayStoryboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
       
-      dispatch_async(dispatch_get_main_queue()) { 
+      DispatchQueue.main.async { 
         // Get our special popup design from the XIB
         let storyboard = UIStoryboard(name: "ScanCodeDisplay", bundle: nil)
-        let viewController = storyboard.instantiateViewControllerWithIdentifier("ScanCodeDisplayViewController") as! ScanCodeDisplay
+        let viewController = storyboard.instantiateViewController(withIdentifier: "ScanCodeDisplayViewController") as! ScanCodeDisplay
         
         viewController.view.bounds = self.view.bounds
         viewController.view.frame = self.view.frame
@@ -24,7 +24,7 @@ class ScanCodeDisplayStoryboardViewController: UIViewController {
         self.view.addSubview(viewController.view)
 
         self.addChildViewController(viewController)
-        viewController.didMoveToParentViewController(self)
+        viewController.didMove(toParentViewController: self)
 
       }
     }

@@ -733,6 +733,7 @@
 					FF897C301C01AC63001B2634 = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = YJZRJQ3A67;
+						LastSwiftMigration = 0830;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -741,6 +742,7 @@
 					};
 					FF897C441C01AC63001B2634 = {
 						CreatedOnToolsVersion = 7.1.1;
+						LastSwiftMigration = 0830;
 						TestTargetID = FF897C301C01AC63001B2634;
 					};
 					FF897C4F1C01AC63001B2634 = {
@@ -1246,6 +1248,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ConnectMe/Aquaint-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1344,6 +1347,7 @@
 				PRODUCT_NAME = Aquaint;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ConnectMe/Aquaint-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1358,6 +1362,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ConnectMeTests;
 				PRODUCT_NAME = Aquaint;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aquaint.app/Aquaint";
 			};
 			name = Debug;
@@ -1372,6 +1377,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ConnectMeTests;
 				PRODUCT_NAME = Aquaint;
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aquaint.app/Aquaint";
 			};
 			name = Release;

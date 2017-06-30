@@ -20,7 +20,7 @@ class CameraController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     var videoPreviewLayer:AVCaptureVideoPreviewLayer!
     var scanCodeFrameView:UIView!
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
 //        //Create a capture session
 //        captureSession = AVCaptureSession()

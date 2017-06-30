@@ -65,7 +65,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     refreshControl = CustomRefreshControl()
     
     // When user pulls, this function will be called
-    refreshControl.addTarget(self, action: #selector(RecentConnections.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+    refreshControl.addTarget(self, action: #selector(RecentConnections.refreshTable(_:)), for: UIControlEvents.valueChanged)
     userTableView.addSubview(refreshControl)
     
     // Call all lambda functions and AWS-needed stuff
@@ -73,13 +73,13 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     
   }
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     //        generateData(false)
     awsMobileAnalyticsRecordPageVisitEventTrigger("FollowerListViewController", forKey: "page_name")
   }
   
   // Function that is called when user drags/pulls table with intention of refreshing it
-  func refreshTable(sender:AnyObject)
+  func refreshTable(_ sender:AnyObject)
   {
     self.refreshControl.beginRefreshing()
     
@@ -98,7 +98,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
   
   
   
-  func scrollViewDidScroll(scrollView: UIScrollView) {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
     if scrollView == self.userTableView
     {
       let location = scrollView.contentOffset.y + scrollView.frame.size.height
@@ -120,7 +120,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     }
   }
   
-  func changeUser(newUserName: String) {
+  func changeUser(_ newUserName: String) {
     self.currentUserName = newUserName
     
     // Regenerate data
@@ -130,7 +130,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     generateData(false, start: currentBegin, end: currentEnd)
   }
   
-  func changeLambdaAction(newLambdaAction: String) {
+  func changeLambdaAction(_ newLambdaAction: String) {
     self.lambdaAction = newLambdaAction
     
     // Regenerate data
@@ -143,7 +143,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
   
   
   // TABLE VIEW
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
     // TODO: If more than one user,
     // Display up to 30 users immediately
@@ -152,7 +152,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     return connectionList.count
   }
   
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     //        print("DDD*********************************************************")
     //        print(" Size of connectionList is: ", connectionList.count)
@@ -161,7 +161,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     //        print("*********************************************************")
     
     
-    let cell = tableView.dequeueReusableCellWithIdentifier("contactsCell", forIndexPath: indexPath) as! ContactsTableViewCell
+    let cell = tableView.dequeueReusableCell(withIdentifier: "contactsCell", for: indexPath) as! ContactsTableViewCell
     
     if connectionList.count == 0
     {
@@ -189,9 +189,9 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
   }
   
   
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
-    if !tableView.dragging && !tableView.tracking
+    if !tableView.isDragging && !tableView.isTracking
     {
       let connectedUser = connectionList[indexPath.row]
       showPopupForUser(connectedUser.userName, me: self.myUserName)
@@ -199,11 +199,11 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     }
   }
   
-  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return 60
   }
   
-  private func generateData(showSpinner: Bool, start: Int, end: Int)
+  fileprivate func generateData(_ showSpinner: Bool, start: Int, end: Int)
   {
     // If we don't store our data into a temporary object -- we'll be modifying the table data source while it may still
     // be used in the tableView methods! This prevents a crash.
@@ -212,7 +212,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     // Only show the middle spinner if user did not refresh table or if init (or else there would be two spinners!)
     if showSpinner && start == 0
     {
-      spinner.hidden = false
+      spinner.isHidden = false
       spinner.startAnimating()
     }
     
@@ -222,10 +222,10 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     // Get array of connections from Lambda -- RDS
-    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-    let parameters = ["action": lambdaAction, "target": currentUserName, "start": start, "end": end]
+    let lambdaInvoker = AWSLambdaInvoker.default()
+    let parameters = ["action": lambdaAction, "target": currentUserName, "start": start, "end": end] as [String : Any]
     
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
@@ -248,8 +248,8 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
         // Update UI on main thread
         if connectionsFetchedList.count == 0 && start == 0
         {
-          dispatch_async(dispatch_get_main_queue(), {
-            self.spinner.hidden = true
+          DispatchQueue.main.async(execute: {
+            self.spinner.isHidden = true
             self.spinner.stopAnimating()
             self.connectionList = Array<Connection>()
             self.userTableView.reloadData()
@@ -260,7 +260,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
         }
         else if connectionsFetchedList.count == 0 && start != 0
         {
-          dispatch_async(dispatch_get_main_queue(), {
+          DispatchQueue.main.async(execute: {
             self.removeTableViewFooterSpinner()
             
           })
@@ -272,8 +272,8 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
         for userData in connectionsFetchedList
         {
           let con = Connection()
-          con.userName = userData.objectAtIndex(0) as! String
-          con.timestampGMT = userData.objectAtIndex(1) as! Int
+          con.userName = userData.object(at: 0) as! String
+          con.timestampGMT = userData.object(at: 1) as! Int
           
           newConnectionList.append(con)
         }
@@ -316,20 +316,20 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
                 {
                   // Update UI when no more running requests! (last async call finished)
                   // Update UI on main thread
-                  dispatch_async(dispatch_get_main_queue(), {
+                  DispatchQueue.main.async(execute: {
                     
                     // If initial fetch, just store entire array
                     if start == 0
                     {
                       self.connectionList = newConnectionList
-                      self.spinner.hidden = true
+                      self.spinner.isHidden = true
                       self.spinner.stopAnimating()
                     }
                     else
                     {
                       self.removeTableViewFooterSpinner()
                       self.isNewDataLoading = false
-                      self.connectionList.appendContentsOf(newConnectionList)
+                      self.connectionList.append(contentsOf: newConnectionList)
                     }
                     
                     self.userTableView.reloadData()
@@ -347,7 +347,7 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
       else
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-        self.spinner.hidden = true
+        self.spinner.isHidden = true
         self.spinner.stopAnimating()
         
       }
@@ -358,20 +358,20 @@ class FollowerListViewController: UIViewController, UITableViewDelegate, UITable
     
   }
   
-  private func addTableViewFooterSpinner() {
-    let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+  fileprivate func addTableViewFooterSpinner() {
+    let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
     footerSpinner.startAnimating()
-    footerSpinner.frame = CGRectMake(0, 0, self.view.frame.width, 44)
+    footerSpinner.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44)
     self.userTableView.tableFooterView = footerSpinner
   }
   
-  private func removeTableViewFooterSpinner() {
+  fileprivate func removeTableViewFooterSpinner() {
     self.userTableView.tableFooterView = nil
   }
   
   
   // EXPECTED TO BE IN ORDER.
-  private func areListsEqual(array1: Array<Connection>, array2: Array<Connection>) -> Bool
+  fileprivate func areListsEqual(_ array1: Array<Connection>, array2: Array<Connection>) -> Bool
   {
     if array1.count != array2.count
     {

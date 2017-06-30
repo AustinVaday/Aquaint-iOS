@@ -19,8 +19,8 @@ protocol PaymentsDisplayDelegate {
 // Will have the real displays and data
 class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaymentTransactionObserver {
   
-  var productIDs: Array<String!> = []
-  var productsArray: Array<SKProduct!> = []
+  var productIDs: Array<String?> = []
+  var productsArray: Array<SKProduct?> = []
   var transactionInProgress = false
   let selectedProductIndex = 0
   var paidDelegate : PaymentsDisplayDelegate?
@@ -37,25 +37,25 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
     
   }
 
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     if SKPaymentQueue.canMakePayments() {
-      SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+      SKPaymentQueue.default().add(self)
     }
   }
   
-  override func viewWillDisappear(animated: Bool) {
+  override func viewWillDisappear(_ animated: Bool) {
     if SKPaymentQueue.canMakePayments() {
-      SKPaymentQueue.defaultQueue().removeTransactionObserver(self)
+      SKPaymentQueue.default().remove(self)
     }
   }
 
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     awsMobileAnalyticsRecordPageVisitEventTrigger("PaymentsDisplay", forKey: "page_name")
   }
 
-  @IBAction func onPromoCodeButtonClicked(sender: AnyObject) {
+  @IBAction func onPromoCodeButtonClicked(_ sender: AnyObject) {
      //Prompt user to enter in confirmation code.
-      dispatch_async(dispatch_get_main_queue(), {
+      DispatchQueue.main.async(execute: {
           self.showPromoCodePopup({ (result) in
               if result != nil
               {
@@ -65,8 +65,8 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
                   if self.paidDelegate != nil {
                     self.paidDelegate!.didPayForProduct()
                     
-                    dispatch_async(dispatch_get_main_queue(), { 
-                      self.dismissViewControllerAnimated(true, completion: nil)
+                    DispatchQueue.main.async(execute: { 
+                      self.dismiss(animated: true, completion: nil)
                     })
                   }
                 } else {
@@ -85,7 +85,7 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
   }
   
   
-  @IBAction func onClickBuyBottom(sender: AnyObject) {
+  @IBAction func onClickBuyBottom(_ sender: AnyObject) {
     if transactionInProgress {
       return
     }
@@ -99,10 +99,10 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
     // Touch ID LocalAuthentication
     let authenticationContext = LAContext()
     
-    if authenticationContext.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: nil) {
+    if authenticationContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: nil) {
       // Check the fingerprint
       authenticationContext.evaluatePolicy(
-        .DeviceOwnerAuthenticationWithBiometrics,
+        .deviceOwnerAuthenticationWithBiometrics,
         localizedReason: "Aquaint Subscription - Authentication is needed to proceed with purchase.",
         reply: { [unowned self] (success, error) -> Void in
           if(success) {
@@ -117,8 +117,8 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
       
     }
     
-    let payment = SKPayment(product: self.productsArray[self.selectedProductIndex] as SKProduct)
-    SKPaymentQueue.defaultQueue().addPayment(payment)
+    let payment = SKPayment(product: self.productsArray[self.selectedProductIndex] as! SKProduct)
+    SKPaymentQueue.default().add(payment)
     self.transactionInProgress = true
     
     // Record event trigger
@@ -126,10 +126,10 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
     
   }
   
-  @IBAction func backButtonClicked(sender: AnyObject) {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  @IBAction func backButtonClicked(_ sender: AnyObject) {
+    self.dismiss(animated: true, completion: nil)
   }
-  func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
+  func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
     if response.products.count != 0 {
       for product in response.products {
         productsArray.append(product)
@@ -146,37 +146,37 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
     productsRequestDidReceiveResponse = true
   }
   
-  func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+  func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
     for transaction in transactions {
       switch transaction.transactionState {
-      case SKPaymentTransactionState.Purchased:
+      case SKPaymentTransactionState.purchased:
         print("Transaction completed successfully.")
-        SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+        SKPaymentQueue.default().finishTransaction(transaction)
         setCurrentCachedSubscriptionStatus(true)
         transactionInProgress = false
         
         if paidDelegate != nil {
           self.paidDelegate!.didPayForProduct()
-          dispatch_async(dispatch_get_main_queue(), {
-            self.dismissViewControllerAnimated(true, completion: nil)
+          DispatchQueue.main.async(execute: {
+            self.dismiss(animated: true, completion: nil)
           })
         }
 
         
-      case SKPaymentTransactionState.Failed:
+      case SKPaymentTransactionState.failed:
         print("Transaction Failed");
-        SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+        SKPaymentQueue.default().finishTransaction(transaction)
         transactionInProgress = false
         
-      case SKPaymentTransactionState.Restored:
-        SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
+      case SKPaymentTransactionState.restored:
+        SKPaymentQueue.default().restoreCompletedTransactions()
         transactionInProgress = false
         setCurrentCachedSubscriptionStatus(true)
        
         if paidDelegate != nil {
           self.paidDelegate!.didPayForProduct()
-          dispatch_async(dispatch_get_main_queue(), {
-            self.dismissViewControllerAnimated(true, completion: nil)
+          DispatchQueue.main.async(execute: {
+            self.dismiss(animated: true, completion: nil)
           })
         }
         
@@ -201,15 +201,15 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
     }
   }
   
-  private func showPromoCodePopup(completion: (result:String?)->())
+  fileprivate func showPromoCodePopup(_ completion: @escaping (_ result:String?)->())
   {
     var alertViewResponder: SCLAlertViewResponder!
-    let subview = UIView(frame: CGRectMake(0,0,216,70))
+    let subview = UIView(frame: CGRect(x: 0,y: 0,width: 216,height: 70))
     let x = (subview.frame.width - 180) / 2
     let colorDarkBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
     
     // Add text field for username
-    let textField = UITextField(frame: CGRectMake(x,10,180,25))
+    let textField = UITextField(frame: CGRect(x: x,y: 10,width: 180,height: 25))
     
     //            textField.layer.borderColor = colorLightBlue.CGColor
     //            textField.layer.borderWidth = 1.5
@@ -217,7 +217,7 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
     textField.font = UIFont(name: "Avenir Roman", size: 14.0)
     textField.textColor = colorDarkBlue
     textField.placeholder = "Enter Promo Code"
-    textField.textAlignment = NSTextAlignment.Center
+    textField.textAlignment = NSTextAlignment.center
     
     // Add target to text field to validate/fix user input of a proper input
     //        textField.addTarget(self, action: #selector(usernameTextFieldDidChange), forControlEvents: UIControlEvents.EditingChanged)
@@ -277,25 +277,25 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
   }
   
   
-  func uploadPromoCodeStatus(isPromoUser: Bool) {
+  func uploadPromoCodeStatus(_ isPromoUser: Bool) {
     // Upload user DATA to DynamoDB
     let dynamoDBUser = UserPromoCodeMinimalObjectModel()
     
-    dynamoDBUser.username = getCurrentCachedUser()
+    dynamoDBUser?.username = getCurrentCachedUser()
     
     if isPromoUser
     {
-      dynamoDBUser.promouser = 1
+      dynamoDBUser?.promouser = 1
       setCurrentCachedPromoUserStatus(true)
       
     } else {
-      dynamoDBUser.promouser = 0
+      dynamoDBUser?.promouser = 0
       setCurrentCachedPromoUserStatus(false)
       
     }
     
-    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
-    dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
+    dynamoDBObjectMapper.save(dynamoDBUser!).continue({ (resultTask) -> AnyObject? in
       
       if (resultTask.error != nil)
       {
