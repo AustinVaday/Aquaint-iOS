@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Firebase
+//import Firebase
 import ReachabilitySwift
 import AWSDynamoDB
 import AWSLambda
@@ -78,7 +78,7 @@ class MainContainerViewController: UIViewController, UIPageViewControllerDelegat
 //      }
       let lambdaInnvoker = AWSLambdaInvoker.default()
       let parameters = ["action": "verifyAppleReceipt", "target": userName, "receipt_json": receiptData] as [String : Any]
-      lambdaInnvoker.invokeFunction("mock_api", jsonObject: parameters).continue({
+      lambdaInnvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith({
         (resultTask) -> AnyObject? in
         if resultTask.error == nil && resultTask.result != nil {
           print("Result task for verifyAppleReceipt is: ", resultTask.result!)

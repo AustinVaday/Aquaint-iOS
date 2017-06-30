@@ -9,7 +9,7 @@
 //  Code is owned by: Austin Vaday and Navid Sarvian
 
 import UIKit
-import Firebase
+//import Firebase
 //import AWSS3
 
 class FriendRequestsController: UIViewController, UITableViewDelegate, UITableViewDataSource {

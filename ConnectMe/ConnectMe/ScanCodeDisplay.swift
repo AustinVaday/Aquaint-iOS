@@ -338,7 +338,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     let lambdaInvoker = AWSLambdaInvoker.default()
     var parameters = ["action":"getUserPageViews", "target": username]
     
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil
       {
         print("Result task for getUserPageViews is: ", resultTask.result!)
@@ -353,7 +353,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     
     parameters = ["action":"getUserCodeScans", "target": username]
     
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil
       {
         print("Result task for getUserCodeScans is: ", resultTask.result!)
@@ -367,7 +367,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     }
     
     parameters = ["action":"getUserTotalEngagements", "target": username]
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil
       {
         print("Result task for getUserTotalEngagements is: ", resultTask.result!)

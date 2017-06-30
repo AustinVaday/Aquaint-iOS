@@ -85,7 +85,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Fetch the user's username
         currentUserName = getCurrentCachedUser()
       
-        defaultImage = UIImage(imageLiteral: "Person Icon Black")
+        defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
         
         
         // Set up refresh control for when user drags for a refresh.
@@ -122,7 +122,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
         // Perform the request, go to external application and let the user do whatever they want!
         if socialMediaURL != nil
         {
-            UIApplication.shared.openURL(socialMediaURL)
+            UIApplication.shared.openURL(socialMediaURL!)
         }
     }
     
@@ -201,7 +201,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 let handlerUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(user, me: self.currentUserName)
+                    showPopupForUser(user!, me: self.currentUserName)
                 }
                 
                 let handlerOtherUser = {
@@ -224,7 +224,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 let handlerFolloweddUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(followedUser, me: self.currentUserName)
+                    showPopupForUser(followedUser!, me: self.currentUserName)
                 }
 
                 
@@ -249,7 +249,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
 
                 let handlerOtherUser = {
                     (hyperLabel: FRHyperLabel!, substring: String!) -> Void in
-                    showPopupForUser(followedUser, me: self.currentUserName)
+                    showPopupForUser(followedUser!, me: self.currentUserName)
                 }
                 
                 cell.cellMessage.text = newsfeedObject.textString
@@ -368,7 +368,7 @@ class NewsfeedViewController: UIViewController, UITableViewDelegate, UITableView
 
         
         let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
-        dynamoDBObjectMapper.load(NewsfeedResultObjectModel.self, hashKey: currentUserName, rangeKey: pageNum).continue { (result) -> AnyObject? in
+        dynamoDBObjectMapper.load(NewsfeedResultObjectModel.self, hashKey: currentUserName, rangeKey: pageNum).continueWith { (result) -> AnyObject? in
             
             var newsfeedResultObjectMapper : NewsfeedResultObjectModel!
             

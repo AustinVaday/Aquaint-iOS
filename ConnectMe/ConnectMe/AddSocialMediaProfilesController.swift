@@ -71,7 +71,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
     var socialMediaName: String!
 
     switch (socialMediaType){
-      case ?"facebook" :
+      case "facebook" :
         // Create alert to send to user
         let alert = UIAlertController(title: nil, message: "Are you a company?", preferredStyle: UIAlertControllerStyle.alert)
         
@@ -104,7 +104,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
                 let currentUserName = getCurrentCachedUser()
                 
                 // Needed for 'find friends via facebook' feature
-                uploadUserFBUIDToDynamo(currentUserName, fbUID: fbUID)
+                uploadUserFBUIDToDynamo(currentUserName, fbUID: fbUID!)
                 
                 socialMediaName = FBSDKAccessToken.current().userID
                 
@@ -152,7 +152,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
 
         break
 
-      case ?"twitter" :
+      case "twitter" :
         /*************************************************************************
         * TWITTER DATA FETCH
         **************************************************************************/
@@ -186,7 +186,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         break
 
-      case ?"instagram" :
+      case "instagram" :
         // Make sure to clear Instagram cookies. This will allow users to obtain a fresh login page every time.
         clearCookies("instagram")
 
@@ -222,7 +222,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         break
 
-      case ?"linkedin" :
+      case "linkedin" :
         /*************************************************************************
         * LINKEDIN DATA FETCH
         **************************************************************************/
@@ -280,42 +280,42 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         break
       
 
-      case ?"snapchat" :
+      case "snapchat" :
         /*************************************************************************
         * SNAPCHAT DATA FETCH
         **************************************************************************/
         showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         break
 
-      case ?"youtube" :
+      case "youtube" :
         /*************************************************************************
         * YOUTUBE DATA FETCH
         **************************************************************************/
         showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         break
 
-      case ?"soundcloud" :
+      case "soundcloud" :
         /*************************************************************************
         * Soundcloud DATA FETCH
         **************************************************************************/
         showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         break
     
-      case ?"ios" :
+      case "ios" :
         /*************************************************************************
          * Soundcloud DATA FETCH
          **************************************************************************/
         showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         break
       
-      case ?"android" :
+      case "android" :
         /*************************************************************************
          * Soundcloud DATA FETCH
          **************************************************************************/
         showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         break
 
-      case ?"tumblr" :
+      case "tumblr" :
         /*************************************************************************
         * TUMBLR DATA FETCH
         **************************************************************************/
@@ -346,7 +346,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
       showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
       break
       
-    case ?"website" :
+    case "website" :
       showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
       break
 

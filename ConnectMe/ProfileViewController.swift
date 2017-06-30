@@ -10,7 +10,7 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 //import SimpleAuth
-import Firebase
+//import Firebase
 
 
 class ProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {

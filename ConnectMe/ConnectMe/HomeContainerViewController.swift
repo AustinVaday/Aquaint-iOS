@@ -115,7 +115,7 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
     func getAndDisplayNumberRequests() {
       let lambdaInvoker = AWSLambdaInvoker.default()
       let parameters = ["action":"getNumFollowRequests", "target": userName]
-      lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+      lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
         if resultTask.result != nil && resultTask.error == nil
         {
           let num = resultTask.result as! Int

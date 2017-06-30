@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Firebase
+//import Firebase
 
 class WorldNotificationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -371,44 +371,44 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         
         switch (socialMediaName)
         {
-        case ?"facebook":
+        case "facebook":
             
             let facebookUserName = connectionSocialMediaUserNames["facebook"] as! String
             urlString = "fb://requests/" + facebookUserName
             altString = "http://www.facebook.com/" + facebookUserName
             break;
-        case ?"snapchat":
+        case "snapchat":
             
             let snapchatUserName = connectionSocialMediaUserNames["snapchat"] as! String
             urlString = "snapchat://add/" + snapchatUserName
             altString = ""
             break;
-        case ?"instagram":
+        case "instagram":
             
             let instagramUserName = connectionSocialMediaUserNames["instagram"] as! String
             urlString = "instagram://user?username=" + instagramUserName
             altString = "http://www.instagram.com/" + instagramUserName
             break;
-        case ?"twitter":
+        case "twitter":
             
             let twitterUserName = connectionSocialMediaUserNames["twitter"] as! String
             urlString = "twitter:///user?screen_name=" + twitterUserName
             altString = "http://www.twitter.com/" + twitterUserName
             break;
-        case ?"linkedin":
+        case "linkedin":
             
             let linkedinUserName = connectionSocialMediaUserNames["linkedin"] as! String
             urlString = "linkedin://profile/" + linkedinUserName
             altString = "http://www.linkedin.com/in/" + linkedinUserName
             
             break;
-        case ?"youtube":
+        case "youtube":
             
             let youtubeUserName = connectionSocialMediaUserNames["youtube"] as! String
             urlString = "youtube:www.youtube.com/user/" + youtubeUserName
             altString = "http://www.youtube.com/" + youtubeUserName
             break;
-        case ?"phone":
+        case "phone":
             print ("COMING SOON")
             
             //                contact.familyName = "Vaday"

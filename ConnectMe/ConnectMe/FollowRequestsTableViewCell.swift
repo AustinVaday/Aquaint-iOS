@@ -50,7 +50,7 @@ class FollowRequestsTableViewCell: UITableViewCell {
   func removeFollowRequest(_ follower: String, followee: String) {
     let lambdaInvoker = AWSLambdaInvoker.default()
     let parameters = ["action":"unfollowRequest", "me": follower, "target": followee]
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.result != nil && resultTask.error == nil
       {
         // Do some animation
@@ -63,7 +63,7 @@ class FollowRequestsTableViewCell: UITableViewCell {
   func createFollow(_ follower: String, followee: String) {
     let lambdaInvoker = AWSLambdaInvoker.default()
     let parameters = ["action":"follow", "me": follower, "target": followee, "userapproved": 1] as [String : Any]
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continue { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.result != nil && resultTask.error == nil
       {
         // Do some animation

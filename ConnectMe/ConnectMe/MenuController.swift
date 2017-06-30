@@ -91,10 +91,10 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   var listOfFBUserIDs = Set<String>()
   var transitionToAddSocialContactsController = false
   // AWS credentials provider
-  let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.usEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
+  let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
   let footerHeight = CGFloat(65)
   let defaultTableViewCellHeight = CGFloat(60)
-  let defaultImage = UIImage(imageLiteral: "Person Icon Black")
+  let defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
   let reusableWebViewStoryboard = UIStoryboard(name: "ReusableWebView", bundle: nil)
   
   override func viewDidLoad() {
@@ -791,7 +791,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     cell?.sectionTitle.text = sectionTitle
     
     switch sectionTitle {
-    case ?LINKED_PROFILES_TITLE:
+    case LINKED_PROFILES_TITLE:
       cell?.editView.isHidden = false
       if (enableEditingArray[MenuData.linked_PROFILES.rawValue]) {
         cell?.cancelSection.isHidden = false
@@ -800,7 +800,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       }
       
       break;
-    case ?MY_INFORMATION_TITLE:
+    case MY_INFORMATION_TITLE:
       cell?.editView.isHidden = false
       if (enableEditingArray[MenuData.my_INFORMATION.rawValue]) {
         cell?.cancelSection.isHidden = false
