@@ -1949,8 +1949,9 @@ Add some friends to get started!</string>
                                                     <color key="textColor" red="0.058823529409999999" green="0.47843137250000001" blue="0.61568627450000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SHy-zO-F46" userLabel="User Collection View">
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SHy-zO-F46" userLabel="User Collection View">
                                                     <rect key="frame" x="0.0" y="30" width="383" height="121"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="n1j-YD-la1">
                                                         <size key="itemSize" width="60" height="105"/>
                                                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -1998,10 +1999,6 @@ Add some friends to get started!</string>
                                                     </connections>
                                                 </collectionView>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="SHy-zO-F46" firstAttribute="leading" secondItem="iIJ-Ce-zdZ" secondAttribute="leadingMargin" constant="-8" id="ORK-ij-oq7"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="SHy-zO-F46" secondAttribute="trailing" constant="-8" id="WiK-cf-WMI"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="titleLabel" destination="OeD-XR-Fbd" id="zTa-Oz-EOC"/>
