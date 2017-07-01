@@ -87,9 +87,17 @@ class AWSMobileClient: NSObject {
         let didFinishLaunching: Bool = AWSIdentityManager.default().interceptApplication(application, didFinishLaunchingWithOptions: launchOptions)
 
         if (!isInitialized) {
+            // [Swift 3 Migration] the original source code is modified to avoid app crash at launch
+            // https://stackoverflow.com/questions/39634432/aws-mobilehub-swift-3-update-shows-error-at-launchoptions
+            // https://stackoverflow.com/questions/39597074/aws-ios-app-crashes
+            /*
             AWSIdentityManager.default().resumeSession(completionHandler: {(result: AnyObject?, error: NSError?) -> Void in
                 print("Result: \(result) \n Error:\(error)")
             } as! (Any?, Error?) -> Void)
+            */
+            AWSIdentityManager.default().resumeSession(completionHandler: {(result, error) in
+              print("Result: \(result) \n Error:\(error)")
+            })
             isInitialized = true
         }
 
