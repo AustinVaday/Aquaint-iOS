@@ -70,8 +70,6 @@
 		FF78786D1C30267C00354936 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF78786C1C30267C00354936 /* Security.framework */; };
 		FF78786F1C30268500354936 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF78786E1C30268500354936 /* StoreKit.framework */; };
 		FF7878711C30268C00354936 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF7878701C30268C00354936 /* SystemConfiguration.framework */; };
-		FF7878731C3026BB00354936 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF7878721C3026BB00354936 /* Bolts.framework */; };
-		FF7878751C3026C200354936 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF7878741C3026C200354936 /* Parse.framework */; };
 		FF7878771C34EC4A00354936 /* RecentConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7878761C34EC4A00354936 /* RecentConnections.swift */; };
 		FF7878791C352D0400354936 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7878781C352D0400354936 /* TableViewCell.swift */; };
 		FF83A4DF1CC59A3900AFB26B /* RBResizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83A4DE1CC59A3800AFB26B /* RBResizer.swift */; };
@@ -316,9 +314,7 @@
 				FF7878671C30266600354936 /* CoreGraphics.framework in Frameworks */,
 				FF7878651C30266000354936 /* CFNetwork.framework in Frameworks */,
 				FF7878631C30265800354936 /* AudioToolbox.framework in Frameworks */,
-				FF7878731C3026BB00354936 /* Bolts.framework in Frameworks */,
 				FF78785E1C30009900354936 /* libsqlite3.tbd in Frameworks */,
-				FF7878751C3026C200354936 /* Parse.framework in Frameworks */,
 				FF78785C1C30008C00354936 /* libz.tbd in Frameworks */,
 				1E03A7848D4BE5F856CE241B /* Pods_Aquaint.framework in Frameworks */,
 			);

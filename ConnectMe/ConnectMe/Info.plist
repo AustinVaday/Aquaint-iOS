@@ -4,6 +4,24 @@
 <dict>
 	<key>AWS</key>
 	<dict>
+    <key>PinpointAnalytics</key>
+    <dict>
+      <key>Default</key>
+      <dict>
+        <key>AppId</key>
+        <string>30015f2093b34a77b53d899901acd093</string>
+        <key>Region</key>
+        <string>us-east-1</string>
+      </dict>
+    </dict>
+    <key>PinpointTargeting</key>
+    <dict>
+      <key>Default</key>
+      <dict>
+        <key>Region</key>
+        <string>us-east-1</string>
+      </dict>
+    </dict>
 		<key>CloudLogic</key>
 		<dict>
 			<key>Default</key>
