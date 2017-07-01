@@ -993,6 +993,8 @@ extension SearchViewController {
   // [Swift 3 Migration] some delegation methods signatures are not automatically converted in a Swift Extension
   // This leads to tableView and collectionView delegation methods not being called. We have to manually check this
   // https://medium.com/@zonble/your-delegation-methods-might-not-be-called-in-swift-3-c6065ed7b4cd
+  // Update: Migration Assistant in Xcode 8.2.2 can already handle this gracefully
+  // if this dataSource method is not called but numberOfItemsInSection is, check contraints setup of collectionView and collectionViewCell in storyboard
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "userCollectionViewCell", for: indexPath) as! UserCollectionViewCell
     
