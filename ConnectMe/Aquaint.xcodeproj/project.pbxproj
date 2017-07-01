@@ -12,7 +12,16 @@
 		50B2BBC61EDBB1EE00E1E9FF /* SearchTableViewLeaderboardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B2BBC51EDBB1EE00E1E9FF /* SearchTableViewLeaderboardCell.swift */; };
 		50B2BBC81EDBCCD300E1E9FF /* UserCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B2BBC71EDBCCD300E1E9FF /* UserCollectionViewCell.swift */; };
 		50F99A2E1EB9B6B100411C53 /* NoticeOfSubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F99A2D1EB9B6B100411C53 /* NoticeOfSubscriptionViewController.swift */; };
-		50FD48461F06C9F0000226AD /* AWSMobileHubHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48451F06C9F0000226AD /* AWSMobileHubHelper.framework */; };
+		50FD48881F08151B000226AD /* AWSFacebookSignInResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 50FD487E1F08151B000226AD /* AWSFacebookSignInResources.bundle */; };
+		50FD48891F08151B000226AD /* AWSMobileClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD487F1F08151B000226AD /* AWSMobileClient.swift */; };
+		50FD488A1F08151B000226AD /* AWSMobileHubHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48801F08151B000226AD /* AWSMobileHubHelper.framework */; };
+		50FD488B1F08151B000226AD /* AWSPinpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48831F08151B000226AD /* AWSPinpoint.framework */; };
+		50FD488C1F08151B000226AD /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48851F08151B000226AD /* FBSDKCoreKit.framework */; };
+		50FD488D1F08151B000226AD /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48861F08151B000226AD /* FBSDKLoginKit.framework */; };
+		50FD488E1F0817ED000226AD /* AWSFacebookSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD487D1F08151B000226AD /* AWSFacebookSignIn.framework */; };
+		50FD48921F081B64000226AD /* FacebookIdentityProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD48911F081B64000226AD /* FacebookIdentityProfile.swift */; };
+		50FD48941F083443000226AD /* AWSPinpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48831F08151B000226AD /* AWSPinpoint.framework */; };
+		50FD48951F083443000226AD /* AWSPinpoint.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48831F08151B000226AD /* AWSPinpoint.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		76209F1DB6FBD0F8C19CC5AC /* Pods_AquaintTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510A69C38AC090A6E7B973F /* Pods_AquaintTests.framework */; };
 		FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */; };
 		FF0BF0231CB6DC78005188DA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */; };
@@ -34,7 +43,6 @@
 		FF6197A31E59B4DA00B94618 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6197A21E59B4D900B94618 /* Animations.swift */; };
 		FF6331681D286BAB00967266 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6331671D286BAB00967266 /* AddressBook.framework */; };
 		FF63316A1D286BB200967266 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6331691D286BB200967266 /* SafariServices.framework */; };
-		FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF63316B1D286D4300967266 /* AWSMobileClient.swift */; };
 		FF65D31E1C1E0BFC0015C99F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF65D31C1C1E0BFC0015C99F /* Main.storyboard */; };
 		FF65D3221C1EA3D60015C99F /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF65D3211C1EA3D60015C99F /* SignUpController.swift */; };
 		FF6813F21E0B7D1D007930BA /* AddSocialContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6813F11E0B7D1D007930BA /* AddSocialContactsViewController.swift */; };
@@ -89,8 +97,6 @@
 		FFB78B851CA5BAA8005A21CC /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB78B841CA5BAA8005A21CC /* SearchTableViewCell.swift */; };
 		FFB860281C4C38A800CFB621 /* AquaintTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB860271C4C38A800CFB621 /* AquaintTestCase.swift */; };
 		FFB8602A1C4C38D300CFB621 /* AquaintUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB860291C4C38D300CFB621 /* AquaintUITestCase.swift */; };
-		FFBB872C1C5307F500500FAD /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB87291C5307F500500FAD /* FBSDKCoreKit.framework */; };
-		FFBB872D1C5307F500500FAD /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB872A1C5307F500500FAD /* FBSDKLoginKit.framework */; };
 		FFBB872E1C5307F500500FAD /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBB872B1C5307F500500FAD /* FBSDKShareKit.framework */; };
 		FFBDD7541CD58F910007A188 /* HomeContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7531CD58F910007A188 /* HomeContainerViewController.swift */; };
 		FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBDD7551CD599690007A188 /* HomePageViewController.swift */; };
@@ -133,6 +139,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		50FD48961F083443000226AD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				50FD48951F083443000226AD /* AWSPinpoint.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		01D42B7474E582FDC3F9AFB8 /* Pods_AquaintUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AquaintUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E8833267EF2168C25287F83 /* Pods-AquaintUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintUITests/Pods-AquaintUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -142,6 +162,14 @@
 		50B2BBC71EDBCCD300E1E9FF /* UserCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCollectionViewCell.swift; sourceTree = "<group>"; };
 		50F99A2D1EB9B6B100411C53 /* NoticeOfSubscriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoticeOfSubscriptionViewController.swift; sourceTree = "<group>"; };
 		50FD48451F06C9F0000226AD /* AWSMobileHubHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSMobileHubHelper.framework; path = AmazonAws/AWSMobileHubHelper.framework; sourceTree = "<group>"; };
+		50FD487D1F08151B000226AD /* AWSFacebookSignIn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSFacebookSignIn.framework; sourceTree = "<group>"; };
+		50FD487E1F08151B000226AD /* AWSFacebookSignInResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AWSFacebookSignInResources.bundle; sourceTree = "<group>"; };
+		50FD487F1F08151B000226AD /* AWSMobileClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSMobileClient.swift; sourceTree = "<group>"; };
+		50FD48801F08151B000226AD /* AWSMobileHubHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSMobileHubHelper.framework; sourceTree = "<group>"; };
+		50FD48831F08151B000226AD /* AWSPinpoint.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSPinpoint.framework; sourceTree = "<group>"; };
+		50FD48851F08151B000226AD /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		50FD48861F08151B000226AD /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		50FD48911F081B64000226AD /* FacebookIdentityProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookIdentityProfile.swift; sourceTree = "<group>"; };
 		671137205723932265B11D03 /* Pods-Aquaint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aquaint.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint.debug.xcconfig"; sourceTree = "<group>"; };
 		80DE6A0B04CCD15219F58E87 /* Pods-AquaintTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintTests/Pods-AquaintTests.debug.xcconfig"; sourceTree = "<group>"; };
 		820A230C1F41AD15AF685EEB /* Pods-Aquaint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aquaint.release.xcconfig"; path = "Pods/Target Support Files/Pods-Aquaint/Pods-Aquaint.release.xcconfig"; sourceTree = "<group>"; };
@@ -168,8 +196,6 @@
 		FF6197A21E59B4D900B94618 /* Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		FF6331671D286BAB00967266 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		FF6331691D286BB200967266 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
-		FF63316B1D286D4300967266 /* AWSMobileClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSMobileClient.swift; sourceTree = "<group>"; };
-		FF63316C1D286D4300967266 /* AWSMobileHubHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSMobileHubHelper.framework; sourceTree = "<group>"; };
 		FF65D31D1C1E0BFC0015C99F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FF65D3211C1EA3D60015C99F /* SignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignUpController.swift; path = ../SignUpController.swift; sourceTree = "<group>"; };
 		FF6813F11E0B7D1D007930BA /* AddSocialContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSocialContactsViewController.swift; sourceTree = "<group>"; };
@@ -271,22 +297,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50FD48461F06C9F0000226AD /* AWSMobileHubHelper.framework in Frameworks */,
+				50FD488E1F0817ED000226AD /* AWSFacebookSignIn.framework in Frameworks */,
 				FF4D07B11E9D9FF6004919D3 /* LocalAuthentication.framework in Frameworks */,
 				FF7878711C30268C00354936 /* SystemConfiguration.framework in Frameworks */,
 				FF78786F1C30268500354936 /* StoreKit.framework in Frameworks */,
+				50FD488C1F08151B000226AD /* FBSDKCoreKit.framework in Frameworks */,
+				50FD48941F083443000226AD /* AWSPinpoint.framework in Frameworks */,
 				FFF335901E899EFD00E8B70F /* libGoogleAnalyticsServices.a in Frameworks */,
+				50FD488D1F08151B000226AD /* FBSDKLoginKit.framework in Frameworks */,
 				FF63316A1D286BB200967266 /* SafariServices.framework in Frameworks */,
 				FF6331681D286BAB00967266 /* AddressBook.framework in Frameworks */,
 				FFBB872E1C5307F500500FAD /* FBSDKShareKit.framework in Frameworks */,
+				50FD488B1F08151B000226AD /* AWSPinpoint.framework in Frameworks */,
 				FF78786D1C30267C00354936 /* Security.framework in Frameworks */,
 				FF78786B1C30267500354936 /* QuartzCore.framework in Frameworks */,
-				FFBB872D1C5307F500500FAD /* FBSDKLoginKit.framework in Frameworks */,
+				50FD488A1F08151B000226AD /* AWSMobileHubHelper.framework in Frameworks */,
 				FF7878691C30266C00354936 /* CoreLocation.framework in Frameworks */,
 				FF7878671C30266600354936 /* CoreGraphics.framework in Frameworks */,
 				FF7878651C30266000354936 /* CFNetwork.framework in Frameworks */,
 				FF7878631C30265800354936 /* AudioToolbox.framework in Frameworks */,
-				FFBB872C1C5307F500500FAD /* FBSDKCoreKit.framework in Frameworks */,
 				FF7878731C3026BB00354936 /* Bolts.framework in Frameworks */,
 				FF78785E1C30009900354936 /* libsqlite3.tbd in Frameworks */,
 				FF7878751C3026C200354936 /* Parse.framework in Frameworks */,
@@ -314,6 +343,70 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		50FD487B1F08151B000226AD /* AWS-Mobile-Hub-Helper */ = {
+			isa = PBXGroup;
+			children = (
+				50FD488F1F081B64000226AD /* App */,
+				50FD487C1F08151B000226AD /* AmazonAws */,
+				50FD48811F08151B000226AD /* Sdk */,
+			);
+			path = "AWS-Mobile-Hub-Helper";
+			sourceTree = "<group>";
+		};
+		50FD487C1F08151B000226AD /* AmazonAws */ = {
+			isa = PBXGroup;
+			children = (
+				50FD487D1F08151B000226AD /* AWSFacebookSignIn.framework */,
+				50FD487E1F08151B000226AD /* AWSFacebookSignInResources.bundle */,
+				50FD487F1F08151B000226AD /* AWSMobileClient.swift */,
+				50FD48801F08151B000226AD /* AWSMobileHubHelper.framework */,
+			);
+			path = AmazonAws;
+			sourceTree = "<group>";
+		};
+		50FD48811F08151B000226AD /* Sdk */ = {
+			isa = PBXGroup;
+			children = (
+				50FD48821F08151B000226AD /* Aws */,
+				50FD48841F08151B000226AD /* Facebook */,
+			);
+			path = Sdk;
+			sourceTree = "<group>";
+		};
+		50FD48821F08151B000226AD /* Aws */ = {
+			isa = PBXGroup;
+			children = (
+				50FD48831F08151B000226AD /* AWSPinpoint.framework */,
+			);
+			path = Aws;
+			sourceTree = "<group>";
+		};
+		50FD48841F08151B000226AD /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				50FD48851F08151B000226AD /* FBSDKCoreKit.framework */,
+				50FD48861F08151B000226AD /* FBSDKLoginKit.framework */,
+			);
+			path = Facebook;
+			sourceTree = "<group>";
+		};
+		50FD488F1F081B64000226AD /* App */ = {
+			isa = PBXGroup;
+			children = (
+				50FD48901F081B64000226AD /* SignIn */,
+			);
+			name = App;
+			path = "AWS-Mobile-Hub-Helper/App";
+			sourceTree = SOURCE_ROOT;
+		};
+		50FD48901F081B64000226AD /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				50FD48911F081B64000226AD /* FacebookIdentityProfile.swift */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
 		C04EAA157CD0B5492AF59183 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -355,15 +448,6 @@
 				FFF335A01E89B13F00E8B70F /* ScanCodeDisplayStoryboardViewController.swift */,
 			);
 			name = ScanCode;
-			sourceTree = "<group>";
-		};
-		FF63316F1D286D5100967266 /* AmazonAWS */ = {
-			isa = PBXGroup;
-			children = (
-				FF63316B1D286D4300967266 /* AWSMobileClient.swift */,
-				FF63316C1D286D4300967266 /* AWSMobileHubHelper.framework */,
-			);
-			name = AmazonAWS;
 			sourceTree = "<group>";
 		};
 		FF690F671E8B40A5003FA5B4 /* Analytics */ = {
@@ -479,6 +563,7 @@
 		FF897C281C01AC63001B2634 = {
 			isa = PBXGroup;
 			children = (
+				50FD487B1F08151B000226AD /* AWS-Mobile-Hub-Helper */,
 				FFF335911E89A38600E8B70F /* GoogleService-Info.plist */,
 				FFBDD7551CD599690007A188 /* HomePageViewController.swift */,
 				FFEC2F001CBF448E0044BEC9 /* Aquaint-Bridging-Header.h */,
@@ -507,7 +592,6 @@
 		FF897C331C01AC63001B2634 /* Aquaint */ = {
 			isa = PBXGroup;
 			children = (
-				FF63316F1D286D5100967266 /* AmazonAWS */,
 				FF7C0A491D13A29200C1502D /* Archived/Unused */,
 				FF897C3B1C01AC63001B2634 /* Assets.xcassets */,
 				FF65D31C1C1E0BFC0015C99F /* Main.storyboard */,
@@ -672,6 +756,7 @@
 				FF897C2F1C01AC63001B2634 /* Resources */,
 				A744F868839EBF07C5F92351 /* [CP] Embed Pods Frameworks */,
 				D301069A999CC639AA2DB1FB /* [CP] Copy Pods Resources */,
+				50FD48961F083443000226AD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -781,6 +866,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF690F6A1E8B40FD003FA5B4 /* PaymentsDisplay.storyboard in Resources */,
+				50FD48881F08151B000226AD /* AWSFacebookSignInResources.bundle in Resources */,
 				FF8972981E198FF000A4D9C4 /* FollowerListView.storyboard in Resources */,
 				FFF335AA1E89B1A200E8B70F /* PopUpHelpAlert.storyboard in Resources */,
 				FFF335921E89A38600E8B70F /* GoogleService-Info.plist in Resources */,
@@ -984,6 +1070,7 @@
 				FF90CFF61CD08DE8003DEA18 /* HomeViewController.swift in Sources */,
 				FFF335A11E89B13F00E8B70F /* CutTransparentHoleInView.swift in Sources */,
 				FF690F721E8B758A003FA5B4 /* AnalyticsContentTableViewCell.swift in Sources */,
+				50FD48891F08151B000226AD /* AWSMobileClient.swift in Sources */,
 				FFF442361C4B2244007651DE /* Functions.swift in Sources */,
 				FF897C371C01AC63001B2634 /* ViewController.swift in Sources */,
 				FF8420221D29B59F002D2927 /* BackendAPI.swift in Sources */,
@@ -1011,12 +1098,12 @@
 				FF690F641E8B407A003FA5B4 /* AnalyticsDisplay.swift in Sources */,
 				FF3834D51D6D529500FC9F2A /* ProfilePopupView.swift in Sources */,
 				FF8420241D2B42A0002D2927 /* DynamoDBClasses.swift in Sources */,
-				FF63316D1D286D4300967266 /* AWSMobileClient.swift in Sources */,
 				FF83A4DF1CC59A3900AFB26B /* RBResizer.swift in Sources */,
 				FF690F701E8B7559003FA5B4 /* AnalyticsHeaderTableViewCell.swift in Sources */,
 				FF897C351C01AC63001B2634 /* AppDelegate.swift in Sources */,
 				FFBDD75A1CD59A2D0007A188 /* WorldNotificationsViewController.swift in Sources */,
 				FFBDD7561CD599690007A188 /* HomePageViewController.swift in Sources */,
+				50FD48921F081B64000226AD /* FacebookIdentityProfile.swift in Sources */,
 				FF89728E1E10A44800A4D9C4 /* ForgotPasswordViewController.swift in Sources */,
 				FF8972A21E1B22F400A4D9C4 /* WalkthroughPageViewController.swift in Sources */,
 				FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */,
@@ -1169,9 +1256,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/ConnectMe",
-					"$(PROJECT_DIR)/Sdk/Google",
-					"$(PROJECT_DIR)/AmazonAws",
+					"$(PROJECT_DIR)/AWS-Mobile-Hub-Helper/AmazonAws",
+					"$(PROJECT_DIR)/AWS-Mobile-Hub-Helper/Sdk/Aws",
+					"$(PROJECT_DIR)/AWS-Mobile-Hub-Helper/Sdk/Facebook",
 				);
 				INFOPLIST_FILE = ConnectMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1203,9 +1290,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/ConnectMe",
-					"$(PROJECT_DIR)/Sdk/Google",
-					"$(PROJECT_DIR)/AmazonAws",
+					"$(PROJECT_DIR)/AWS-Mobile-Hub-Helper/Sdk/Aws",
 				);
 				INFOPLIST_FILE = ConnectMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

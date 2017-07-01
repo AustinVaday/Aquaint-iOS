@@ -15,6 +15,8 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import AWSDynamoDB
 import RSKImageCropper
+// [Swift 3 Migration]
+import AWSFacebookSignIn
 
 class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate, RSKImageCropViewControllerDelegate, UINavigationControllerDelegate {
     
@@ -188,7 +190,9 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
     }
     
     @IBAction func handleLoginWithSignInProvider(_ sender: UIButton) {
-        
+      
+          // [Swift 3 Migration] TODO
+      /*
         AWSIdentityManager.default().loginWithSign(AWSFacebookSignInProvider.sharedInstance(), completionHandler: {(result: AnyObject?, error: NSError?) -> Void in
             // If no error reported by SignInProvider, discard the sign-in view controller.
             if error == nil {
@@ -198,7 +202,7 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
             }
             print("result = \(result), error = \(error)")
         } as! (Any?, Error?) -> Void)
-
+        */
     }
     
     // Functionality for adding in a user specific photograph

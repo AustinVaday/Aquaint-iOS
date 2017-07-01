@@ -17,6 +17,8 @@ import AWSLambda
 import AWSDynamoDB
 import AWSCognitoIdentityProvider
 import AWSMobileHubHelper
+// [Swift 3 Migration]
+import AWSFacebookSignIn
 
 class ViewController: UIViewController {
 
@@ -39,7 +41,10 @@ class ViewController: UIViewController {
     
     //    // Request basic profile permissions just to get user ID
 //    login.logInWithReadPermissions(["public_profile", "user_friends", "email"], fromViewController: self) { (result, error) in
-    AWSIdentityManager.default().loginWithSign(AWSFacebookSignInProvider.sharedInstance()) { (result, error) in
+
+    // [Swift 3 Migration] TODO
+    /*
+    AWSIdentityManager.default().loginWithSignInProvider(AWSFacebookSignInProvider.sharedInstance()) { (result, error) in
 
       // If no error, store facebook user ID
       if (error == nil && result != nil) {
@@ -169,7 +174,7 @@ class ViewController: UIViewController {
       }
       }
     }
-
+    */
   }
   
   
