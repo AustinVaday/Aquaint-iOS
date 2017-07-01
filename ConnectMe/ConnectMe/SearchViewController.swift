@@ -479,7 +479,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         //let cell = tableView.dequeueReusableCellWithIdentifier("leaderboardCell", forIndexPath: indexPath) as! SearchTableViewLeaderboardCell
         let leaderboardCell = tableView.dequeueReusableCell(withIdentifier: "leaderboardCell") as! SearchTableViewLeaderboardCell
         
-        leaderboardCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.row)
+        leaderboardCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
         
 //        switch indexPath.row {
 //        case leaderboardType.MOST_FOLLOWERS.rawValue:
@@ -900,37 +900,37 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 //        animatedObjects.removeAll()
     }
 
-    // Implement delegate actions for SearchTableViewCellDelegate
-  func addedUser(_ username: String, isPrivate: Bool) {
-      if !isPrivate {
-          // When user is added from tableview cell
-          // Add to set to keep track of recently added users
-          recentUsernameAdds.setObject(getTimestampAsInt(), forKey: username as NSCopying)
-          followeesMapping[username] = getTimestampAsInt()
-          print("OKOK. USER ADDED: ", username)
+      // Implement delegate actions for SearchTableViewCellDelegate
+    func addedUser(_ username: String, isPrivate: Bool) {
+        if !isPrivate {
+            // When user is added from tableview cell
+            // Add to set to keep track of recently added users
+            recentUsernameAdds.setObject(getTimestampAsInt(), forKey: username as NSCopying)
+            followeesMapping[username] = getTimestampAsInt()
+            print("OKOK. USER ADDED: ", username)
+        }
+        else {
+          followeeRequestsMapping[username] = getTimestampAsInt()
+        }
       }
-      else {
-        followeeRequestsMapping[username] = getTimestampAsInt()
-      }
-    }
-    
-  func removedUser(_ username: String, isPrivate: Bool) {
-      if !isPrivate {
-          // When user is removed from tableview cell
-          if recentUsernameAdds.object(forKey: username) != nil
-          {
-              recentUsernameAdds.removeObject(forKey: username)
-          }
-          
-          followeesMapping.removeValue(forKey: username)
-          
-          print("OKOK. USER REMOVED: ", username)
-      } else {
-        followeeRequestsMapping.removeValue(forKey: username)
-      }
+      
+    func removedUser(_ username: String, isPrivate: Bool) {
+        if !isPrivate {
+            // When user is removed from tableview cell
+            if recentUsernameAdds.object(forKey: username) != nil
+            {
+                recentUsernameAdds.removeObject(forKey: username)
+            }
+            
+            followeesMapping.removeValue(forKey: username)
+            
+            print("OKOK. USER REMOVED: ", username)
+        } else {
+          followeeRequestsMapping.removeValue(forKey: username)
+        }
 
-    }
-    
+      }
+  
     fileprivate func addTableViewFooterSpinner() {
         let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         footerSpinner.startAnimating()
@@ -977,6 +977,7 @@ extension SearchViewController {
       return 0
     }
     
+    print("metricLists[\(collectionView.tag)]!.count = " + String(metricLists[collectionView.tag]!.count))
     return metricLists[collectionView.tag]!.count
     
 //    switch collectionView.tag {
@@ -989,6 +990,9 @@ extension SearchViewController {
 //    }
   }
   
+  // [Swift 3 Migration] some delegation methods signatures are not automatically converted in a Swift Extension
+  // This leads to tableView and collectionView delegation methods not being called. We have to manually check this
+  // https://medium.com/@zonble/your-delegation-methods-might-not-be-called-in-swift-3-c6065ed7b4cd
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "userCollectionViewCell", for: indexPath) as! UserCollectionViewCell
     
