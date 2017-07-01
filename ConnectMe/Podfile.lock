@@ -12,6 +12,8 @@ PODS:
     - AWSCore (= 2.5.8)
   - AWSMobileAnalytics (2.5.8):
     - AWSCore (= 2.5.8)
+  - AWSPinpoint (2.5.8):
+    - AWSCore (= 2.5.8)
   - AWSS3 (2.5.8):
     - AWSCore (= 2.5.8)
   - AWSSNS (2.5.8):
@@ -51,6 +53,7 @@ DEPENDENCIES:
   - AWSEC2
   - AWSLambda
   - AWSMobileAnalytics
+  - AWSPinpoint
   - AWSS3
   - AWSSNS
   - FRHyperLabel
@@ -78,6 +81,7 @@ SPEC CHECKSUMS:
   AWSEC2: d2817357186d4cc18c23ec0b9deb136bfea88b3a
   AWSLambda: d83a31bca72ce8e6a6b81a5a3a03e7ea2a44ec3d
   AWSMobileAnalytics: d0eefb1dbcab87cb97f78961bb847f61396380bb
+  AWSPinpoint: 30b5ef18bfa3a95558d14c85c4fa0457dc8667d3
   AWSS3: addf558f9cf2368e7fb520440867fea5596db0fb
   AWSSNS: 812baa3f5dd5e53da69c37fb8b451e52d0735821
   FRHyperLabel: f4a127d5f8ffb211040554615e93f936d5a576a6
@@ -91,6 +95,6 @@ SPEC CHECKSUMS:
   RSKImageCropper: 3e579d0000945a8be1c0efdad728fd9e25c2fd79
   SCLAlertView: 8a14ffc40590c619e183eed2298b854385f30be1
 
-PODFILE CHECKSUM: cb9762dd7f1be34806a6b2e25460bd4ae9096cd3
+PODFILE CHECKSUM: e28a532c898d172c86059c93b5305a6defb2f1d0
 
 COCOAPODS: 1.2.1

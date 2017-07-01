@@ -38,12 +38,13 @@ target 'Aquaint' do
   pod 'AWSCognitoIdentityProvider'
   pod 'GoogleSignIn'
 
+  pod 'AWSPinpoint'
+
 
   # EXCESS AWS Pods
   # -------------
   #pod 'AWSAutoScaling'
   #pod 'AWSCloudWatch'
-  #pod 'AWSCognitoIdentityProvider'
   #pod 'AWSElasticLoadBalancing'
   #pod 'AWSIoT'
   #pod 'AWSKinesis'

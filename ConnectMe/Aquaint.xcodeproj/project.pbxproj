@@ -15,13 +15,10 @@
 		50FD48881F08151B000226AD /* AWSFacebookSignInResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 50FD487E1F08151B000226AD /* AWSFacebookSignInResources.bundle */; };
 		50FD48891F08151B000226AD /* AWSMobileClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD487F1F08151B000226AD /* AWSMobileClient.swift */; };
 		50FD488A1F08151B000226AD /* AWSMobileHubHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48801F08151B000226AD /* AWSMobileHubHelper.framework */; };
-		50FD488B1F08151B000226AD /* AWSPinpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48831F08151B000226AD /* AWSPinpoint.framework */; };
 		50FD488C1F08151B000226AD /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48851F08151B000226AD /* FBSDKCoreKit.framework */; };
 		50FD488D1F08151B000226AD /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48861F08151B000226AD /* FBSDKLoginKit.framework */; };
 		50FD488E1F0817ED000226AD /* AWSFacebookSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD487D1F08151B000226AD /* AWSFacebookSignIn.framework */; };
 		50FD48921F081B64000226AD /* FacebookIdentityProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FD48911F081B64000226AD /* FacebookIdentityProfile.swift */; };
-		50FD48941F083443000226AD /* AWSPinpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48831F08151B000226AD /* AWSPinpoint.framework */; };
-		50FD48951F083443000226AD /* AWSPinpoint.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 50FD48831F08151B000226AD /* AWSPinpoint.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		76209F1DB6FBD0F8C19CC5AC /* Pods_AquaintTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510A69C38AC090A6E7B973F /* Pods_AquaintTests.framework */; };
 		FF0BF0211CB6D808005188DA /* MainContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0201CB6D808005188DA /* MainContainerViewController.swift */; };
 		FF0BF0231CB6DC78005188DA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0BF0221CB6DC78005188DA /* ProfileViewController.swift */; };
@@ -144,7 +141,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				50FD48951F083443000226AD /* AWSPinpoint.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -164,7 +160,6 @@
 		50FD487E1F08151B000226AD /* AWSFacebookSignInResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AWSFacebookSignInResources.bundle; sourceTree = "<group>"; };
 		50FD487F1F08151B000226AD /* AWSMobileClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSMobileClient.swift; sourceTree = "<group>"; };
 		50FD48801F08151B000226AD /* AWSMobileHubHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSMobileHubHelper.framework; sourceTree = "<group>"; };
-		50FD48831F08151B000226AD /* AWSPinpoint.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSPinpoint.framework; sourceTree = "<group>"; };
 		50FD48851F08151B000226AD /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		50FD48861F08151B000226AD /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		50FD48911F081B64000226AD /* FacebookIdentityProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookIdentityProfile.swift; sourceTree = "<group>"; };
@@ -300,13 +295,11 @@
 				FF7878711C30268C00354936 /* SystemConfiguration.framework in Frameworks */,
 				FF78786F1C30268500354936 /* StoreKit.framework in Frameworks */,
 				50FD488C1F08151B000226AD /* FBSDKCoreKit.framework in Frameworks */,
-				50FD48941F083443000226AD /* AWSPinpoint.framework in Frameworks */,
 				FFF335901E899EFD00E8B70F /* libGoogleAnalyticsServices.a in Frameworks */,
 				50FD488D1F08151B000226AD /* FBSDKLoginKit.framework in Frameworks */,
 				FF63316A1D286BB200967266 /* SafariServices.framework in Frameworks */,
 				FF6331681D286BAB00967266 /* AddressBook.framework in Frameworks */,
 				FFBB872E1C5307F500500FAD /* FBSDKShareKit.framework in Frameworks */,
-				50FD488B1F08151B000226AD /* AWSPinpoint.framework in Frameworks */,
 				FF78786D1C30267C00354936 /* Security.framework in Frameworks */,
 				FF78786B1C30267500354936 /* QuartzCore.framework in Frameworks */,
 				50FD488A1F08151B000226AD /* AWSMobileHubHelper.framework in Frameworks */,
@@ -363,18 +356,9 @@
 		50FD48811F08151B000226AD /* Sdk */ = {
 			isa = PBXGroup;
 			children = (
-				50FD48821F08151B000226AD /* Aws */,
 				50FD48841F08151B000226AD /* Facebook */,
 			);
 			path = Sdk;
-			sourceTree = "<group>";
-		};
-		50FD48821F08151B000226AD /* Aws */ = {
-			isa = PBXGroup;
-			children = (
-				50FD48831F08151B000226AD /* AWSPinpoint.framework */,
-			);
-			path = Aws;
 			sourceTree = "<group>";
 		};
 		50FD48841F08151B000226AD /* Facebook */ = {
