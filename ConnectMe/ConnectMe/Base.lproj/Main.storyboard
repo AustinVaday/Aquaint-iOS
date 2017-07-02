@@ -1950,7 +1950,7 @@ Add some friends to get started!</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SHy-zO-F46" userLabel="User Collection View">
-                                                    <rect key="frame" x="0.0" y="30" width="383" height="121"/>
+                                                    <rect key="frame" x="5" y="30" width="373" height="121"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="n1j-YD-la1">
                                                         <size key="itemSize" width="60" height="105"/>

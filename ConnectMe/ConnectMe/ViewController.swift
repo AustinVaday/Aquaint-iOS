@@ -42,7 +42,7 @@ class ViewController: UIViewController {
     //    // Request basic profile permissions just to get user ID
 //    login.logInWithReadPermissions(["public_profile", "user_friends", "email"], fromViewController: self) { (result, error) in
 
-    // [Swift 3 Migration] TODO
+    // [Swift 3 Migration] AWSIdentityManager no longer has loginWithSign function
     /*
     AWSIdentityManager.default().loginWithSignInProvider(AWSFacebookSignInProvider.sharedInstance()) { (result, error) in
 
@@ -173,8 +173,9 @@ class ViewController: UIViewController {
         print("FAIL LOG IN")
       }
       }
+
     }
-    */
+     */
   }
   
   
@@ -187,7 +188,3 @@ class ViewController: UIViewController {
 //    }
   
   }
-
-
-
-

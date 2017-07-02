@@ -977,7 +977,7 @@ extension SearchViewController {
       return 0
     }
     
-    print("metricLists[\(collectionView.tag)]!.count = " + String(metricLists[collectionView.tag]!.count))
+//    print("metricLists[\(collectionView.tag)]!.count = " + String(metricLists[collectionView.tag]!.count))
     return metricLists[collectionView.tag]!.count
     
 //    switch collectionView.tag {
