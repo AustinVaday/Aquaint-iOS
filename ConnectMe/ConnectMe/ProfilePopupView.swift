@@ -344,6 +344,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             
             
             // Generate a UI image for the respective social media type
+          
             cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType!]
             
             cell.socialMediaName = socialMediaUserName // username
