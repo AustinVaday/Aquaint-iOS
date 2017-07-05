@@ -344,9 +344,12 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             
             
             // Generate a UI image for the respective social media type
+            if let socialMediaImage = self.socialMediaImageDictionary[socialMediaType!] {
+              cell.emblemImage.image = socialMediaImage
+            } else {
+              cell.emblemImage.image = UIImage(imageLiteralResourceName: "Person Icon Black")
+            }
           
-            cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType!]
-            
             cell.socialMediaName = socialMediaUserName // username
             cell.socialMediaType = socialMediaType // facebook, snapchat, etc
             
