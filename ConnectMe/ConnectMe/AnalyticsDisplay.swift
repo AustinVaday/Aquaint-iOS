@@ -96,7 +96,15 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     
     // Call this function to generate all analytics data for this page!
-    generateAnalyticsData()
+//    self.generateAnalyticsData()
+    // Use Grand Central Dispatch to speed it up
+    // Note that main queue is a serial queue and others are concurrency queues
+//    DispatchQueue.main.async(execute: {
+//      self.generateAnalyticsData()
+//    })
+    DispatchQueue.global(qos: .userInitiated).async(execute: {
+      self.generateAnalyticsData()
+    })
     
     fetchAndSetCurrentCachedSubscriptionStatus(self.currentUserName, completion: {(result, error) in
        // Nothing

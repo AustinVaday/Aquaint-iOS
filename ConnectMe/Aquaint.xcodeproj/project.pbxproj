@@ -1270,7 +1270,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/AWS-Mobile-Hub-Helper/AmazonAws",
 					"$(PROJECT_DIR)/AWS-Mobile-Hub-Helper/Sdk/Aws",
+					"$(PROJECT_DIR)/AWS-Mobile-Hub-Helper/Sdk/Facebook",
 				);
 				INFOPLIST_FILE = ConnectMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

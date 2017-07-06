@@ -51,7 +51,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         arrayOfViewControllers = Array<UIViewController>()
         arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "HomeContainerViewController"))!)
         arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "SearchViewController"))!)
-      arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "ScanCodeDisplayStoryboardViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "ScanCodeDisplayStoryboardViewController"))!)
         //arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("AnalyticsDisplayViewController"))!)
         arrayOfViewControllers.append(analyticsStoryBoard.instantiateViewController(withIdentifier: "AnalyticsDisplay"))
 
