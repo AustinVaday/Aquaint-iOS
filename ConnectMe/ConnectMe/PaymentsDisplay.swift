@@ -122,7 +122,7 @@ class PaymentsDisplay: ViewControllerPannable, SKProductsRequestDelegate, SKPaym
     self.transactionInProgress = true
     
     // Record event trigger
-    awsMobileAnalyticsRecordButtonClickEventTrigger("PaymentsDisplay - Buy", forKey: "button_name")
+//    awsMobileAnalyticsRecordButtonClickEventTrigger("PaymentsDisplay - Buy", forKey: "button_name")
     
   }
   

@@ -33,7 +33,7 @@ class ReusableWebViewController: ViewControllerPannable {
   override func viewDidAppear(_ animated: Bool) {
     
     if webTitle != nil {
-      awsMobileAnalyticsRecordPageVisitEventTrigger("ReusableWebViewController - " + webTitle, forKey: "page_name")
+      awsMobileAnalyticsRecordPageVisitEventTrigger("ReusableWebViewController", forKey: "page_name")
     }
   }
   

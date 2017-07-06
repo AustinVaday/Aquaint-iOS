@@ -56,6 +56,8 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         let builder = GAIDictionaryBuilder.createScreenView()
         tracker?.send(builder?.build() as! [AnyHashable: Any])
       
+        awsMobileAnalyticsRecordPageVisitEventTrigger("ProfilePopupView", forKey: "page_name")
+
         userNameLabel.text = username
         self.me = me
         self.otherUserName = username
@@ -257,6 +259,8 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             
         }
 
+        awsMobileAnalyticsRecordButtonClickEventTrigger("ProfilePopupView - Follow Action", forKey: "button_name")
+
     }
   
       func unFollowUser() {
@@ -304,6 +308,8 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         })
 
         }
+        
+        awsMobileAnalyticsRecordButtonClickEventTrigger("ProfilePopupView - Follow Action", forKey: "button_name")
 
     }
   
@@ -394,6 +400,9 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         {
             UIApplication.shared.openURL(socialMediaURL!)
         }
+        
+        awsMobileAnalyticsRecordButtonClickEventTrigger("ProfilePopupView - Profile Click", forKey: "button_name")
+
       }
       
     }
@@ -416,10 +425,14 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
 
   @IBAction func viewFollowersButtonClicked(_ sender: AnyObject) {
     showViewController("getFollowers")
+    awsMobileAnalyticsRecordButtonClickEventTrigger("ProfilePopupView - View User Followers", forKey: "button_name")
+
   }
   
   @IBAction func viewFollowingButtonClicked(_ sender: AnyObject) {
     showViewController("getFollowees")
+    awsMobileAnalyticsRecordButtonClickEventTrigger("ProfilePopupView - View User Following", forKey: "button_name")
+
   }
   
   func showViewController(_ lambdaAction: String) {
