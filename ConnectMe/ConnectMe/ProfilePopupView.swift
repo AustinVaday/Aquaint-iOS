@@ -390,7 +390,18 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         let socialMediaUserName = cell.socialMediaName // username..
         let socialMediaType = cell.socialMediaType // "facebook", "snapchat", etc..
         
-        let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
+        
+        // An UIAlertController message will popup if device does not have SnapChat or any error occurs when getting social media URL
+        // which needs an UIViewController, not an UIView to be shown from
+        var topVC = UIApplication.shared.keyWindow?.rootViewController
+        guard (topVC != nil) else {
+          print("Error getting the top ViewController in ProfilePopupView.")
+          return
+        }
+        while ((topVC!.presentedViewController) != nil) {
+          topVC = topVC!.presentedViewController
+        }
+        let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: topVC!)
         
         // Send trigger to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker

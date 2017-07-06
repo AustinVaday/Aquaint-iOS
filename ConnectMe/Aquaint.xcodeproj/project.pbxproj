@@ -152,6 +152,7 @@
 		2E8833267EF2168C25287F83 /* Pods-AquaintUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AquaintUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AquaintUITests/Pods-AquaintUITests.release.xcconfig"; sourceTree = "<group>"; };
 		34EEF12311B0D735B7FE379F /* Pods_Aquaint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Aquaint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5089EC1B1F06C828002EF7EF /* AWSMobileHubHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSMobileHubHelper.framework; path = "../../../../Downloads/Aquaint-integration-lib-aws-my-sample-app-ios-swift/AmazonAws/AWSMobileHubHelper.framework"; sourceTree = "<group>"; };
+		5098DA3E1F0EC70E00CAA7A0 /* Aquaint.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Aquaint.entitlements; sourceTree = SOURCE_ROOT; };
 		50B2BBC51EDBB1EE00E1E9FF /* SearchTableViewLeaderboardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewLeaderboardCell.swift; sourceTree = "<group>"; };
 		50B2BBC71EDBCCD300E1E9FF /* UserCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCollectionViewCell.swift; sourceTree = "<group>"; };
 		50F99A2D1EB9B6B100411C53 /* NoticeOfSubscriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoticeOfSubscriptionViewController.swift; sourceTree = "<group>"; };
@@ -572,6 +573,7 @@
 		FF897C331C01AC63001B2634 /* Aquaint */ = {
 			isa = PBXGroup;
 			children = (
+				5098DA3E1F0EC70E00CAA7A0 /* Aquaint.entitlements */,
 				FF7C0A491D13A29200C1502D /* Archived/Unused */,
 				FF897C3B1C01AC63001B2634 /* Assets.xcassets */,
 				FF65D31C1C1E0BFC0015C99F /* Main.storyboard */,
@@ -1229,6 +1231,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Aquaint.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1263,6 +1266,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Aquaint.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DYLIB_COMPATIBILITY_VERSION = 1;
