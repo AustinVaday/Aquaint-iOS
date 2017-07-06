@@ -15,6 +15,17 @@ import AWSMobileHubHelper
 
 
 class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthentication {
+  /**
+   Obtain username and password from end user.
+   @param authenticationInput input details including last known username
+   @param passwordAuthenticationCompletionSource set passwordAuthenticationCompletionSource.result
+   with the username and password received from the end user.
+   */
+  func getDetails(_ authenticationInput: AWSCognitoIdentityPasswordAuthenticationInput, passwordAuthenticationCompletionSource: AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails>) {
+    // [Swift 3 Migration] reqquired by AWSCognitoIdentityPasswordAuthentication
+    return
+  }
+
         
     @IBOutlet weak var userName: UITextField!
     @IBOutlet weak var userPassword: UITextField!
@@ -44,9 +55,9 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
         pool = getAWSCognitoIdentityUserPool()
         
         
-        self.checkMark.hidden = true
-        self.checkMarkFlipped.hidden = true
-        self.emblem.hidden = false
+        self.checkMark.isHidden = true
+        self.checkMarkFlipped.isHidden = true
+        self.emblem.isHidden = false
         
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
         
@@ -61,7 +72,7 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
 
     }
   
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
       awsMobileAnalyticsRecordPageVisitEventTrigger("LoginController", forKey: "page_name")
     }
 
@@ -70,13 +81,13 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
      * BEGIN : Keyboard/Button Animations
      =======================================================*/
     // Add and Remove NSNotifications!
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         registerForKeyboardNotifications()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
         deregisterForKeyboardNotifications()
@@ -85,18 +96,18 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
     // KEYBOARD shift-up buttons functionality
     func registerForKeyboardNotifications()
     {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
     }
     
     func deregisterForKeyboardNotifications()
     {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWasShown(notification: NSNotification!)
+    func keyboardWasShown(_ notification: Notification!)
     {
 //        // If keyboard shown already, no need to perform this method
 //        if isKeyboardShown
@@ -108,14 +119,14 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
         self.isKeyboardShown = true
         
         let userInfo = notification.userInfo!
-        let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
+        let keyboardSize = ((userInfo[UIKeyboardFrameBeginUserInfoKey])! as AnyObject).cgRectValue.size
         
-        UIView.animateWithDuration(0.5) {
+        UIView.animate(withDuration: 0.5, animations: {
     
             print("KEYBOARD SHOWN")
 
             // Only show the 'submit' bar if very last entry!
-            if self.userPassword.isFirstResponder()
+            if self.userPassword.isFirstResponder
             {
                 self.logInButtonBottomConstraint.constant = -keyboardSize.height
                 self.view.layoutIfNeeded()
@@ -131,10 +142,10 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
                 self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
             }
             
-        }
+        }) 
     }
     
-    func keyboardWillBeHidden(notification: NSNotification!)
+    func keyboardWillBeHidden(_ notification: Notification!)
     {
         isKeyboardShown = false
 
@@ -150,7 +161,7 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
      * END : Keyboard/Button Animations
      =======================================================*/
     
-    func screenEdgeSwiped(recognizer: UIPanGestureRecognizer)
+    func screenEdgeSwiped(_ recognizer: UIPanGestureRecognizer)
     {
       
 //      if recognizer.state == .Began || recognizer.state == .Changed {
@@ -211,7 +222,7 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
 //        
 //    }
     
-    @IBAction func passwordEditingDidEnd(sender: UITextField) {
+    @IBAction func passwordEditingDidEnd(_ sender: UITextField) {
 
         let userPasswordString:String = userPassword.text!
         
@@ -231,21 +242,21 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
         
     }
 
-    @IBAction func userNameEditingDidEnd(sender: AnyObject) {
+    @IBAction func userNameEditingDidEnd(_ sender: AnyObject) {
     }
   
     // When user clicks "Next" on keyboard
-    @IBAction func userNameEditingDidEndOnExit(sender: AnyObject) {
+    @IBAction func userNameEditingDidEndOnExit(_ sender: AnyObject) {
         userPassword.becomeFirstResponder()
     }
     
     // When user clicks "Go" on keyboard
-    @IBAction func passwordEditingDidEndOnExit(sender: UITextField) {
+    @IBAction func passwordEditingDidEndOnExit(_ sender: UITextField) {
         // Mimic clicking the log in button
         loginButtonClicked(logInButton.self)
     }
     
-    @IBAction func forgotPasswordButtonClicked(sender: AnyObject) {
+    @IBAction func forgotPasswordButtonClicked(_ sender: AnyObject) {
 //        
 //        print("CLICKED!!")
 //        
@@ -261,20 +272,21 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
     
     
     
-    @IBAction func loginButtonClicked(sender: UIButton) {
+    @IBAction func loginButtonClicked(_ sender: UIButton) {
         
         // Disable log in button so that user can only send one request at a time
-        logInButton.enabled = false
+        logInButton.isEnabled = false
         
         // Show activity indicator (spinner)
         spinner.startAnimating()
         
-        let userNameString:String = userName.text!.lowercaseString
+        let userNameString:String = userName.text!.lowercased()
         let userPasswordString:String =  userPassword.text!
         
         
         // Attempt to log user in
-        pool.getUser(userNameString).getSession(userNameString, password: userPasswordString, validationData: nil, scopes: nil).continueWithBlock({ (sessionResultTask) -> AnyObject? in
+        pool.getUser(userNameString).getSession(userNameString, password: userPasswordString, validationData: nil).continueWith(block:
+          { (sessionResultTask) -> AnyObject? in
             
             // If success login
             if sessionResultTask.error == nil
@@ -285,17 +297,17 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
                 
                 
                 // Perform update on UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     
                     // Stop showing activity indicator (spinner)
-                    self.checkMarkFlipped.hidden = false
+                    self.checkMarkFlipped.isHidden = false
                     
-                    self.emblem.hidden = true
+                    self.emblem.isHidden = true
                     self.spinner.stopAnimating()
                     
-                    UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                    UIView.transition(with: self.checkMarkView, duration: 1, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: { () -> Void in
                         
-                        self.checkMarkFlipped.hidden = false
+                        self.checkMarkFlipped.isHidden = false
                         self.checkMarkFlipped.image = self.checkMark.image
                         
                         }, completion: nil)
@@ -304,9 +316,9 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
                     delay(1.5)
                     {
                         
-                        self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                        self.performSegue(withIdentifier: self.segueDestination, sender: nil)
                         // Enable the log-in button again
-                        self.logInButton.enabled = true
+                        self.logInButton.isEnabled = true
                     }
                     
                     self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
@@ -320,7 +332,7 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
                 
                 
                 // Fetch new identity ID
-                credentialsProvider.getIdentityId().continueWithBlock({ (task) -> AnyObject? in
+                credentialsProvider.getIdentityId().continueWith(block: { (task) -> AnyObject? in
                     print("^^^USER LOGGED IN:", task.result)
   
                     // Cache username, user full name, user image, and user accounts
@@ -337,7 +349,7 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
                 // Sign out?
                 
                 // Perform update on UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     
                     self.spinner.stopAnimating()
 
@@ -349,7 +361,7 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
                     }
                   
                     // Enable the log-in button again
-                    self.logInButton.enabled = true
+                    self.logInButton.isEnabled = true
                       
                     // Stop showing activity indicator (spinner)
                     self.spinner.stopAnimating()
@@ -366,13 +378,15 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
         
     }
   
-  func getPasswordAuthenticationDetails(authenticationInput: AWSCognitoIdentityPasswordAuthenticationInput, passwordAuthenticationCompletionSource: AWSTaskCompletionSource) {
+  /*
+  func getDetails(_ authenticationInput: AWSCognitoIdentityPasswordAuthenticationInput, passwordAuthenticationCompletionSource: AWSTaskCompletionSource<AnyObject>) {
     
   }
-    
+  */
   
   
-  func didCompletePasswordAuthenticationStepWithError(error: NSError) {
+  
+  func didCompleteStepWithError(_ error: Error?) {
     
   }
 

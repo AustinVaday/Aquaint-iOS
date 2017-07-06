@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Firebase
+//import Firebase
 
 class WorldNotificationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -18,11 +18,11 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     var currentUserName : String!
     
     var socialMediaImageDictionary: Dictionary<String, UIImage>!
-    var firebaseRootRef : FIRDatabaseReference!
-    var firebaseUsersRef: FIRDatabaseReference!
-    var firebaseLinkedAccountsRef: FIRDatabaseReference!
-    var firebaseConnectionsRef: FIRDatabaseReference!
-    var firebaseUserImagesRef: FIRDatabaseReference!
+//    var firebaseRootRef : FIRDatabaseReference!
+//    var firebaseUsersRef: FIRDatabaseReference!
+//    var firebaseLinkedAccountsRef: FIRDatabaseReference!
+//    var firebaseConnectionsRef: FIRDatabaseReference!
+//    var firebaseUserImagesRef: FIRDatabaseReference!
     var refreshControl : CustomRefreshControl!
     var connectionList : Array<Connection>!
     var defaultImage : UIImage!
@@ -36,16 +36,18 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         currentUserName = getCurrentCachedUser()
         
         // Firebase root, our data is stored here
+        /*
         firebaseRootRef = FIRDatabase.database().reference()
         firebaseUsersRef = firebaseRootRef.child("Users/")
         firebaseUserImagesRef = firebaseRootRef.child("UserImages/")
         firebaseLinkedAccountsRef = firebaseRootRef.child("LinkedSocialMediaAccounts/")
         firebaseConnectionsRef = firebaseRootRef.child("Connections/" + currentUserName)
-        
+        */
+      
         connectionList = Array<Connection>()
         expansionObj = CellExpansion()
         
-        defaultImage = UIImage(imageLiteral: "Person Icon Black")
+        defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
         
         //TEMP : USED TO MAKE WEBSITE IMAGES
         // ---------------------------------
@@ -53,14 +55,14 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         var connection = Connection()
         connection.timestampGMT = 1462085382
         connection.userFullName = "Jane Stevens"
-        connection.userImage = UIImage(imageLiteral: "1")
+        connection.userImage = UIImage(imageLiteralResourceName: "1")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
         connection = Connection()
         connection.timestampGMT = 1462085372
         connection.userFullName = "Cooper Elisha"
-        connection.userImage = UIImage(imageLiteral: "9")
+        connection.userImage = UIImage(imageLiteralResourceName: "9")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -68,7 +70,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         connection = Connection()
         connection.timestampGMT = 1462084282
         connection.userFullName = "Aaron Konani"
-        connection.userImage = UIImage(imageLiteral: "10")
+        connection.userImage = UIImage(imageLiteralResourceName: "10")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -76,7 +78,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
           connection = Connection()
         connection.timestampGMT = 1462082382
         connection.userFullName = "Hoyt Tim"
-        connection.userImage = UIImage(imageLiteral: "11")
+        connection.userImage = UIImage(imageLiteralResourceName: "11")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -84,7 +86,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
           connection = Connection()
         connection.timestampGMT = 1462075382
         connection.userFullName = "Mathis Antonio"
-        connection.userImage = UIImage(imageLiteral: "14")
+        connection.userImage = UIImage(imageLiteralResourceName: "14")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -92,7 +94,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
           connection = Connection()
         connection.timestampGMT = 1462025382
         connection.userFullName = "Sophos Hudde"
-        connection.userImage = UIImage(imageLiteral: "3")
+        connection.userImage = UIImage(imageLiteralResourceName: "3")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -100,7 +102,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
           connection = Connection()
         connection.timestampGMT = 1462025381
         connection.userFullName = "Juliana Olivia"
-        connection.userImage = UIImage(imageLiteral: "2")
+        connection.userImage = UIImage(imageLiteralResourceName: "2")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -108,7 +110,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
           connection = Connection()
         connection.timestampGMT = 1462025381
         connection.userFullName = "Tamara Ava"
-        connection.userImage = UIImage(imageLiteral: "5")
+        connection.userImage = UIImage(imageLiteralResourceName: "5")
         connection.socialMediaUserNames = NSDictionary(dictionary: ["facebook" : "austinvaday", "snapchat" : "austinvaday", "instagram" : "avtheman", "twitter" : "austinvaday", "youtube" : "austinvaday", "linkedin" : "austinvaday"])
         connectionList.append(connection)
         
@@ -195,7 +197,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         refreshControl = CustomRefreshControl()
         //        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         // When user pulls, this function will be called
-        refreshControl.addTarget(self, action: #selector(WorldNotificationsViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(WorldNotificationsViewController.refreshTable(_:)), for: UIControlEvents.valueChanged)
         worldConnectionsTableView.addSubview(refreshControl)
         
         
@@ -203,7 +205,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     }
     
     // Function that is called when user drags/pulls table with intention of refreshing it
-    func refreshTable(sender:AnyObject)
+    func refreshTable(_ sender:AnyObject)
     {
         self.refreshControl.beginRefreshing()
       
@@ -219,7 +221,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     
     
     // TABLE VIEW
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         // TODO: If more than one user,
         // Display up to 30 users immediately
@@ -228,9 +230,9 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         return connectionList.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! WorldNotificationsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! WorldNotificationsTableViewCell
         
         // Ensure that internal cellImage is circular
         cell.cellImage.layer.cornerRadius = cell.cellImage.frame.size.width / 2
@@ -257,7 +259,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     }
     
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Set the new selectedRowIndex
         updateCurrentlyExpandedRow(&expansionObj, currentRow: indexPath.row)
@@ -273,7 +275,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         let currentRow = indexPath.row
         
@@ -282,7 +284,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     }
     
     // COLLECTION VIEW
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         //        print("------------------------------------")
         //        for (var i = 0; i < connectionList.count; i++)
@@ -306,11 +308,11 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         print("COLLECTIONVIEW 2")
         
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath) as! SocialMediaCollectionViewCell
         
         print("CVTAG IS:", collectionView.tag)
         
@@ -318,7 +320,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         // Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
         // an array so that we can easily get the social media mediums that the user has (i.e. facebook, twitter, etc).
         var userSocialMediaNames = connectionList[collectionView.tag].socialMediaUserNames.allKeys as! Array<String>
-        userSocialMediaNames = userSocialMediaNames.sort()
+        userSocialMediaNames = userSocialMediaNames.sorted()
         
         print(indexPath.item)
         let socialMediaName = userSocialMediaNames[indexPath.item % getNumberPossibleSocialMedia()]
@@ -352,15 +354,15 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
     //
     //    }
     
-    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         print("SELECTED ITEM AT ", indexPath.item)
         
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
+        let cell = collectionView.cellForItem(at: indexPath) as! SocialMediaCollectionViewCell
         let socialMediaName = cell.socialMediaName
         
         var urlString:String!
         var altString:String!
-        var socialMediaURL:NSURL!
+        var socialMediaURL:URL!
         
         //        let userName = "AustinVaday"
         let connectionSocialMediaUserNames = connectionList[collectionView.tag].socialMediaUserNames
@@ -369,7 +371,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         urlString = ""
         altString = ""
         
-        switch (socialMediaName)
+        switch (socialMediaName!)
         {
         case "facebook":
             
@@ -431,14 +433,14 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
             break;
         }
         
-        socialMediaURL = NSURL(string: urlString)
+        socialMediaURL = URL(string: urlString)
         
         // If user doesn't have social media app installed, open using default browser instead (use altString)
-        if (!UIApplication.sharedApplication().canOpenURL(socialMediaURL))
+        if (!UIApplication.shared.canOpenURL(socialMediaURL))
         {
             if (altString != "")
             {
-                socialMediaURL = NSURL(string: altString)
+                socialMediaURL = URL(string: altString)
             }
             else
             {
@@ -457,7 +459,7 @@ class WorldNotificationsViewController: UIViewController, UITableViewDelegate, U
         // Perform the request, go to external application and let the user do whatever they want!
         if socialMediaURL != nil
         {
-            UIApplication.sharedApplication().openURL(socialMediaURL)
+            UIApplication.shared.openURL(socialMediaURL)
         }
     }
     

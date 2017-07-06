@@ -182,7 +182,7 @@ class NewsfeedEventListObjectModel : AWSDynamoDBObjectModel
         return "username"
     }
     
-    func addNewsfeedObject(object: NSMutableDictionary)
+    func addNewsfeedObject(_ object: NSMutableDictionary)
     {
         print("adding newsfeed object: ", object)
         // Initialize if not already done so
@@ -198,15 +198,15 @@ class NewsfeedEventListObjectModel : AWSDynamoDBObjectModel
         if newsfeedList.count < maxSize
         {
             // Add to end of list
-            newsfeedList.addObject(object)
+            newsfeedList.add(object)
         }
         else
         {
             // If we do not have space, we need to get rid of one object at the beginning of the list
-            newsfeedList.removeObjectAtIndex(0)
+            newsfeedList.removeObject(at: 0)
             
             // Then add the new object to the end
-            newsfeedList.addObject(object)
+            newsfeedList.add(object)
         }
     }
     

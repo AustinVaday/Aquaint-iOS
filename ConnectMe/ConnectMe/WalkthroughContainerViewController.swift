@@ -33,11 +33,11 @@ class WalkthroughContainerViewController: UIViewController, WalkthroughPageViewD
     
   }
   
-  override func viewDidAppear(animated: Bool) {
-    setUpSocialMediaAnimations(self, subView: animationView, animatedObjects: &animatedObjects!, animationLocation: AnimationLocation.Top, theme: AnimationAquaintEmblemTheme.WhiteTheme)
+  override func viewDidAppear(_ animated: Bool) {
+    setUpSocialMediaAnimations(self, subView: animationView, animatedObjects: &animatedObjects!, animationLocation: AnimationLocation.top, theme: AnimationAquaintEmblemTheme.whiteTheme)
   }
   
-  override func viewDidDisappear(animated: Bool) {
+  override func viewDidDisappear(_ animated: Bool) {
     clearUpSocialMediaAnimations(&animatedObjects!)
   }
 
@@ -47,26 +47,26 @@ class WalkthroughContainerViewController: UIViewController, WalkthroughPageViewD
   }
   
   func didHitLastPage() {
-    footerButton.setTitle(transitionModeString, forState: UIControlState.Normal)
+    footerButton.setTitle(transitionModeString, for: UIControlState())
   }
   
   func didLeaveLastPage() {
-    footerButton.setTitle(nextModeString, forState: UIControlState.Normal)
+    footerButton.setTitle(nextModeString, for: UIControlState())
   }
 
-  @IBAction func onNextButtonClicked(sender: AnyObject) {
+  @IBAction func onNextButtonClicked(_ sender: AnyObject) {
     
     if footerButton.titleLabel?.text == nextModeString {
       walkthroughPageViewController.goToNextPage()
     } else {
-      performSegueWithIdentifier(segueDestionation, sender: self)
+      performSegue(withIdentifier: segueDestionation, sender: self)
     }
   }
   
-  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     
     if segue.identifier == segueDestionation {
-      let nextVC = segue.destinationViewController as! MainContainerViewController
+      let nextVC = segue.destination as! MainContainerViewController
       nextVC.arrivedFromWalkthrough = true
     }
   }

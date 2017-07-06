@@ -32,22 +32,22 @@ class AquaintsSingleFollowerListViewController: ViewControllerPannable, Follower
     
     // Let's use a re-usable view just for viewing user follows/followings!
     let storyboard = UIStoryboard(name: "FollowerListView", bundle: nil)
-    let viewController = storyboard.instantiateViewControllerWithIdentifier("FollowerListViewController") as! FollowerListViewController
+    let viewController = storyboard.instantiateViewController(withIdentifier: "FollowerListViewController") as! FollowerListViewController
     viewController.dataDelegate = self
     
     viewController.view.frame = dataView.frame
-    viewController.view.frame.origin = CGPointMake(0, 20)
+    viewController.view.frame.origin = CGPoint(x: 0, y: 20)
     viewController.view.bounds = dataView.bounds
-    viewController.view.bounds.origin = CGPointMake(0, 20)
+    viewController.view.bounds.origin = CGPoint(x: 0, y: 20)
 
     dataView.addSubview(viewController.view)
     
     addChildViewController(viewController)
-    viewController.didMoveToParentViewController(self)
+    viewController.didMove(toParentViewController: self)
     
   }
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     awsMobileAnalyticsRecordPageVisitEventTrigger("AquaintsSingleFollowerListViewController", forKey: "page_name")
   }
   
@@ -59,8 +59,8 @@ class AquaintsSingleFollowerListViewController: ViewControllerPannable, Follower
     return lambdaAction
   }
   
-  @IBAction func backButtonClicked(sender: AnyObject) {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  @IBAction func backButtonClicked(_ sender: AnyObject) {
+    self.dismiss(animated: true, completion: nil)
     
     if (profilePopupView != nil)
     {

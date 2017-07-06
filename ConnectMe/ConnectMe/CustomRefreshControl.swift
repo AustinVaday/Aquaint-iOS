@@ -25,14 +25,14 @@ class CustomRefreshControl: UIRefreshControl {
   override init() {
     super.init()
     
-    self.backgroundColor = UIColor.clearColor()
-    self.tintColor = UIColor.clearColor()
-    let refreshContents = NSBundle.mainBundle().loadNibNamed("RefreshContents", owner: self, options: nil)
-    customView = refreshContents[0] as! UIView
+    self.backgroundColor = UIColor.clear
+    self.tintColor = UIColor.clear
+    let refreshContents = Bundle.main.loadNibNamed("RefreshContents", owner: self, options: nil)
+    customView = refreshContents?[0] as! UIView
     spinnerImageView = customView.subviews.first! as UIView
     
     // Hide on initial load
-    spinnerImageView.hidden = true
+    spinnerImageView.isHidden = true
     
     customView.bounds = self.bounds
     customView.frame = self.frame
@@ -45,7 +45,7 @@ class CustomRefreshControl: UIRefreshControl {
   }
   
   override func beginRefreshing() {
-    spinnerImageView.hidden = false
+    spinnerImageView.isHidden = false
     super.beginRefreshing()
     
     let rotate = CABasicAnimation(keyPath: "transform.rotation")
@@ -54,7 +54,7 @@ class CustomRefreshControl: UIRefreshControl {
     rotate.duration = 1.2;
     rotate.repeatCount = 6;
     
-    spinnerImageView.layer.addAnimation(rotate, forKey: "10")
+    spinnerImageView.layer.add(rotate, forKey: "10")
 
     // Can't find a color animation that looks good
 //    UIView.animateWithDuration(1, animations: {
@@ -71,7 +71,7 @@ class CustomRefreshControl: UIRefreshControl {
   }
   
   override func endRefreshing() {
-    spinnerImageView.hidden = true
+    spinnerImageView.isHidden = true
     super.endRefreshing()
   }
 

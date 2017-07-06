@@ -9,7 +9,7 @@
 //  Code is owned by: Austin Vaday and Navid Sarvian
 
 import UIKit
-import Firebase
+//import Firebase
 //import AWSS3
 
 class FriendRequestsController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -29,7 +29,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
     
     var userName : String!
     var userId   : String!
-    var firebaseRootRef : FIRDatabaseReference!
+//    var firebaseRootRef : FIRDatabaseReference!
     var defaultImage : UIImage!
     
     let awsBucketName = "aquaint-userimages"
@@ -41,7 +41,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
         
         connectionRequestList = Array<Connection>()
         
-        defaultImage = UIImage(imageLiteral: "Person Icon Black")
+        defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
         
 //        // SET UP NOTIFICATIONS
 //        // ----------------------------------------------
@@ -63,7 +63,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
 //        sectionUnderlineView2.hidden = false
         
         
-        firebaseRootRef = FIRDatabase.database().reference()
+        //firebaseRootRef = FIRDatabase.database().reference()
         
         //*** NOTE: This is an extra check for top-notch security. It is not necessary.
         // If we're not logged in, immediately go back to beginning page.
@@ -163,7 +163,8 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
 //        
 //        
         // FOR FILLING THE TABLE:
-        
+      
+        /*
         let firebaseUsersRef = firebaseRootRef.child("Users/")
         let firebaseUserImagesRef = firebaseRootRef.child("UserImages/")
         print (userName)
@@ -227,7 +228,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
                 self.requestsTableView.reloadData()
             
         })
-        
+        */
         
         
     }
@@ -253,7 +254,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
     */
     
     
-    @IBAction func menuButtonClicked(sender: AnyObject) {
+    @IBAction func menuButtonClicked(_ sender: AnyObject) {
         // Transition to page on left (menu)
         
         //        let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("MainPageViewController") as! MainPageViewController
@@ -279,7 +280,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-    @IBAction func recentConnectionsButtonClicked(sender: UIButton) {
+    @IBAction func recentConnectionsButtonClicked(_ sender: UIButton) {
 //
 //        let pageViewController = storyboard?.instantiateViewControllerWithIdentifier("MainPageViewController") as! MainPageViewController
 //        
@@ -290,9 +291,9 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
     
     // **** REQUESTS TABLE VIEW *****
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("requestsCell", forIndexPath: indexPath) as! RequestsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "requestsCell", for: indexPath) as! RequestsTableViewCell
         
         let userFullName = connectionRequestList[indexPath.item].userFullName
         let userName     = connectionRequestList[indexPath.item].userName
@@ -305,7 +306,7 @@ class FriendRequestsController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return connectionRequestList.count
         

@@ -11,8 +11,8 @@ import AWSLambda
 
 // Used to enforce consistency of buttons between popup and search table view cell
 protocol ProfilePopupSearchCellConsistencyDelegate {
-  func profilePopupUserAdded(username: String, isPrivate: Bool)
-  func profilePopupUserDeleted(username: String, isPrivate: Bool)
+  func profilePopupUserAdded(_ username: String, isPrivate: Bool)
+  func profilePopupUserDeleted(_ username: String, isPrivate: Bool)
 }
 
 class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSource{
@@ -45,45 +45,45 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     }
     */
   
-    func setDataForUser(username: String, me: String)
+    func setDataForUser(_ username: String, me: String)
     {
         // Send view trigger (Profile Views) to Google analytics
         print("Popup profile initiated!")
         let tracker = GAI.sharedInstance().defaultTracker
         GApageName = "/user/" + username + "/iOS"
-        tracker.set(kGAIPage, value: GApageName)
+        tracker?.set(kGAIPage, value: GApageName)
       
         let builder = GAIDictionaryBuilder.createScreenView()
-        tracker.send(builder.build() as [NSObject : AnyObject])
+        tracker?.send(builder?.build() as! [AnyHashable: Any])
       
         userNameLabel.text = username
         self.me = me
         self.otherUserName = username
       
         // Determine whether "me" follows user or not
-        var lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        var lambdaInvoker = AWSLambdaInvoker.default()
         var parameters = ["action":"doIFollow", "me": self.me, "target": username]
       
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
           if resultTask.error == nil && resultTask.result != nil
           {
             
               let doIFollow = resultTask.result as? Int
               if doIFollow == 1 {
                 // Update UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                   self.activateDeleteButton()
                 })
               }
             
             
             parameters = ["action":"didISendFollowRequest", "me": self.me, "target": username]
-            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
               if resultTask.error == nil && resultTask.result != nil {
                 let didISendRequest = resultTask.result as? Int
                 if didISendRequest == 1 {
                   // Update UI on main thread
-                  dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                  DispatchQueue.main.async(execute: { () -> Void in
                     self.activatePendingButton()
                   })
                 }
@@ -110,24 +110,24 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                 
                 // CHECK IF USER IS A VERIFIED ACCOUNT
                 if resultUser.isverified != nil && resultUser.isverified == 1 {
-                  dispatch_async(dispatch_get_main_queue(), { 
+                  DispatchQueue.main.async(execute: { 
                     addVerifiedIconToLabel(self.otherUserName, label: self.userNameLabel, size: 12)
                   })
                 }
                 
                 // Update UI on main thread
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                   self.realNameTextFieldLabel.text = resultUser.realname
                   
                   if resultUser.accounts != nil
                   {
                     self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(resultUser.accounts)
-                    self.noProfilesLinkedLabel.hidden = true
+                    self.noProfilesLinkedLabel.isHidden = true
                   }
                   else
                   {
                     self.keyValSocialMediaPairList = Array<KeyValSocialMediaPair>()
-                    self.noProfilesLinkedLabel.hidden = false
+                    self.noProfilesLinkedLabel.isHidden = false
                   }
                   
                 })
@@ -138,7 +138,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                     if result != nil
                     {
                       // Update UI on main thread
-                      dispatch_async(dispatch_get_main_queue(), {
+                      DispatchQueue.main.async(execute: {
                         self.profileImageView.image = result! as UIImage
                         self.profileImageView.layer.cornerRadius = self.profileImageView.frame.width / 2
                       })
@@ -148,7 +148,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
                   
                   
                   // Update UI on main thread
-                  dispatch_async(dispatch_get_main_queue(), {
+                  DispatchQueue.main.async(execute: {
                     // Generate dictionary
                     // Fill the dictionary of all social media names (key) with an image (val).
                     // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
@@ -170,15 +170,15 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
       
       
         // Fetch num followers from lambda
-        lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        lambdaInvoker = AWSLambdaInvoker.default()
         parameters = ["action":"getNumFollowers", "target": username]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
             if resultTask.error == nil && resultTask.result != nil
             {
                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
                 
                 // Update UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     let number = resultTask.result as? Int
                     self.numFollowersLabel.text = String(number!)
                 })
@@ -189,13 +189,13 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         
         // Fetch num followees from lambda
         parameters = ["action":"getNumFollowees", "target": username]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
             if resultTask.error == nil && resultTask.result != nil
             {
                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
                 
                 // Update UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     let number = resultTask.result as? Int
                     self.numFollowsLabel.text = String(number!)
                 })
@@ -208,7 +208,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
 
     }
   
-    @IBAction func onAddConnectionButtonClicked(sender: AnyObject) {
+    @IBAction func onAddConnectionButtonClicked(_ sender: AnyObject) {
         // Fetch current user from NSUserDefaults
         let currentUserName = self.me
         
@@ -224,24 +224,19 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
               targetAction = "follow"
             }
           
-            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+            let lambdaInvoker = AWSLambdaInvoker.default()
             let parameters = ["action": targetAction, "target": otherUserName!, "me": currentUserName]
             
-            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
-                
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith(block: { (resultTask) -> AnyObject? in
+              
                 if resultTask.error != nil
                 {
                     print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
                 }
-                else if resultTask.exception != nil
-                {
-                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                    
-                }
                 else if resultTask.result != nil
                 {
                     // Perform update on UI on main thread
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                       if self.displayPrivate {
                         self.activatePendingButton()
                       } else {
@@ -281,24 +276,19 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         }
 
         // Call lambda to store user connectons in database!
-        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let lambdaInvoker = AWSLambdaInvoker.default()
         let parameters = ["action": targetAction, "target": otherUserName!, "me": currentUserName]
 
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock({ (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith(block: { (resultTask) -> AnyObject? in
 
         if resultTask.error != nil
         {
           print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
         }
-        else if resultTask.exception != nil
-        {
-          print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-
-        }
         else if resultTask.result != nil
         {
           // Perform update on UI on main thread
-          dispatch_async(dispatch_get_main_queue(), { () -> Void in
+          DispatchQueue.main.async(execute: { () -> Void in
             self.activateAddButton()
             self.popupSearchConsistencyDelegate?.profilePopupUserDeleted(self.otherUserName!, isPrivate: self.displayPrivate)
           })
@@ -318,7 +308,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     }
   
     // Note: We also link pending button to this method as well. Very functionality
-    @IBAction func onDeleteConnectionButtonClicked(sender: AnyObject) {
+    @IBAction func onDeleteConnectionButtonClicked(_ sender: AnyObject) {
 
           self.unFollowUser()
           // ISSUE WITH BELOW: Cannot present view controller on top of a popup....
@@ -338,13 +328,13 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
       
     }
   
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return keyValSocialMediaPairList.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = socialMediaCollectionView.dequeueReusableCellWithReuseIdentifier("accountsCollectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
+        let cell = socialMediaCollectionView.dequeueReusableCell(withReuseIdentifier: "accountsCollectionViewCell", for: indexPath) as! SocialMediaCollectionViewCell
         
         if (!keyValSocialMediaPairList.isEmpty)
         {
@@ -354,8 +344,12 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             
             
             // Generate a UI image for the respective social media type
-            cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
-            
+            if let socialMediaImage = self.socialMediaImageDictionary[socialMediaType!] {
+              cell.emblemImage.image = socialMediaImage
+            } else {
+              cell.emblemImage.image = UIImage(imageLiteralResourceName: "Person Icon Black")
+            }
+          
             cell.socialMediaName = socialMediaUserName // username
             cell.socialMediaType = socialMediaType // facebook, snapchat, etc
             
@@ -364,12 +358,12 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             // Create a faded emblem if private account
             if displayPrivate {
                 cell.emblemImage.alpha = 0.25
-                self.socialMediaCollectionView.hidden = true
-                self.privateProfileView.hidden = false
+                self.socialMediaCollectionView.isHidden = true
+                self.privateProfileView.isHidden = false
             } else {
               cell.emblemImage.alpha = 1
-              self.socialMediaCollectionView.hidden = false
-              self.privateProfileView.hidden = true
+              self.socialMediaCollectionView.isHidden = false
+              self.privateProfileView.isHidden = true
             }
         }
         
@@ -377,13 +371,13 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
 
     }
     
-    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
       
       // Do not let users click on profiles if private setting
       if !displayPrivate {
         print("SELECTED ITEM AT ", indexPath.item)
         
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
+        let cell = collectionView.cellForItem(at: indexPath) as! SocialMediaCollectionViewCell
         let socialMediaUserName = cell.socialMediaName // username..
         let socialMediaType = cell.socialMediaType // "facebook", "snapchat", etc..
         
@@ -391,53 +385,53 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         
         // Send trigger to Google Analytics
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIPage, value: GApageName)
-        let builder = GAIDictionaryBuilder.createEventWithCategory("SocialClicksMobile", action: "click", label: cell.socialMediaType, value: nil)
-        tracker.send(builder.build() as [NSObject : AnyObject])
+        tracker?.set(kGAIPage, value: GApageName)
+        let builder = GAIDictionaryBuilder.createEvent(withCategory: "SocialClicksMobile", action: "click", label: cell.socialMediaType, value: nil)
+        tracker?.send(builder?.build() as! [AnyHashable: Any])
         
         // Perform the request, go to external application and let the user do whatever they want!
         if socialMediaURL != nil
         {
-            UIApplication.sharedApplication().openURL(socialMediaURL)
+            UIApplication.shared.openURL(socialMediaURL!)
         }
       }
       
     }
   
-  private func activateAddButton()
+  fileprivate func activateAddButton()
   {
-    cellAddButton.superview?.bringSubviewToFront(cellAddButton)
+    cellAddButton.superview?.bringSubview(toFront: cellAddButton)
     
   }
   
-  private func activateDeleteButton()
+  fileprivate func activateDeleteButton()
   {
-    cellDeleteButton.superview?.bringSubviewToFront(cellDeleteButton)
+    cellDeleteButton.superview?.bringSubview(toFront: cellDeleteButton)
   }
 
-  private func activatePendingButton()
+  fileprivate func activatePendingButton()
   {
-    cellDeleteButton.superview?.bringSubviewToFront(cellPendingButton)
+    cellDeleteButton.superview?.bringSubview(toFront: cellPendingButton)
   }
 
-  @IBAction func viewFollowersButtonClicked(sender: AnyObject) {
+  @IBAction func viewFollowersButtonClicked(_ sender: AnyObject) {
     showViewController("getFollowers")
   }
   
-  @IBAction func viewFollowingButtonClicked(sender: AnyObject) {
+  @IBAction func viewFollowingButtonClicked(_ sender: AnyObject) {
     showViewController("getFollowees")
   }
   
-  func showViewController(lambdaAction: String) {
+  func showViewController(_ lambdaAction: String) {
     // Let's use a re-usable view just for viewing user follows/followings!
     let storyboard = UIStoryboard(name: "PopUpAlert", bundle: nil)
-    let viewController = storyboard.instantiateViewControllerWithIdentifier("AquaintsSingleFollowerListViewController") as! AquaintsSingleFollowerListViewController
+    let viewController = storyboard.instantiateViewController(withIdentifier: "AquaintsSingleFollowerListViewController") as! AquaintsSingleFollowerListViewController
     viewController.currentUserName = self.otherUserName
     viewController.lambdaAction = lambdaAction
     viewController.profilePopupView = self
     
     // Fetch VC on top view
-    var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+    var topVC = UIApplication.shared.keyWindow?.rootViewController
     while ((topVC!.presentedViewController) != nil) {
       topVC = topVC!.presentedViewController
     }
@@ -448,7 +442,7 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     // This will display a black screen in the background due to the fact we dismiss this popup view prior
 //    topVC?.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-    topVC?.presentViewController(viewController, animated: true, completion: nil)
+    topVC?.present(viewController, animated: true, completion: nil)
 
   }
   

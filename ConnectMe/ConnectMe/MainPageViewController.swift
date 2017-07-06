@@ -10,7 +10,7 @@ import UIKit
 
 protocol MainPageSectionUnderLineViewDelegate
 {
-    func updateSectionUnderLineView(newViewNum: Int)
+    func updateSectionUnderLineView(_ newViewNum: Int)
 }
 
 class MainPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
@@ -31,7 +31,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     var sectionDelegate : MainPageSectionUnderLineViewDelegate?
 
     // Google Analytics tracking
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
 //      let name = "MainPageViewController"
 //      guard let tracker = GAI.sharedInstance().defaultTracker else { return }
 //      tracker.set(kGAIScreenName, value: name)
@@ -49,44 +49,44 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         let analyticsStoryBoard = UIStoryboard(name: "AnalyticsDisplay", bundle: nil)
 
         arrayOfViewControllers = Array<UIViewController>()
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("HomeContainerViewController"))!)
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("SearchViewController"))!)
-      arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("ScanCodeDisplayStoryboardViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "HomeContainerViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "SearchViewController"))!)
+      arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "ScanCodeDisplayStoryboardViewController"))!)
         //arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("AnalyticsDisplayViewController"))!)
-        arrayOfViewControllers.append(analyticsStoryBoard.instantiateViewControllerWithIdentifier("AnalyticsDisplay"))
+        arrayOfViewControllers.append(analyticsStoryBoard.instantiateViewController(withIdentifier: "AnalyticsDisplay"))
 
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("MenuViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "MenuViewController"))!)
         
         let firstViewController = arrayOfViewControllers[SCANCODE]
         currentPageIndex = SCANCODE
         
-        setViewControllers([firstViewController], direction: .Forward, animated: true, completion: nil)
+        setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
-        if viewController.isKindOfClass(HomeContainerViewController)
+        if viewController.isKind(of: HomeContainerViewController.self)
         {
             return arrayOfViewControllers[SEARCH]
         }
       
-        if viewController.isKindOfClass(SearchViewController)
+        if viewController.isKind(of: SearchViewController.self)
         {
           return arrayOfViewControllers[SCANCODE]
         }
       
-        if viewController.isKindOfClass(ScanCodeDisplayStoryboardViewController)
+        if viewController.isKind(of: ScanCodeDisplayStoryboardViewController.self)
         {
             return arrayOfViewControllers[ANALYTICS]
         }
         
-        if viewController.isKindOfClass(AnalyticsDisplay)
+        if viewController.isKind(of: AnalyticsDisplay.self)
         {
             return arrayOfViewControllers[MENU]
         }
         
-        if viewController.isKindOfClass(MenuController)
+        if viewController.isKind(of: MenuController.self)
         {
             return nil
         }
@@ -96,29 +96,29 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
-        if viewController.isKindOfClass(HomeContainerViewController)
+        if viewController.isKind(of: HomeContainerViewController.self)
         {
             return nil
         }
         
-        if viewController.isKindOfClass(SearchViewController)
+        if viewController.isKind(of: SearchViewController.self)
         {
             return arrayOfViewControllers[NEWSFEED]
         }
       
-        if viewController.isKindOfClass(ScanCodeDisplayStoryboardViewController)
+        if viewController.isKind(of: ScanCodeDisplayStoryboardViewController.self)
         {
           return arrayOfViewControllers[SEARCH]
         }
       
-        if viewController.isKindOfClass(AnalyticsDisplay)
+        if viewController.isKind(of: AnalyticsDisplay.self)
         {
             return arrayOfViewControllers[SCANCODE]
         }
         
-        if viewController.isKindOfClass(MenuController)
+        if viewController.isKind(of: MenuController.self)
         {
             return arrayOfViewControllers[ANALYTICS]
         }
@@ -127,7 +127,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         return nil
     }
     
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         
         print("TRANSITION COMPLETED?: ", completed)
         
@@ -140,31 +140,31 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
         }
     }
     
-    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         
         let nextViewController = (pendingViewControllers.first)!
         
-        if nextViewController.isKindOfClass(MenuController)
+        if nextViewController.isKind(of: MenuController.self)
         {
             currentPageIndex = MENU
         }
 
-        else if nextViewController.isKindOfClass(AnalyticsDisplay)
+        else if nextViewController.isKind(of: AnalyticsDisplay.self)
         {
             currentPageIndex = ANALYTICS
         }
         
-        else if nextViewController.isKindOfClass(HomeContainerViewController)
+        else if nextViewController.isKind(of: HomeContainerViewController.self)
         {
             currentPageIndex = NEWSFEED
         }
         
-        else if nextViewController.isKindOfClass(ScanCodeDisplayStoryboardViewController)
+        else if nextViewController.isKind(of: ScanCodeDisplayStoryboardViewController.self)
         {
           currentPageIndex = SCANCODE
         }
           
-        else if nextViewController.isKindOfClass(SearchViewController)
+        else if nextViewController.isKind(of: SearchViewController.self)
         {
             currentPageIndex = SEARCH
         }
@@ -201,7 +201,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
 //    }
   
     // Used so that we can use buttons to change the page!
-    func changePage (pageIndex: Int)
+    func changePage (_ pageIndex: Int)
     {
         
         // We have 5 possible page indices (0 -> 5)
@@ -215,11 +215,11 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
             // Determine which direction to animate
             if (pageIndex < currentPageIndex)
             {
-                direction = UIPageViewControllerNavigationDirection.Reverse
+                direction = UIPageViewControllerNavigationDirection.reverse
             }
             else
             {
-                direction = UIPageViewControllerNavigationDirection.Forward
+                direction = UIPageViewControllerNavigationDirection.forward
 
             }
         
@@ -240,7 +240,7 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     }
 
   // a special case of changePage(pageIndex: 2) used for push notification handling. Displaying Followers or Following section in MenuController
-  func changePageToFollows(subpageIndex: Int) {  // 0 for Followers, 1 for Following
+  func changePageToFollows(_ subpageIndex: Int) {  // 0 for Followers, 1 for Following
     let pageIndex = MENU
     
     let destinationViewController = arrayOfViewControllers[pageIndex]
@@ -248,10 +248,10 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     var direction : UIPageViewControllerNavigationDirection!
     
     if (pageIndex < currentPageIndex) {
-      direction = UIPageViewControllerNavigationDirection.Reverse
+      direction = UIPageViewControllerNavigationDirection.reverse
     }
     else {
-      direction = UIPageViewControllerNavigationDirection.Forward
+      direction = UIPageViewControllerNavigationDirection.forward
     }
     
     setViewControllers([destinationViewController], direction: direction, animated: true, completion: { (result: Bool) -> Void in
@@ -282,16 +282,16 @@ class MainPageViewController: UIPageViewController, UIPageViewControllerDataSour
     var direction : UIPageViewControllerNavigationDirection!
     
     if (pageIndex < currentPageIndex) {
-      direction = UIPageViewControllerNavigationDirection.Reverse
+      direction = UIPageViewControllerNavigationDirection.reverse
     }
     else {
-      direction = UIPageViewControllerNavigationDirection.Forward
+      direction = UIPageViewControllerNavigationDirection.forward
     }
 
     setViewControllers([destinationViewController], direction: direction, animated: true, completion: {
       (result: Bool) -> Void in
         let vcHome = self.arrayOfViewControllers[0] as! HomeContainerViewController
-        vcHome.performSegueWithIdentifier("toFollowRequestsViewController", sender: vcHome)
+        vcHome.performSegue(withIdentifier: "toFollowRequestsViewController", sender: vcHome)
     })
     
     currentPageIndex = pageIndex

@@ -48,10 +48,11 @@ class SignUpVerificationController: ViewControllerPannable {
         super.viewDidLoad()
         
         // Set up fileManager for uploading prof pics
-        fileManager = AWSUserFileManager.defaultUserFileManager()
+        fileManager = AWSUserFileManager.init()
         
+      
         // Set up DB
-        dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
 
         // get the IDENTITY POOL
         pool = getAWSCognitoIdentityUserPool()
@@ -63,12 +64,12 @@ class SignUpVerificationController: ViewControllerPannable {
         
         // Set up pan gesture recognizer for when the user wants to swipe left/right
         let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
-        edgePan.edges = .Left
+        edgePan.edges = .left
         view.addGestureRecognizer(edgePan)
 
     }
   
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
       awsMobileAnalyticsRecordPageVisitEventTrigger("SignUpVerificationController", forKey: "page_name")
     }
     
@@ -76,7 +77,7 @@ class SignUpVerificationController: ViewControllerPannable {
      * BEGIN : Keyboard/Button Animations
      =======================================================*/
     // Add and Remove NSNotifications!
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         registerForKeyboardNotifications()
@@ -87,7 +88,7 @@ class SignUpVerificationController: ViewControllerPannable {
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
         deregisterForKeyboardNotifications()
@@ -96,18 +97,18 @@ class SignUpVerificationController: ViewControllerPannable {
     // KEYBOARD shift-up buttons functionality
     func registerForKeyboardNotifications()
     {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
     }
     
     func deregisterForKeyboardNotifications()
     {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWasShown(notification: NSNotification!)
+    func keyboardWasShown(_ notification: Notification!)
     {
         // If keyboard shown already, no need to perform this method
         if isKeyboardShown
@@ -118,9 +119,9 @@ class SignUpVerificationController: ViewControllerPannable {
         self.isKeyboardShown = true
         
         let userInfo = notification.userInfo!
-        let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
+        let keyboardSize = ((userInfo[UIKeyboardFrameBeginUserInfoKey])! as AnyObject).cgRectValue.size
         
-        UIView.animateWithDuration(0.5) {
+        UIView.animate(withDuration: 0.5, animations: {
             
             print("KEYBOARD SHOWN")
             
@@ -137,10 +138,10 @@ class SignUpVerificationController: ViewControllerPannable {
                 self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
             }
             
-        }
+        }) 
     }
     
-    func keyboardWillBeHidden(notification: NSNotification!)
+    func keyboardWillBeHidden(_ notification: Notification!)
     {
         isKeyboardShown = false
         
@@ -154,18 +155,18 @@ class SignUpVerificationController: ViewControllerPannable {
     /*=======================================================
      * END : Keyboard/Button Animations
      =======================================================*/
-    func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer)
+    func screenEdgeSwiped(_ recognizer: UIScreenEdgePanGestureRecognizer)
     {
-        if recognizer.state == .Ended
+        if recognizer.state == .ended
         {
             print("Screen swiped!")
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
         
     }
     
     // Prevent non-numeric characters from being put in
-    @IBAction func onTextFieldEditingDidChange(sender: UITextField) {
+    @IBAction func onTextFieldEditingDidChange(_ sender: UITextField) {
         
         // Prevent upper-case characters
         // Prevent lower-case characters
@@ -177,14 +178,14 @@ class SignUpVerificationController: ViewControllerPannable {
         if (!inputString.isEmpty)
         {
             // Get range of all characters in the string that are not digits
-            let notAcceptableRange = inputString.rangeOfCharacterFromSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+            let notAcceptableRange = inputString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted)
             
             // If range of characters in given string has any non-digit characters
             // Then we must remove them
             if (notAcceptableRange != nil)
             {
                 // Remove all non-digits
-                inputString.removeRange(notAcceptableRange!)
+                inputString.removeSubrange(notAcceptableRange!)
                 
                 // Enforce this on user, set text field to no digits (and make it lowercase too while we're at it!
                 verificationCodeField.text = inputString
@@ -196,13 +197,13 @@ class SignUpVerificationController: ViewControllerPannable {
     
     
     // // When user clicks "Go" on keyboard
-    @IBAction func onTextFieldDidEndOnExit(sender: AnyObject) {
+    @IBAction func onTextFieldDidEndOnExit(_ sender: AnyObject) {
         // Mimic the "Sign Up" button being pressed
         self.onVerifyButtonClicked(signUpButton.self)
     }
   
   
-    @IBAction func onResentVerificationCodeButtonClicked(sender: AnyObject) {
+    @IBAction func onResentVerificationCodeButtonClicked(_ sender: AnyObject) {
       
       // Prevent abuse
       if (self.verificationCodeResendCount < 5)
@@ -215,7 +216,7 @@ class SignUpVerificationController: ViewControllerPannable {
       }
     }
     
-    @IBAction func onVerifyButtonClicked(sender: UIButton) {
+    @IBAction func onVerifyButtonClicked(_ sender: UIButton) {
         
         let verificationString:String = verificationCodeField.text!
 
@@ -241,7 +242,7 @@ class SignUpVerificationController: ViewControllerPannable {
         // Show activity indicator (spinner)
         spinner.startAnimating()
         
-        pool.getUser(userName).confirmSignUp(verificationString).continueWithBlock { (resultTask) -> AnyObject? in
+        pool.getUser(userName).confirmSignUp(verificationString).continueWith { (resultTask) -> AnyObject? in
             
             // If success code
             if resultTask.error == nil
@@ -250,7 +251,9 @@ class SignUpVerificationController: ViewControllerPannable {
                 
                 // LOG IN
                 // Attempt to log user in
-                self.pool.getUser(self.userName).getSession(self.userName, password: self.userPassword, validationData: nil, scopes: nil).continueWithBlock({ (sessionResultTask) -> AnyObject? in
+              self.pool.getUser(self.userName).getSession(self.userName, password: self.userPassword, validationData: nil).continueWith(block:
+              //self.pool.getUser(self.userName).getSession(self.userName, password: self.userPassword, validationData: nil, scopes: nil).continueWith(block: 
+                { (sessionResultTask) -> AnyObject? in
                     
                     // If success login
                     if sessionResultTask.error == nil
@@ -261,7 +264,7 @@ class SignUpVerificationController: ViewControllerPannable {
                         
                         
                         // Update new identity ID
-                        credentialsProvider.getIdentityId().continueWithBlock({ (task) -> AnyObject? in
+                        credentialsProvider.getIdentityId().continueWith(block: { (task) -> AnyObject? in
                             print("^^^USER LOGGGGGED IN with credentials:", task.result)
                             
                             setCurrentCachedUserName(self.userName)
@@ -281,23 +284,23 @@ class SignUpVerificationController: ViewControllerPannable {
                                 
                                 // Resize photo for cheaper storage
                                 let targetSize = CGSize(width: 150, height: 150)
-                                let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
+                                let newImage = RBResizeImage(userPhoto!, targetSize: targetSize)
                                 
                                 // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
-                                let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
+                                let imageFileURL = URL(fileURLWithPath: NSTemporaryDirectory() + "temp")
                                 
                                 // Force PNG format
                                 let data = UIImagePNGRepresentation(newImage)
-                                try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+                                try! data?.write(to: imageFileURL, options: NSData.WritingOptions.atomicWrite)
                                 
                                 // AWS TRANSFER REQUEST
                                 let transferRequest = AWSS3TransferManagerUploadRequest()
-                                transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
-                                transferRequest.key = "public/" + self.userName
-                                transferRequest.body = imageFileURL
-                                let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+                                transferRequest?.bucket = "aquaint-userfiles-mobilehub-146546989"
+                                transferRequest?.key = "public/" + self.userName
+                                transferRequest?.body = imageFileURL
+                                let transferManager = AWSS3TransferManager.default()
                                 
-                                transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
+                                transferManager.upload(transferRequest!).continueWith(executor: AWSExecutor.mainThread(), block:
                                     { (resultTask) -> AnyObject? in
                                         
                                         // if sucessful file transfer
@@ -322,17 +325,12 @@ class SignUpVerificationController: ViewControllerPannable {
                              *  UPLOAD USER DATA TO RDS via LAMBDA
                              *************************************/
                             // Store username and user realname
-                            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+                            let lambdaInvoker = AWSLambdaInvoker.default()
                             var parameters = ["action":"adduser", "target": self.userName, "realname": self.userFullName]
-                            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+                            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
                                 if resultTask.error != nil
                                 {
                                     print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-                                }
-                                else if resultTask.exception != nil
-                                {
-                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                                    
                                 }
                                 else if resultTask.result != nil
                                 {
@@ -352,15 +350,10 @@ class SignUpVerificationController: ViewControllerPannable {
                             
                             // Have user automatically follow and be followed by Aquaint Team!
                             parameters = ["action":"follow", "target": self.userName, "me": "aquaint"]
-                            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+                            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
                                 if resultTask.error != nil
                                 {
                                     print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-                                }
-                                else if resultTask.exception != nil
-                                {
-                                    print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                                    
                                 }
                                 else if resultTask.result != nil
                                 {
@@ -405,12 +398,9 @@ class SignUpVerificationController: ViewControllerPannable {
                           
                             // Generate scan code for user
                             parameters = ["action":"createScanCodeForUser", "target": self.userName]
-                            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+                            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
                               if resultTask.error != nil {
                                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-                              }
-                              else if resultTask.exception != nil {
-                                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
                               }
                               else if resultTask.result != nil {
                                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
@@ -427,10 +417,10 @@ class SignUpVerificationController: ViewControllerPannable {
                             // Upload user DATA to DynamoDB
                             let dynamoDBUser = User()
                             
-                            dynamoDBUser.realname = self.userFullName
+                            dynamoDBUser?.realname = self.userFullName
                            // dynamoDBUser.timestamp = getTimestampAsInt()
                            // dynamoDBUser.userId = task.result as! String
-                            dynamoDBUser.username = self.userName
+                            dynamoDBUser?.username = self.userName
                             
                             // No account data to store yet.
 //                            let accountData = NSMutableDictionary()
@@ -438,7 +428,7 @@ class SignUpVerificationController: ViewControllerPannable {
 //                            accountData.setValue(["austinvaday","avtheman"], forKey: "instagram")
 //                            dynamoDBUser.accounts = accountData
                             
-                            self.dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+                            self.dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block: { (resultTask) -> AnyObject? in
                                 
                                 // If successful save
                                 if (resultTask.error == nil)
@@ -448,16 +438,16 @@ class SignUpVerificationController: ViewControllerPannable {
 //                                    setCurrentCachedUserProfiles(accountData)
                                     
                                     // Perform update on UI on main thread
-                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    DispatchQueue.main.async(execute: { () -> Void in
     
                                         // Stop showing activity indicator (spinner)
                                         self.spinner.stopAnimating()
-                                        self.checkMarkFlipped.hidden = false
-                                        self.buttonToFlip.hidden = true
+                                        self.checkMarkFlipped.isHidden = false
+                                        self.buttonToFlip.isHidden = true
     
-                                        UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                                        UIView.transition(with: self.checkMarkView, duration: 1, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: { () -> Void in
     
-                                            self.checkMarkFlipped.hidden = false
+                                            self.checkMarkFlipped.isHidden = false
                                             self.checkMarkFlipped.image = self.checkMark.image
     
                                             }, completion: nil)
@@ -466,7 +456,7 @@ class SignUpVerificationController: ViewControllerPannable {
                                         delay(1.5)
                                         {
                                             
-                                            self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                                            self.performSegue(withIdentifier: self.segueDestination, sender: nil)
                                             
                                         }
                                         
@@ -478,11 +468,7 @@ class SignUpVerificationController: ViewControllerPannable {
                                 {
                                     print ("DYNAMODB ERROR: ", resultTask.error)
                                 }
-                                
-                                if (resultTask.exception != nil)
-                                {
-                                    print ("DYNAMODB EXCEPTION: ", resultTask.exception)
-                                }
+                              
                                 
                                 return nil
                             })
@@ -496,7 +482,7 @@ class SignUpVerificationController: ViewControllerPannable {
                     else // If fail login
                     {
                         // Perform update on UI on main thread
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        DispatchQueue.main.async(execute: { () -> Void in
                             
                             self.spinner.stopAnimating()
                             
@@ -516,7 +502,7 @@ class SignUpVerificationController: ViewControllerPannable {
             {
                 
                 // Perform update on UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
 
                     self.spinner.stopAnimating()
 
@@ -533,12 +519,12 @@ class SignUpVerificationController: ViewControllerPannable {
     }
 
     
-    private func resetAnimations()
+    fileprivate func resetAnimations()
     {
         // Set up animation
-        self.checkMark.hidden = true
-        self.checkMarkFlipped.hidden = true
-        self.buttonToFlip.hidden = false
+        self.checkMark.isHidden = true
+        self.checkMarkFlipped.isHidden = true
+        self.buttonToFlip.isHidden = false
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
         flipImageHorizontally(checkMarkFlippedCopy)
         

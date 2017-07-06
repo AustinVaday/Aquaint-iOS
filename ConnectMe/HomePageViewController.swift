@@ -10,7 +10,7 @@ import UIKit
 
 protocol HomePageSectionUnderLineViewDelegate
 {
-    func updateSectionUnderLineView(newViewNum: Int)
+    func updateSectionUnderLineView(_ newViewNum: Int)
 }
 
 class HomePageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
@@ -33,18 +33,18 @@ class HomePageViewController: UIPageViewController, UIPageViewControllerDataSour
         delegate = self
         
         arrayOfViewControllers = Array<UIViewController>()
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("NewsfeedViewController"))!)
-        arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("YouNotificationsViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "NewsfeedViewController"))!)
+        arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "YouNotificationsViewController"))!)
 
         let firstViewController = arrayOfViewControllers[AQUAINTS_NOTIFICATIONS]
         currentPageIndex = AQUAINTS_NOTIFICATIONS
         
-        setViewControllers([firstViewController], direction: .Forward, animated: true, completion: nil)
+        setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         
     }
     
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
         
 //        if viewController.isKindOfClass(NewsfeedViewController)
@@ -61,7 +61,7 @@ class HomePageViewController: UIPageViewController, UIPageViewControllerDataSour
         
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
 //        
 //        if viewController.isKindOfClass(NewsfeedViewController)
 //        {
@@ -76,7 +76,7 @@ class HomePageViewController: UIPageViewController, UIPageViewControllerDataSour
         return nil
     }
     
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
 //        let currentViewController = previousViewControllers.last!
 //        
 //        if currentViewController.isKindOfClass(NewsfeedViewController)
@@ -92,7 +92,7 @@ class HomePageViewController: UIPageViewController, UIPageViewControllerDataSour
 //        sectionDelegate?.updateSectionUnderLineView(currentPageIndex)
     }
     
-    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
 //        // Get current page index
 //        let currentViewController = (pendingViewControllers.first)!
 //        
@@ -111,7 +111,7 @@ class HomePageViewController: UIPageViewController, UIPageViewControllerDataSour
     }
 
     // Used so that we can use buttons to change the page!
-    func changePage (pageIndex: Int)
+    func changePage (_ pageIndex: Int)
     {
 
 //        TEMP ... UNCOMMENT IF WANT TO CHANGE PAGES

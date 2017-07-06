@@ -23,7 +23,7 @@ class ContactsTableViewCell: UITableViewCell {
         // UI Color for #0F7A9D (www.uicolor.xyz)
         let aquaBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
         let attributes = [NSForegroundColorAttributeName: aquaBlue,
-                          NSFontAttributeName: UIFont.boldSystemFontOfSize(15.0)]
+                          NSFontAttributeName: UIFont.boldSystemFont(ofSize: 15.0)]
         cellName.numberOfLines = 0
         cellName.linkAttributeDefault = attributes
     }

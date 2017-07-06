@@ -38,7 +38,7 @@ func getAllPossibleSocialMediaList() -> Array<String>
   return possibleSocialMediaNameList
 }
 
-func convertDictionaryToSocialMediaKeyValPairList(dict: NSMutableDictionary!)
+func convertDictionaryToSocialMediaKeyValPairList(_ dict: NSMutableDictionary!)
   -> Array<KeyValSocialMediaPair>!
 {
   
@@ -73,12 +73,12 @@ func convertDictionaryToSocialMediaKeyValPairList(dict: NSMutableDictionary!)
   
 }
 
-func computeTimeDiffFromNow(timestampGMT: Int) -> String
+func computeTimeDiffFromNow(_ timestampGMT: Int) -> String
 {
   let currentTime = getTimestampAsInt()
   
   // Get time diff in seconds
-  let timeDiffSec = (currentTime - timestampGMT)
+  let timeDiffSec = (currentTime! - timestampGMT)
   
   // If we're in seconds, return seconds
   if (timeDiffSec < 60)
@@ -117,17 +117,17 @@ func computeTimeDiffFromNow(timestampGMT: Int) -> String
   
 }
 
-func getSocialMediaDisplayName(socialMediaType: String) -> String
+func getSocialMediaDisplayName(_ socialMediaType: String) -> String
 {
   switch socialMediaType {
     case "android": return "Android App"
     case "ios": return "iOS App"
-    default: return socialMediaType.capitalizedString
+    default: return socialMediaType.capitalized
   }
 }
 
 // Necessary for fetching username URLs
-func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: String!, sender: AnyObject) -> NSURL!
+func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: String!, sender: AnyObject) -> URL!
 {
   var urlString = ""
   var altString = ""
@@ -151,9 +151,15 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
     altString = "http://www.twitter.com/" + socialMediaUserName
     break;
   case "linkedin":
+    /*
     urlString = "linkedin://profile/view?id=" + socialMediaUserName //MAY NOT WORK? (added view?)
+    // UPDATE: confirmed urlString does not work even if Linkedin app is installed. altString is automatically used instead
     altString = "https://www.linkedin.com/profile/view?id=" + socialMediaUserName
+    */
+    // temporary solution for user manually entering URL in popup
+    urlString = socialMediaUserName
     break;
+    
   case "youtube":
     urlString = "youtube:www.youtube.com/user/" + socialMediaUserName
     altString = "http://www.youtube.com/" + socialMediaUserName
@@ -191,26 +197,26 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
     break;
   }
   
-  var socialMediaURL = NSURL(string: urlString)
+  var socialMediaURL = URL(string: urlString)
   
   // If user doesn't have social media app installed, open using default browser instead (use altString)
-  if (!UIApplication.sharedApplication().canOpenURL(socialMediaURL!))
+  if (!UIApplication.shared.canOpenURL(socialMediaURL!))
   {
     if (altString != "")
     {
-      socialMediaURL = NSURL(string: altString)
+      socialMediaURL = URL(string: altString)
     }
     else
     {
       if (socialMediaTypeName == "snapchat")
       {
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
           showAlert("Sorry", message: "It seems like you don't have the Snapchat app installed! Please install it and try again.", buttonTitle: "Ok", sender: sender)
         })
       }
       else
       {
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
           showAlert("Hold on!", message: "Feature coming soon...", buttonTitle: "Ok", sender: sender)
         })
       }
@@ -225,19 +231,15 @@ func getUserSocialMediaURL(socialMediaUserName: String!, socialMediaTypeName: St
 
 // Implements a delay.
 // Usage: delay([num_sec]){ [Code after delay] }
-func delay(delay:Double, closure:()->()) {
-  dispatch_after(
-    dispatch_time(
-      DISPATCH_TIME_NOW,
-      Int64(delay * Double(NSEC_PER_SEC))
-    ),
-    dispatch_get_main_queue(), closure)
+func delay(_ delay:Double, closure:@escaping ()->()) {
+  DispatchQueue.main.asyncAfter(
+    deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
 }
 
 
 // Create attributed text string. Specify which range values you'd lke to be bold using
 // parallel arrays
-func createAttributedTextString(string: String, boldStartArray: [Int], boldEndArray: [Int]) -> NSAttributedString
+func createAttributedTextString(_ string: String, boldStartArray: [Int], boldEndArray: [Int]) -> NSAttributedString
 {
   if boldStartArray.count != boldEndArray.count
   {
@@ -245,7 +247,7 @@ func createAttributedTextString(string: String, boldStartArray: [Int], boldEndAr
   }
   
   let attributedString = NSMutableAttributedString(string: string)
-  let boldFontAttribute = [NSFontAttributeName: UIFont.boldSystemFontOfSize(15.0)]
+  let boldFontAttribute = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 15.0)]
   
   for (start,end) in zip(boldStartArray,boldEndArray)
   {
@@ -299,20 +301,20 @@ func generateRandomColor() -> UIColor {
 
 
 // Convert UIImage to base64
-func convertImageToBase64(image: UIImage) -> String
+func convertImageToBase64(_ image: UIImage) -> String
 {
   // Get image representation
   let imageData = UIImagePNGRepresentation(image)
   
   // Return b64
-  return (imageData?.base64EncodedStringWithOptions(.Encoding64CharacterLineLength))!
+  return (imageData?.base64EncodedString(options: .lineLength64Characters))!
 }
 
 
 // Convert base64 to UIImage
-func convertBase64ToImage(base64String: String) -> UIImage
+func convertBase64ToImage(_ base64String: String) -> UIImage
 {
-  let decodedData = NSData(base64EncodedString: base64String, options: .IgnoreUnknownCharacters)!
+  let decodedData = Data(base64Encoded: base64String, options: .ignoreUnknownCharacters)!
   
   return UIImage(data: decodedData)!
 }
@@ -320,19 +322,19 @@ func convertBase64ToImage(base64String: String) -> UIImage
 
 
 // Flips any image horizontally
-func flipImageHorizontally(imageView:UIImageView)
+func flipImageHorizontally(_ imageView:UIImageView)
 {
-  imageView.transform = CGAffineTransformMakeScale(-1.0, 1.0)
+  imageView.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
 }
 
 // Flips any image vertically
-func flipImageVertically(imageView:UIImageView)
+func flipImageVertically(_ imageView:UIImageView)
 {
-  imageView.transform = CGAffineTransformMakeScale(1.0, -1.0)
+  imageView.transform = CGAffineTransform(scaleX: 1.0, y: -1.0)
 }
 
 // Check if url format is proper
-func verifyUrl (urlString: String?) -> Bool {
+func verifyUrl (_ urlString: String?) -> Bool {
 //  //Check for nil
 //  if let urlString = urlString {
 //    // create NSURL instance
@@ -346,12 +348,12 @@ func verifyUrl (urlString: String?) -> Bool {
   // The following does not always check valid URLs. For Example the ? and = sign in: https://itunes.apple.com/us/app/aquaint/id1142094794?mt=8
   let urlRegEx1 = "(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+"
   let urlRegEx2 = "(?i)(http|https)(:\\/\\/)([^ .]+)(\\.)([^ \n]+)"
-  return NSPredicate(format: "SELF MATCHES %@", urlRegEx1).evaluateWithObject(urlString) ||
-         NSPredicate(format: "SELF MATCHES %@", urlRegEx2).evaluateWithObject(urlString)
+  return NSPredicate(format: "SELF MATCHES %@", urlRegEx1).evaluate(with: urlString) ||
+         NSPredicate(format: "SELF MATCHES %@", urlRegEx2).evaluate(with: urlString)
 }
 
 // Check if username format is proper
-func verifyUserNameLength(userNameString: String) -> Bool
+func verifyUserNameLength(_ userNameString: String) -> Bool
 {
   if (!userNameString.isEmpty)
   {
@@ -366,15 +368,15 @@ func verifyUserNameLength(userNameString: String) -> Bool
   return false
 }
 
-func verifyUserNameFormat(userNameString: String) -> Bool
+func verifyUserNameFormat(_ userNameString: String) -> Bool
 {
   
   if (!userNameString.isEmpty)
   {
-    let acceptableCharacterSet = NSMutableCharacterSet.alphanumericCharacterSet()
-    acceptableCharacterSet.addCharactersInString("_-")
+    let acceptableCharacterSet = NSMutableCharacterSet.alphanumeric()
+    acceptableCharacterSet.addCharacters(in: "_-")
     
-    let notAcceptableRange = userNameString.rangeOfCharacterFromSet(acceptableCharacterSet.invertedSet)
+    let notAcceptableRange = userNameString.rangeOfCharacter(from: acceptableCharacterSet.inverted)
     
     if (notAcceptableRange == nil)
     {
@@ -386,7 +388,7 @@ func verifyUserNameFormat(userNameString: String) -> Bool
 }
 
 // Check if real name format is proper
-func verifyRealNameLength(realNameString: String) -> Bool
+func verifyRealNameLength(_ realNameString: String) -> Bool
 {
   if (!realNameString.isEmpty)
   {
@@ -418,7 +420,7 @@ func verifyRealNameLength(realNameString: String) -> Bool
 //}
 
 // Check if email format is proper
-func verifyEmailFormat(emailString:String) -> Bool
+func verifyEmailFormat(_ emailString:String) -> Bool
 {
   
   if (!emailString.isEmpty)
@@ -430,7 +432,7 @@ func verifyEmailFormat(emailString:String) -> Bool
     let test = NSPredicate(format: "SELF MATCHES %@", emailRegex)
     
     // Evaluate the regex. Returns true if acceptable, else false
-    return test.evaluateWithObject(emailString)
+    return test.evaluate(with: emailString)
     
   }
   
@@ -439,36 +441,36 @@ func verifyEmailFormat(emailString:String) -> Bool
 }
 
 // Remove all non-digits from a string (i.e. phone number)
-func removeAllNonDigits(string: String) -> String
+func removeAllNonDigits(_ string: String) -> String
 {
-  let characterSetToRemove = NSCharacterSet.decimalDigitCharacterSet().invertedSet
-  return string.componentsSeparatedByCharactersInSet(characterSetToRemove).joinWithSeparator("")
+  let characterSetToRemove = CharacterSet.decimalDigits.inverted
+  return string.components(separatedBy: characterSetToRemove).joined(separator: "")
 }
 
 // Remove all non-alpha-numeric characters from a string (i.e. username)
-func removeAllNonAlphaNumeric(string: String, charactersToKeep: String? = nil) -> String
+func removeAllNonAlphaNumeric(_ string: String, charactersToKeep: String? = nil) -> String
 {
-  let acceptableCharacterSet = NSMutableCharacterSet.alphanumericCharacterSet()
+  let acceptableCharacterSet = NSMutableCharacterSet.alphanumeric()
   
   // If user specifies any characters to keep, add them to acceptable set
   if charactersToKeep != nil
   {
-    acceptableCharacterSet.addCharactersInString(charactersToKeep!)
+    acceptableCharacterSet.addCharacters(in: charactersToKeep!)
   }
-  let characterSetToRemove = acceptableCharacterSet.invertedSet
-  return string.componentsSeparatedByCharactersInSet(characterSetToRemove).joinWithSeparator("")
+  let characterSetToRemove = acceptableCharacterSet.inverted
+  return string.components(separatedBy: characterSetToRemove).joined(separator: "")
 }
 
 // Remove all non-alpha-numeric characters from a string (i.e. username)
-func removeAllNonAlphaNumeric(string: String) -> String
+func removeAllNonAlphaNumeric(_ string: String) -> String
 {
-  let characterSetToRemove = NSCharacterSet.alphanumericCharacterSet().invertedSet
-  return string.componentsSeparatedByCharactersInSet(characterSetToRemove).joinWithSeparator("")
+  let characterSetToRemove = CharacterSet.alphanumerics.inverted
+  return string.components(separatedBy: characterSetToRemove).joined(separator: "")
 }
 
 
 // Check if phone number is proper
-func verifyPhoneFormat(phoneString: String) -> Bool
+func verifyPhoneFormat(_ phoneString: String) -> Bool
 {
   
   // Create a regular expression with acceptable phone number
@@ -477,11 +479,11 @@ func verifyPhoneFormat(phoneString: String) -> Bool
   // Create NSPredicate object to define logical constraints for our search in
   let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
   
-  return phoneTest.evaluateWithObject(phoneString)
+  return phoneTest.evaluate(with: phoneString)
 }
 
 // Check if password format is proper
-func verifyPasswordFormat(passwordString:String) -> Bool
+func verifyPasswordFormat(_ passwordString:String) -> Bool
 {
   // Ensure that length of password is at least 4 characters
   if (passwordString.characters.count > 3)
@@ -494,7 +496,7 @@ func verifyPasswordFormat(passwordString:String) -> Bool
 }
 
 // Check if verification length is proper
-func verifyVerificationCodeLength(verificationString: String) -> Bool
+func verifyVerificationCodeLength(_ verificationString: String) -> Bool
 {
   if (!verificationString.isEmpty)
   {
@@ -512,47 +514,47 @@ func verifyVerificationCodeLength(verificationString: String) -> Bool
 }
 
 // Show an alert to the user
-func showAlert(title: String, message: String, buttonTitle: String, sender: AnyObject)
+func showAlert(_ title: String, message: String, buttonTitle: String, sender: AnyObject)
 {
   
   // Create alert to send to user
-  let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+  let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
   
   // Create the action to add to alert
-  let alertAction = UIAlertAction(title: buttonTitle, style: UIAlertActionStyle.Default, handler: nil)
+  let alertAction = UIAlertAction(title: buttonTitle, style: UIAlertActionStyle.default, handler: nil)
   
   // Add the action to the alert
   alert.addAction(alertAction)
   
-  sender.showViewController(alert, sender: nil)
+  sender.show(alert, sender: nil)
 }
 
 
-func showAlertFetchText(title: String, message: String, buttonTitle: String, textFetch: String, sender: AnyObject)
+func showAlertFetchText(_ title: String, message: String, buttonTitle: String, textFetch: String, sender: AnyObject)
 {
-  let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+  let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
   
-  let confirmAction = UIAlertAction(title: "Confirm", style: .Default) { (_) in
+  let confirmAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
     if let field = alertController.textFields![0] as? UITextField {
       // store your data
       print("STORING DATA!!!")
-      NSUserDefaults.standardUserDefaults().setObject(field.text, forKey: "textFetch")
-      NSUserDefaults.standardUserDefaults().synchronize()
+      UserDefaults.standard.set(field.text, forKey: "textFetch")
+      UserDefaults.standard.synchronize()
     } else {
       // user did not fill field
     }
   }
   
-  let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (_) in }
+  let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
   
-  alertController.addTextFieldWithConfigurationHandler { (textField) in
+  alertController.addTextField { (textField) in
     textField.placeholder = "Enter here"
   }
   
   alertController.addAction(confirmAction)
   alertController.addAction(cancelAction)
   
-  sender.presentViewController(alertController, animated: true, completion: nil)
+  sender.present(alertController, animated: true, completion: nil)
   
   
   
@@ -561,143 +563,143 @@ func showAlertFetchText(title: String, message: String, buttonTitle: String, tex
 func clearUserDefaults()
 {
   // Make sure delete the temporary user image that we created...
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
   // Fetch cached image URL
-  let imageURL = defaults.URLForKey("userimage")
+  let imageURL = defaults.url(forKey: "userimage")
   
-  let fileManager = NSFileManager.defaultManager()
+  let fileManager = FileManager.default
   
   if imageURL != nil
   {
     // Delete image from path so that next user will have a fresh location
-    try? fileManager.removeItemAtURL(imageURL!)
+    try? fileManager.removeItem(at: imageURL!)
     
   }
   
-  NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
+  UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
 }
 
 
-func setCurrentCachedUserName(username: String)
+func setCurrentCachedUserName(_ username: String)
 {
-  let defaults = NSUserDefaults.standardUserDefaults()
-  defaults.setObject(username, forKey: "username")
+  let defaults = UserDefaults.standard
+  defaults.set(username, forKey: "username")
   print("Cache username success: ", username)
   
 }
 
-func setCachedUserSignUpName(userSignUpName: String)
+func setCachedUserSignUpName(_ userSignUpName: String)
 {
-  let defaults = NSUserDefaults.standardUserDefaults()
-  defaults.setObject(userSignUpName, forKey: "usersignupname")
+  let defaults = UserDefaults.standard
+  defaults.set(userSignUpName, forKey: "usersignupname")
   print("Cache userSignUpName success: ", userSignUpName)
   
 }
 
-func setCurrentCachedFullName(userFullName: String)
+func setCurrentCachedFullName(_ userFullName: String)
 {
-  let defaults = NSUserDefaults.standardUserDefaults()
-  defaults.setObject(userFullName, forKey: "userfullname")
+  let defaults = UserDefaults.standard
+  defaults.set(userFullName, forKey: "userfullname")
   print("Cache userfullname success: ", userFullName)
   
 }
 
-func setCurrentCachedDeviceID(deviceID: String) {
-  let defaults = NSUserDefaults.standardUserDefaults()
-  defaults.setObject(deviceID, forKey: "deviceID")
+func setCurrentCachedDeviceID(_ deviceID: String) {
+  let defaults = UserDefaults.standard
+  defaults.set(deviceID, forKey: "deviceID")
   print("Cache deviceID success: ", deviceID)
 }
 
-func setCurrentCachedPrivacyStatus(privacyStatus: String) {
+func setCurrentCachedPrivacyStatus(_ privacyStatus: String) {
   if privacyStatus != "public" && privacyStatus != "private" {
     print("ERROR. Attempting to cache unnaceptable privacy status. Must be either private or public: ", privacyStatus)
     return
   }
-  let defaults = NSUserDefaults.standardUserDefaults()
-  defaults.setObject(privacyStatus, forKey: "privacyStatus")
+  let defaults = UserDefaults.standard
+  defaults.set(privacyStatus, forKey: "privacyStatus")
   print("Cache deviceID success: ", privacyStatus)
 }
 
-func setCurrentCachedUserEmail(email: String)
+func setCurrentCachedUserEmail(_ email: String)
 {
-  let defaults = NSUserDefaults.standardUserDefaults()
-  defaults.setObject(email, forKey: "useremail")
+  let defaults = UserDefaults.standard
+  defaults.set(email, forKey: "useremail")
   print("Cache useremail success: ", email)
 }
 
-func setCurrentCachedUserPhone(phone: String)
+func setCurrentCachedUserPhone(_ phone: String)
 {
-  let defaults = NSUserDefaults.standardUserDefaults()
-  defaults.setObject(phone, forKey: "userphone")
+  let defaults = UserDefaults.standard
+  defaults.set(phone, forKey: "userphone")
   print("Cache userphone success: ", phone)
   
 }
 
-func setCurrentCachedUserImage(userImage: UIImage!)
+func setCurrentCachedUserImage(_ userImage: UIImage!)
 {
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
   // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
-  let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
+  let imageFileURL = URL(fileURLWithPath: NSTemporaryDirectory() + "temp")
   
   // Force PNG format
   let data = UIImagePNGRepresentation(userImage)
   
   // Write image data to the created url
-  try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+  try! data?.write(to: imageFileURL, options: NSData.WritingOptions.atomicWrite)
   
   
-  defaults.setURL(imageFileURL, forKey: "userimage")
+  defaults.set(imageFileURL, forKey: "userimage")
 }
 
-func setCurrentCachedUserScanCode(scanCode: UIImage!)
+func setCurrentCachedUserScanCode(_ scanCode: UIImage!)
 {
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
   // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
-  let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("tempUserScanCode"))
+  let imageFileURL = URL(fileURLWithPath: NSTemporaryDirectory() + "tempUserScanCode")
   
   // Force PNG format
   let data = UIImagePNGRepresentation(scanCode)
   
   // Write image data to the created url
-  try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+  try! data?.write(to: imageFileURL, options: NSData.WritingOptions.atomicWrite)
   
-  defaults.setURL(imageFileURL, forKey: "userscancode")
+  defaults.set(imageFileURL, forKey: "userscancode")
   
 }
 
-func setCurrentCachedSubscriptionStatus(status : Bool)
+func setCurrentCachedSubscriptionStatus(_ status : Bool)
 {
-  let defaults = NSUserDefaults.standardUserDefaults()
-  defaults.setObject(status, forKey: "subscriptionStatus")
+  let defaults = UserDefaults.standard
+  defaults.set(status, forKey: "subscriptionStatus")
 }
 
-func setCurrentCachedPromoUserStatus(status : Bool)
+func setCurrentCachedPromoUserStatus(_ status : Bool)
 {
-  let defaults = NSUserDefaults.standardUserDefaults()
-  defaults.setObject(status, forKey: "promoUserStatus")
+  let defaults = UserDefaults.standard
+  defaults.set(status, forKey: "promoUserStatus")
 }
 
-func setCurrentCachedUserProfiles(userProfiles: NSMutableDictionary)
+func setCurrentCachedUserProfiles(_ userProfiles: NSMutableDictionary)
 {
-  let defaults = NSUserDefaults.standardUserDefaults()
-  defaults.setObject(userProfiles, forKey: "userprofiles")
+  let defaults = UserDefaults.standard
+  defaults.set(userProfiles, forKey: "userprofiles")
 }
 
-func setCurrentNotificationTimestamp(timestamp: NSDate) {
-  let defaults = NSUserDefaults.standardUserDefaults()
-  defaults.setObject(timestamp, forKey: "notificationTimestamp")
+func setCurrentNotificationTimestamp(_ timestamp: Date) {
+  let defaults = UserDefaults.standard
+  defaults.set(timestamp, forKey: "notificationTimestamp")
 }
 
 // Get the current user that is signed into the app
 func getCurrentCachedUser() -> String!
 {
   // Get the user defaults set previously in the program (username of user)
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
-  let currentUser = defaults.stringForKey("username")
+  let currentUser = defaults.string(forKey: "username")
   
   if currentUser == nil
   {
@@ -713,9 +715,9 @@ func getCurrentCachedUser() -> String!
 func getCachedUserSignUpName() -> String!
 {
   // Get the user defaults set previously in the program (username of user)
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
-  let signupName = defaults.stringForKey("usersignupname")
+  let signupName = defaults.string(forKey: "usersignupname")
   
   if signupName == nil
   {
@@ -732,9 +734,9 @@ func getCachedUserSignUpName() -> String!
 func getCurrentCachedFullName() -> String!
 {
   // Get the user defaults set previously in the program (username of user)
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
-  let currentUserFullName = defaults.stringForKey("userfullname")
+  let currentUserFullName = defaults.string(forKey: "userfullname")
   
   if currentUserFullName == nil
   {
@@ -748,9 +750,9 @@ func getCurrentCachedFullName() -> String!
 
 // Get the current user's device IDs, used for sending out push notification on server
 func getCurrentCachedDeviceID() -> String! {
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
-  let currentDeviceID = defaults.stringForKey("deviceID")
+  let currentDeviceID = defaults.string(forKey: "deviceID")
   
   if currentDeviceID == nil {
     print("Uh oh, no cached deviceID available.")
@@ -762,9 +764,9 @@ func getCurrentCachedDeviceID() -> String! {
 
 // Get the current user's privacy setting status, used to determine whether to show follow requests or not.
 func getCurrentCachedPrivacyStatus() -> String! {
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
-  let currentPrivacyStatus = defaults.stringForKey("privacyStatus")
+  let currentPrivacyStatus = defaults.string(forKey: "privacyStatus")
   
   if currentPrivacyStatus == nil {
     print("Uh oh, no cached privacy status available.")
@@ -779,9 +781,9 @@ func getCurrentCachedPrivacyStatus() -> String! {
 func getCurrentCachedEmail() -> String!
 {
   // Get the user defaults set previously in the program (username of user)
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
-  let currentUserEmail = defaults.stringForKey("useremail")
+  let currentUserEmail = defaults.string(forKey: "useremail")
   
   if currentUserEmail == nil
   {
@@ -797,9 +799,9 @@ func getCurrentCachedEmail() -> String!
 func getCurrentCachedPhone() -> String!
 {
   // Get the user defaults set previously in the program (username of user)
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
-  let currentUserPhone = defaults.stringForKey("userphone")
+  let currentUserPhone = defaults.string(forKey: "userphone")
   
   if currentUserPhone == nil
   {
@@ -815,10 +817,10 @@ func getCurrentCachedUserImage() -> UIImage!
 {
   
   // Get the user defaults set previously in the program (username of user)
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
   // Fetch cached image URL
-  let imageURL = defaults.URLForKey("userimage")
+  let imageURL = defaults.url(forKey: "userimage")
   
   if (imageURL == nil)
   {
@@ -826,7 +828,7 @@ func getCurrentCachedUserImage() -> UIImage!
     return nil
   }
   // Get data of image
-  let data = NSData(contentsOfURL: imageURL!)
+  let data = try? Data(contentsOf: imageURL!)
   
   if (data == nil)
   {
@@ -845,10 +847,10 @@ func getCurrentCachedUserScanCode() -> UIImage!
 {
   
   // Get the user defaults set previously in the program (username of user)
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
   // Fetch cached image URL
-  let imageURL = defaults.URLForKey("userscancode")
+  let imageURL = defaults.url(forKey: "userscancode")
   
   if (imageURL == nil)
   {
@@ -856,7 +858,7 @@ func getCurrentCachedUserScanCode() -> UIImage!
     return nil
   }
   // Get data of image
-  let data = NSData(contentsOfURL: imageURL!)
+  let data = try? Data(contentsOf: imageURL!)
   
   if (data == nil)
   {
@@ -873,27 +875,27 @@ func getCurrentCachedUserScanCode() -> UIImage!
 
 func getCurrentCachedSubscriptionStatus() -> Bool
 {
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
-  let status = defaults.valueForKey("subscriptionStatus") as! Bool!
+  let status = defaults.value(forKey: "subscriptionStatus") as! Bool!
   
   if status == nil {
     return false
   } else {
-    return status
+    return status!
   }
 }
 
 func getCurrentCachedPromoUserStatus() -> Bool
 {
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
-  let status = defaults.valueForKey("promoUserStatus") as! Bool!
+  let status = defaults.value(forKey: "promoUserStatus") as! Bool!
   
   if status == nil {
     return false
   } else {
-    return status
+    return status!
   }
 }
 
@@ -901,9 +903,9 @@ func getCurrentCachedPromoUserStatus() -> Bool
 func getCurrentCachedUserProfiles() -> NSMutableDictionary!
 {
   // Get the user defaults set previously in the program (username of user)
-  let defaults = NSUserDefaults.standardUserDefaults()
+  let defaults = UserDefaults.standard
   
-  let currentUserProfiles = defaults.valueForKey("userprofiles") as! NSDictionary!
+  let currentUserProfiles = defaults.value(forKey: "userprofiles") as! NSDictionary!
   
   if currentUserProfiles == nil
   {
@@ -911,43 +913,43 @@ func getCurrentCachedUserProfiles() -> NSMutableDictionary!
     return nil
   }
   
-  let mutableCopy = NSMutableDictionary(dictionary: currentUserProfiles)
+  let mutableCopy = NSMutableDictionary(dictionary: currentUserProfiles!)
   return mutableCopy
   
 }
 
 // Get the Notification Timestamp of last time reminding the user to enable push notification feature
-func getCurrentNotificationTimestamp() -> NSDate! {
-  let defaults = NSUserDefaults.standardUserDefaults()
+func getCurrentNotificationTimestamp() -> Date! {
+  let defaults = UserDefaults.standard
   
-  let currentNotificationTimestamp = defaults.valueForKey("notificationTimestamp")
+  let currentNotificationTimestamp = defaults.value(forKey: "notificationTimestamp")
   
   if currentNotificationTimestamp == nil {
     print("Uh oh, no cached notificationTimestamp available.")
     return nil
   }
   
-  return (currentNotificationTimestamp as! NSDate)
+  return (currentNotificationTimestamp as! Date)
 }
 
 // Get timestamp as integer value
 func getTimestampAsInt() -> Int!
 {
-  let date = NSDate()
+  let date = Date()
   return Int(date.timeIntervalSince1970)
 }
 
 // For parsing return data (example use case: lambda)
-func convertJSONStringToArray(jsonString: AnyObject) -> NSArray!
+func convertJSONStringToArray(_ jsonString: AnyObject) -> NSArray!
 {
   let string = jsonString as! String
   
-  let data = string.dataUsingEncoding(NSUTF8StringEncoding)
+  let data = string.data(using: String.Encoding.utf8)
   var result : NSArray!
   
   do
   {
-    result = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSArray
+    result = try JSONSerialization.jsonObject(with: data!, options: []) as! NSArray
   }
   catch let error as NSError
   {
@@ -962,14 +964,14 @@ func getProfilePopup() -> KLCPopup
 {
   // Get our special popup design from the XIB
   let storyboard = UIStoryboard(name: "PopUpAlert", bundle: nil)
-  let viewController = storyboard.instantiateViewControllerWithIdentifier("ProfilePopUp")
+  let viewController = storyboard.instantiateViewController(withIdentifier: "ProfilePopUp")
   let popup = KLCPopup()
   
   // Modify size of content view accordingly
   let contentView = viewController.view
-  contentView.frame.size.height = 200.0
-  contentView.frame.size.width = viewController.view.frame.size.width - 30.0
-  contentView.layer.cornerRadius = 12.0
+  contentView?.frame.size.height = 200.0
+  contentView?.frame.size.width = viewController.view.frame.size.width - 30.0
+  contentView?.layer.cornerRadius = 12.0
   
   // Set popup's content view to be what we just fetched
   popup.contentView = viewController.view
@@ -982,14 +984,14 @@ func getHelpPopup() -> KLCPopup
 {
   // Get our special popup design from the XIB
   let storyboard = UIStoryboard(name: "PopUpHelpAlert", bundle: nil)
-  let viewController = storyboard.instantiateViewControllerWithIdentifier("HelpPopUp")
+  let viewController = storyboard.instantiateViewController(withIdentifier: "HelpPopUp")
   let popup = KLCPopup()
   
   // Modify size of content view accordingly
   let contentView = viewController.view
-  contentView.frame.size.height = 200.0
-  contentView.frame.size.width = viewController.view.frame.size.width - 30.0
-  contentView.layer.cornerRadius = 12.0
+  contentView?.frame.size.height = 200.0
+  contentView?.frame.size.width = viewController.view.frame.size.width - 30.0
+  contentView?.layer.cornerRadius = 12.0
   
   // Set popup's content view to be what we just fetched
   popup.contentView = viewController.view
@@ -997,10 +999,10 @@ func getHelpPopup() -> KLCPopup
   return popup
 }
 
-func clearCookies (domain: String)
+func clearCookies (_ domain: String)
 {
-  let cookieJar : NSHTTPCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
-  for cookie in cookieJar.cookies! as [NSHTTPCookie]{
+  let cookieJar : HTTPCookieStorage = HTTPCookieStorage.shared
+  for cookie in cookieJar.cookies! as [HTTPCookie]{
     
     let url = "www." + domain + ".com"
     let appUrl = "api." + domain + ".com"
@@ -1013,7 +1015,7 @@ func clearCookies (domain: String)
   }
 }
 
-func showHelpPopup(title: String, description: String)
+func showHelpPopup(_ title: String, description: String)
 {
   let popup = getHelpPopup()
   let view = popup.contentView as! HelpPopupView
@@ -1024,7 +1026,7 @@ func showHelpPopup(title: String, description: String)
 }
 
 
-func showPopupForUser(username: String, me: String)
+func showPopupForUser(_ username: String, me: String)
 {
   let popup = getProfilePopup()
   let view = popup.contentView as! ProfilePopupView
@@ -1034,7 +1036,7 @@ func showPopupForUser(username: String, me: String)
 }
 
 // Showing KLCPopup at the QR code scanning section
-func showPopupForUserFromScanCode(username: String, me: String, sender: UIViewController) {
+func showPopupForUserFromScanCode(_ username: String, me: String, sender: UIViewController) {
   let popup = getProfilePopup()
   let view = popup.contentView as! ProfilePopupView
   view.setDataForUser(username, me: me)
@@ -1053,14 +1055,14 @@ func showPopupForUserFromScanCode(username: String, me: String, sender: UIViewCo
   popup.show()
 }
 
-func showPopupForUserWithView(view: ProfilePopupView)
+func showPopupForUserWithView(_ view: ProfilePopupView)
 {
   let popup = getProfilePopup()
   popup.contentView = view
   popup.show()
 }
 
-func showPopupForUser(username: String, me: String, searchConsistencyDelegate: SearchTableViewCell!)
+func showPopupForUser(_ username: String, me: String, searchConsistencyDelegate: SearchTableViewCell!)
 {
   let popup = getProfilePopup()
   let view = popup.contentView as! ProfilePopupView
@@ -1079,61 +1081,61 @@ func registerToReceivePushNotifications()
 {
   
   // Apple Push Notification initialization
-  let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
-  let pushNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
+  let notificationTypes: UIUserNotificationType = [UIUserNotificationType.alert, UIUserNotificationType.badge, UIUserNotificationType.sound]
+  let pushNotificationSettings = UIUserNotificationSettings(types: notificationTypes, categories: nil)
   
-  let application = UIApplication.sharedApplication()
+  let application = UIApplication.shared
   application.registerUserNotificationSettings(pushNotificationSettings)
   application.registerForRemoteNotifications()
   
 }
 
 // prompt the user if he/she wants to enable app push notification. If yes, register system-level remote notification
-func askUserForPushNotificationPermission(viewController: UIViewController) {
+func askUserForPushNotificationPermission(_ viewController: UIViewController) {
   
   // TODO: if user disables notification permission in system Settings later, the prompt would still show up but cannot register for push notification. Have to distinguish "Declined" or "Uninitialized"
   let timeIntervalThreshold = 604800.0  // setting to one week (in seconds)
   var willRemindUser = 1
   
   let lastNotificationDate = getCurrentNotificationTimestamp()
-  let currentDate = NSDate()
+  let currentDate = Date()
   if let lastNotification = lastNotificationDate {
-    let timeInterval = currentDate.timeIntervalSinceDate(lastNotification)
+    let timeInterval = currentDate.timeIntervalSince(lastNotification)
     // if we have reminded user to enable push notification before (a timestamp entry exists in NSUserDefaults), in less than timeIntervalThreshold, we don't ask again
     if timeInterval < timeIntervalThreshold {
       willRemindUser = 0
     }
   }
   
-  let isRegisteredForNotification = UIApplication.sharedApplication().isRegisteredForRemoteNotifications()
+  let isRegisteredForNotification = UIApplication.shared.isRegisteredForRemoteNotifications
   
-  if ((UIApplication.sharedApplication().isRegisteredForRemoteNotifications() == false) && (willRemindUser == 1)) {
+  if ((UIApplication.shared.isRegisteredForRemoteNotifications == false) && (willRemindUser == 1)) {
     
     let alertTitle = "Enable Push Notification"
     let alertMessage = "Aquaint will notify you when you have new followers, new follow requests or your follow requests to others get accepted! "
-    let notificationAlert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .Alert)
+    let notificationAlert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
     
-    let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) {
+    let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.default) {
       UIAlertAction in
       
       print("askUserForPushNotificationPermission: user chooses to enable push notification. ")
       registerToReceivePushNotifications()
     }
     
-    let noAction = UIAlertAction(title: "Not Now", style: UIAlertActionStyle.Default) {
+    let noAction = UIAlertAction(title: "Not Now", style: UIAlertActionStyle.default) {
       UIAlertAction in
       
       print("askUserForPushNotificationPermission: user chooses NOT to enable push notification. ")
       
-      let currentDate = NSDate.init()
+      let currentDate = Date.init()
       setCurrentNotificationTimestamp(currentDate)
     }
     
     notificationAlert.addAction(noAction)
     notificationAlert.addAction(yesAction)
     
-    dispatch_async(dispatch_get_main_queue()) {
-      viewController.presentViewController(notificationAlert, animated: true, completion: nil)
+    DispatchQueue.main.async {
+      viewController.present(notificationAlert, animated: true, completion: nil)
     }
     
   } else if (isRegisteredForNotification == true) {
@@ -1144,51 +1146,51 @@ func askUserForPushNotificationPermission(viewController: UIViewController) {
   
 }
 
-func downloadImageFromURL(url: String, completion: (result: UIImage?, error: NSError?)->())
+func downloadImageFromURL(_ url: String, completion: @escaping (_ result: UIImage?, _ error: NSError?)->())
 {
-  let nsurl = NSURL(string: url)
+  let nsurl = URL(string: url)
   
   // Creating a session object with the default configuration.
-  let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+  let session = URLSession(configuration: URLSessionConfiguration.default)
   
   
   // Define a download task. The download task will download the contents of the URL as a Data object and then you can do what you wish with that data.
-  let downloadPicTask = session.dataTaskWithURL(nsurl!) { (data, response, error) in
+  let downloadPicTask = session.dataTask(with: nsurl!, completionHandler: { (data, response, error) in
     // The download has finished.
     if let e = error {
       print("Error downloading URL picture: \(e)")
-      completion(result: nil, error: e)
+      completion(nil, e as NSError)
     } else {
       // No errors found.
-      if let res = response as? NSHTTPURLResponse {
+      if let res = response as? HTTPURLResponse {
         print("Downloaded cat picture with response code \(res.statusCode)")
         if let imageData = data {
           // Finally convert that Data into an image and do what you wish with it.
           let image = UIImage(data: imageData)
-          completion(result: image, error: nil)
+          completion(image, nil)
           // Do something with your image.
         } else {
           print("Couldn't get image: Image is nil")
-          completion(result: nil, error: nil)
+          completion(nil, nil)
         }
       } else {
         print("Couldn't get response code for some reason")
       }
     }
-  }
+  }) 
   
   downloadPicTask.resume()
 }
 
-func addVerifiedIconToLabel(username: String, label: UILabel, size: Int) {
+func addVerifiedIconToLabel(_ username: String, label: UILabel, size: Int) {
   let attachment = NSTextAttachment()
   attachment.image = UIImage(named: "Verified Button")
   attachment.bounds = CGRect(x: 2, y: -2, width: size, height: size)
   let attachmentStr = NSAttributedString(attachment: attachment)
   let myString = NSMutableAttributedString(string: "")
   let myString1 = NSMutableAttributedString(string: username)
-  myString.appendAttributedString(myString1)
-  myString.appendAttributedString(attachmentStr)
+  myString.append(myString1)
+  myString.append(attachmentStr)
   
   label.text = ""
   label.attributedText = myString

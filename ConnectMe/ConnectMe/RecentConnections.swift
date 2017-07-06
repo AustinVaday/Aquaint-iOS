@@ -30,7 +30,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 
         connectionList = Array<Connection>()
       
-        defaultImage = UIImage(imageLiteral: "Person Icon Black")
+        defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
 
         
         // Fill the dictionary of all social media names (key) with an image (val).
@@ -42,7 +42,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         refreshControl = CustomRefreshControl()
 
         // When user pulls, this function will be called
-        refreshControl.addTarget(self, action: #selector(RecentConnections.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(RecentConnections.refreshTable(_:)), for: UIControlEvents.valueChanged)
         recentConnTableView.addSubview(refreshControl)
         
         // Call all lambda functions and AWS-needed stuff
@@ -50,11 +50,11 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
       awsMobileAnalyticsRecordPageVisitEventTrigger("RecentConnections", forKey: "page_name")
     }
     // Function that is called when user drags/pulls table with intention of refreshing it
-    func refreshTable(sender:AnyObject)
+    func refreshTable(_ sender:AnyObject)
     {
         self.refreshControl.beginRefreshing()
         
@@ -78,7 +78,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     
     
     // TABLE VIEW
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         // TODO: If more than one user,
         // Display up to 30 users immediately
@@ -87,7 +87,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         return connectionList.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
 //        print("DDD*********************************************************")
 //        print(" Size of connectionList is: ", connectionList.count)
@@ -96,7 +96,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
 //        print("*********************************************************")
 
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("contactsCell", forIndexPath: indexPath) as! ContactsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "contactsCell", for: indexPath) as! ContactsTableViewCell
         
         if connectionList.count == 0
         {
@@ -130,22 +130,22 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
       
-        if !tableView.dragging && !tableView.tracking
+        if !tableView.isDragging && !tableView.isTracking
         {
           let connectedUser = connectionList[indexPath.row]
           showPopupForUser(connectedUser.userName, me: self.currentUserName)
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // Return height computed by our special function
         return 60
     }
     
     // COLLECTION VIEW
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if connectionList.count == 0
         {
@@ -158,9 +158,9 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         return connectionList[collectionView.tag].keyValSocialMediaPairList.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath) as! SocialMediaCollectionViewCell
         
         
         // Get the dictionary that holds information regarding the connected user's social media pages, and convert it to
@@ -174,7 +174,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             let socialMediaUserName = socialMediaPair.socialMediaUserName
             
             // Generate a UI image for the respective social media type
-            cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
+            cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType!]
             
             cell.socialMediaName = socialMediaUserName // username
             cell.socialMediaType = socialMediaType // facebook, snapchat, etc
@@ -184,9 +184,9 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
             // Probable cause: tableView.beginUpdates() and tableView.endUpdates() in tableView(didSelectIndexPath) method
             delay(0) { () -> () in
                 
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     // Generate a UI image for the respective social media type
-                    cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
+                    cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType!]
                     
                     cell.socialMediaType = socialMediaType //i.e. facebook, twitter, ..
                     cell.socialMediaName = socialMediaUserName //i.e. austinvaday, avtheman, ..
@@ -202,10 +202,10 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         print("SELECTED ITEM AT ", indexPath.item)
         
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
+        let cell = collectionView.cellForItem(at: indexPath) as! SocialMediaCollectionViewCell
         let socialMediaUserName = cell.socialMediaName // username..
         let socialMediaType = cell.socialMediaType // "facebook", "snapchat", etc..
        
@@ -215,27 +215,22 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
         // Perform the request, go to external application and let the user do whatever they want!
         if socialMediaURL != nil
         {
-            UIApplication.sharedApplication().openURL(socialMediaURL)
+            UIApplication.shared.openURL(socialMediaURL!)
         }
     }
     
-    private func generateData()
+    fileprivate func generateData()
     {
         var newConnectionList = Array<Connection>()
 
         // Get array of connections from Lambda -- RDS
-        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let lambdaInvoker = AWSLambdaInvoker.default()
         let parameters = ["action":"getFollowees", "target": currentUserName]
         
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
             if resultTask.error != nil
             {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-            }
-            else if resultTask.exception != nil
-            {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                
             }
             else if resultTask.result != nil
             {
@@ -250,7 +245,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 // Update UI on main thread
                 if connectionsFetchedList.count == 0
                 {
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         
                         self.connectionList = Array<Connection>()
                         self.recentConnTableView.reloadData()
@@ -265,8 +260,8 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                 for userData in connectionsFetchedList
                 {
                     let con = Connection()
-                    con.userName = userData.objectAtIndex(0) as! String
-                    con.timestampGMT = userData.objectAtIndex(1) as! Int
+                    con.userName = (userData as AnyObject).object(at: 0) as! String
+                    con.timestampGMT = (userData as AnyObject).object(at: 1) as! Int
                     
                     newConnectionList.append(con)
                 }
@@ -323,7 +318,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
                                 {
                                     // Update UI when no more running requests! (last async call finished)
                                     // Update UI on main thread
-                                    dispatch_async(dispatch_get_main_queue(), {
+                                    DispatchQueue.main.async(execute: {
                                         
                                         self.connectionList = newConnectionList
                                         
@@ -355,7 +350,7 @@ class RecentConnections: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     // EXPECTED TO BE IN ORDER.
-    private func areListsEqual(array1: Array<Connection>, array2: Array<Connection>) -> Bool
+    fileprivate func areListsEqual(_ array1: Array<Connection>, array2: Array<Connection>) -> Bool
     {
         if array1.count != array2.count
         {

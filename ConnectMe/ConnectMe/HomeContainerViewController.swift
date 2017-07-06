@@ -28,18 +28,18 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
     // This is our child (container) view controller that holds all our pages
     var homePageViewController: HomePageViewController!
 
-  @IBAction func followRequestsButtonClicked(sender: UIButton) {
+  @IBAction func followRequestsButtonClicked(_ sender: UIButton) {
     /*
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     let vcFollowRequest = storyboard.instantiateViewControllerWithIdentifier("followRequestsViewController")
     self.presentViewController(vcFollowRequest, animated: true, completion: nil)
     */
-    self.performSegueWithIdentifier("toFollowRequestsViewController", sender: self)
+    self.performSegue(withIdentifier: "toFollowRequestsViewController", sender: self)
     
   }
   
     // Self-added protocol for MainPageViewControllerDelegate
-    func didTransitionPage(sender: MainPageViewController) {
+    func didTransitionPage(_ sender: MainPageViewController) {
         
         showAlert("DELEGATE IMPLEMENTATION SUCCESS", message: "", buttonTitle: "OK", sender: self)
         
@@ -48,8 +48,8 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
     // Hides all the section bars for the section underline view/bars under the footer icons
     func hideAllSectionUnderlineViews()
     {
-        sectionUnderlineView0.hidden = true
-        sectionUnderlineView1.hidden = true
+        sectionUnderlineView0.isHidden = true
+        sectionUnderlineView1.isHidden = true
 
     }
   
@@ -63,7 +63,7 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
         hideAllSectionUnderlineViews()
         
         // Show only the bar for the aquaints icon
-        sectionUnderlineView0.hidden = false
+        sectionUnderlineView0.isHidden = false
         
         // Get current user from NSUserDefaults
         userName = getCurrentCachedUser()
@@ -74,15 +74,15 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
 
     }
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     
     let privacyStatus = getCurrentCachedPrivacyStatus()
     
     if privacyStatus != nil && privacyStatus == "private" {
-      followRequestsView.hidden = false
+      followRequestsView.isHidden = false
       getAndDisplayNumberRequests()
     } else {
-      followRequestsView.hidden = true
+      followRequestsView.isHidden = true
     }
 
     // TESTING
@@ -94,15 +94,15 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
     
         
     
-    @IBAction func goToPage0(sender: UIButton) {
+    @IBAction func goToPage0(_ sender: UIButton) {
         
         homePageViewController.changePage(0)
         
         hideAllSectionUnderlineViews()
-        sectionUnderlineView0.hidden = false
+        sectionUnderlineView0.isHidden = false
     }
     
-    @IBAction func goToPage1(sender: UIButton) {
+    @IBAction func goToPage1(_ sender: UIButton) {
 
 //        TEMP.. UNCOMMENT IF WANT MORE THAN 1 PAGE.
 //        homePageViewController.changePage(1)
@@ -113,14 +113,14 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
   
   
     func getAndDisplayNumberRequests() {
-      let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+      let lambdaInvoker = AWSLambdaInvoker.default()
       let parameters = ["action":"getNumFollowRequests", "target": userName]
-      lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+      lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
         if resultTask.result != nil && resultTask.error == nil
         {
           let num = resultTask.result as! Int
           
-          dispatch_async(dispatch_get_main_queue(), {
+          DispatchQueue.main.async(execute: {
             if num < 100 {
               self.numberRequestsLabel.text = String(num)
             } else {
@@ -135,31 +135,31 @@ class HomeContainerViewController: UIViewController, UIPageViewControllerDelegat
       
     }
   
-    func updateSectionUnderLineView(newViewNum: Int) {
+    func updateSectionUnderLineView(_ newViewNum: Int) {
         
         hideAllSectionUnderlineViews()
         
         switch(newViewNum)
         {
-        case 0: sectionUnderlineView1.hidden = false
+        case 0: sectionUnderlineView1.isHidden = false
             break;
-        case 1: sectionUnderlineView0.hidden = false
+        case 1: sectionUnderlineView0.isHidden = false
             break;
         default:
             break;
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       
       if segue.identifier == "toHomePageViewController" {
-        let controller = segue.destinationViewController as! HomePageViewController
+        let controller = segue.destination as! HomePageViewController
         controller.sectionDelegate = self
       }
     }
   
     // Use to go back to previous VC at ease.
-    @IBAction func unwindBackToHome(segue: UIStoryboardSegue)
+    @IBAction func unwindBackToHome(_ segue: UIStoryboardSegue)
     {
       print("CALLED UNWIND VC")
     }

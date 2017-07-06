@@ -15,6 +15,8 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import AWSDynamoDB
 import RSKImageCropper
+// [Swift 3 Migration]
+import AWSFacebookSignIn
 
 class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate, RSKImageCropViewControllerDelegate, UINavigationControllerDelegate {
     
@@ -65,8 +67,8 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
         // Make the button round!
         userPhoto.clipsToBounds = true
         userPhoto.layer.cornerRadius = userPhoto.frame.size.width / 2
-        userPhoto.contentVerticalAlignment = UIControlContentVerticalAlignment.Fill
-        userPhoto.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Fill
+        userPhoto.contentVerticalAlignment = UIControlContentVerticalAlignment.fill
+        userPhoto.contentHorizontalAlignment = UIControlContentHorizontalAlignment.fill
         
         // Set up animation
         resetAnimations()
@@ -76,13 +78,13 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
         
         // Set up pan gesture recognizer for when the user wants to swipe left/right
         let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
-        edgePan.edges = .Left
+        edgePan.edges = .left
         view.addGestureRecognizer(edgePan)
         
     }
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         //TODO: INVESTIGATE UIImagePickerController class
         // The following initialization, for some reason, takes longer than usual. Doing this AFTER the view appears so that there's no obvious delay in any transitions.
         imagePicker = UIImagePickerController()
@@ -95,13 +97,13 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
      =======================================================*/
     
     // Add and Remove NSNotifications!
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         registerForKeyboardNotifications()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
         deregisterForKeyboardNotifications()
@@ -110,18 +112,18 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
     // KEYBOARD shift-up buttons functionality
     func registerForKeyboardNotifications()
     {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
     }
     
     func deregisterForKeyboardNotifications()
     {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWasShown(notification: NSNotification!)
+    func keyboardWasShown(_ notification: Notification!)
     {
 //        // If keyboard shown already, no need to perform this method
 //        if isKeyboardShown
@@ -132,13 +134,13 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
         self.isKeyboardShown = true
         
         let userInfo = notification.userInfo!
-        let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
+        let keyboardSize = ((userInfo[UIKeyboardFrameBeginUserInfoKey])! as AnyObject).cgRectValue.size
         
-        UIView.animateWithDuration(0.5) {
+        UIView.animate(withDuration: 0.5, animations: {
             
             print("KEYBOARD SHOWN")
             
-            if self.userFullName.isFirstResponder()
+            if self.userFullName.isFirstResponder
             {
                 self.buttonBottomConstraint.constant = keyboardSize.height
                 self.view.layoutIfNeeded()
@@ -154,10 +156,10 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
                 self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
             }
             
-        }
+        }) 
     }
     
-    func keyboardWillBeHidden(notification: NSNotification!)
+    func keyboardWillBeHidden(_ notification: Notification!)
     {
         isKeyboardShown = false
         
@@ -172,12 +174,12 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
      * END : Keyboard/Button Animations
      =======================================================*/
     
-    func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer)
+    func screenEdgeSwiped(_ recognizer: UIScreenEdgePanGestureRecognizer)
     {
-        if recognizer.state == .Ended
+        if recognizer.state == .ended
         {
             print("Screen swiped!")
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
         
     }
@@ -187,64 +189,66 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func handleLoginWithSignInProvider(sender: UIButton) {
-        
-        AWSIdentityManager.defaultIdentityManager().loginWithSignInProvider(AWSFacebookSignInProvider.sharedInstance(), completionHandler: {(result: AnyObject?, error: NSError?) -> Void in
+    @IBAction func handleLoginWithSignInProvider(_ sender: UIButton) {
+      
+          // [Swift 3 Migration] TODO
+      /*
+        AWSIdentityManager.default().loginWithSign(AWSFacebookSignInProvider.sharedInstance(), completionHandler: {(result: AnyObject?, error: NSError?) -> Void in
             // If no error reported by SignInProvider, discard the sign-in view controller.
             if error == nil {
-                dispatch_async(dispatch_get_main_queue(),{
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                DispatchQueue.main.async(execute: {
+                    self.dismiss(animated: true, completion: nil)
                 })
             }
             print("result = \(result), error = \(error)")
-        })
-
+        } as! (Any?, Error?) -> Void)
+        */
     }
     
     // Functionality for adding in a user specific photograph
-    @IBAction func addPhotoButtonClicked(sender: UIButton) {
+    @IBAction func addPhotoButtonClicked(_ sender: UIButton) {
         
         
         // Present the Saved Photo Album to user only if it is available
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary)
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary)
         {
             imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
             imagePicker.allowsEditing = false
-            self.presentViewController(imagePicker, animated: true, completion: nil)
+            self.present(imagePicker, animated: true, completion: nil)
         }
         
     }
     
     // When user finishes picking an image, this function is called and we set the user's image
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [NSObject : AnyObject]?) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [AnyHashable: Any]?) {
         
         // Close the image picker view when user is finished with it
-        self.dismissViewControllerAnimated(true) { 
+        self.dismiss(animated: true) { 
           var imageCropVC : RSKImageCropViewController!
-          imageCropVC = RSKImageCropViewController(image: image, cropMode: RSKImageCropMode.Circle)
+          imageCropVC = RSKImageCropViewController(image: image, cropMode: RSKImageCropMode.circle)
           
           imageCropVC.delegate = self
           
-          self.presentViewController(imageCropVC, animated: true, completion: nil)
+          self.present(imageCropVC, animated: true, completion: nil)
       }
         
     }
   
     // RSKImageCropViewController lets us easily crop our pictures!
-    func imageCropViewControllerDidCancelCrop(controller: RSKImageCropViewController) {
-      controller.dismissViewControllerAnimated(true, completion: nil)
+    func imageCropViewControllerDidCancelCrop(_ controller: RSKImageCropViewController) {
+      controller.dismiss(animated: true, completion: nil)
     }
   
-    func imageCropViewController(controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
-      controller.dismissViewControllerAnimated(true, completion: nil)
+    func imageCropViewController(_ controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
+      controller.dismiss(animated: true, completion: nil)
       
       // Set the button's new image
-      userPhoto.setImage(croppedImage, forState: UIControlState.Normal)
+      userPhoto.setImage(croppedImage, for: UIControlState())
     }
   
     // Ensure email is proper
-    @IBAction func emailEditingDidEnd(sender: UITextField) {
+    @IBAction func emailEditingDidEnd(_ sender: UITextField) {
         
         let userEmailString:String = userEmail.text!
         
@@ -265,18 +269,18 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
     }
     
     // Ensure phone is proper
-    @IBAction func phoneEditingDidEnd(sender: UITextField) {
+    @IBAction func phoneEditingDidEnd(_ sender: UITextField) {
         // Do this later if you want dynamic checking
     }
     
     // Ensure full name is proper
-    @IBAction func fullNameEditingDidEnd(sender: UITextField) {
+    @IBAction func fullNameEditingDidEnd(_ sender: UITextField) {
         // Do this later if you want dynamic checking
 
     }
     
     // Actively edit phone number
-    @IBAction func onPhoneEditingDidChange(sender: UITextField) {
+    @IBAction func onPhoneEditingDidChange(_ sender: UITextField) {
         
         let phoneString = userPhone.text
         
@@ -286,25 +290,25 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
     
     
     // When user clicks "Next" on keyboard
-    @IBAction func emailEditingDidEndOnExit(sender: AnyObject) {
+    @IBAction func emailEditingDidEndOnExit(_ sender: AnyObject) {
         // Give control to next field
         userPhone.becomeFirstResponder()
 
     }
 
     // When user clicks "Next" on keyboard
-    @IBAction func phoneEditingDidEndOnExit(sender: UITextField) {
+    @IBAction func phoneEditingDidEndOnExit(_ sender: UITextField) {
         // Give control to next field
         userFullName.becomeFirstResponder()
     }
     
-    @IBAction func fullNameEditingDidEndOnExit(sender: UITextField) {
+    @IBAction func fullNameEditingDidEndOnExit(_ sender: UITextField) {
         // Mimic the "Sign Up" button being pressed
         self.signUpButtonClicked(signUpButton.self)
     }
     
      // Actions to perform when "Next" (Sign up) button is clicked
-    @IBAction func signUpButtonClicked(sender: AnyObject) {
+    @IBAction func signUpButtonClicked(_ sender: AnyObject) {
         
         let userEmailString:String = userEmail.text!
         let userPhoneString:String = userPhone.text!
@@ -360,20 +364,20 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
         **********************************************************************/
         
         // Disable sign up button so that user can only send one request at a time
-        signUpButton.enabled = false
+        signUpButton.isEnabled = false
         
         // Show activity indicator (spinner)
         spinner.startAnimating()
         
         // Stop showing activity indicator (spinner)
-        self.checkMarkFlipped.hidden = false
+        self.checkMarkFlipped.isHidden = false
         
-        self.userPhoto.hidden = true
+        self.userPhoto.isHidden = true
         self.spinner.stopAnimating()
         
-        UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+        UIView.transition(with: self.checkMarkView, duration: 1, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: { () -> Void in
             
-            self.checkMarkFlipped.hidden = false
+            self.checkMarkFlipped.isHidden = false
             self.checkMarkFlipped.image = self.checkMark.image
             
             }, completion: nil)
@@ -383,34 +387,34 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
         {
           
           self.isSignUpWithFacebook = false
-          self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+          self.performSegue(withIdentifier: self.segueDestination, sender: nil)
             
         }
         
         self.checkMarkFlipped.image = self.checkMarkFlippedCopy.image
         
         // Enable the sign-up button again
-        signUpButton.enabled = true
+        signUpButton.isEnabled = true
 
     }
     
   
-  @IBAction func onSignUpWithFacebookButtonClicked(sender: AnyObject) {
+  @IBAction func onSignUpWithFacebookButtonClicked(_ sender: AnyObject) {
     let login = FBSDKLoginManager.init()
     login.logOut()
 
     // Open in app instead of web browser!
-    login.loginBehavior = FBSDKLoginBehavior.Native
+    login.loginBehavior = FBSDKLoginBehavior.native
 
 
     // Request basic profile permissions just to get user ID
-    login.logInWithReadPermissions(["public_profile", "email"], fromViewController: self) { (result, error) in
+    login.logIn(withReadPermissions: ["public_profile", "email"], from: self) { (result, error) in
       
       if (error == nil && result != nil) {
 
         //Get user-specific data including name, email, and ID.
         let request = FBSDKGraphRequest(graphPath: "/me?locale=en_US&fields=name,email", parameters: nil)
-        request.startWithCompletionHandler { (connection, result, error) in
+        request?.start { (connection, result, error) in
           if error == nil {
             print("Result is FB!!: ", result)
             let resultMap = result as! Dictionary<String, String>
@@ -424,9 +428,9 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
             downloadImageFromURL(userImageURL, completion: { (result, error) in
               if (result != nil && error == nil) {
                 self.fbImage = result! as UIImage
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                   self.isSignUpWithFacebook = true
-                  self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                  self.performSegue(withIdentifier: self.segueDestination, sender: nil)
                 })
               }
             })
@@ -489,7 +493,7 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
             
           } else {
             print("Error getting **FB infooo", error)
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
               showAlert("Sorry", message: "There was an issue signing up with Facebook. We apologize for the inconvenience.", buttonTitle: "Try again", sender: self)
             })
           }
@@ -500,12 +504,12 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
   
   
     // Used to pass password to next view controller
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       
         // Pass the password to next view controller so we can log user in there
         if(segue.identifier == segueDestination)
         {
-            let nextViewController = segue.destinationViewController as! SignUpFetchMoreDataController
+            let nextViewController = segue.destination as! SignUpFetchMoreDataController
           
             nextViewController.isSignUpWithFacebook = self.isSignUpWithFacebook
             
@@ -532,18 +536,18 @@ class SignUpController: ViewControllerPannable, UIImagePickerControllerDelegate,
         }
     }
     
-    private func resetAnimations()
+    fileprivate func resetAnimations()
     {
-        self.checkMark.hidden = true
-        self.checkMarkFlipped.hidden = true
-        self.userPhoto.hidden = false
+        self.checkMark.isHidden = true
+        self.checkMarkFlipped.isHidden = true
+        self.userPhoto.isHidden = false
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
         flipImageHorizontally(checkMarkFlippedCopy)
     }
   
     
     // Use to go back to previous VC at ease.
-    @IBAction func unwindBackVC(segue: UIStoryboardSegue)
+    @IBAction func unwindBackVC(_ segue: UIStoryboardSegue)
     {
         print("CALLED UNWIND VC")
         resetAnimations()

@@ -1,3 +1,4 @@
+source 'https://github.com/CocoaPods/Specs.git'
 # Uncomment this line to define a global platform for your project
 # platform :ios, '8.0'
 # Uncomment this line if you're using Swift
@@ -5,54 +6,53 @@ use_frameworks!
 
 target 'Aquaint' do
 
-# Firebase Pods
-# -------------
-pod 'Firebase'
-pod 'Firebase/Core'
-pod 'Firebase/Database'
-pod 'Firebase/Auth'
+  # Firebase Pods
+  # -------------
+  #pod 'Firebase'
+  #pod 'Firebase/Core'
+  #pod 'Firebase/Database'
+  #pod 'Firebase/Auth'
 
-# Misc Pods
-# -------------
-pod 'SimpleAuth'
-pod 'KLCPopup'
-pod 'SCLAlertView'
-pod 'FRHyperLabel'
-pod 'ReachabilitySwift'
-pod 'Graphs', '~> 0.1.2'
-pod 'RSKImageCropper'
+  # Misc Pods
+  # -------------
+  #pod 'SimpleAuth'
+  pod 'KLCPopup'
+  pod 'SCLAlertView'
+  pod 'FRHyperLabel'
+  #pod 'ReachabilitySwift'
+  pod 'ReachabilitySwift', '~> 3'
+  #pod 'Graphs', '~> 0.1.2'
+  pod 'Graphs', :git => 'https://github.com/maxwyb/Graphs'
+  pod 'RSKImageCropper'
 
-# Pod for phone kit parsing
-# -------------
-source 'https://github.com/CocoaPods/Specs.git'
+  # AWS Pods
+  # -------------
+  pod 'AWSCore'
+  pod 'AWSLambda'
+  pod 'AWSS3'
+  pod 'AWSCognito'
+  pod 'AWSDynamoDB'
+  pod 'AWSMobileAnalytics'
+  pod 'AWSEC2'
+  pod 'AWSSNS'
+  pod 'AWSCognitoIdentityProvider'
+  pod 'GoogleSignIn'
 
-# AWS Pods
-# -------------
-pod 'AWSCore'
-pod 'AWSLambda'
-pod 'AWSS3'
-pod 'AWSCognito'
-pod 'AWSDynamoDB'
-pod 'AWSMobileAnalytics'
-pod 'AWSEC2'
-pod 'AWSSNS'
-pod 'AWSCognitoIdentityProvider'
-pod 'GoogleSignIn'
+  pod 'AWSPinpoint'
 
 
-# EXCESS AWS Pods
-# -------------
-#pod 'AWSAutoScaling'
-#pod 'AWSCloudWatch'
-#pod 'AWSCognitoIdentityProvider'
-#pod 'AWSElasticLoadBalancing'
-#pod 'AWSIoT'
-#pod 'AWSKinesis'
-#pod 'AWSMachineLearning'
-#pod 'AWSSES'
-#pod 'AWSSimpleDB'
-#pod 'AWSSNS'
-#pod 'AWSSQS'
+  # EXCESS AWS Pods
+  # -------------
+  #pod 'AWSAutoScaling'
+  #pod 'AWSCloudWatch'
+  #pod 'AWSElasticLoadBalancing'
+  #pod 'AWSIoT'
+  #pod 'AWSKinesis'
+  #pod 'AWSMachineLearning'
+  #pod 'AWSSES'
+  #pod 'AWSSimpleDB'
+  #pod 'AWSSNS'
+  #pod 'AWSSQS'
 
 end
 

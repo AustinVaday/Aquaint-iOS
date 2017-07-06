@@ -41,7 +41,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
     
     followerRequestList = Array<Connection>()
     
-    defaultImage = UIImage(imageLiteral: "Person Icon Black")
+    defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
     
     // Fill the dictionary of all social media names (key) with an image (val).
     // I.e. {["facebook", <facebook_emblem_image>], ["snapchat", <snapchat_emblem_image>] ...}
@@ -52,7 +52,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
     refreshControl = CustomRefreshControl()
     
     // When user pulls, this function will be called
-    refreshControl.addTarget(self, action: #selector(FollowRequestsViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+    refreshControl.addTarget(self, action: #selector(FollowRequestsViewController.refreshTable(_:)), for: UIControlEvents.valueChanged)
     followRequestsTableView.addSubview(refreshControl)
     
     // Call all lambda functions and AWS-needed stuff
@@ -60,13 +60,13 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
 
   }
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     //        generateData(false)
     awsMobileAnalyticsRecordPageVisitEventTrigger("FollowRequestsViewController", forKey: "page_name")
   }
   
   // Function that is called when user drags/pulls table with intention of refreshing it
-  func refreshTable(sender:AnyObject)
+  func refreshTable(_ sender:AnyObject)
   {
     self.refreshControl.beginRefreshing()
     
@@ -85,7 +85,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
   
   
   
-  func scrollViewDidScroll(scrollView: UIScrollView) {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
     if scrollView == self.followRequestsTableView
     {
       let location = scrollView.contentOffset.y + scrollView.frame.size.height
@@ -110,7 +110,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
   
   
   // TABLE VIEW
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
     // TODO: If more than one user,
     // Display up to 30 users immediately
@@ -119,7 +119,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
     return followerRequestList.count
   }
   
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     //        print("DDD*********************************************************")
     //        print(" Size of followerRequestList is: ", followerRequestList.count)
@@ -128,7 +128,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
     //        print("*********************************************************")
     
     
-    let cell = tableView.dequeueReusableCellWithIdentifier("followRequestCell", forIndexPath: indexPath) as! FollowRequestsTableViewCell
+    let cell = tableView.dequeueReusableCell(withIdentifier: "followRequestCell", for: indexPath) as! FollowRequestsTableViewCell
     
     if followerRequestList.count == 0
     {
@@ -155,18 +155,18 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
   }
   
   
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
   }
   
-  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     // Return height computed by our special function
 //    return getTableRowHeightForDropdownCell(&expansionObj, currentRow: indexPath.row)
     return 60
   }
   
   
-  private func generateData(showSpinner: Bool, start: Int, end: Int)
+  fileprivate func generateData(_ showSpinner: Bool, start: Int, end: Int)
   {
     // If we don't store our data into a temporary object -- we'll be modifying the table data source while it may still
     // be used in the tableView methods! This prevents a crash.
@@ -175,7 +175,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
     // Only show the middle spinner if user did not refresh table or if init (or else there would be two spinners!)
     if showSpinner && start == 0
     {
-      spinner.hidden = false
+      spinner.isHidden = false
       spinner.startAnimating()
     }
     
@@ -185,18 +185,13 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     // Get array of connections from Lambda -- RDS
-    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
-    let parameters = ["action":"getFollowerRequests", "target": currentUserName, "start": start, "end": end]
+    let lambdaInvoker = AWSLambdaInvoker.default()
+    let parameters = ["action":"getFollowerRequests", "target": currentUserName, "start": start, "end": end] as [String : Any]
     
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-      }
-      else if resultTask.exception != nil
-      {
-        print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-        
       }
       else if resultTask.result != nil
       {
@@ -211,11 +206,11 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
         // Update UI on main thread
         if connectionsFetchedList.count == 0 && start == 0
         {
-          dispatch_async(dispatch_get_main_queue(), {
-            self.spinner.hidden = true
+          DispatchQueue.main.async(execute: {
+            self.spinner.isHidden = true
             self.spinner.stopAnimating()
             self.followerRequestList = Array<Connection>()
-            self.noContentView.hidden = false
+            self.noContentView.isHidden = false
             self.followRequestsTableView.reloadData()
             print("RELOADED 0 COUNT DATA")
           })
@@ -224,15 +219,15 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
         }
         else if connectionsFetchedList.count == 0 && start != 0
         {
-          dispatch_async(dispatch_get_main_queue(), {
+          DispatchQueue.main.async(execute: {
             self.removeTableViewFooterSpinner()
             
           })
           
         }
         else {
-          dispatch_async(dispatch_get_main_queue(), {
-            self.noContentView.hidden = true
+          DispatchQueue.main.async(execute: {
+            self.noContentView.isHidden = true
           })
         }
         // Propogate local data structure -- helps us prevent needing to
@@ -240,8 +235,8 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
         for userData in connectionsFetchedList
         {
           let con = Connection()
-          con.userName = userData.objectAtIndex(0) as! String
-          con.timestampGMT = userData.objectAtIndex(1) as! Int
+          con.userName = (userData as AnyObject).object(at: 0) as! String
+          con.timestampGMT = (userData as AnyObject).object(at: 1) as! Int
           
           newfollowerRequestList.append(con)
         }
@@ -284,20 +279,20 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
                 {
                   // Update UI when no more running requests! (last async call finished)
                   // Update UI on main thread
-                  dispatch_async(dispatch_get_main_queue(), {
+                  DispatchQueue.main.async(execute: {
                     
                     // If initial fetch, just store entire array
                     if start == 0
                     {
                       self.followerRequestList = newfollowerRequestList
-                      self.spinner.hidden = true
+                      self.spinner.isHidden = true
                       self.spinner.stopAnimating()
                     }
                     else
                     {
                       self.removeTableViewFooterSpinner()
                       self.isNewDataLoading = false
-                      self.followerRequestList.appendContentsOf(newfollowerRequestList)
+                      self.followerRequestList.append(contentsOf: newfollowerRequestList)
                     }
                     
                     self.followRequestsTableView.reloadData()
@@ -315,7 +310,7 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
       else
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION -- result is NIL!")
-        self.spinner.hidden = true
+        self.spinner.isHidden = true
         self.spinner.stopAnimating()
         
       }
@@ -326,14 +321,14 @@ class FollowRequestsViewController: UIViewController, UITableViewDelegate, UITab
     
   }
   
-  private func addTableViewFooterSpinner() {
-    let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+  fileprivate func addTableViewFooterSpinner() {
+    let footerSpinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
     footerSpinner.startAnimating()
-    footerSpinner.frame = CGRectMake(0, 0, self.view.frame.width, 44)
+    footerSpinner.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44)
     self.followRequestsTableView.tableFooterView = footerSpinner
   }
   
-  private func removeTableViewFooterSpinner() {
+  fileprivate func removeTableViewFooterSpinner() {
     self.followRequestsTableView.tableFooterView = nil
   }
   

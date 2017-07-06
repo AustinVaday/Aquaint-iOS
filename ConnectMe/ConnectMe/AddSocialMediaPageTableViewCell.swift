@@ -24,16 +24,16 @@ class AddSocialMediaPageTableViewCell: UITableViewCell {
     super.awakeFromNib()
     // Initialization code
 
-    self.checkMark.hidden = true
-    self.checkMarkFlipped.hidden = true
-    self.emblemImage.hidden = false
+    self.checkMark.isHidden = true
+    self.checkMarkFlipped.isHidden = true
+    self.emblemImage.isHidden = false
 
     checkMarkFlippedCopy = UIImageView(image: checkMark.image)
 
     flipImageHorizontally(checkMarkFlippedCopy)
   }
 
-  override func setSelected(selected: Bool, animated: Bool) {
+  override func setSelected(_ selected: Bool, animated: Bool) {
     super.setSelected(selected, animated: animated)
 
     // Configure the view for the selected state
@@ -41,24 +41,24 @@ class AddSocialMediaPageTableViewCell: UITableViewCell {
 
 
   func showSuccessAnimation() {
-    emblemImage.hidden = true
+    emblemImage.isHidden = true
 
-    UIView.transitionWithView(
-      self.checkMarkView,
+    UIView.transition(
+      with: self.checkMarkView,
       duration: 1,
-      options: UIViewAnimationOptions.TransitionFlipFromLeft,
+      options: UIViewAnimationOptions.transitionFlipFromLeft,
       animations: { () -> Void in
-        self.checkMarkFlipped.hidden = false
+        self.checkMarkFlipped.isHidden = false
         self.checkMarkFlipped.image = self.checkMark.image
       },
       completion: { (boolResult) -> Void in
-        UIView.transitionWithView(
-          self.checkMarkView,
+        UIView.transition(
+          with: self.checkMarkView,
           duration: 1,
-          options: UIViewAnimationOptions.TransitionFlipFromLeft,
+          options: UIViewAnimationOptions.transitionFlipFromLeft,
           animations: { () -> Void in
-            self.checkMarkFlipped.hidden = true
-            self.emblemImage.hidden = false
+            self.checkMarkFlipped.isHidden = true
+            self.emblemImage.isHidden = false
           }, completion: nil)
       }
     )

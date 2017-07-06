@@ -9,14 +9,14 @@
 import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
-import SimpleAuth
+//import SimpleAuth
 import AWSDynamoDB
 import SCLAlertView
 
 
 protocol AddSocialMediaProfileDelegate {
   func userDidAddNewProfile(
-    socialMediaType:String,
+    _ socialMediaType:String,
     socialMediaName:String
   )
 }
@@ -38,30 +38,30 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
 
     // Set up pan gesture recognizer for when the user wants to swipe left/right
     let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
-    edgePan.edges = .Left
+    edgePan.edges = .left
     view.addGestureRecognizer(edgePan)
   }
 
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     awsMobileAnalyticsRecordPageVisitEventTrigger("AddSocialMediaProfilesController", forKey: "page_name")
   }
 
-  func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer) {
-    if recognizer.state == .Ended {
+  func screenEdgeSwiped(_ recognizer: UIScreenEdgePanGestureRecognizer) {
+    if recognizer.state == .ended {
       print("Screen swiped!")
-      dismissViewControllerAnimated(true, completion: nil)
+      dismiss(animated: true, completion: nil)
     }
   }
 
   /*************************************************************************
   *    TABLE VIEW PROTOCOL
   **************************************************************************/
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return getNumberPossibleSocialMedia()
   }
 
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let cell = tableView.cellForRowAtIndexPath(indexPath) as! AddSocialMediaPageTableViewCell
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let cell = tableView.cellForRow(at: indexPath) as! AddSocialMediaPageTableViewCell
 
     print ("SELECTED:", cell.socialMediaType)
 
@@ -70,43 +70,43 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
     // This will store the username that will be uploaded to Dynamo
     var socialMediaName: String!
 
-    switch (socialMediaType){
+    switch (socialMediaType!){
       case "facebook" :
         // Create alert to send to user
-        let alert = UIAlertController(title: nil, message: "Are you a company?", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: nil, message: "Are you a company?", preferredStyle: UIAlertControllerStyle.alert)
         
         
-        let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { (action) in
-          self.showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: { (action) in
+          self.showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         })
         
         // Create the action to add to alert
-        let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.Default, handler: { (action) in
+        let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: { (action) in
           let login = FBSDKLoginManager.init()
           login.logOut()
           
           // Open in app instead of web browser!
-          login.loginBehavior = FBSDKLoginBehavior.Native
+          login.loginBehavior = FBSDKLoginBehavior.native
           
           // Request basic profile permissions just to get user ID. UPDATE: also get friends list for 'find friends via facebook' feature
-          login.logInWithPublishPermissions(["public_profile", "user_friends" /*, "manage_pages"*/], fromViewController: self) { (result, error) in
+          login.logIn(withPublishPermissions: ["public_profile", "user_friends" /*, "manage_pages"*/], from: self) { (result, error) in
             // If no error, store facebook user ID
             if (error == nil && result != nil) {
               print("SUCCESS LOG IN!", result.debugDescription)
-              print(result.description)
+              print(result?.description)
               
             
               print("RESULTOO: ", result)
-              if (FBSDKAccessToken.currentAccessToken() != nil) {
-                print("FBSDK userID is:", FBSDKAccessToken.currentAccessToken().userID)
+              if (FBSDKAccessToken.current() != nil) {
+                print("FBSDK userID is:", FBSDKAccessToken.current().userID)
                 
-                let fbUID = FBSDKAccessToken.currentAccessToken().userID
+                let fbUID = FBSDKAccessToken.current().userID
                 let currentUserName = getCurrentCachedUser()
                 
                 // Needed for 'find friends via facebook' feature
-                uploadUserFBUIDToDynamo(currentUserName, fbUID: fbUID)
+                uploadUserFBUIDToDynamo(currentUserName!, fbUID: fbUID!)
                 
-                socialMediaName = FBSDKAccessToken.currentAccessToken().userID
+                socialMediaName = FBSDKAccessToken.current().userID
                 
 //                //Get user-specific data including name, email, and ID.
 //                let request = FBSDKGraphRequest(graphPath: "/me/accounts", parameters: nil)
@@ -125,7 +125,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
                 
                 if self.delegate != nil {
                   self.delegate?.userDidAddNewProfile(
-                    socialMediaType,
+                    socialMediaType!,
                     socialMediaName: socialMediaName
                   )
                   
@@ -148,7 +148,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         // Add the action to the alert
         alert.addAction(noAction)
         alert.addAction(yesAction)
-        self.showViewController(alert, sender: nil)
+        self.show(alert, sender: nil)
 
         break
 
@@ -156,6 +156,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         /*************************************************************************
         * TWITTER DATA FETCH
         **************************************************************************/
+        /*
         SimpleAuth.authorize("twitter-web") { (result, error) in
           if (result == nil) {
             print("CANCELLED REQUEST")
@@ -181,6 +182,9 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
           }
         }
         break
+        */
+        showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
+        break
 
       case "instagram" :
         // Make sure to clear Instagram cookies. This will allow users to obtain a fresh login page every time.
@@ -189,6 +193,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         /*************************************************************************
         * INSTAGRAM DATA FETCH
         **************************************************************************/
+        /*
         SimpleAuth.authorize("instagram") { (result, error) in
           print("INSTAGRAM")
 
@@ -213,11 +218,15 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
 
         }
         break
+        */
+        showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
+        break
 
       case "linkedin" :
         /*************************************************************************
         * LINKEDIN DATA FETCH
         **************************************************************************/
+        /*
         // Create alert to send to user
         let alert = UIAlertController(title: nil, message: "Are you a company?", preferredStyle: UIAlertControllerStyle.Alert)
         
@@ -266,46 +275,51 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         self.showViewController(alert, sender: nil)
         
         break
+        */
+        showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
+        break
+      
 
       case "snapchat" :
         /*************************************************************************
         * SNAPCHAT DATA FETCH
         **************************************************************************/
-        showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         break
 
       case "youtube" :
         /*************************************************************************
         * YOUTUBE DATA FETCH
         **************************************************************************/
-        showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         break
 
       case "soundcloud" :
         /*************************************************************************
         * Soundcloud DATA FETCH
         **************************************************************************/
-        showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         break
     
       case "ios" :
         /*************************************************************************
          * Soundcloud DATA FETCH
          **************************************************************************/
-        showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         break
       
       case "android" :
         /*************************************************************************
          * Soundcloud DATA FETCH
          **************************************************************************/
-        showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+        showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
         break
 
       case "tumblr" :
         /*************************************************************************
         * TUMBLR DATA FETCH
         **************************************************************************/
+        /*
         SimpleAuth.authorize("tumblr") { (result, error) in
           if (result == nil) {
             print("CANCELLED REQUEST")
@@ -328,9 +342,12 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
           }
         }
         break
+       */
+      showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
+      break
       
     case "website" :
-      showAndProcessUsernameAlert(socialMediaType, forCell: cell)
+      showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
       break
 
       default:
@@ -338,11 +355,11 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
     }
 
     // Row was highlighted (selected), make sure to deselect the row after a few seconds
-    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    tableView.deselectRow(at: indexPath, animated: true)
   }
 
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("addProfileTableViewCell") as! AddSocialMediaPageTableViewCell
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "addProfileTableViewCell") as! AddSocialMediaPageTableViewCell
     
     // Temp iOS versions, iPad white background fix < 10
     cell.backgroundColor = cell.contentView.backgroundColor;
@@ -685,7 +702,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
   
   
 
-  @IBAction func backButtonClicked(sender: AnyObject) {
+  @IBAction func backButtonClicked(_ sender: AnyObject) {
     /* It's good to dismiss it, but in this case we want to
       refresh the collection view on the previous page
      when we go back. So instead, we will use an unwind action. */
@@ -693,17 +710,17 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
     // self.dismissViewControllerAnimated(true, completion: nil)
   }
 
-  func usernameTextFieldDidChange(textField: UITextField) {
-    let usernameString = textField.text?.lowercaseString
+  func usernameTextFieldDidChange(_ textField: UITextField) {
+    let usernameString = textField.text?.lowercased()
     textField.text = removeAllNonAlphaNumeric(
       usernameString!,
       charactersToKeep: "_-."
     )
   }
 
-  private func showAndProcessUsernameAlert(socialMediaType: String, forCell: AddSocialMediaPageTableViewCell) {
+  fileprivate func showAndProcessUsernameAlert(_ socialMediaType: String, forCell: AddSocialMediaPageTableViewCell) {
     var alertViewResponder: SCLAlertViewResponder!
-    let subview = UIView(frame: CGRectMake(0,0,216,70))
+    let subview = UIView(frame: CGRect(x: 0,y: 0,width: 216,height: 70))
     let x = (subview.frame.width - 180) / 2
     let colorDarkBlue = UIColor(
       red:  0.06,
@@ -713,16 +730,16 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
     )
 
     // Add text field for username
-    let textField = UITextField(frame: CGRectMake(x,10,180,25))
+    let textField = UITextField(frame: CGRect(x: x,y: 10,width: 180,height: 25))
 
     // textField.layer.borderColor = colorLightBlue.CGColor
     // textField.layer.borderWidth = 1.5
     // textField.layer.cornerRadius = 5
     textField.font          = UIFont(name: "Avenir Roman", size: 14.0)
     textField.textColor     = colorDarkBlue
-    textField.textAlignment = NSTextAlignment.Center
-    textField.autocorrectionType = .No
-    textField.autocapitalizationType = .None
+    textField.textAlignment = NSTextAlignment.center
+    textField.autocorrectionType = .no
+    textField.autocapitalizationType = .none
     
     if socialMediaType == "website" {
       textField.placeholder   = "Enter Website URL"
@@ -730,14 +747,20 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
       textField.placeholder = "Enter App Store URL"
     } else if socialMediaType == "android" {
       textField.placeholder = "Enter Play Store URL"
-    }else {
-      textField.placeholder   = "Enter Username"
+    } else if socialMediaType == "linkedin" {
+      textField.placeholder = "Enter Personal Profile URL"  // example: https://www.linkedin.com/in/yingbo-wang-104b12b3/
+    } else if socialMediaType == "tumblr" {
+      textField.placeholder = "Enter Nickname"  // example: yeshelloworldthings
+    } else {
+      textField.placeholder = "Enter Username"
+      // twitter example: wybmax
+      // instagram example: wybmax
       
       // Add target to text field to validate/fix user input of a proper input
       textField.addTarget(
         self,
         action: #selector(usernameTextFieldDidChange),
-        forControlEvents: UIControlEvents.EditingChanged
+        for: UIControlEvents.editingChanged
       )
     }
     
@@ -745,9 +768,9 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
 
 
     let alertAppearance = SCLAlertView.SCLAppearance(
-      showCircularIcon: true,
-      kCircleIconHeight: 60,
       kCircleHeight: 55,
+      kCircleIconHeight: 60,
+      showCircularIcon: true,
       shouldAutoDismiss: false,
       hideWhenBackgroundViewIsTapped: true
     )
@@ -770,7 +793,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         if username.isEmpty {
           // TODO: Nothing?
         } else if username.characters.count > 100 {
-          dispatch_async(dispatch_get_main_queue(), {
+          DispatchQueue.main.async(execute: {
             showAlert("Too long entry", message: "Please enter a valid entry", buttonTitle: "Try again", sender: self)
           })
           
@@ -781,7 +804,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
           print(socialMediaType, " username returned is: ", socialMediaName)
           
           
-          if socialMediaType == "website" || socialMediaType == "ios" || socialMediaType == "android"
+          if socialMediaType == "website" || socialMediaType == "ios" || socialMediaType == "android" || socialMediaType == "linkedin"
           {
             // If website url does not have 'http://' or 'https://', add http:// it in
             if !socialMediaName.hasPrefix("http://") && !socialMediaName.hasPrefix("https://") {
@@ -790,7 +813,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
             
             // With android apps, URL is tough to check because of the 'com.appName' url scheme. Instead check for google.com domain
             if socialMediaType == "android" {
-              if !socialMediaName.containsString("google.com") && !socialMediaName.containsString("goo.gl") {
+              if !socialMediaName.contains("google.com") && !socialMediaName.contains("goo.gl") {
                 showAlert("Invalid Play Store URL", message: "Please enter a valid Android Play Store URL", buttonTitle: "Try again", sender: self)
                 alertViewResponder.close()
                 return
@@ -798,18 +821,22 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
             }
             else if !verifyUrl(socialMediaName){
               
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                   showAlert("Invalid Website URL", message: "Please enter a valid URL", buttonTitle: "Try again", sender: self)
                 })
               
               alertViewResponder.close()
               return 
             }
-          } else if socialMediaType == "linkedin" {
+          }
+          // TODO: separate Linkedin company page support should be added after implementing OAuth2 authentication
+          /*
+          else if socialMediaType == "linkedin" {
             // LinkedIn requires company/ before all company names. So this should only be appended for company accounts
             socialMediaName = "company/" + socialMediaName
             
           }
+          */
           
           if self.delegate != nil {
             self.delegate?.userDidAddNewProfile(
@@ -829,17 +856,17 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
       subTitle: "",
       duration:0.0,
       completeText: "Cancel",
-      style: .Success,
+      style: .success,
       colorStyle: 0x0F7A9D,
       colorTextButton: 0xFFFFFF,
       circleIconImage: alertViewIcon,
-      animationStyle: .BottomToTop
+      animationStyle: .bottomToTop
     )
   }
 
   // The below function is too specific -- see general one
-  private func updateProfilesDynamoDB(socialMediaType: String!, socialMediaName: String!) {
-    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+  fileprivate func updateProfilesDynamoDB(_ socialMediaType: String!, socialMediaName: String!) {
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
     let currentUser = getCurrentCachedUser()
     let currentRealName = getCurrentCachedFullName()
     let currentAccounts = getCurrentCachedUserProfiles() as NSMutableDictionary
@@ -855,13 +882,13 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
       // we need to create a list
       print("Accounts data was: ", currentAccounts)
 
-      if (currentAccounts.valueForKey(socialMediaType) == nil) {
+      if (currentAccounts.value(forKey: socialMediaType) == nil) {
         currentAccounts.setValue(
           [ socialMediaName ],
           forKey: socialMediaType
         )
       } else { // If it already exists, append value to end of list
-        var list = currentAccounts.valueForKey(socialMediaType) as! Array<String>
+        var list = currentAccounts.value(forKey: socialMediaType) as! Array<String>
         list.append(socialMediaName)
 
         currentAccounts.setValue(list, forKey: socialMediaType)
@@ -872,20 +899,15 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
       // Upload user DATA to DynamoDB
       let dynamoDBUser = User()
 
-      dynamoDBUser.username = currentUser
-      dynamoDBUser.realname = currentRealName
-      dynamoDBUser.accounts = currentAccounts
+      dynamoDBUser?.username = currentUser
+      dynamoDBUser?.realname = currentRealName
+      dynamoDBUser?.accounts = currentAccounts
 
-      dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock(
-        { (resultTask) -> AnyObject? in
+      dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(
+        block: { (resultTask) -> AnyObject? in
           if (resultTask.error != nil) {
             print ("DYNAMODB ADD PROFILE ERROR: ", resultTask.error)
           }
-
-          if (resultTask.exception != nil) {
-            print ("DYNAMODB ADD PROFILE EXCEPTION: ", resultTask.exception)
-          }
-
           if (resultTask.result == nil) {
             print ("DYNAMODB ADD PROFILE result is nil....: ")
           } else if (resultTask.error == nil) {

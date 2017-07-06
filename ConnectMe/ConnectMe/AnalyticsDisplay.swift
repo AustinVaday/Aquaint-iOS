@@ -9,15 +9,39 @@
 import UIKit
 import AWSLambda
 import Graphs
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 // Will have the real displays and data
 class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSource, PaymentsDisplayDelegate {
   
   enum AnalyticsDataEnum: Int {
-    case VIEW_BREAKDOWN
-    case ENGAGEMENT_BREAKDOWN
+    case view_BREAKDOWN
+    case engagement_BREAKDOWN
 //    case GENDER
-    case LOCATION
+    case location
 //    case DEVICE_TYPE
   }
 
@@ -86,14 +110,14 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       refreshControl = CustomRefreshControl()
       
       // When user pulls, this function will be called
-      refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+      refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), for: UIControlEvents.valueChanged)
     
       analyticsTableView.addSubview(refreshControl)
 
       paymentsStoryboard = UIStoryboard(name: "PaymentsDisplay", bundle: nil)
-      paymentsDisplayVC = paymentsStoryboard!.instantiateViewControllerWithIdentifier("PaymentsDisplay") as! PaymentsDisplay
+      paymentsDisplayVC = paymentsStoryboard!.instantiateViewController(withIdentifier: "PaymentsDisplay") as! PaymentsDisplay
       paymentsDisplayVC.paidDelegate = self
-      paymentsDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+      paymentsDisplayVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
 
     
       if getCurrentCachedPromoUserStatus() == true || getCurrentCachedSubscriptionStatus() == true {
@@ -103,7 +127,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       }
     
     fetchAndSetCurrentCachedSubscriptionStatus(self.currentUserName, completion: {(result, error) in
-      dispatch_async(dispatch_get_main_queue(), {
+      DispatchQueue.main.async(execute: {
         if result! {
           self.didPayForProduct()
         } else {
@@ -116,11 +140,11 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 
    }
   
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
 
   }
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     // Call this function to generate all analytics data for this page!
 //    generateAnalyticsData()
     awsMobileAnalyticsRecordPageVisitEventTrigger("AnalyticsDisplay", forKey: "page_name")
@@ -132,13 +156,13 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 //    generateAnalyticsData()
   }
   
-  @IBAction func unlockMoreDataButtonClicked(sender: AnyObject) {
-    self.presentViewController(paymentsDisplayVC, animated: true, completion: nil)
+  @IBAction func unlockMoreDataButtonClicked(_ sender: AnyObject) {
+    self.present(paymentsDisplayVC, animated: true, completion: nil)
   }
   
   
-  @IBAction func unlockButtonClicked(sender: AnyObject) {
-    self.presentViewController(paymentsDisplayVC, animated: true, completion: nil)
+  @IBAction func unlockButtonClicked(_ sender: AnyObject) {
+    self.present(paymentsDisplayVC, animated: true, completion: nil)
   }
   
   func didPayForProduct() {
@@ -148,13 +172,13 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     subscribed = true
-    self.unlockDataButton.hidden = true
+    self.unlockDataButton.isHidden = true
     self.analyticsTableView.reloadData()
   }
   
   func lockAndHideProduct() {
     subscribed = false
-    self.unlockDataButton.hidden = false
+    self.unlockDataButton.isHidden = false
     self.analyticsTableView.reloadData()
   }
 
@@ -163,37 +187,37 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
    *    TABLE VIEW PROTOCOL
    **************************************************************************/
   // Specify number of sections in our table
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     
     // Return number of sections
     return tableViewSectionsList.count
   }
   
   // Specify height of header
-  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 30
   }
   
   
-  func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     return tableViewSectionsList[section]
   }
   
   // Specify height of table view cells
-  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
     var returnHeight : CGFloat!
     
     switch indexPath.section
     {
-    case AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue:
+    case AnalyticsDataEnum.view_BREAKDOWN.rawValue:
       if viewBreakdownList.isEmpty || allZeroDisplayValues(viewBreakdownList) {
         returnHeight = noDataToDisplayCellHeight
       } else {
         returnHeight = graphTableViewCellHeight
       }
       break;
-    case AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue:
+    case AnalyticsDataEnum.engagement_BREAKDOWN.rawValue:
       if socialProviderToEngagementCountList.isEmpty {
         returnHeight = noDataToDisplayCellHeight
       } else {
@@ -204,7 +228,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 //    case AnalyticsDataEnum.GENDER.rawValue:
 //      returnHeight = graphTableViewCellHeight
 //      break;
-    case AnalyticsDataEnum.LOCATION.rawValue:
+    case AnalyticsDataEnum.location.rawValue:
       if locationToCountList.count == 0 {
         returnHeight = noDataToDisplayCellHeight
       } else {
@@ -222,7 +246,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   }
   
   // Return the number of rows in each given section
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     var numRows = 0
     switch tableViewSectionsList[section]
     {
@@ -255,24 +279,24 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   }
   
   // Configure which cell to display
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-    let cell = tableView.dequeueReusableCellWithIdentifier("analyticsContentCell") as! AnalyticsContentTableViewCell!
+    let cell = tableView.dequeueReusableCell(withIdentifier: "analyticsContentCell") as! AnalyticsContentTableViewCell!
     switch indexPath.section
     {
       
-    case AnalyticsDataEnum.VIEW_BREAKDOWN.rawValue:
+    case AnalyticsDataEnum.view_BREAKDOWN.rawValue:
       if viewBreakdownList.isEmpty || allZeroDisplayValues(viewBreakdownList) {
-        return tableView.dequeueReusableCellWithIdentifier("noDataToDisplayCell")!
+        return tableView.dequeueReusableCell(withIdentifier: "noDataToDisplayCell")!
       }
       // Configure cell for graph
-      let graphCell = tableView.dequeueReusableCellWithIdentifier("freeViewCell") as! AnalyticsFreeViewTableViewCell!
+      let graphCell = tableView.dequeueReusableCell(withIdentifier: "freeViewCell") as! AnalyticsFreeViewTableViewCell!
       
       if graphViewForViews != nil {
         graphViewForViews.removeFromSuperview()
       }
       
-      self.viewBreakdownList.sortInPlace({ (obj1, obj2) -> Bool in
+      self.viewBreakdownList.sort(by: { (obj1, obj2) -> Bool in
         return Int(obj1[0]) > Int(obj2[0])
       })
       
@@ -292,29 +316,29 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
         }
       })
       // Test to see how it looks with large numbers --> not bad.
-      graphViewForViews = barGraphData.barGraph().view(graphCell.viewDisplay.bounds).barGraphConfiguration({ BarGraphViewConfig(barColor: UIColor(hex: "#ff6699"), textFont: graphFont, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
+      graphViewForViews = barGraphData.barGraph().view((graphCell?.viewDisplay.bounds)!).barGraphConfiguration({ BarGraphViewConfig(barColor: UIColor(hex: "#ff6699"), textFont: graphFont, contentInsets: UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)) })
       
       
       
-      graphCell.viewDisplay.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-      graphCell.viewDisplay.addSubview(graphViewForViews)
-      return graphCell
-    case AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue:
+      graphCell?.viewDisplay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+      graphCell?.viewDisplay.addSubview(graphViewForViews)
+      return graphCell!
+    case AnalyticsDataEnum.engagement_BREAKDOWN.rawValue:
       if (socialProviderToEngagementCountList.count == 0) {
-        return tableView.dequeueReusableCellWithIdentifier("noDataToDisplayCell")!
+        return tableView.dequeueReusableCell(withIdentifier: "noDataToDisplayCell")!
       }
       
-      let engagementArray = socialProviderToEngagementCountList[indexPath.item] as! NSArray
-      cell.numericalValueLabel.text = String(engagementArray[1])
-      cell.numericalTypeLabel.text = "CLICKS"
-      cell.socialProviderLabel.text = String(engagementArray[0])
+      let engagementArray = socialProviderToEngagementCountList[indexPath.item] as NSArray
+      cell?.numericalValueLabel.text = String(describing: engagementArray[1])
+      cell?.numericalTypeLabel.text = "CLICKS"
+      cell?.socialProviderLabel.text = String(describing: engagementArray[0])
       
       if (subscribed) {
-        cell.numericalValueLabel.hidden = false
-        cell.numericalValueLockImage.hidden = true
+        cell?.numericalValueLabel.isHidden = false
+        cell?.numericalValueLockImage.isHidden = true
       } else {
-        cell.numericalValueLabel.hidden = true
-        cell.numericalValueLockImage.hidden = false
+        cell?.numericalValueLabel.isHidden = true
+        cell?.numericalValueLockImage.isHidden = false
       }
 
       
@@ -359,14 +383,14 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 //      graphCell.viewDisplay.addSubview(graphViewForGender)
 //      return graphCell
 //      break;
-    case AnalyticsDataEnum.LOCATION.rawValue:
+    case AnalyticsDataEnum.location.rawValue:
       if (locationToCountList.count == 0){
-        return tableView.dequeueReusableCellWithIdentifier("noDataToDisplayCell")!
+        return tableView.dequeueReusableCell(withIdentifier: "noDataToDisplayCell")!
       }
       
       let locationTemp = locationToCountList[indexPath.item] as! NSArray
-      cell.numericalValueLabel.text = String(locationTemp[1])
-      cell.numericalTypeLabel.text = "VIEWS"
+      cell?.numericalValueLabel.text = String(describing: locationTemp[1])
+      cell?.numericalTypeLabel.text = "VIEWS"
       
       // Add blur to freemium users
 //      let blur = UIBlurEffect(style: .ExtraLight)
@@ -375,11 +399,11 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
 //      blurView.frame = cell.numericalValueLabel.bounds
 //      cell.numericalValueLabel.addSubview(blurView)
       if (subscribed) {
-        cell.numericalValueLabel.hidden = false
-        cell.numericalValueLockImage.hidden = true
+        cell?.numericalValueLabel.isHidden = false
+        cell?.numericalValueLockImage.isHidden = true
       } else {
-        cell.numericalValueLabel.hidden = true
-        cell.numericalValueLockImage.hidden = false
+        cell?.numericalValueLabel.isHidden = true
+        cell?.numericalValueLockImage.isHidden = false
       }
       
       var city = locationTemp[0] as! String
@@ -389,7 +413,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
         city = "Unknown"
       }
       
-      cell.socialProviderLabel.text = city
+      cell?.socialProviderLabel.text = city
 
       break;
 //    case AnalyticsDataEnum.DEVICE_TYPE.rawValue:
@@ -412,27 +436,27 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       
     }
 
-    return cell
+    return cell!
   }
   
   // Configure/customize each table header view
-  func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     
     let sectionTitle = tableViewSectionsList[section]
-    let cell = tableView.dequeueReusableCellWithIdentifier("analyticsHeaderCell") as! AnalyticsHeaderTableViewCell!
-    cell.title.text = sectionTitle
+    let cell = tableView.dequeueReusableCell(withIdentifier: "analyticsHeaderCell") as! AnalyticsHeaderTableViewCell!
+    cell?.title.text = sectionTitle
     
     return cell
   }
   
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
   }
   
   // Helper functions
   //---------------------------------------------------------------------------------------------------
   // Function that is called when user drags/pulls table with intention of refreshing it
-  func refreshTable(sender:AnyObject)
+  func refreshTable(_ sender:AnyObject)
   {
     self.refreshControl.beginRefreshing()
     generateAnalyticsData()
@@ -451,9 +475,9 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     let userProfiles = getCurrentCachedUserProfiles() as NSDictionary!
     var userSocialPlatforms = Array<String>()
     if userProfiles != nil {
-      userSocialPlatforms = userProfiles.allKeys as! Array<String>
+      userSocialPlatforms = userProfiles?.allKeys as! Array<String>
     }
-    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+    let lambdaInvoker = AWSLambdaInvoker.default()
     var parameters = NSDictionary()
     
     if !isGeneratingViewBreakdownAnalytics {
@@ -462,16 +486,16 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       var newViewBreakdownList = Array<Array<Int>>()
 //      self.viewBreakdownList = Array<Array<Int>>()
       
-      for daysAgo in 10.stride(through: 1, by: -1) {
+      for daysAgo in stride(from: 10, through: 1, by: -1) {
         print("Fetching data for ", daysAgo, " days ago...")
         // Get engagement info
         parameters = ["action":"getUserSinglePayViewsForDay", "target": currentUserName, "days_ago": daysAgo]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
           if resultTask.error == nil && resultTask.result != nil
           {
             print("Result task for getUserSinglePayViewsForDay is: ", resultTask.result!)
  
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
               let number = resultTask.result as? Int
               
               var tuple = Array<Int>()
@@ -534,7 +558,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
           runningRequests = runningRequests + 1
           // Get engagement info
           parameters = ["action":"getUserSingleEngagements", "target": currentUserName, "social_platform": platform]
-          lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+          lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
             if resultTask.error == nil && resultTask.result != nil
             {
               print("Result task for getUserSingleEngagements is: ", resultTask.result!)
@@ -544,7 +568,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
               tuple.append(platform)
               tuple.append(String(number!))
               newSocialProviderToEngagementCountList.append(tuple)
-              newSocialProviderToEngagementCountList.sortInPlace({ (obj1, obj2) -> Bool in
+              newSocialProviderToEngagementCountList.sort(by: { (obj1, obj2) -> Bool in
                 return Int(obj1[1]) > Int(obj2[1])
               })
               
@@ -553,25 +577,25 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
               runningRequests = runningRequests - 1
               
               // Load data differently for first and subsequent requests
-              if runningRequests == 0 && !self.alreadyInitializedSection[AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue] {
-                dispatch_async(dispatch_get_main_queue(), {
+              if runningRequests == 0 && !self.alreadyInitializedSection[AnalyticsDataEnum.engagement_BREAKDOWN.rawValue] {
+                DispatchQueue.main.async(execute: {
                   self.socialProviderToEngagementCountList = newSocialProviderToEngagementCountList
                   
                   if self.analyticsTableView != nil {
                     self.analyticsTableView.reloadData()
                   }
-                  self.alreadyInitializedSection[AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue] = true
+                  self.alreadyInitializedSection[AnalyticsDataEnum.engagement_BREAKDOWN.rawValue] = true
                 })
-              } else if runningRequests == 0 && self.alreadyInitializedSection[AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue] {
-                dispatch_async(dispatch_get_main_queue(), {
+              } else if runningRequests == 0 && self.alreadyInitializedSection[AnalyticsDataEnum.engagement_BREAKDOWN.rawValue] {
+                DispatchQueue.main.async(execute: {
                   self.socialProviderToEngagementCountList = newSocialProviderToEngagementCountList
                   if self.analyticsTableView != nil {
                     self.analyticsTableView.reloadData()
                   }
                 })
               }
-              else if !self.alreadyInitializedSection[AnalyticsDataEnum.ENGAGEMENT_BREAKDOWN.rawValue]{
-                dispatch_async(dispatch_get_main_queue(), {
+              else if !self.alreadyInitializedSection[AnalyticsDataEnum.engagement_BREAKDOWN.rawValue]{
+                DispatchQueue.main.async(execute: {
                   self.socialProviderToEngagementCountList = newSocialProviderToEngagementCountList
                   if self.analyticsTableView != nil {
                     self.analyticsTableView.reloadData()
@@ -589,14 +613,14 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     // Get location info
     parameters = ["action":"getUserPageViewsLocations", "target": currentUserName, "max_results": 15]
     
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil
       {
         print("Result task for getUserPageViewsLocations is: ", resultTask.result!)
         
         self.locationToCountList = resultTask.result as! NSArray
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
           if self.analyticsTableView != nil {
             self.analyticsTableView.reloadData()
           }
@@ -609,7 +633,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
     
   }
   
-  func extractDataArray(listOfLists: Array<Array<Int>>) -> Array<Int>
+  func extractDataArray(_ listOfLists: Array<Array<Int>>) -> Array<Int>
   {
     var firstElementsArray = Array<Int>()
     
@@ -621,7 +645,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   }
   
   
-  func allZeroDisplayValues(listOfLists: Array<Array<Int>>) -> Bool
+  func allZeroDisplayValues(_ listOfLists: Array<Array<Int>>) -> Bool
   {
     var sum = 0
     for tuple in listOfLists {

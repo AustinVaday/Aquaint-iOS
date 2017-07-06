@@ -21,19 +21,19 @@ import RSKImageCropper
 class MenuController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, AddSocialMediaProfileDelegate, SocialMediaCollectionDeletionDelegate, UIImagePickerControllerDelegate, RSKImageCropViewControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, EditSectionDelegate {
   
   enum MenuData: Int {
-    case LINKED_PROFILES
-    case MY_INFORMATION
-    case SOCIAL_ACTIONS
+    case linked_PROFILES
+    case my_INFORMATION
+    case social_ACTIONS
 //    case NOTIFICATION_SETTINGS
-    case PRIVACY_SETTINGS
-    case SUBSCRIPTION_SETTINGS
-    case ACTIONS
+    case privacy_SETTINGS
+    case subscription_SETTINGS
+    case actions
   }
   
   enum MyInformationData: Int {
-    case FULL_NAME
-    case EMAIL
-    case PHONE
+    case full_NAME
+    case email
+    case phone
   }
   
   struct SectionTitleAndCountPair
@@ -94,7 +94,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   let credentialsProvider = AWSCognitoCredentialsProvider(regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:ca5605a3-8ba9-4e60-a0ca-eae561e7c74e")
   let footerHeight = CGFloat(65)
   let defaultTableViewCellHeight = CGFloat(60)
-  let defaultImage = UIImage(imageLiteral: "Person Icon Black")
+  let defaultImage = UIImage(imageLiteralResourceName: "Person Icon Black")
   let reusableWebViewStoryboard = UIStoryboard(name: "ReusableWebView", bundle: nil)
   
   override func viewDidLoad() {
@@ -103,7 +103,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
     
     // Disable editing by default
-    enableEditingArray = Array(count: 7, repeatedValue: false)
+    enableEditingArray = Array(repeating: false, count: 7)
     
     hasDeletedProfiles = false
     
@@ -131,7 +131,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     refreshControl = CustomRefreshControl()
     
     // When user pulls, this function will be called
-    refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+    refreshControl.addTarget(self, action: #selector(MenuController.refreshTable(_:)), for: UIControlEvents.valueChanged)
     settingsTableView.addSubview(refreshControl)
     
   }
@@ -141,7 +141,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
    =======================================================*/
   
   // Add and Remove NSNotifications!
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
     
     registerForKeyboardNotifications()
@@ -151,7 +151,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     newUserAccountsForNewsfeed = NSMutableDictionary()
   }
   
-  override func viewWillDisappear(animated: Bool) {
+  override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(true)
     
     deregisterForKeyboardNotifications()
@@ -163,15 +163,15 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     {
       // Here's what we'll do: When the user leaves this page, we will take the recent additions (100 max)
       // and store them in dynamo. This information will be used for the newsfeed.
-      let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+      let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
       
       // Get dynamo mapper if it exists
-      dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: currentUserName, rangeKey: nil).continueWithBlock({ (resultTask) -> AnyObject? in
+      dynamoDBObjectMapper.load(NewsfeedEventListObjectModel.self, hashKey: currentUserName, rangeKey: nil).continueWith(block: { (resultTask) -> AnyObject? in
         
         var newsfeedObjectMapper : NewsfeedEventListObjectModel!
         
         // If successfull find, use that data
-        if (resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil)
+        if (resultTask.error == nil && resultTask.result != nil)
         {
           newsfeedObjectMapper = resultTask.result as! NewsfeedEventListObjectModel
         }
@@ -192,7 +192,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         
         print ("YOLO24: ", newKeyValSocialMediaPairList)
-        for pair in newKeyValSocialMediaPairList
+        for pair in newKeyValSocialMediaPairList!
         {
           // Prevent too many adds at once
           index = index + 1
@@ -209,7 +209,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
           newsfeedObjectMapper.addNewsfeedObject(newsfeedObject)
         }
         
-        dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+        dynamoDBObjectMapper.save(newsfeedObjectMapper).continueWith { (resultTask) -> AnyObject? in
           print("DynamoObjectMapper sucessful save for newsfeedObject with new social media profile")
           
           return nil
@@ -224,11 +224,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
   }
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     // After FBSDK returns from getting user contacts, we call the segue here in order to prevent warning where
     // one cannot perform sugue due to hierarchy of view controllers
     if transitionToAddSocialContactsController {
-      self.performSegueWithIdentifier("toAddSocialContactsViewController", sender: self)
+      self.performSegue(withIdentifier: "toAddSocialContactsViewController", sender: self)
       transitionToAddSocialContactsController = false
     }
     
@@ -238,18 +238,18 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   // KEYBOARD shift-up buttons functionality
   func registerForKeyboardNotifications()
   {
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     
   }
   
   func deregisterForKeyboardNotifications()
   {
-    NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
-    NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
   }
   
-  func keyboardWasShown(notification: NSNotification!)
+  func keyboardWasShown(_ notification: Notification!)
   {
     // If keyboard shown already, no need to perform this method
     if isKeyboardShown
@@ -260,18 +260,18 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     self.isKeyboardShown = true
     
     let userInfo = notification.userInfo!
-    let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
+    let keyboardSize = ((userInfo[UIKeyboardFrameBeginUserInfoKey])! as AnyObject).cgRectValue.size
     
-    UIView.animateWithDuration(0.5) {
+    UIView.animate(withDuration: 0.5, animations: {
       
       print("KEYBOARD SHOWN")
       
       self.buttonBottomConstraint.constant = keyboardSize.height - self.footerHeight
       self.view.layoutIfNeeded()
-    }
+    }) 
   }
   
-  func keyboardWillBeHidden(notification: NSNotification!)
+  func keyboardWillBeHidden(_ notification: Notification!)
   {
     isKeyboardShown = false
     
@@ -289,7 +289,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   /*=======================================================
    * BEGIN : Detect long press on collection view
    =======================================================*/
-  func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
+  func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
     //    if gestureRecognizer.state != UIGestureRecognizerState.Ended {
     //      return
     //    }
@@ -304,10 +304,10 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
    =======================================================*/
   
   
-  @IBAction func onAddSocialMediaProfileButtonClicked(sender: AnyObject) {
+  @IBAction func onAddSocialMediaProfileButtonClicked(_ sender: AnyObject) {
     
     // Do this so we don't have any miscrepencies when adding profiles from edit mode
-    if enableEditingArray[MenuData.LINKED_PROFILES.rawValue]
+    if enableEditingArray[MenuData.linked_PROFILES.rawValue]
     {
       // Mimic a cancellation
 //      self.onCancelButtonClicked(self)
@@ -315,54 +315,54 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
   }
   
-  @IBAction func goToFollowersPage(sender: AnyObject) {
+  @IBAction func goToFollowersPage(_ sender: AnyObject) {
     showFollowerListViewController("getFollowers")
   }
   
-  @IBAction func goToFollowingPage(sender: AnyObject) {
+  @IBAction func goToFollowingPage(_ sender: AnyObject) {
     showFollowerListViewController("getFollowees")
   }
   
-  @IBAction func onChangeProfilePictureClicked(sender: UIButton) {
+  @IBAction func onChangeProfilePictureClicked(_ sender: UIButton) {
     let imagePicker = UIImagePickerController()    // Used for selecting image from user's device
     
     // Present the Saved Photo Album to user only if it is available
-    if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary)
+    if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary)
     {
       imagePicker.delegate = self
-      imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+      imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
       imagePicker.allowsEditing = false
-      self.presentViewController(imagePicker, animated: true, completion: nil)
+      self.present(imagePicker, animated: true, completion: nil)
     }
     
   }
   
-  func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
     // Close the image picker view when user is finished with it
-    self.dismissViewControllerAnimated(true) {
+    self.dismiss(animated: true) {
       var imageCropVC : RSKImageCropViewController!
-      imageCropVC = RSKImageCropViewController(image: image, cropMode: RSKImageCropMode.Circle)
+      imageCropVC = RSKImageCropViewController(image: image, cropMode: RSKImageCropMode.circle)
       
       imageCropVC.delegate = self
       
-      self.presentViewController(imageCropVC, animated: true, completion: nil)
+      self.present(imageCropVC, animated: true, completion: nil)
     }
     
   }
   
   // RSKImageCropViewController lets us easily crop our pictures!
-  func imageCropViewControllerDidCancelCrop(controller: RSKImageCropViewController) {
-    controller.dismissViewControllerAnimated(true, completion: nil)
+  func imageCropViewControllerDidCancelCrop(_ controller: RSKImageCropViewController) {
+    controller.dismiss(animated: true, completion: nil)
   }
   
-  func imageCropViewController(controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
-    controller.dismissViewControllerAnimated(true, completion: nil)
+  func imageCropViewController(_ controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
+    controller.dismiss(animated: true, completion: nil)
     
     // Set the button's new image
     setUserS3Image(currentUserName, userImage: croppedImage) { (error) in
       
       // Perform update on UI on main thread
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      DispatchQueue.main.async(execute: { () -> Void in
         if error != nil
         {
           showAlert("Sorry", message: "Something went wrong, we couldn't upload the photo right now. Please try again later.", buttonTitle: "Ok", sender: self)
@@ -379,17 +379,17 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   
   
   
-  @IBAction func textFieldEditingDidEnd(sender: UITextField) {
+  @IBAction func textFieldEditingDidEnd(_ sender: UITextField) {
     
     switch (sender.tag)
     {
-    case MyInformationData.FULL_NAME.rawValue:
+    case MyInformationData.full_NAME.rawValue:
       editedRealName = sender.text!
       break;
-    case MyInformationData.EMAIL.rawValue:
+    case MyInformationData.email.rawValue:
       editedUserEmail = sender.text!
       break;
-    case MyInformationData.PHONE.rawValue:
+    case MyInformationData.phone.rawValue:
       editedUserPhone = sender.text!
       break;
     default:
@@ -404,7 +404,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   /**************************************************************************
    *    COLLECTION VIEW PROTOCOL
    **************************************************************************/
-  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     
     if (keyValSocialMediaPairList.isEmpty)
     {
@@ -415,11 +415,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     return keyValSocialMediaPairList.count
   }
   
-  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     
-    if !enableEditingArray[MenuData.LINKED_PROFILES.rawValue]
+    if !enableEditingArray[MenuData.linked_PROFILES.rawValue]
     {
-      let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SocialMediaCollectionViewCell
+      let cell = collectionView.cellForItem(at: indexPath) as! SocialMediaCollectionViewCell
       
       print ("SELECTED", cell.socialMediaName)
       
@@ -431,14 +431,14 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       // Perform the request, go to external application and let the user do whatever they want!
       if socialMediaURL != nil
       {
-        UIApplication.sharedApplication().openURL(socialMediaURL)
+        UIApplication.shared.openURL(socialMediaURL!)
       }
     }
   }
   
-  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("accountsCollectionViewCell", forIndexPath: indexPath) as! SocialMediaCollectionViewCell
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "accountsCollectionViewCell", for: indexPath) as! SocialMediaCollectionViewCell
     
     if (!keyValSocialMediaPairList.isEmpty)
     {
@@ -448,7 +448,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       
       
       // Generate a UI image for the respective social media type
-      cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType]
+      cell.emblemImage.image = self.socialMediaImageDictionary[socialMediaType!]
       
       cell.socialMediaName = socialMediaUserName // username
       cell.socialMediaType = socialMediaType // facebook, snapchat, etc
@@ -457,13 +457,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       
 //      print("enableEditing is: ", enableEditing)
       // Show the delete buttons if in editing mode!
-      if (enableEditingArray[MenuData.LINKED_PROFILES.rawValue])
+      if (enableEditingArray[MenuData.linked_PROFILES.rawValue])
       {
-        cell.deleteSocialMediaButton.hidden = false
+        cell.deleteSocialMediaButton.isHidden = false
       }
       else
       {
-        cell.deleteSocialMediaButton.hidden = true
+        cell.deleteSocialMediaButton.isHidden = true
       }
       
       // Make cell image circular
@@ -475,8 +475,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   }
   
   // Used for polishing phone number in table view
-  func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-    if textField.tag == MyInformationData.PHONE.rawValue
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    if textField.tag == MyInformationData.phone.rawValue
     {
       print ("HOLA")
       
@@ -496,11 +496,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     return false
   }
   
-  func phoneNumberTextFieldEditingDidChange(textField: UITextField)
+  func phoneNumberTextFieldEditingDidChange(_ textField: UITextField)
   {
     // Get the text from the beginning of the phone number (not US country code)
     let string = (textField.text)! as NSString
-    let phoneString = string.substringFromIndex(2)
+    let phoneString = string.substring(from: 2)
     
     textField.text = "+1" + removeAllNonDigits(phoneString)
     
@@ -511,49 +511,49 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
    *    TABLE VIEW PROTOCOL
    **************************************************************************/
   // Specify number of sections in our table
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     
     // Return number of sections
     return tableViewSectionsList.count
   }
   
   // Specify height of header
-  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 48
   }
   
   
-  func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     
     return tableViewSectionsList[section].sectionTitle
   }
   
   // Specify height of table view cells
-  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
     var returnHeight : CGFloat!
     
     switch indexPath.section
     {
-    case MenuData.LINKED_PROFILES.rawValue:
+    case MenuData.linked_PROFILES.rawValue:
       returnHeight = defaultTableViewCellHeight
       break;
-    case MenuData.SOCIAL_ACTIONS.rawValue:
+    case MenuData.social_ACTIONS.rawValue:
       returnHeight = CGFloat(50)
       break;
-    case MenuData.MY_INFORMATION.rawValue:
+    case MenuData.my_INFORMATION.rawValue:
       returnHeight = defaultTableViewCellHeight
       break;
 //    case MenuData.NOTIFICATION_SETTINGS.rawValue:
 //      returnHeight = CGFloat(50)
 //      break;
-    case MenuData.PRIVACY_SETTINGS.rawValue:
+    case MenuData.privacy_SETTINGS.rawValue:
       returnHeight = CGFloat(50)
       break;
-    case MenuData.SUBSCRIPTION_SETTINGS.rawValue:
+    case MenuData.subscription_SETTINGS.rawValue:
       returnHeight = CGFloat(50)
       break;
-    case MenuData.ACTIONS.rawValue:
+    case MenuData.actions.rawValue:
       returnHeight = CGFloat(50)
       break;
       
@@ -565,120 +565,120 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   }
   
   // Return the number of rows in each given section
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
     return tableViewSectionsList[section].sectionCount
   }
   
   // Configure which cell to display
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     switch indexPath.section
     {
-    case MenuData.LINKED_PROFILES.rawValue:
-      let cell = tableView.dequeueReusableCellWithIdentifier("menuProfilesCell") as! MenuProfilesCell!
+    case MenuData.linked_PROFILES.rawValue:
+      let cell = tableView.dequeueReusableCell(withIdentifier: "menuProfilesCell") as! MenuProfilesCell!
     
-      cell.profilesCollectionView.reloadData()
+      cell?.profilesCollectionView.reloadData()
       
       // Add long press gesture recognizer to collection view
       let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(MenuController.handleLongPress(_:)))
       lpgr.minimumPressDuration = 0.8
       lpgr.delaysTouchesBegan = true
       lpgr.delegate = self
-      cell.profilesCollectionView.addGestureRecognizer(lpgr)
+      cell?.profilesCollectionView.addGestureRecognizer(lpgr)
       
       // Show delete buttons if editing is enabled.
-      if (enableEditingArray[MenuData.LINKED_PROFILES.rawValue])
+      if (enableEditingArray[MenuData.linked_PROFILES.rawValue])
       {
         //TODO: Red delete buttons
       }
       
-      return cell
+      return cell!
       break;
-    case MenuData.MY_INFORMATION.rawValue:
+    case MenuData.my_INFORMATION.rawValue:
       //else return regular cell
-      let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
+      let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell") as! MenuTableViewCell!
       
       switch (indexPath.item)
       {
-      case MyInformationData.FULL_NAME.rawValue: //User full name
-        cell.menuTitle.text = "Full Name"
-        cell.menuValue.text = currentRealName
+      case MyInformationData.full_NAME.rawValue: //User full name
+        cell?.menuTitle.text = "Full Name"
+        cell?.menuValue.text = currentRealName
         // Tag is needed so we can detect which text field is being modified later on
-        cell.menuValue.tag  = MyInformationData.FULL_NAME.rawValue
-        cell.menuValue.autocorrectionType = .No
+        cell?.menuValue.tag  = MyInformationData.full_NAME.rawValue
+        cell?.menuValue.autocorrectionType = .no
         
         //        self.fullNameCell = cell
         break;
-      case MyInformationData.EMAIL.rawValue: //User email
-        cell.menuTitle.text = "Email"
-        cell.menuValue.text = currentUserEmail
+      case MyInformationData.email.rawValue: //User email
+        cell?.menuTitle.text = "Email"
+        cell?.menuValue.text = currentUserEmail
         // Tag is needed so we can detect which text field is being modified later on
-        cell.menuValue.tag  = MyInformationData.EMAIL.rawValue
-        cell.menuValue.autocorrectionType = .No
+        cell?.menuValue.tag  = MyInformationData.email.rawValue
+        cell?.menuValue.autocorrectionType = .no
         
         //        self.emailCell = cell
         break;
-      case MyInformationData.PHONE.rawValue: //User phone
-        cell.menuTitle.text = "Phone"
-        cell.menuValue.text = currentUserPhone
+      case MyInformationData.phone.rawValue: //User phone
+        cell?.menuTitle.text = "Phone"
+        cell?.menuValue.text = currentUserPhone
         
         if currentUserPhone == nil || currentUserPhone.characters.count == 0 {
-          cell.clickToAdd.hidden = false
+          cell?.clickToAdd.isHidden = false
         } else {
-          cell.clickToAdd.hidden = true
+          cell?.clickToAdd.isHidden = true
         }
         
         // Tag is needed so we can detect which text field is being modified later on
-        cell.menuValue.tag  = MyInformationData.PHONE.rawValue
+        cell?.menuValue.tag  = MyInformationData.phone.rawValue
         
         
-        cell.menuValue.addTarget(self, action: #selector(phoneNumberTextFieldEditingDidChange), forControlEvents: UIControlEvents.EditingChanged)
-        cell.menuValue.delegate = self
-        cell.menuValue.keyboardType = UIKeyboardType.NumberPad
-        cell.menuValue.autocorrectionType = .No
+        cell?.menuValue.addTarget(self, action: #selector(phoneNumberTextFieldEditingDidChange), for: UIControlEvents.editingChanged)
+        cell?.menuValue.delegate = self
+        cell?.menuValue.keyboardType = UIKeyboardType.numberPad
+        cell?.menuValue.autocorrectionType = .no
         
         //        self.phoneCell = cell
         break;
         
       default: //Default
-        cell.menuTitle.text = ""
-        cell.menuValue.text = ""
+        cell?.menuTitle.text = ""
+        cell?.menuValue.text = ""
         
       }
       
       // Set text field editable and display the cool line underneath
-      if (enableEditingArray[MenuData.MY_INFORMATION.rawValue])
+      if (enableEditingArray[MenuData.my_INFORMATION.rawValue])
       {
-        cell.menuLineSeparator.hidden = false
-        cell.menuValue.enabled = true
-        cell.clickToAdd.hidden = true
+        cell?.menuLineSeparator.isHidden = false
+        cell?.menuValue.isEnabled = true
+        cell?.clickToAdd.isHidden = true
       }
       else
       {
-        cell.menuLineSeparator.hidden = true
-        cell.menuValue.enabled = false
+        cell?.menuLineSeparator.isHidden = true
+        cell?.menuValue.isEnabled = false
         //cell.clickToAdd.hidden = false
       }
-      return cell
+      return cell!
       break;
-    case MenuData.SOCIAL_ACTIONS.rawValue:
+    case MenuData.social_ACTIONS.rawValue:
       // return regular button cell
-      let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
-      cell.menuToggleSwitch.hidden = true
+      let cell = tableView.dequeueReusableCell(withIdentifier: "menuButtonCell") as! MenuButtonTableViewCell!
+      cell?.menuToggleSwitch.isHidden = true
       
       switch (indexPath.item)
       {
       case 0: // button
-        cell.menuButtonLabel.text = "Find Facebook friends"
+        cell?.menuButtonLabel.text = "Find Facebook friends"
         break;
         
       default: //Default
-        cell.menuButtonLabel.text = ""
+        cell?.menuButtonLabel.text = ""
         
       }
       
-      return cell
+      return cell!
       
       break;
 //    case MenuData.NOTIFICATION_SETTINGS.rawValue:
@@ -700,112 +700,112 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 //      return cell
 //      
 //      break;
-    case MenuData.PRIVACY_SETTINGS.rawValue:
+    case MenuData.privacy_SETTINGS.rawValue:
       // return regular button cell
-      let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
-      cell.menuToggleSwitch.hidden = true
+      let cell = tableView.dequeueReusableCell(withIdentifier: "menuButtonCell") as! MenuButtonTableViewCell!
+      cell?.menuToggleSwitch.isHidden = true
       
       switch (indexPath.item)
       {
       case 0:
-        cell.menuButtonLabel.text = "Private Account"
-        cell.menuToggleSwitch.hidden = false
+        cell?.menuButtonLabel.text = "Private Account"
+        cell?.menuToggleSwitch.isHidden = false
         
         let privacyStatus = getCurrentCachedPrivacyStatus()
         if privacyStatus != nil && privacyStatus == "private" {
-          cell.menuToggleSwitch.on = true
+          cell?.menuToggleSwitch.isOn = true
         } else {
-          cell.menuToggleSwitch.on = false
+          cell?.menuToggleSwitch.isOn = false
         }
         
-        cell.toggleType = MenuButtonTableViewCell.ToggleType.PRIVATE_PROFILE
+        cell?.toggleType = MenuButtonTableViewCell.ToggleType.private_PROFILE
         
       case 1:
-        cell.menuButtonLabel.text = "Privacy Policy"
+        cell?.menuButtonLabel.text = "Privacy Policy"
         break;
       case 2:
-        cell.menuButtonLabel.text = "Terms of Service"
+        cell?.menuButtonLabel.text = "Terms of Service"
         break;
         
       default: //Default
-        cell.menuButtonLabel.text = ""
+        cell?.menuButtonLabel.text = ""
         
       }
       
-      return cell
+      return cell!
       
       break;
-    case MenuData.SUBSCRIPTION_SETTINGS.rawValue:
+    case MenuData.subscription_SETTINGS.rawValue:
       // return regular button cell
-      let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
-      cell.menuToggleSwitch.hidden = true
+      let cell = tableView.dequeueReusableCell(withIdentifier: "menuButtonCell") as! MenuButtonTableViewCell!
+      cell?.menuToggleSwitch.isHidden = true
       
       switch (indexPath.item)
       {
       case 0: //Link to about subscription page
-        cell.menuButtonLabel.text = "About Subscription"
+        cell?.menuButtonLabel.text = "About Subscription"
         break;
       default: //Default
-        cell.menuButtonLabel.text = ""
+        cell?.menuButtonLabel.text = ""
         
       }
       
-      return cell
+      return cell!
       
       break;
-    case MenuData.ACTIONS.rawValue:
+    case MenuData.actions.rawValue:
       // return regular button cell
-      let cell = tableView.dequeueReusableCellWithIdentifier("menuButtonCell") as! MenuButtonTableViewCell!
-      cell.menuToggleSwitch.hidden = true
+      let cell = tableView.dequeueReusableCell(withIdentifier: "menuButtonCell") as! MenuButtonTableViewCell!
+      cell?.menuToggleSwitch.isHidden = true
       
       switch (indexPath.item)
       {
       case 0:
-        cell.menuButtonLabel.text = "Change Password"
+        cell?.menuButtonLabel.text = "Change Password"
         break;
       case 1: //Log out button
-        cell.menuButtonLabel.text = "Log Out"
+        cell?.menuButtonLabel.text = "Log Out"
         break;
       default: //Default
-        cell.menuButtonLabel.text = ""
+        cell?.menuButtonLabel.text = ""
         
       }
       
-      return cell
+      return cell!
       break;
     default:
       // Default cell return..
-      let cell = tableView.dequeueReusableCellWithIdentifier("menuCell") as! MenuTableViewCell!
-      return cell
+      let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell") as! MenuTableViewCell!
+      return cell!
       
     }
   }
   
   // Configure/customize each table header view
-  func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     
     let sectionTitle = tableViewSectionsList[section].sectionTitle
     
-    let cell = tableView.dequeueReusableCellWithIdentifier("sectionHeaderCell") as! SectionHeaderCell!
+    let cell = tableView.dequeueReusableCell(withIdentifier: "sectionHeaderCell") as! SectionHeaderCell!
   
-    cell.sectionTitle.text = sectionTitle
+    cell?.sectionTitle.text = sectionTitle
     
-    switch sectionTitle {
+    switch sectionTitle! {
     case LINKED_PROFILES_TITLE:
-      cell.editView.hidden = false
-      if (enableEditingArray[MenuData.LINKED_PROFILES.rawValue]) {
-        cell.cancelSection.hidden = false
-        cell.saveSection.hidden = false
-        cell.editSection.hidden = true
+      cell?.editView.isHidden = false
+      if (enableEditingArray[MenuData.linked_PROFILES.rawValue]) {
+        cell?.cancelSection.isHidden = false
+        cell?.saveSection.isHidden = false
+        cell?.editSection.isHidden = true
       }
       
       break;
     case MY_INFORMATION_TITLE:
-      cell.editView.hidden = false
-      if (enableEditingArray[MenuData.MY_INFORMATION.rawValue]) {
-        cell.cancelSection.hidden = false
-        cell.saveSection.hidden = false
-        cell.editSection.hidden = true
+      cell?.editView.isHidden = false
+      if (enableEditingArray[MenuData.my_INFORMATION.rawValue]) {
+        cell?.cancelSection.isHidden = false
+        cell?.saveSection.isHidden = false
+        cell?.editSection.isHidden = true
       }
       break;
     default:
@@ -813,24 +813,24 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
   
     
-    cell.editSectionDelegate = self
+    cell?.editSectionDelegate = self
     return cell
   }
   
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
-    if (indexPath.section == MenuData.MY_INFORMATION.rawValue)
+    if (indexPath.section == MenuData.my_INFORMATION.rawValue)
     {
 //      self.onEditInformationButtonClicked(self)
       self.editSectionButtonClicked(MY_INFORMATION_TITLE)
     }
     
-    if (indexPath.section == MenuData.ACTIONS.rawValue)
+    if (indexPath.section == MenuData.actions.rawValue)
     {
       // Reset password button
       if (indexPath.item == 0)
       {
-        performSegueWithIdentifier("toResetPasswordViewController", sender: self)
+        performSegue(withIdentifier: "toResetPasswordViewController", sender: self)
       }
       
       // Log out button
@@ -840,29 +840,29 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       }
     }
     
-    if (indexPath.section == MenuData.SOCIAL_ACTIONS.rawValue)
+    if (indexPath.section == MenuData.social_ACTIONS.rawValue)
     {
       // Find facebook friends to follow button
       if (indexPath.item == 0)
       {
-        performSegueWithIdentifier("toAddSocialContactsViewController", sender: self)
+        performSegue(withIdentifier: "toAddSocialContactsViewController", sender: self)
         //              getFacebookFriendsUsingApp()
       }
       
     }
     
-    if (indexPath.section == MenuData.PRIVACY_SETTINGS.rawValue)
+    if (indexPath.section == MenuData.privacy_SETTINGS.rawValue)
     {
       // Go to privacy page
       if (indexPath.item == 1)
       {
         
-        let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
+        let webDisplayVC = reusableWebViewStoryboard.instantiateViewController(withIdentifier: "reusableWebViewController") as! ReusableWebViewController
         
         webDisplayVC.webTitle = "Privacy Policy"
         webDisplayVC.webURL = "http://www.aquaint.us/static/privacy-policy"
-        webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-        self.presentViewController(webDisplayVC, animated: true, completion: nil)
+        webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        self.present(webDisplayVC, animated: true, completion: nil)
         
       }
       
@@ -870,34 +870,34 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       if (indexPath.item == 2)
       {
         
-        let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
+        let webDisplayVC = reusableWebViewStoryboard.instantiateViewController(withIdentifier: "reusableWebViewController") as! ReusableWebViewController
         
         webDisplayVC.webTitle = "Terms of Service"
         webDisplayVC.webURL = "http://www.aquaint.us/static/terms-of-service"
-        webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-        self.presentViewController(webDisplayVC, animated: true, completion: nil)
+        webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        self.present(webDisplayVC, animated: true, completion: nil)
         
       }
     }
     
-    if (indexPath.section == MenuData.SUBSCRIPTION_SETTINGS.rawValue)
+    if (indexPath.section == MenuData.subscription_SETTINGS.rawValue)
     {
       // Go to privacy page
       if (indexPath.item == 0)
       {
         
-        let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
+        let webDisplayVC = reusableWebViewStoryboard.instantiateViewController(withIdentifier: "reusableWebViewController") as! ReusableWebViewController
         
         webDisplayVC.webTitle = "About Subscription"
         webDisplayVC.webURL = "http://www.aquaint.us/static/about-subscription"
-        webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-        self.presentViewController(webDisplayVC, animated: true, completion: nil)
+        webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        self.present(webDisplayVC, animated: true, completion: nil)
         
       }
       
     }
     
-    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    tableView.deselectRow(at: indexPath, animated: true)
   }
   
   
@@ -905,14 +905,14 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   {
     
     // Ask user if they really want to log out...
-    let alert = UIAlertController(title: nil, message: "Are you really sure you want to log out?", preferredStyle: UIAlertControllerStyle.Alert)
+    let alert = UIAlertController(title: nil, message: "Are you really sure you want to log out?", preferredStyle: UIAlertControllerStyle.alert)
     
-    let logOutAction = UIAlertAction(title: "Log out", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
+    let logOutAction = UIAlertAction(title: "Log out", style: UIAlertActionStyle.default) { (UIAlertAction) -> Void in
       
       // present the log in home page
       
       //TODO: Add spinner functionality
-      self.performSegueWithIdentifier("logOut", sender: nil)
+      self.performSegue(withIdentifier: "logOut", sender: nil)
       
       // Log out AWS
       self.credentialsProvider.clearCredentials()
@@ -931,7 +931,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       pool.currentUser()?.signOutAndClearLastKnownUser()
       
       // Update new identity ID
-      self.credentialsProvider.getIdentityId().continueWithBlock { (resultTask) -> AnyObject? in
+      self.credentialsProvider.getIdentityId().continueWith { (resultTask) -> AnyObject? in
         
         print("LOGOUT, identity id is:", resultTask.result)
         print("LOG2, ", self.credentialsProvider.identityId)
@@ -946,19 +946,19 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       
     }
     
-    let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil)
+    let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
     
     alert.addAction(logOutAction)
     alert.addAction(cancelAction)
     
-    self.showViewController(alert, sender: nil)
+    self.show(alert, sender: nil)
     
   }
   
   /*************************************************************************
    *    SELF-DEFINED DATA TRANSFER PROTOCOL
    **************************************************************************/
-  func userDidAddNewProfile(socialMediaType: String, socialMediaName: String) {
+  func userDidAddNewProfile(_ socialMediaType: String, socialMediaName: String) {
     
     print("In protocol implementation -- data added: ", socialMediaType, " ", socialMediaName)
     
@@ -985,13 +985,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         
         // Propagate newsfeed object data
-        if self.newUserAccountsForNewsfeed.valueForKey(socialMediaType) == nil
+        if self.newUserAccountsForNewsfeed.value(forKey: socialMediaType) == nil
         {
           self.newUserAccountsForNewsfeed.setValue([ socialMediaName ], forKey: socialMediaType)
         }
         else // If the key already exists
         {
-          var list = self.newUserAccountsForNewsfeed.valueForKey(socialMediaType) as! Array<String>
+          var list = self.newUserAccountsForNewsfeed.value(forKey: socialMediaType) as! Array<String>
           list.append(socialMediaName)
           self.newUserAccountsForNewsfeed.setValue(list, forKey: socialMediaType)
         }
@@ -1000,7 +1000,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         print ("New list is: ", self.newUserAccountsForNewsfeed)
         
         // Perform update on UI on main thread
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
           
           // Propogate collection view with new data
           self.settingsTableView.reloadData()
@@ -1046,23 +1046,23 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
   }
   
-  func userDidDeleteSocialMediaProfile(socialMediaType: String, socialMediaName: String) {
+  func userDidDeleteSocialMediaProfile(_ socialMediaType: String, socialMediaName: String) {
     
     print("OK! time to delete ", socialMediaType, " --> ", socialMediaName)
     hasDeletedProfiles = true
     
     // Delete account from local list. If user hits success button -- save changes
-    if currentUserAccounts.valueForKey(socialMediaType) != nil
+    if currentUserAccounts.value(forKey: socialMediaType) != nil
     {
-      var list = currentUserAccounts.objectForKey(socialMediaType) as! Array<String>
+      var list = currentUserAccounts.object(forKey: socialMediaType) as! Array<String>
       
       // Update list as to remove this specific value
-      list.removeAtIndex(list.indexOf(socialMediaName)!)
+      list.remove(at: list.index(of: socialMediaName)!)
       
       // If nothing in list, we need to delete the key
       if list.count == 0
       {
-        currentUserAccounts.removeObjectForKey(socialMediaType)
+        currentUserAccounts.removeObject(forKey: socialMediaType)
       }
       else
       {
@@ -1075,21 +1075,21 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     // Delete account from newsfeed object as well
-    if newUserAccountsForNewsfeed.valueForKey(socialMediaType) != nil
+    if newUserAccountsForNewsfeed.value(forKey: socialMediaType) != nil
     {
-      if newUserAccountsForNewsfeed.valueForKey(socialMediaType) != nil
+      if newUserAccountsForNewsfeed.value(forKey: socialMediaType) != nil
       {
-        var list = newUserAccountsForNewsfeed.valueForKey(socialMediaType) as! Array<String>
+        var list = newUserAccountsForNewsfeed.value(forKey: socialMediaType) as! Array<String>
         
-        if list.indexOf(socialMediaName) != nil
+        if list.index(of: socialMediaName) != nil
         {
           // Update list as to remove this specific value
-          list.removeAtIndex(list.indexOf(socialMediaName)!)
+          list.remove(at: list.index(of: socialMediaName)!)
           
           // If nothing in list, we need to delete the key
           if list.count == 0
           {
-            newUserAccountsForNewsfeed.removeObjectForKey(socialMediaType)
+            newUserAccountsForNewsfeed.removeObject(forKey: socialMediaType)
           }
           else
           {
@@ -1106,7 +1106,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   // Helper functions
   //---------------------------------------------------------------------------------------------------
   // Function that is called when user drags/pulls table with intention of refreshing it
-  func refreshTable(sender:AnyObject)
+  func refreshTable(_ sender:AnyObject)
   {
     self.refreshControl.beginRefreshing()
     generateData()
@@ -1122,7 +1122,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
   }
   
-  private func generateData()
+  fileprivate func generateData()
   {
     // Initialize array so that collection view has something to check while we
     // fetch data from dynamo
@@ -1189,7 +1189,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       
       
       // Perform update on UI on main thread
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      DispatchQueue.main.async(execute: { () -> Void in
         
         // Propogate collection view with new data
         self.settingsTableView.reloadData()
@@ -1199,24 +1199,19 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     // Fetch num followers from lambda
-    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+    let lambdaInvoker = AWSLambdaInvoker.default()
     var parameters = ["action":"getNumFollowers", "target": currentUserName]
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-      }
-      else if resultTask.exception != nil
-      {
-        print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-        
       }
       else if resultTask.result != nil
       {
         print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
         
         // Update UI on main thread
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
           let number = resultTask.result as? Int
           self.numFollowersLabel.text = String(number!)
         })
@@ -1234,22 +1229,17 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // Fetch num followees from lambda
     parameters = ["action":"getNumFollowees", "target": currentUserName]
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error != nil
       {
         print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-      }
-      else if resultTask.exception != nil
-      {
-        print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-        
       }
       else if resultTask.result != nil
       {
         print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
         
         // Update UI on main thread
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
           let number = resultTask.result as? Int
           self.numFollowsLabel.text = String(number!)
         })
@@ -1272,7 +1262,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         let resultUser = result! as UserVerifiedMinimalObjectModel
         
         if resultUser.isverified != nil && resultUser.isverified == 1 {
-          dispatch_async(dispatch_get_main_queue(), { 
+          DispatchQueue.main.async(execute: { 
             addVerifiedIconToLabel(self.currentUserName, label: self.userNameLabel, size: 12)
           })
           
@@ -1288,9 +1278,9 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
   }
   
-  private func updateProfilesDynamoDB(currentAccounts: NSMutableDictionary)
+  fileprivate func updateProfilesDynamoDB(_ currentAccounts: NSMutableDictionary)
   {
-    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+    let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
     let currentUser = getCurrentCachedUser()
     let currentRealName = getCurrentCachedFullName()
     
@@ -1298,20 +1288,15 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Upload user DATA to DynamoDB
     let dynamoDBUser = User()
     
-    dynamoDBUser.username = currentUser
-    dynamoDBUser.realname = currentRealName
-    dynamoDBUser.accounts = currentAccounts
+    dynamoDBUser?.username = currentUser
+    dynamoDBUser?.realname = currentRealName
+    dynamoDBUser?.accounts = currentAccounts
     
-    dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+    dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block: { (resultTask) -> AnyObject? in
       
       if (resultTask.error != nil)
       {
         print ("DYNAMODB MODIFY PROFILE ERROR: ", resultTask.error)
-      }
-      
-      if (resultTask.exception != nil)
-      {
-        print ("DYNAMODB MODIFY PROFILE EXCEPTION: ", resultTask.exception)
       }
       
       if (resultTask.result == nil)
@@ -1337,15 +1322,15 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   }
   
   
-  private func showVerificationPopup(completion: (result:String?)->())
+  fileprivate func showVerificationPopup(_ completion: @escaping (_ result:String?)->())
   {
     var alertViewResponder: SCLAlertViewResponder!
-    let subview = UIView(frame: CGRectMake(0,0,216,70))
+    let subview = UIView(frame: CGRect(x: 0,y: 0,width: 216,height: 70))
     let x = (subview.frame.width - 180) / 2
     let colorDarkBlue = UIColor(red:0.06, green:0.48, blue:0.62, alpha:1.0)
     
     // Add text field for username
-    let textField = UITextField(frame: CGRectMake(x,10,180,25))
+    let textField = UITextField(frame: CGRect(x: x,y: 10,width: 180,height: 25))
     
     //            textField.layer.borderColor = colorLightBlue.CGColor
     //            textField.layer.borderWidth = 1.5
@@ -1353,20 +1338,21 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     textField.font = UIFont(name: "Avenir Roman", size: 14.0)
     textField.textColor = colorDarkBlue
     textField.placeholder = "Enter Verification Code"
-    textField.textAlignment = NSTextAlignment.Center
+    textField.textAlignment = NSTextAlignment.center
     
     // Add target to text field to validate/fix user input of a proper input
     //        textField.addTarget(self, action: #selector(usernameTextFieldDidChange), forControlEvents: UIControlEvents.EditingChanged)
     subview.addSubview(textField)
-    //
+    // NOTE: for function calls skipping parameters with default values in Swift 3, arguments must be passed in order
     let alertAppearance = SCLAlertView.SCLAppearance(
-      showCircularIcon: true,
-      kCircleIconHeight: 40,
       kCircleHeight: 55,
+      kCircleIconHeight: 40,
+      showCircularIcon: true,
       shouldAutoDismiss: false,
       hideWhenBackgroundViewIsTapped: true
       
     )
+    
     
     let alertView = SCLAlertView(appearance: alertAppearance)
     
@@ -1377,7 +1363,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       if alertViewResponder == nil
       {
         print("Something went wrong...")
-        completion(result: nil)
+        completion(nil)
       }
       
       let code = textField.text!
@@ -1390,7 +1376,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       {
         //TODO: Notify that username is too long
         alertViewResponder.close()
-        completion(result: nil)
+        completion(nil)
         
         
         // Reset userpools to old phone number
@@ -1399,7 +1385,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       {
         print("SUCCESS RESULT:", code)
         alertViewResponder.close()
-        completion(result: code)
+        completion(code)
         // Update userpools with verification
       }
       
@@ -1412,17 +1398,17 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
                                              subTitle: "",
                                              duration:0.0,
                                              completeText: "Cancel",
-                                             style: .Success,
+                                             style: .success,
                                              colorStyle: 0x0F7A9D,
                                              colorTextButton: 0xFFFFFF,
                                              circleIconImage: alertViewIcon,
-                                             animationStyle: .BottomToTop
+                                             animationStyle: .bottomToTop
     )
     
   }
   
   // UNWIND SEGUES
-  @IBAction func unwindBackToMenuVC(segue:UIStoryboardSegue)
+  @IBAction func unwindBackToMenuVC(_ segue:UIStoryboardSegue)
   {
     print("Success unwind to menu VC")
     //        print("REFRESH COLLECTION VIEW")
@@ -1433,11 +1419,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     askUserForPushNotificationPermission(self)
   }
   
-  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == "segueToAddSocialMediaProfilesController"
     {
       // Need to set delegate so that we can fetch which data user added in
-      let vc = segue.destinationViewController as! AddSocialMediaProfilesController
+      let vc = segue.destination as! AddSocialMediaProfilesController
       vc.delegate = self
     }
     //        else if segue.identifier == "toAddSocialContactsViewController"
@@ -1448,14 +1434,14 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     
   }
   
-  func showFollowerListViewController(lambdaAction: String) {
+  func showFollowerListViewController(_ lambdaAction: String) {
     // Let's use a re-usable view just for viewing user follows/followings!
     let storyboard = UIStoryboard(name: "PopUpAlert", bundle: nil)
-    let viewController = storyboard.instantiateViewControllerWithIdentifier("AquaintsSingleFollowerListViewController") as! AquaintsSingleFollowerListViewController
+    let viewController = storyboard.instantiateViewController(withIdentifier: "AquaintsSingleFollowerListViewController") as! AquaintsSingleFollowerListViewController
     viewController.currentUserName = self.currentUserName
     viewController.lambdaAction = lambdaAction
     viewController.profilePopupView = nil
-    viewController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+    viewController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
     
     //    // Fetch VC on top view
     //    var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
@@ -1466,16 +1452,16 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Note: Need to dismiss this popup so we can display another VC. We will restore the popup later,
     // which is why we pass in this class and it's data to the next view controller.
     //    self.dismissPresentingPopup()
-    self.presentViewController(viewController, animated: true, completion: nil)
+    self.present(viewController, animated: true, completion: nil)
     
   }
   
-  func editSectionButtonClicked(sectionTitle: String) {
+  func editSectionButtonClicked(_ sectionTitle: String) {
     // Reload table view so that buttons can be shown as hidden/unhidden
     self.settingsTableView.reloadData()
     switch sectionTitle {
     case LINKED_PROFILES_TITLE:
-      enableEditingArray[MenuData.LINKED_PROFILES.rawValue] = true
+      enableEditingArray[MenuData.linked_PROFILES.rawValue] = true
   
       // Used to keep track of accounts the user wants to delete or not
       if currentUserAccounts == nil
@@ -1484,26 +1470,26 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       }
       else
       {
-        oldUserAccounts = NSMutableDictionary(dictionary: currentUserAccounts as [NSObject : AnyObject], copyItems: true)
+        oldUserAccounts = NSMutableDictionary(dictionary: currentUserAccounts as! [AnyHashable: Any], copyItems: true)
       }
       
       break;
     case MY_INFORMATION_TITLE:
-      enableEditingArray[MenuData.MY_INFORMATION.rawValue] = true
-      realNameTextFieldLabel.performSelector(#selector(becomeFirstResponder))
+      enableEditingArray[MenuData.my_INFORMATION.rawValue] = true
+      realNameTextFieldLabel.perform(#selector(becomeFirstResponder))
       break;
     default:
       break;
     }
   }
   
-  func cancelSectionButtonClicked(sectionTitle: String) {
+  func cancelSectionButtonClicked(_ sectionTitle: String) {
     // Reload table view so that buttons can be shown as hidden/unhidden
     self.settingsTableView.reloadData()
     
     switch sectionTitle {
     case LINKED_PROFILES_TITLE:
-      enableEditingArray[MenuData.LINKED_PROFILES.rawValue] = false
+      enableEditingArray[MenuData.linked_PROFILES.rawValue] = false
       // Reset any modified user accounts (profiles)
       if oldUserAccounts == nil
       {
@@ -1511,13 +1497,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       }
       else
       {
-        currentUserAccounts = NSMutableDictionary(dictionary: oldUserAccounts as [NSObject : AnyObject], copyItems: true)
+        currentUserAccounts = NSMutableDictionary(dictionary: oldUserAccounts as! [AnyHashable: Any], copyItems: true)
       }
       keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(currentUserAccounts)
       self.settingsTableView.reloadData()
       break;
     case MY_INFORMATION_TITLE:
-      enableEditingArray[MenuData.MY_INFORMATION.rawValue] = false
+      enableEditingArray[MenuData.my_INFORMATION.rawValue] = false
       break;
     default:
       break;
@@ -1525,13 +1511,13 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
   }
 
   
-  func saveSectionButtonClicked(sectionTitle: String) {
+  func saveSectionButtonClicked(_ sectionTitle: String) {
     // Reload table view so that buttons can be shown as hidden/unhidden
     self.settingsTableView.reloadData()
     
     switch sectionTitle {
     case LINKED_PROFILES_TITLE:
-      enableEditingArray[MenuData.LINKED_PROFILES.rawValue] = false
+      enableEditingArray[MenuData.linked_PROFILES.rawValue] = false
       
       if self.hasDeletedProfiles
       {
@@ -1542,19 +1528,19 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Upload user DATA to DynamoDB
         let dynamoDBUser = User()
         
-        dynamoDBUser.realname = self.currentRealName
-        dynamoDBUser.username = self.currentUserName
+        dynamoDBUser?.realname = self.currentRealName
+        dynamoDBUser?.username = self.currentUserName
         
         // If no current account data, do not upload to dynamo
         // or else it will throw an error.
         if self.currentUserAccounts.count != 0
         {
-          dynamoDBUser.accounts = self.currentUserAccounts
+          dynamoDBUser?.accounts = self.currentUserAccounts
         }
         
-        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         
-        dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+        dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block: { (resultTask) -> AnyObject? in
           
           // If successful save
           if (resultTask.error == nil && resultTask.result != nil)
@@ -1563,7 +1549,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             
             // Update UI on main thread
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
               // Cache user accounts result
               setCurrentCachedUserProfiles(self.currentUserAccounts)
               self.keyValSocialMediaPairList = convertDictionaryToSocialMediaKeyValPairList(self.currentUserAccounts)
@@ -1581,11 +1567,6 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             print ("DYNAMODB ERROR: ", resultTask.error)
           }
           
-          if (resultTask.exception != nil)
-          {
-            print ("DYNAMODB EXCEPTION: ", resultTask.exception)
-          }
-          
           return nil
         })
         
@@ -1594,15 +1575,15 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       
       break;
     case MY_INFORMATION_TITLE:
-      enableEditingArray[MenuData.MY_INFORMATION.rawValue] = false
-      let fullNameIndexPath = NSIndexPath(forRow: MyInformationData.FULL_NAME.rawValue , inSection: MenuData.MY_INFORMATION.rawValue)
-      let emailIndexPath = NSIndexPath(forRow: MyInformationData.EMAIL.rawValue, inSection: MenuData.MY_INFORMATION.rawValue)
-      let phoneIndexPath = NSIndexPath(forRow: MyInformationData.PHONE.rawValue, inSection: MenuData.MY_INFORMATION.rawValue)
+      enableEditingArray[MenuData.my_INFORMATION.rawValue] = false
+      let fullNameIndexPath = IndexPath(row: MyInformationData.full_NAME.rawValue , section: MenuData.my_INFORMATION.rawValue)
+      let emailIndexPath = IndexPath(row: MyInformationData.email.rawValue, section: MenuData.my_INFORMATION.rawValue)
+      let phoneIndexPath = IndexPath(row: MyInformationData.phone.rawValue, section: MenuData.my_INFORMATION.rawValue)
       
       
-      let fullNameCellTemp = self.settingsTableView.cellForRowAtIndexPath(fullNameIndexPath)
-      let emailCellTemp = self.settingsTableView.cellForRowAtIndexPath(emailIndexPath)
-      let phoneCellTemp = self.settingsTableView.cellForRowAtIndexPath(phoneIndexPath)
+      let fullNameCellTemp = self.settingsTableView.cellForRow(at: fullNameIndexPath)
+      let emailCellTemp = self.settingsTableView.cellForRow(at: emailIndexPath)
+      let phoneCellTemp = self.settingsTableView.cellForRow(at: phoneIndexPath)
       
       
       if fullNameCellTemp == nil || emailCellTemp == nil || phoneCellTemp == nil {
@@ -1659,7 +1640,7 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       {
         // Get the text from the beginning of the phone number (not US country code)
         let string = self.editedUserPhone as NSString
-        let phoneString = string.substringFromIndex(2)
+        let phoneString = string.substring(from: 2)
         
         if !verifyPhoneFormat(phoneString)
         {
@@ -1675,8 +1656,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       let userPool = getAWSCognitoIdentityUserPool()
       let email = AWSCognitoIdentityUserAttributeType()
       let phone = AWSCognitoIdentityUserAttributeType()
-      email.name = "email"
-      phone.name = "phone_number"
+      email?.name = "email"
+      phone?.name = "phone_number"
       
       if self.editedUserEmail != nil && self.editedUserEmail != self.currentUserEmail
       {
@@ -1684,11 +1665,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         emailCell.menuValue.text = self.editedUserEmail
         self.currentUserEmail = self.editedUserEmail
         
-        email.value = self.currentUserEmail
-        phone.value = self.currentUserPhone
+        email?.value = self.currentUserEmail
+        phone?.value = self.currentUserPhone
         
         
-        userPool.getUser(self.currentUserName).updateAttributes([email, phone]).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+        userPool.getUser(self.currentUserName).update([email!, phone!]).continueWith { (resultTask) -> AnyObject? in
           
           print("SUCCESSFUL USER EMAIL UPDATE IN USERPOOLS")
           return nil
@@ -1701,16 +1682,16 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // In case we need to revert changes -- if user cannot verify
         let oldPhoneNum = self.currentUserPhone
         
-        phoneCell.clickToAdd.hidden = true
+        phoneCell.clickToAdd.isHidden = true
         
         // Update user pools with currentUserEmail
         phoneCell.menuValue.text = self.editedUserPhone
         self.currentUserPhone = self.editedUserPhone
         
-        email.value = self.currentUserEmail
-        phone.value = self.currentUserPhone
+        email?.value = self.currentUserEmail
+        phone?.value = self.currentUserPhone
         
-        userPool.getUser(self.currentUserName).updateAttributes([email, phone]).continueWithSuccessBlock { (resultTask) -> AnyObject? in
+        userPool.getUser(self.currentUserName).update([email!, phone!]).continueWith { (resultTask) -> AnyObject? in
           
           
           //                // Prompt user to enter in confirmation code.
@@ -1772,17 +1753,17 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Upload user DATA to DynamoDB
         let dynamoDBUser = User()
         
-        dynamoDBUser.realname = self.currentRealName
-        dynamoDBUser.username = self.currentUserName
+        dynamoDBUser?.realname = self.currentRealName
+        dynamoDBUser?.username = self.currentUserName
         
         if self.currentUserAccounts != nil && self.currentUserAccounts.count != 0
         {
-          dynamoDBUser.accounts = self.currentUserAccounts
+          dynamoDBUser?.accounts = self.currentUserAccounts
         }
         
-        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        let dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
         
-        dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+        dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block: { (resultTask) -> AnyObject? in
           
           // If successful save
           if (resultTask.error == nil && resultTask.result != nil)
@@ -1797,26 +1778,16 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
             print ("DYNAMODB ERROR: ", resultTask.error)
           }
           
-          if (resultTask.exception != nil)
-          {
-            print ("DYNAMODB EXCEPTION: ", resultTask.exception)
-          }
-          
           return nil
         })
         
         // Update user real name in lambda as well
-        let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+        let lambdaInvoker = AWSLambdaInvoker.default()
         let parameters = ["action":"updatern", "target": self.currentUserName, "realname": self.currentRealName]
-        lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+        lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
           if resultTask.error != nil
           {
             print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-          }
-          else if resultTask.exception != nil
-          {
-            print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-            
           }
           else if resultTask.result != nil
           {

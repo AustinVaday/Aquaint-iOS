@@ -49,12 +49,12 @@ class ForgotPasswordViewController: ViewControllerPannable {
     
     // Set up pan gesture recognizer for when the user wants to swipe left/right
     let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
-    edgePan.edges = .Left
+    edgePan.edges = .left
     view.addGestureRecognizer(edgePan)
   }
   
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     awsMobileAnalyticsRecordPageVisitEventTrigger("ForgotPasswordViewController", forKey: "page_name")
   }
   /*=======================================================
@@ -62,13 +62,13 @@ class ForgotPasswordViewController: ViewControllerPannable {
    =======================================================*/
   
   // Add and Remove NSNotifications!
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
     
     registerForKeyboardNotifications()
   }
   
-  override func viewWillDisappear(animated: Bool) {
+  override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(true)
     
     deregisterForKeyboardNotifications()
@@ -77,18 +77,18 @@ class ForgotPasswordViewController: ViewControllerPannable {
   // KEYBOARD shift-up buttons functionality
   func registerForKeyboardNotifications()
   {
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForgotPasswordViewController.keyboardWasShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForgotPasswordViewController.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(ForgotPasswordViewController.keyboardWasShown(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(ForgotPasswordViewController.keyboardWillBeHidden(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     
   }
   
   func deregisterForKeyboardNotifications()
   {
-    NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
-    NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
   }
   
-  func keyboardWasShown(notification: NSNotification!)
+  func keyboardWasShown(_ notification: Notification!)
   {
     //        // If keyboard shown already, no need to perform this method
     //        if isKeyboardShown
@@ -99,13 +99,13 @@ class ForgotPasswordViewController: ViewControllerPannable {
     self.isKeyboardShown = true
     
     let userInfo = notification.userInfo!
-    let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
+    let keyboardSize = ((userInfo[UIKeyboardFrameBeginUserInfoKey])! as AnyObject).cgRectValue.size
     
-    UIView.animateWithDuration(0.5) {
+    UIView.animate(withDuration: 0.5, animations: {
       
       print("KEYBOARD SHOWN")
       
-      if self.userPassword.isFirstResponder()
+      if self.userPassword.isFirstResponder
       {
         self.buttonBottomConstraint.constant = keyboardSize.height
         self.view.layoutIfNeeded()
@@ -121,10 +121,10 @@ class ForgotPasswordViewController: ViewControllerPannable {
         self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
       }
       
-    }
+    }) 
   }
   
-  func keyboardWillBeHidden(notification: NSNotification!)
+  func keyboardWillBeHidden(_ notification: Notification!)
   {
     isKeyboardShown = false
     
@@ -140,40 +140,40 @@ class ForgotPasswordViewController: ViewControllerPannable {
    * END : Keyboard/Button Animations
    =======================================================*/
   
-  func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer)
+  func screenEdgeSwiped(_ recognizer: UIScreenEdgePanGestureRecognizer)
   {
-    if recognizer.state == .Ended
+    if recognizer.state == .ended
     {
       print("Screen swiped!")
       
-      dismissViewControllerAnimated(true, completion: nil)
+      dismiss(animated: true, completion: nil)
     }
     
   }
   
   // When user clicks "next" on keyboard
-  @IBAction func onUserNameEditingDidEndOnExit(sender: AnyObject) {
+  @IBAction func onUserNameEditingDidEndOnExit(_ sender: AnyObject) {
     userPassword.becomeFirstResponder()
   }
   
   // When user clicks "Go" on keyboard
-  @IBAction func onPasswordEditingDidEndOnExit(sender: AnyObject) {
+  @IBAction func onPasswordEditingDidEndOnExit(_ sender: AnyObject) {
     // Mimic the "Sign Up" button being pressed
     self.onFinishButtonClicked(nextButton.self)
     
   }
   
   // Actively edit phone number
-  @IBAction func onPhoneEditingDidChange(sender: UITextField) {
+  @IBAction func onPhoneEditingDidChange(_ sender: UITextField) {
     
     let phoneString = userPhone.text
     userPhone.text = removeAllNonDigits(phoneString!)
     
   }
   
-  @IBAction func onFinishButtonClicked(sender: UIButton) {
+  @IBAction func onFinishButtonClicked(_ sender: UIButton) {
     // Disable button so that user cannot click on it twice (this is how errors happen)
-    self.nextButton.enabled = false
+    self.nextButton.isEnabled = false
     
     let userNameString:String = userName.text!
     let userPasswordString:String = userPassword.text!
@@ -219,7 +219,7 @@ class ForgotPasswordViewController: ViewControllerPannable {
       return
     }
     
-    let lowerCaseUserNameString = userNameString.lowercaseString
+    let lowerCaseUserNameString = userNameString.lowercased()
 
     // Get user from cognito pool. Need to make sure phone numbers match.
     let poolUser = pool.getUser(lowerCaseUserNameString)
@@ -240,20 +240,20 @@ class ForgotPasswordViewController: ViewControllerPannable {
     
           // If phone numbers match...
           // What if userNameString is nil?
-          poolUser.forgotPassword().continueWithBlock { (resultTask) -> AnyObject? in
+          poolUser.forgotPassword().continueWith { (resultTask) -> AnyObject? in
             // Success
             if resultTask.error == nil && resultTask.result != nil {
               // Popup - say that we sent code to a number. Enter code here
-              dispatch_async(dispatch_get_main_queue(), {
+              DispatchQueue.main.async(execute: {
                 self.showAndProcessUsernameAlert(poolUser, password: userPasswordString)
-                self.nextButton.enabled = true
+                self.nextButton.isEnabled = true
               })
             }
             else {
               // Popup - could not send code at time, maybe phone is not verified
-              dispatch_async(dispatch_get_main_queue(), {
+              DispatchQueue.main.async(execute: {
                 showAlert("Error with request.", message: "Sorry, we could not process your request at this time. Please contact customer support.", buttonTitle: "Ok", sender: self)
-                self.nextButton.enabled = true
+                self.nextButton.isEnabled = true
               })
               
               
@@ -268,40 +268,40 @@ class ForgotPasswordViewController: ViewControllerPannable {
 //    }
   }
 
-  private func resetAnimations()
+  fileprivate func resetAnimations()
   {
     // Set up animation
-    self.checkMark.hidden = true
-    self.checkMarkFlipped.hidden = true
-    self.buttonToFlip.hidden = false
+    self.checkMark.isHidden = true
+    self.checkMarkFlipped.isHidden = true
+    self.buttonToFlip.isHidden = false
     checkMarkFlippedCopy = UIImageView(image: checkMark.image)
     flipImageHorizontally(checkMarkFlippedCopy)
   }
   
-  func confirmForgottenPassword(poolUser: AWSCognitoIdentityUser, password: String, confirmationCode: String) {
-    poolUser.confirmForgotPassword(confirmationCode, password: password).continueWithBlock { (resultTask) -> AnyObject? in
+  func confirmForgottenPassword(_ poolUser: AWSCognitoIdentityUser, password: String, confirmationCode: String) {
+    poolUser.confirmForgotPassword(confirmationCode, password: password).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil {
         print("Great success.")
         // Perform update on UI on main thread
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
           
           // Stop showing activity indicator (spinner)
-          self.checkMarkFlipped.hidden = false
+          self.checkMarkFlipped.isHidden = false
           
-          self.buttonToFlip.hidden = true
+          self.buttonToFlip.isHidden = true
           self.spinner.stopAnimating()
           
-          UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+          UIView.transition(with: self.checkMarkView, duration: 1, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: { () -> Void in
             
-            self.checkMarkFlipped.hidden = false
+            self.checkMarkFlipped.isHidden = false
             self.checkMarkFlipped.image = self.checkMark.image
             
             }, completion: nil)
           
           delay(1.5) {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
             // Disable button so that user cannot click on it twice (this is how errors happen)
-            self.nextButton.enabled = true
+            self.nextButton.isEnabled = true
           }
           
 
@@ -310,11 +310,11 @@ class ForgotPasswordViewController: ViewControllerPannable {
         })
 
       } else {
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
           showAlert("Improper verification code", message: "The verification code is invalid. Please try again.", buttonTitle: "Try again", sender: self)
           self.spinner.stopAnimating()
           // Disable button so that user cannot click on it twice (this is how errors happen)
-          self.nextButton.enabled = true
+          self.nextButton.isEnabled = true
 
         })
       }
@@ -324,20 +324,20 @@ class ForgotPasswordViewController: ViewControllerPannable {
 
   }
   
-  func textFieldDidChange(textField: UITextField) {
+  func textFieldDidChange(_ textField: UITextField) {
     var codeString = removeAllNonDigits(textField.text!)
     
     if codeString.characters.count > 6 {
-      let index = codeString.startIndex.advancedBy(6)
-      codeString = codeString.substringToIndex(index)
+      let index = codeString.characters.index(codeString.startIndex, offsetBy: 6)
+      codeString = codeString.substring(to: index)
     }
     
     textField.text = codeString
   }
   
-  private func showAndProcessUsernameAlert(user: AWSCognitoIdentityUser, password: String) {
+  fileprivate func showAndProcessUsernameAlert(_ user: AWSCognitoIdentityUser, password: String) {
     var alertViewResponder: SCLAlertViewResponder!
-    let subview = UIView(frame: CGRectMake(0,0,216,70))
+    let subview = UIView(frame: CGRect(x: 0,y: 0,width: 216,height: 70))
     let x = (subview.frame.width - 180) / 2
     let colorDarkBlue = UIColor(
       red:  0.06,
@@ -347,18 +347,18 @@ class ForgotPasswordViewController: ViewControllerPannable {
     )
     
     // Add text field for username
-    let textField = UITextField(frame: CGRectMake(x,10,180,25))
+    let textField = UITextField(frame: CGRect(x: x,y: 10,width: 180,height: 25))
     
     textField.font          = UIFont(name: "Avenir Roman", size: 14.0)
     textField.textColor     = colorDarkBlue
     textField.placeholder   = "Enter 6-digit code"
-    textField.textAlignment = NSTextAlignment.Center
+    textField.textAlignment = NSTextAlignment.center
     
     // Add target to text field to validate/fix user input of a proper input
     textField.addTarget(
       self,
       action: #selector(textFieldDidChange),
-      forControlEvents: UIControlEvents.EditingChanged
+      for: UIControlEvents.editingChanged
     )
     subview.addSubview(textField)
     
@@ -402,10 +402,10 @@ class ForgotPasswordViewController: ViewControllerPannable {
                                              subTitle: "",
                                              duration:0.0,
                                              completeText: "Cancel",
-                                             style: .Success,
+                                             style: .success,
                                              colorStyle: 0x0F7A9D,
                                              colorTextButton: 0xFFFFFF,
-                                             animationStyle: .BottomToTop
+                                             animationStyle: .bottomToTop
     )
   }
   

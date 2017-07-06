@@ -10,9 +10,9 @@ import UIKit
 
 
 protocol EditSectionDelegate {
-  func editSectionButtonClicked(sectionTitle: String)
-  func cancelSectionButtonClicked(sectionTitle: String)
-  func saveSectionButtonClicked(sectionTitle: String)
+  func editSectionButtonClicked(_ sectionTitle: String)
+  func cancelSectionButtonClicked(_ sectionTitle: String)
+  func saveSectionButtonClicked(_ sectionTitle: String)
 }
 class SectionHeaderCell: UITableViewCell {
 
@@ -25,10 +25,10 @@ class SectionHeaderCell: UITableViewCell {
   var editSectionDelegate : EditSectionDelegate?
   
   
-  @IBAction func onEditSectionDelegateClicked(sender: AnyObject) {
-    self.cancelSection.hidden = false
-    self.saveSection.hidden = false
-    self.editSection.hidden = true
+  @IBAction func onEditSectionDelegateClicked(_ sender: AnyObject) {
+    self.cancelSection.isHidden = false
+    self.saveSection.isHidden = false
+    self.editSection.isHidden = true
     
     if editSectionDelegate != nil {
       editSectionDelegate?.editSectionButtonClicked(sectionTitle.text!)
@@ -36,10 +36,10 @@ class SectionHeaderCell: UITableViewCell {
   }
   
   
-  @IBAction func onSaveSectionClicked(sender: AnyObject) {
-    self.cancelSection.hidden = true
-    self.saveSection.hidden = true
-    self.editSection.hidden = false
+  @IBAction func onSaveSectionClicked(_ sender: AnyObject) {
+    self.cancelSection.isHidden = true
+    self.saveSection.isHidden = true
+    self.editSection.isHidden = false
     
     if editSectionDelegate != nil {
       editSectionDelegate?.saveSectionButtonClicked(sectionTitle.text!)
@@ -47,10 +47,10 @@ class SectionHeaderCell: UITableViewCell {
 
   }
   
-  @IBAction func onCancelSectionClicked(sender: AnyObject) {
-    self.cancelSection.hidden = true
-    self.saveSection.hidden = true
-    self.editSection.hidden = false
+  @IBAction func onCancelSectionClicked(_ sender: AnyObject) {
+    self.cancelSection.isHidden = true
+    self.saveSection.isHidden = true
+    self.editSection.isHidden = false
     
     if editSectionDelegate != nil {
       editSectionDelegate?.cancelSectionButtonClicked(sectionTitle.text!)

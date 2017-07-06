@@ -17,6 +17,8 @@ import AWSLambda
 import AWSDynamoDB
 import AWSCognitoIdentityProvider
 import AWSMobileHubHelper
+// [Swift 3 Migration]
+import AWSFacebookSignIn
 
 class ViewController: UIViewController {
 
@@ -30,7 +32,7 @@ class ViewController: UIViewController {
   }
   
   
-  @IBAction func loginWithFacebookButtonClicked(sender: AnyObject) {
+  @IBAction func loginWithFacebookButtonClicked(_ sender: AnyObject) {
 //    let login = FBSDKLoginManager.init()
 //    login.logOut()
 //    
@@ -39,12 +41,15 @@ class ViewController: UIViewController {
     
     //    // Request basic profile permissions just to get user ID
 //    login.logInWithReadPermissions(["public_profile", "user_friends", "email"], fromViewController: self) { (result, error) in
-    AWSIdentityManager.defaultIdentityManager().loginWithSignInProvider(AWSFacebookSignInProvider.sharedInstance()) { (result, error) in
+
+    // [Swift 3 Migration] AWSIdentityManager no longer has loginWithSign function
+    /*
+    AWSIdentityManager.default().loginWithSignInProvider(AWSFacebookSignInProvider.sharedInstance()) { (result, error) in
 
       // If no error, store facebook user ID
       if (error == nil && result != nil) {
-        if (FBSDKAccessToken.currentAccessToken() != nil) {
-          print("Current access user id: ", FBSDKAccessToken.currentAccessToken().userID)
+        if (FBSDKAccessToken.current() != nil) {
+          print("Current access user id: ", FBSDKAccessToken.current().userID)
           print("RESULTOO: ", result)
 
 //          let fbUID = FBSDKAccessToken.currentAccessToken().userID
@@ -63,9 +68,9 @@ class ViewController: UIViewController {
             credentialsProvider: credentialsProvider
           )
           
-          AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
+          AWSServiceManager.default().defaultServiceConfiguration = configuration
           
-          credentialsProvider!.getIdentityId().continueWithBlock({ (resultTask) -> AnyObject? in
+          credentialsProvider!.getIdentityId().continueWith(block: { (resultTask) -> AnyObject? in
             if resultTask.error == nil && resultTask.result != nil {
               let id = resultTask.result
               print("Cred Prov. ID is: \(id)")
@@ -77,7 +82,7 @@ class ViewController: UIViewController {
             return nil
           })
           
-          userPool.getUser().getDetails().continueWithBlock({ (resultTask) -> AnyObject? in
+          userPool.getUser().getDetails().continueWith(block: { (resultTask) -> AnyObject? in
             if resultTask.error == nil && resultTask.result != nil {
               print ("lala:", resultTask.result)
             }
@@ -89,7 +94,7 @@ class ViewController: UIViewController {
           delay(2) {
           // Get user-specific data including name, email, and ID.
           let request = FBSDKGraphRequest(graphPath: "/me?locale=en_US&fields=name,email", parameters: nil)
-          request.startWithCompletionHandler { (connection, result, error) in
+          request?.start { (connection, result, error) in
             if error == nil {
               print("Result is FB!!: ", result)
               let resultMap = result as! Dictionary<String, String>
@@ -102,19 +107,19 @@ class ViewController: UIViewController {
               // Check our databases to see if we have a user with the same fbUID
               // If we have multiple users ->
               // If we don't have a user -> create one
-              let dynamoDB = AWSDynamoDB.defaultDynamoDB()
+              let dynamoDB = AWSDynamoDB.default()
               let scanInput = AWSDynamoDBScanInput()
-              scanInput.tableName = "aquaint-users"
-              scanInput.limit = 100
-              scanInput.exclusiveStartKey = nil
+              scanInput?.tableName = "aquaint-users"
+              scanInput?.limit = 100
+              scanInput?.exclusiveStartKey = nil
               
               let UIDValue = AWSDynamoDBAttributeValue()
-              UIDValue.S = fbUID
+              UIDValue?.s = fbUID
               
-              scanInput.expressionAttributeValues = [":val" : UIDValue]
-              scanInput.filterExpression = "fbuid = :val"
+              scanInput?.expressionAttributeValues = [":val" : UIDValue!]
+              scanInput?.filterExpression = "fbuid = :val"
               
-              dynamoDB.scan(scanInput).continueWithBlock { (resultTask) -> AnyObject? in
+              dynamoDB.scan(scanInput!).continueWith { (resultTask) -> AnyObject? in
                 if resultTask.result != nil && resultTask.error == nil
                 {
                   print("DB QUERY SUCCESS:", resultTask.result)
@@ -122,7 +127,7 @@ class ViewController: UIViewController {
                   
                   if results.items!.count > 1 {
                     print("FB login attempt where more than 1 user has same FB ID")
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                       showAlert("Sorry", message: "Could not log you in via facebook at this time.", buttonTitle: "Try again", sender: self)
                     })
                     
@@ -132,13 +137,13 @@ class ViewController: UIViewController {
                   for result in results.items! {
                     print("RESULT IS: ", result)
                     
-                    let username = (result["username"]?.S)! as String
+                    let username = (result["username"]?.s)! as String
                     
                     setCurrentCachedUserName(username)
                     setCachedUserFromAWS(username)
                     
-                    dispatch_async(dispatch_get_main_queue(), {
-                      self.performSegueWithIdentifier("toMainContainerViewController", sender: nil)
+                    DispatchQueue.main.async(execute: {
+                      self.performSegue(withIdentifier: "toMainContainerViewController", sender: nil)
                     })
                   }
                 }
@@ -168,8 +173,9 @@ class ViewController: UIViewController {
         print("FAIL LOG IN")
       }
       }
-    }
 
+    }
+     */
   }
   
   
@@ -182,7 +188,3 @@ class ViewController: UIViewController {
 //    }
   
   }
-
-
-
-

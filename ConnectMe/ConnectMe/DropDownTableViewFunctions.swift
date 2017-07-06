@@ -22,7 +22,7 @@ struct CellExpansion {
 }
 
 // Pass expansionObject by reference: so we can maintain the corresponding updated values
-func getTableRowHeightForDropdownCell(inout expansionObject: CellExpansion!, currentRow: Int) -> CGFloat
+func getTableRowHeightForDropdownCell(_ expansionObject: inout CellExpansion!, currentRow: Int) -> CGFloat
 {
     // If a row is selected, we want to expand the cells
     if (currentRow == expansionObject.selectedRowIndex)
@@ -48,7 +48,7 @@ func getTableRowHeightForDropdownCell(inout expansionObject: CellExpansion!, cur
     
 }
 
-func updateCurrentlyExpandedRow(inout expansionObject: CellExpansion!, currentRow: Int)
+func updateCurrentlyExpandedRow(_ expansionObject: inout CellExpansion!, currentRow: Int)
 {
     // Set the new selectedRowIndex
     expansionObject.selectedRowIndex = currentRow

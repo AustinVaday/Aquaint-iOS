@@ -57,17 +57,17 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
         pool = getAWSCognitoIdentityUserPool()
       
         // Set up DB
-        dynamoDBObjectMapper = AWSDynamoDBObjectMapper.defaultDynamoDBObjectMapper()
+        dynamoDBObjectMapper = AWSDynamoDBObjectMapper.default()
       
         resetAnimations()
         
         // Set up pan gesture recognizer for when the user wants to swipe left/right
         let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
-        edgePan.edges = .Left
+        edgePan.edges = .left
         view.addGestureRecognizer(edgePan)
     }
   
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
       awsMobileAnalyticsRecordPageVisitEventTrigger("SignUpFetchMoreDataController", forKey: "page_name")
     }
     
@@ -77,13 +77,13 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
      =======================================================*/
     
     // Add and Remove NSNotifications!
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         registerForKeyboardNotifications()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
         deregisterForKeyboardNotifications()
@@ -92,18 +92,18 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
     // KEYBOARD shift-up buttons functionality
     func registerForKeyboardNotifications()
     {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MenuController.keyboardWasShown(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MenuController.keyboardWillBeHidden(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
     }
     
     func deregisterForKeyboardNotifications()
     {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWasShown(notification: NSNotification!)
+    func keyboardWasShown(_ notification: Notification!)
     {
 //        // If keyboard shown already, no need to perform this method
 //        if isKeyboardShown
@@ -114,13 +114,13 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
         self.isKeyboardShown = true
         
         let userInfo = notification.userInfo!
-        let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
+        let keyboardSize = ((userInfo[UIKeyboardFrameBeginUserInfoKey])! as AnyObject).cgRectValue.size
         
-        UIView.animateWithDuration(0.5) {
+        UIView.animate(withDuration: 0.5, animations: {
             
             print("KEYBOARD SHOWN")
             
-            if self.userPassword.isFirstResponder()
+            if self.userPassword.isFirstResponder
             {
                 self.buttonBottomConstraint.constant = -keyboardSize.height
                 self.view.layoutIfNeeded()
@@ -136,10 +136,10 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                 self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
             }
             
-        }
+        }) 
     }
     
-    func keyboardWillBeHidden(notification: NSNotification!)
+    func keyboardWillBeHidden(_ notification: Notification!)
     {
         isKeyboardShown = false
         
@@ -155,31 +155,31 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
      * END : Keyboard/Button Animations
      =======================================================*/
     
-    func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer)
+    func screenEdgeSwiped(_ recognizer: UIScreenEdgePanGestureRecognizer)
     {
-        if recognizer.state == .Ended
+        if recognizer.state == .ended
         {
             print("Screen swiped!")
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
         
     }
     
     // When user clicks "next" on keyboard
-    @IBAction func onUserNameEditingDidEndOnExit(sender: AnyObject) {
+    @IBAction func onUserNameEditingDidEndOnExit(_ sender: AnyObject) {
         userPassword.becomeFirstResponder()
     }
     
     // When user clicks "Go" on keyboard
-    @IBAction func onPasswordEditingDidEndOnExit(sender: AnyObject) {
+    @IBAction func onPasswordEditingDidEndOnExit(_ sender: AnyObject) {
         // Mimic the "Sign Up" button being pressed
         self.onFinishButtonClicked(nextButton.self)
         
     }
 
-    @IBAction func onFinishButtonClicked(sender: UIButton) {
+    @IBAction func onFinishButtonClicked(_ sender: UIButton) {
         // Disable button so that user cannot click on it twice (this is how errors happen)
-        self.nextButton.enabled = false
+        self.nextButton.isEnabled = false
         
         let userNameString:String = userName.text!
         let userPasswordString:String = userPassword.text!
@@ -223,19 +223,19 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
       
         //Important!! Make userNameString all lowercase from now on (for storing unique keys in the database)
         // What if userNameString is nil?
-        let lowerCaseUserNameString = userNameString.lowercaseString
+        let lowerCaseUserNameString = userNameString.lowercased()
 
         let email  = AWSCognitoIdentityUserAttributeType()
-            email.name = "email"
-            email.value = userEmail
+            email?.name = "email"
+            email?.value = userEmail
         
         let phone = AWSCognitoIdentityUserAttributeType()
-            phone.name = "phone_number"
-            phone.value = userPhone
+            phone?.name = "phone_number"
+            phone?.value = userPhone
         
 
         // Remember, AWSTask is ASYNCHRONOUS.
-        pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email, phone], validationData: nil).continueWithBlock { (resultTask) -> AnyObject? in
+        pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email!, phone!], validationData: nil).continueWith { (resultTask) -> AnyObject? in
 
         
             // If sign up performed successfully.
@@ -244,17 +244,17 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                 print("Successful signup")
 
                 // Perform update on UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
 
                     // Stop showing activity indicator (spinner)
-                    self.checkMarkFlipped.hidden = false
+                    self.checkMarkFlipped.isHidden = false
 
-                    self.buttonToFlip.hidden = true
+                    self.buttonToFlip.isHidden = true
                     self.spinner.stopAnimating()
 
-                    UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                    UIView.transition(with: self.checkMarkView, duration: 1, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: { () -> Void in
 
-                        self.checkMarkFlipped.hidden = false
+                        self.checkMarkFlipped.isHidden = false
                         self.checkMarkFlipped.image = self.checkMark.image
 
                         }, completion: nil)
@@ -263,9 +263,9 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                     delay(1.5)
                     {
 
-                        self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                        self.performSegue(withIdentifier: self.segueDestination, sender: nil)
                         // Disable button so that user cannot click on it twice (this is how errors happen)
-                        self.nextButton.enabled = true
+                        self.nextButton.isEnabled = true
 
                     }
 
@@ -282,20 +282,20 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                 if (attemptedUserName != nil && attemptedUserName == self.userName.text)
                 {
                     //Proceed only if user is not confirmed
-                    if (self.pool.getUser(attemptedUserName).confirmedStatus.rawValue == 0)
+                    if (self.pool.getUser(attemptedUserName!).confirmedStatus.rawValue == 0)
                     {
                         // Perform update on UI on main thread
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        DispatchQueue.main.async(execute: { () -> Void in
                             
                             // Stop showing activity indicator (spinner)
-                            self.checkMarkFlipped.hidden = false
+                            self.checkMarkFlipped.isHidden = false
                             
-                            self.buttonToFlip.hidden = true
+                            self.buttonToFlip.isHidden = true
                             self.spinner.stopAnimating()
                             
-                            UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                            UIView.transition(with: self.checkMarkView, duration: 1, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: { () -> Void in
                                 
-                                self.checkMarkFlipped.hidden = false
+                                self.checkMarkFlipped.isHidden = false
                                 self.checkMarkFlipped.image = self.checkMark.image
                                 
                                 }, completion: nil)
@@ -304,9 +304,9 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                             delay(1.5)
                             {
                                 
-                                self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                                self.performSegue(withIdentifier: self.segueDestination, sender: nil)
                                 // Disable button so that user cannot click on it twice (this is how errors happen)
-                                self.nextButton.enabled = true
+                                self.nextButton.isEnabled = true
 
                             }
                           
@@ -328,20 +328,20 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                 
                 
                     // Perform update on UI on main thread
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
 
                         // Stop showing activity indicator (spinner)
                         self.spinner.stopAnimating()
                         
                         // Re-enable button
-                        self.nextButton.enabled = true
+                        self.nextButton.isEnabled = true
                         
 //                        self.attemptedUserName = String()
 
                         // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
                         if (self.presentedViewController == nil)
                         {
-                            let error = (resultTask.error?.userInfo["__type"])! as! String
+                            let error = (resultTask.error?._userInfo?["__type"])! as! String
                             
                             if (error == "UsernameExistsException")
                             {
@@ -349,7 +349,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                             }
                             else
                             {
-                                showAlert("Error signing up", message: (resultTask.error?.userInfo["message"])! as! String, buttonTitle: "Try again", sender: self)
+                                showAlert("Error signing up", message: (resultTask.error?._userInfo?["message"])! as! String, buttonTitle: "Try again", sender: self)
 
                             }
                             
@@ -364,16 +364,16 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
     }
     
     // Used to pass password to next view controller
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         // Pass the password to next view controller so we can log user in there
         if(segue.identifier == segueDestination)
         {
-            let nextViewController = segue.destinationViewController as! SignUpVerificationController
+            let nextViewController = segue.destination as! SignUpVerificationController
 
             nextViewController.userFullName = self.userFullName
             nextViewController.userPassword = self.userPassword.text
-            nextViewController.userName = self.userName.text?.lowercaseString // IMPORTANT that it's lowercase, or else future userpool verification will fail
+            nextViewController.userName = self.userName.text?.lowercased() // IMPORTANT that it's lowercase, or else future userpool verification will fail
             nextViewController.userImage = self.userImage
             nextViewController.userPhone = self.userPhone
             nextViewController.userEmail = self.userEmail
@@ -382,7 +382,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
             // Problem: If user signs up, goes to verification page, then hits the "back button" -- they cannot use the username they tried to sign up with before -- it will say that it is taken. So we need to know when to let them try again. This will help us. See "unwindBackSignUpInfoVC" for more details
             // Solution: This function will ONLY be called if username does not exist. Therefore it is safe to do this.
 //            attemptedUserName = (self.userName.text?.lowercaseString)!
-            setCachedUserSignUpName((self.userName.text?.lowercaseString)!)
+            setCachedUserSignUpName((self.userName.text?.lowercased())!)
             
             // Need phone to display it on next screen
             // Don't need to pass email.
@@ -393,34 +393,34 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
         
     }
     
-    private func resetAnimations()
+    fileprivate func resetAnimations()
     {
         // Set up animation
-        self.checkMark.hidden = true
-        self.checkMarkFlipped.hidden = true
-        self.buttonToFlip.hidden = false
+        self.checkMark.isHidden = true
+        self.checkMarkFlipped.isHidden = true
+        self.buttonToFlip.isHidden = false
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
         flipImageHorizontally(checkMarkFlippedCopy)
     }
   
-    private func completeUserRegistration() {
+    fileprivate func completeUserRegistration() {
         // Create AWS user and upload
       let userNameString:String = userName.text!
       let userPasswordString:String = userPassword.text!
-      let lowerCaseUserNameString = userNameString.lowercaseString
+      let lowerCaseUserNameString = userNameString.lowercased()
       
       let email  = AWSCognitoIdentityUserAttributeType()
-      email.name = "email"
-      email.value = userEmail
+      email?.name = "email"
+      email?.value = userEmail
       
       
       // Remember, AWSTask is ASYNCHRONOUS.
-      pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email], validationData: nil).continueWithBlock { (resultTask) -> AnyObject? in
+      pool.signUp(lowerCaseUserNameString, password: userPasswordString, userAttributes: [email!], validationData: nil).continueWith { (resultTask) -> AnyObject? in
 
         // If sign up performed successfully.
         if (resultTask.error == nil)
         {
-           self.pool.getUser(userNameString).getSession(lowerCaseUserNameString, password: userPasswordString, validationData: nil, scopes: nil).continueWithBlock({ (sessionResultTask) -> AnyObject? in
+          self.pool.getUser(userNameString).getSession(lowerCaseUserNameString, password: userPasswordString, validationData: nil).continueWith(block: { (sessionResultTask) -> AnyObject? in
             
             setCurrentCachedUserName(lowerCaseUserNameString)
             setCurrentCachedFullName(self.userFullName)
@@ -438,23 +438,23 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
               
               // Resize photo for cheaper storage
               let targetSize = CGSize(width: 150, height: 150)
-              let newImage = RBResizeImage(userPhoto, targetSize: targetSize)
+              let newImage = RBResizeImage(userPhoto!, targetSize: targetSize)
               
               // Create temp file location for image (hint: may be useful later if we have users taking photos themselves and not wanting to store it)
-              let imageFileURL = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingString("temp"))
+              let imageFileURL = URL(fileURLWithPath: NSTemporaryDirectory() + "temp")
               
               // Force PNG format
               let data = UIImagePNGRepresentation(newImage)
-              try! data?.writeToURL(imageFileURL, options: NSDataWritingOptions.AtomicWrite)
+              try! data?.write(to: imageFileURL, options: NSData.WritingOptions.atomicWrite)
               
               // AWS TRANSFER REQUEST
               let transferRequest = AWSS3TransferManagerUploadRequest()
-              transferRequest.bucket = "aquaint-userfiles-mobilehub-146546989"
-              transferRequest.key = "public/" + lowerCaseUserNameString
-              transferRequest.body = imageFileURL
-              let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+              transferRequest?.bucket = "aquaint-userfiles-mobilehub-146546989"
+              transferRequest?.key = "public/" + lowerCaseUserNameString
+              transferRequest?.body = imageFileURL
+              let transferManager = AWSS3TransferManager.default()
               
-              transferManager.upload(transferRequest).continueWithExecutor(AWSExecutor.mainThreadExecutor(), withBlock:
+              transferManager.upload(transferRequest!).continueWith(executor: AWSExecutor.mainThread(), block:
                 { (resultTask) -> AnyObject? in
                   
                   // if sucessful file transfer
@@ -479,17 +479,12 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
              *  UPLOAD USER DATA TO RDS via LAMBDA
              *************************************/
             // Store username and user realname
-            let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+            let lambdaInvoker = AWSLambdaInvoker.default()
             var parameters = ["action":"adduser", "target": lowerCaseUserNameString, "realname": self.userFullName]
-            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
               if resultTask.error != nil
               {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-              }
-              else if resultTask.exception != nil
-              {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                
               }
               else if resultTask.result != nil
               {
@@ -509,15 +504,10 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
             
             // Have user automatically follow and be followed by Aquaint Team!
             parameters = ["action":"follow", "target": lowerCaseUserNameString, "me": "aquaint"]
-            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
               if resultTask.error != nil
               {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-              }
-              else if resultTask.exception != nil
-              {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
-                
               }
               else if resultTask.result != nil
               {
@@ -536,12 +526,9 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
             
             // Generate scan code for user
             parameters = ["action":"createScanCodeForUser", "target": lowerCaseUserNameString]
-            lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+            lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
               if resultTask.error != nil {
                 print("FAILED TO INVOKE LAMBDA FUNCTION - Error: ", resultTask.error)
-              }
-              else if resultTask.exception != nil {
-                print("FAILED TO INVOKE LAMBDA FUNCTION - Exception: ", resultTask.exception)
               }
               else if resultTask.result != nil {
                 print("SUCCESSFULLY INVOKEd LAMBDA FUNCTION WITH RESULT: ", resultTask.result)
@@ -558,13 +545,12 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
             // Upload user DATA to DynamoDB
             let dynamoDBUser = User()
             
-            dynamoDBUser.realname = self.userFullName
+            dynamoDBUser?.realname = self.userFullName
             // dynamoDBUser.timestamp = getTimestampAsInt()
             // dynamoDBUser.userId = task.result as! String
-            dynamoDBUser.username = lowerCaseUserNameString
+            dynamoDBUser?.username = lowerCaseUserNameString
             
-            
-            self.dynamoDBObjectMapper.save(dynamoDBUser).continueWithBlock({ (resultTask) -> AnyObject? in
+            self.dynamoDBObjectMapper.save(dynamoDBUser!).continueWith(block: { (resultTask) -> AnyObject? in
               
               // If successful save
               if (resultTask.error == nil)
@@ -572,16 +558,16 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                 print ("DYNAMODB SUCCESS: ", resultTask.result)
                 
                 // Perform update on UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                   
                   // Stop showing activity indicator (spinner)
                   self.spinner.stopAnimating()
-                  self.checkMarkFlipped.hidden = false
-                  self.buttonToFlip.hidden = true
+                  self.checkMarkFlipped.isHidden = false
+                  self.buttonToFlip.isHidden = true
                   
-                  UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                  UIView.transition(with: self.checkMarkView, duration: 1, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: { () -> Void in
                     
-                    self.checkMarkFlipped.hidden = false
+                    self.checkMarkFlipped.isHidden = false
                     self.checkMarkFlipped.image = self.checkMark.image
                     
                     }, completion: nil)
@@ -590,7 +576,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                   delay(1.5)
                   {
                     
-                    self.performSegueWithIdentifier(self.signUpWithFBSegueDestination, sender: nil)
+                    self.performSegue(withIdentifier: self.signUpWithFBSegueDestination, sender: nil)
                     
                   }
                   
@@ -601,11 +587,6 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
               if (resultTask.error != nil)
               {
                 print ("DYNAMODB ERROR: ", resultTask.error)
-              }
-              
-              if (resultTask.exception != nil)
-              {
-                print ("DYNAMODB EXCEPTION: ", resultTask.exception)
               }
               
               return nil
@@ -623,20 +604,20 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
           if (attemptedUserName != nil && attemptedUserName == self.userName.text)
           {
             //Proceed only if user is not confirmed
-            if (self.pool.getUser(attemptedUserName).confirmedStatus.rawValue == 0)
+            if (self.pool.getUser(attemptedUserName!).confirmedStatus.rawValue == 0)
             {
               // Perform update on UI on main thread
-              dispatch_async(dispatch_get_main_queue(), { () -> Void in
+              DispatchQueue.main.async(execute: { () -> Void in
                 
                 // Stop showing activity indicator (spinner)
-                self.checkMarkFlipped.hidden = false
+                self.checkMarkFlipped.isHidden = false
                 
-                self.buttonToFlip.hidden = true
+                self.buttonToFlip.isHidden = true
                 self.spinner.stopAnimating()
                 
-                UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                UIView.transition(with: self.checkMarkView, duration: 1, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: { () -> Void in
                   
-                  self.checkMarkFlipped.hidden = false
+                  self.checkMarkFlipped.isHidden = false
                   self.checkMarkFlipped.image = self.checkMark.image
                   
                   }, completion: nil)
@@ -645,9 +626,9 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                 delay(1.5)
                 {
                   
-                  self.performSegueWithIdentifier(self.segueDestination, sender: nil)
+                  self.performSegue(withIdentifier: self.segueDestination, sender: nil)
                   // Disable button so that user cannot click on it twice (this is how errors happen)
-                  self.nextButton.enabled = true
+                  self.nextButton.isEnabled = true
                   
                 }
                 
@@ -669,20 +650,20 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
             
             
             // Perform update on UI on main thread
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
               
               // Stop showing activity indicator (spinner)
               self.spinner.stopAnimating()
               
               // Re-enable button
-              self.nextButton.enabled = true
+              self.nextButton.isEnabled = true
               
 //              self.attemptedUserName = String()
               
               // Show the alert if it has not been showed already (we need this in case the user clicks many times -- quickly -- on the button before it is disabled. This if statement prevents the display of multiple alerts).
               if (self.presentedViewController == nil)
               {
-                let error = (resultTask.error?.userInfo["__type"])! as! String
+                let error = (resultTask.error?._userInfo?["__type"])! as! String
                 
                 if (error == "UsernameExistsException")
                 {
@@ -690,7 +671,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
                 }
                 else
                 {
-                  showAlert("Error signing up", message: (resultTask.error?.userInfo["message"])! as! String, buttonTitle: "Try again", sender: self)
+                  showAlert("Error signing up", message: (resultTask.error?._userInfo?["message"])! as! String, buttonTitle: "Try again", sender: self)
                   
                 }
                 
@@ -705,7 +686,7 @@ class SignUpFetchMoreDataController: ViewControllerPannable {
     }
   
     // Use to go back to previous VC at ease.
-    @IBAction func unwindBackSignUpInfoVC(segue: UIStoryboardSegue)
+    @IBAction func unwindBackSignUpInfoVC(_ segue: UIStoryboardSegue)
     {
         print("CALLED UNWIND VC")
       

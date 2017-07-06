@@ -13,6 +13,7 @@
 #import "AWSLambda.h"
 #import "AWSLambdaInvoker.h"
 #import "AWSLambdaModel.h"
+#import "AWSLambdaRequestRetryHandler.h"
 #import "AWSLambdaResources.h"
 #import "AWSLambdaService.h"
 

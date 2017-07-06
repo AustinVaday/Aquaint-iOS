@@ -9,17 +9,17 @@
 import UIKit
 
 enum AnimationLocation {
-  case Top
-  case Bottom
-  case Middle
+  case top
+  case bottom
+  case middle
 }
 
 enum AnimationAquaintEmblemTheme {
-  case DarkTheme
-  case WhiteTheme
+  case darkTheme
+  case whiteTheme
 }
 
-func setUpSocialMediaAnimations(viewController: UIViewController, subView: UIView, inout animatedObjects: Array<UIView>, animationLocation: AnimationLocation, theme: AnimationAquaintEmblemTheme)
+func setUpSocialMediaAnimations(_ viewController: UIViewController, subView: UIView, animatedObjects: inout Array<UIView>, animationLocation: AnimationLocation, theme: AnimationAquaintEmblemTheme)
 {
 
   
@@ -30,14 +30,14 @@ func setUpSocialMediaAnimations(viewController: UIViewController, subView: UIVie
   }
 
   var yLocationDisplacement = CGFloat(0)
-  if animationLocation == AnimationLocation.Bottom {
+  if animationLocation == AnimationLocation.bottom {
     yLocationDisplacement = CGFloat(viewController.view.frame.size.height) / 1.5
-  } else if animationLocation == AnimationLocation.Middle {
+  } else if animationLocation == AnimationLocation.middle {
     yLocationDisplacement = CGFloat(viewController.view.frame.size.height) / 2
   }
   
   var emblem = "Emblem White"
-  if theme == AnimationAquaintEmblemTheme.DarkTheme {
+  if theme == AnimationAquaintEmblemTheme.darkTheme {
     emblem = "Emblem"
   }
   
@@ -78,12 +78,12 @@ func setUpSocialMediaAnimations(viewController: UIViewController, subView: UIVie
     
     // Create a cool path that defines animation curve
     let path = UIBezierPath()
-    path.moveToPoint(CGPoint(x:-20, y:169 - randomYOffset + yLocationDisplacement))
-    path.addCurveToPoint(CGPoint(x:viewController.view.frame.width + 50 , y: 169 - randomYOffset + yLocationDisplacement), controlPoint1: CGPoint(x: 136, y: 273 - randomYOffset + yLocationDisplacement), controlPoint2: CGPoint(x: 178, y: 110 - randomYOffset + yLocationDisplacement))
+    path.move(to: CGPoint(x:-20, y:169 - randomYOffset + yLocationDisplacement))
+    path.addCurve(to: CGPoint(x:viewController.view.frame.width + 50 , y: 169 - randomYOffset + yLocationDisplacement), controlPoint1: CGPoint(x: 136, y: 273 - randomYOffset + yLocationDisplacement), controlPoint2: CGPoint(x: 178, y: 110 - randomYOffset + yLocationDisplacement))
     
     // Set up animation with path
     let animation = CAKeyframeAnimation(keyPath: "position")
-    animation.path = path.CGPath
+    animation.path = path.cgPath
     
     // Set up rotational animations
     animation.rotationMode = kCAAnimationRotateAuto
@@ -97,13 +97,13 @@ func setUpSocialMediaAnimations(viewController: UIViewController, subView: UIVie
     // `290` was chosen simply by experimentation
     animation.timeOffset = Double(arc4random_uniform(290))
     
-    object.layer.addAnimation(animation, forKey: "animate position along path")
+    object.layer.add(animation, forKey: "animate position along path")
     animatedObjects.append(object)
   }
 }
 
 
-func clearUpSocialMediaAnimations(inout animatedObjects: Array<UIView>)
+func clearUpSocialMediaAnimations(_ animatedObjects: inout Array<UIView>)
 {
   // Only remove animations if there are some that exist already. O(1) if empty
   if animatedObjects.isEmpty

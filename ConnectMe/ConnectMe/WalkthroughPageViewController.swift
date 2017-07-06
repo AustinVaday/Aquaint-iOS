@@ -27,20 +27,20 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     dataSource = self
     delegate = self
     arrayOfViewControllers = Array<UIViewController>()
-    arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("Walkthrough0"))!)
-    arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("Walkthrough1"))!)
-    arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("Walkthrough2"))!)
-    arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("Walkthrough3"))!)
-    arrayOfViewControllers.append((storyboard?.instantiateViewControllerWithIdentifier("Walkthrough4"))!)
+    arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "Walkthrough0"))!)
+    arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "Walkthrough1"))!)
+    arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "Walkthrough2"))!)
+    arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "Walkthrough3"))!)
+    arrayOfViewControllers.append((storyboard?.instantiateViewController(withIdentifier: "Walkthrough4"))!)
     
     let firstViewController = arrayOfViewControllers[0]
     currentPageIndex = 0
     
-    setViewControllers([firstViewController], direction: .Forward, animated: true, completion: nil)
+    setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
     
   }
   
-  func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+  func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
     
     if viewController.restorationIdentifier == "Walkthrough0"
     {
@@ -73,7 +73,7 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     
   }
   
-  func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+  func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
     
     if viewController.restorationIdentifier == "Walkthrough0"
     {
@@ -105,7 +105,7 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     return nil
   }
   
-  func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+  func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
     
     print("TRANSITION COMPLETED?: ", completed)
     
@@ -124,15 +124,15 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     }
   }
   
-  func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
+  func presentationCount(for pageViewController: UIPageViewController) -> Int {
     return numPages
   }
   
-  func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
+  func presentationIndex(for pageViewController: UIPageViewController) -> Int {
     return currentPageIndex
   }
   
-  func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
+  func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
     
     let nextViewController = (pendingViewControllers.first)!
     
@@ -167,7 +167,7 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
   }
   
   func goToNextPage() {
-    let direction = UIPageViewControllerNavigationDirection.Forward
+    let direction = UIPageViewControllerNavigationDirection.forward
     
     if currentPageIndex < numPages - 1 {
       currentPageIndex = currentPageIndex + 1

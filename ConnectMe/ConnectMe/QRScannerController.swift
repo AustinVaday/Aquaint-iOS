@@ -30,7 +30,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     super.viewDidLoad()
     
     // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video as the media type parameter.
-    let captureDevice = AVCaptureDevice.defaultDeviceWithMediaType("AVMediaTypeVideo")
+    let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: "AVMediaTypeVideo")
     do {
       // Get an instance of the AVCaptureDeviceInput class using the previous device object.
       let input = try AVCaptureDeviceInput(device: captureDevice)
@@ -46,7 +46,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
       captureSession?.addOutput(captureMetadataOutput)
       
       // Set delegate and use the default dispatch queue to execute the call back
-      captureMetadataOutput.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
+      captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
       captureMetadataOutput.metadataObjectTypes = supportedCodeTypes
       
       // Initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
@@ -62,10 +62,10 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
       qrCodeFrameView = UIView()
       
       if let qrCodeFrameView = qrCodeFrameView {
-        qrCodeFrameView.layer.borderColor = UIColor.blueColor().CGColor
+        qrCodeFrameView.layer.borderColor = UIColor.blue.cgColor
         qrCodeFrameView.layer.borderWidth = 3
         view.addSubview(qrCodeFrameView)
-        view.bringSubviewToFront(qrCodeFrameView)
+        view.bringSubview(toFront: qrCodeFrameView)
       }
       
     } catch {
@@ -97,7 +97,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     
     if supportedCodeTypes.contains(metadataObj.type) {
       // If the found metadata is equal to the QR code metadata then update the status label's text and set the bounds
-      let barCodeObject = videoPreviewLayer?.transformedMetadataObjectForMetadataObject(metadataObj)
+      let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
       qrCodeFrameView?.frame = barCodeObject!.bounds
       
 //      if metadataObj.stringValue != nil {
@@ -106,7 +106,7 @@ class QRScannerController: UIViewController, AVCaptureMetadataOutputObjectsDeleg
     }
   }
   
-  @IBAction func backButtonClicked(sender: AnyObject) {
-    self.dismissViewControllerAnimated(true, completion: nil)
+  @IBAction func backButtonClicked(_ sender: AnyObject) {
+    self.dismiss(animated: true, completion: nil)
   }
 }

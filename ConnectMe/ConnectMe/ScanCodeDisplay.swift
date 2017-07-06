@@ -60,7 +60,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
                             AVMetadataObjectTypePDF417Code,
                             AVMetadataObjectTypeQRCode]
   
-  var lastScanCodeProcessedTime: NSDate?
+  var lastScanCodeProcessedTime: Date?
   let SCAN_CODE_PROCESSING_INTERVAL = 3.0  // this should be the maximum time taken to fully show the KLCPopup, so that we guarantee its completion handler is called
   var isShowingUserProfilePopup = false
 
@@ -81,7 +81,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
 //    updateAnalyticsDisplayValues()
 
     maskView.transparentHoleView = self.scanCodeImageView
-    maskView.drawRect(maskView.frame)
+    maskView.draw(maskView.frame)
     
     currentUser = getCurrentCachedUser()
     
@@ -98,8 +98,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     
   }
   
-  override func viewDidAppear(animated: Bool) {
-    setUpSocialMediaAnimations(self, subView: self.animationView, animatedObjects: &animatedObjects, animationLocation: AnimationLocation.Bottom, theme: AnimationAquaintEmblemTheme.DarkTheme)
+  override func viewDidAppear(_ animated: Bool) {
+    setUpSocialMediaAnimations(self, subView: self.animationView, animatedObjects: &animatedObjects, animationLocation: AnimationLocation.bottom, theme: AnimationAquaintEmblemTheme.darkTheme)
     updateAnalyticsDisplayValues()
     
     fetchUserScanCode()
@@ -110,7 +110,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     
   }
   
-  override func viewDidDisappear(animated: Bool) {
+  override func viewDidDisappear(_ animated: Bool) {
     clearUpSocialMediaAnimations(&animatedObjects)
   }
   
@@ -129,15 +129,15 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
    // Pass the selected object to the new view controller.
    }
    */
-  @IBAction func onExportButtonClicked(sender: AnyObject) {
+  @IBAction func onExportButtonClicked(_ sender: AnyObject) {
     
     
     let textToShare = "Take a look at all my social profiles on Aquaint by scanning this code or going to: www.aquaint.us/user/" + currentUser
-    let shareItems = [self.scanCodeImageView.image!, textToShare]
+    let shareItems = [self.scanCodeImageView.image!, textToShare] as [Any]
     let activityVC = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
     
-    dispatch_async(dispatch_get_main_queue()) { 
-      self.presentViewController(activityVC, animated: true, completion: nil)
+    DispatchQueue.main.async { 
+      self.present(activityVC, animated: true, completion: nil)
     }
   }
   
@@ -153,7 +153,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           scanCode = result as UIImage!
           setCurrentCachedUserScanCode(scanCode)
           
-          dispatch_async(dispatch_get_main_queue(), {
+          DispatchQueue.main.async(execute: {
             self.scanCodeImageView.image = scanCode
           })
         }
@@ -162,37 +162,37 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
    
     } else {
       
-      dispatch_async(dispatch_get_main_queue(), {
+      DispatchQueue.main.async(execute: {
         self.scanCodeImageView.image = scanCode
       })
     }
     
   }
   
-  @IBAction func onCameraButtonClicked(sender: AnyObject) {
+  @IBAction func onCameraButtonClicked(_ sender: AnyObject) {
     // Perform update on UI on main thread
-    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-      UIView.transitionWithView(self.scanCodeImageView, duration: 1, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-          self.scanCodeImageView.hidden = true
-          self.maskView.hidden = false
-          self.exportButton.hidden = true
-          self.profileViewsCountLabel.textColor = UIColor.whiteColor()
-          self.profileViewsCountNumber.textColor = UIColor.whiteColor()
-          self.engagementCountLabel.textColor = UIColor.whiteColor()
-          self.engagementCountNumber.textColor = UIColor.whiteColor()
-          self.codeScansCountLabel.textColor = UIColor.whiteColor()
-          self.codeScansCountNumber.textColor = UIColor.whiteColor()
+    DispatchQueue.main.async(execute: { () -> Void in
+      UIView.transition(with: self.scanCodeImageView, duration: 1, options: UIViewAnimationOptions.transitionCrossDissolve, animations: { () -> Void in
+          self.scanCodeImageView.isHidden = true
+          self.maskView.isHidden = false
+          self.exportButton.isHidden = true
+          self.profileViewsCountLabel.textColor = UIColor.white
+          self.profileViewsCountNumber.textColor = UIColor.white
+          self.engagementCountLabel.textColor = UIColor.white
+          self.engagementCountNumber.textColor = UIColor.white
+          self.codeScansCountLabel.textColor = UIColor.white
+          self.codeScansCountNumber.textColor = UIColor.white
           self.firstLineSeparator.image = self.whiteSeparator
           self.secondLineSeparator.image = self.whiteSeparator
           self.thirdLineSeparator.image = self.whiteSeparator
-          self.cameraButton.hidden = true
-          self.exitButton.hidden = false
-          self.usernameLabel.hidden = true
+          self.cameraButton.isHidden = true
+          self.exitButton.isHidden = false
+          self.usernameLabel.isHidden = true
         
         }, completion: { (status) in
           // Show camera view
-          dispatch_async(dispatch_get_main_queue(), {
-              self.cameraView.hidden = false
+          DispatchQueue.main.async(execute: {
+              self.cameraView.isHidden = false
               self.setUpCameraDisplay()
           })
         })
@@ -201,10 +201,10 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
 
   }
   
-  @IBAction func onExitButtonClicked(sender: AnyObject) {
-    self.scanCodeImageView.hidden = false
-    self.maskView.hidden = true
-    self.exportButton.hidden = false
+  @IBAction func onExitButtonClicked(_ sender: AnyObject) {
+    self.scanCodeImageView.isHidden = false
+    self.maskView.isHidden = true
+    self.exportButton.isHidden = false
     self.profileViewsCountNumber.textColor = self.aquaBlue
     self.profileViewsCountLabel.textColor = self.aquaBlue
     self.codeScansCountNumber.textColor = self.aquaBlue
@@ -214,9 +214,9 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     self.firstLineSeparator.image = self.blackSeparator
     self.secondLineSeparator.image = self.blackSeparator
     self.thirdLineSeparator.image = self.blackSeparator
-    self.cameraButton.hidden = false
-    self.exitButton.hidden = true
-    self.usernameLabel.hidden = false
+    self.cameraButton.isHidden = false
+    self.exitButton.isHidden = true
+    self.usernameLabel.isHidden = false
     
     // Clear the camera display?
     captureSession?.stopRunning()
@@ -224,18 +224,18 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     //self.cameraView.backgroundColor = UIColor.clearColor()
     
     //cameraView = defaultCameraView
-    cameraView.hidden = true
+    cameraView.isHidden = true
     
   }
-  @IBAction func onShowHelpCodeScans(sender: AnyObject) {
+  @IBAction func onShowHelpCodeScans(_ sender: AnyObject) {
     showHelpPopup("Code Scans", description: "This feature allows you to see how many people viewed your Aquaint profile directly from your Aquaint scan code. We track data on both the Aquaint mobile app and Aquaint website (hint: If you didn't know already, you can view your Aquaint profile on the web at www.aquaint.us/user/" + currentUser + ")!")
   }
   
-  @IBAction func onShowHelpProfileViews(sender: AnyObject) {
+  @IBAction func onShowHelpProfileViews(_ sender: AnyObject) {
     showHelpPopup("Profile Views", description: "This feature allows you to see how many people viewed your Aquaint profile in the app and on your web profile. We track data on both the Aquaint mobile app and Aquaint website (hint: If you didn't know already, you can view your Aquaint profile on the web at www.aquaint.us/user/" + currentUser + ")!")
   }
   
-  @IBAction func onShowHelpEngagements(sender: AnyObject) {
+  @IBAction func onShowHelpEngagements(_ sender: AnyObject) {
     showHelpPopup("Engagements", description: "This feature allows you to see how many people actually clicked on the social media profiles you provided. If you want to see more data such as the number of engagements per social media platform, please check out our advanced analytics features!")
   }
   
@@ -244,39 +244,39 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
 //    let parentViewController = self.parentViewController?.parentViewController as! MainPageViewController
 //    parentViewController.goToAnalyticsPage()
 //  }
-  @IBAction func coolTipsAndTricksButtonClicked(sender: AnyObject) {
-    let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
+  @IBAction func coolTipsAndTricksButtonClicked(_ sender: AnyObject) {
+    let webDisplayVC = reusableWebViewStoryboard.instantiateViewController(withIdentifier: "reusableWebViewController") as! ReusableWebViewController
     
     webDisplayVC.webTitle = "Cool Tricks"
     webDisplayVC.webURL = "http://www.aquaint.us/static/cool-tricks"
-    webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-    self.presentViewController(webDisplayVC, animated: true, completion: nil)
+    webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+    self.present(webDisplayVC, animated: true, completion: nil)
   }
 
-  @IBAction func onYourWebProfileClicked(sender: AnyObject) {
-    let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
+  @IBAction func onYourWebProfileClicked(_ sender: AnyObject) {
+    let webDisplayVC = reusableWebViewStoryboard.instantiateViewController(withIdentifier: "reusableWebViewController") as! ReusableWebViewController
     
 //    webDisplayVC.copyLinkButton.hidden = false
     webDisplayVC.webTitle = "aquaint.us/user/" + currentUser
     webDisplayVC.webURL = "http://www.aquaint.us/user/" + currentUser
-    webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-    self.presentViewController(webDisplayVC, animated: true, completion: nil)
+    webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+    self.present(webDisplayVC, animated: true, completion: nil)
   }
   
-  @IBAction func onScanCodeImageClicked(sender: AnyObject) {
-    let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
+  @IBAction func onScanCodeImageClicked(_ sender: AnyObject) {
+    let webDisplayVC = reusableWebViewStoryboard.instantiateViewController(withIdentifier: "reusableWebViewController") as! ReusableWebViewController
     
 //    webDisplayVC.copyLinkButton.hidden = false
     webDisplayVC.webTitle = "aquaint.us/user/" + currentUser
     webDisplayVC.webURL = "http://www.aquaint.us/user/" + currentUser
-    webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-    self.presentViewController(webDisplayVC, animated: true, completion: nil)
+    webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+    self.present(webDisplayVC, animated: true, completion: nil)
   }
   
   func setUpCameraDisplay() {
     // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video as the media type parameter.
     //let captureDevice = AVCaptureDevice.defaultDeviceWithMediaType("AVMediaTypeVideo")
-    let captureDevice = AVCaptureDevice.devices().filter({ $0.position == .Back }).first as? AVCaptureDevice
+    let captureDevice = AVCaptureDevice.devices().filter({ ($0 as AnyObject).position == .back }).first as? AVCaptureDevice
     
     do {
       // Get an instance of the AVCaptureDeviceInput class using the previous device object.
@@ -293,7 +293,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
       captureSession?.addOutput(captureMetadataOutput)
       
       // Set delegate and use the default dispatch queue to execute the call back
-      captureMetadataOutput.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
+      captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
       captureMetadataOutput.metadataObjectTypes = supportedCodeTypes
       
       // Initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
@@ -335,14 +335,14 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
       return
     }
     
-    let lambdaInvoker = AWSLambdaInvoker.defaultLambdaInvoker()
+    let lambdaInvoker = AWSLambdaInvoker.default()
     var parameters = ["action":"getUserPageViews", "target": username]
     
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil
       {
         print("Result task for getUserPageViews is: ", resultTask.result!)
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
           let number = resultTask.result as? Int
           self.profileViewsCountNumber.text  = String(number!)
         })
@@ -353,11 +353,11 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     
     parameters = ["action":"getUserCodeScans", "target": username]
     
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil
       {
         print("Result task for getUserCodeScans is: ", resultTask.result!)
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
           let number = resultTask.result as? Int
           self.codeScansCountNumber.text  = String(number!)
         })
@@ -367,11 +367,11 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     }
     
     parameters = ["action":"getUserTotalEngagements", "target": username]
-    lambdaInvoker.invokeFunction("mock_api", JSONObject: parameters).continueWithBlock { (resultTask) -> AnyObject? in
+    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
       if resultTask.error == nil && resultTask.result != nil
       {
         print("Result task for getUserTotalEngagements is: ", resultTask.result!)
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
           let number = resultTask.result as? Int
           self.engagementCountNumber.text = String(number!)
         })
@@ -384,7 +384,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   }
   
   
-  func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
+  func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
     
     // Check if the metadataObjects array is not nil and it contains at least one object.
     if metadataObjects == nil || metadataObjects.count == 0 {
@@ -398,7 +398,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     
     if supportedCodeTypes.contains(metadataObj.type) {
       // If the found metadata is equal to the QR code metadata then update the status label's text and set the bounds
-      let barCodeObject = videoPreviewLayer?.transformedMetadataObjectForMetadataObject(metadataObj)
+      let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
       qrCodeFrameView?.frame = barCodeObject!.bounds
     
       if metadataObj.stringValue != nil {
@@ -406,7 +406,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
         //GOAL: PARSE www.aquaint.us/user/[DATA]
         //NOTE: This has been tested and should work.
         let scancodeString = metadataObj.stringValue
-        let url = NSURL(string: scancodeString)
+        let url = URL(string: scancodeString!)
         var userName: String!
         
         print("URL HOST: ", url?.host)
@@ -420,15 +420,15 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           // Check if scan code should be processed now #1: keep the PROCESSING_INTERVAL check to give the first user profile popup enough time to be fully shown
           // Moving to check #2 after the isShowingUserProfilePopup flag is set
           if let scanCodeProcessedTime = lastScanCodeProcessedTime {
-            let currentDate = NSDate.init()
-            if (currentDate.timeIntervalSinceDate(scanCodeProcessedTime) <= SCAN_CODE_PROCESSING_INTERVAL) {
+            let currentDate = Date.init()
+            if (currentDate.timeIntervalSince(scanCodeProcessedTime) <= SCAN_CODE_PROCESSING_INTERVAL) {
                 print("scanCodeDisplay(): PROCESSING_INTERVAL: scan code is already processed; ignore current request.")
                 return;
               } else {
-                lastScanCodeProcessedTime = NSDate.init()
+                lastScanCodeProcessedTime = Date.init()
               }
           } else {
-            lastScanCodeProcessedTime = NSDate.init()
+            lastScanCodeProcessedTime = Date.init()
           }
           
           // Check if scan code should be processed now #2
@@ -443,16 +443,16 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           
           // Check if extracted username is a valid aquaint username
           if verifyUserNameFormat(userName) && verifyUserNameLength(userName) {
-            dispatch_async(dispatch_get_main_queue(), { 
+            DispatchQueue.main.async(execute: { 
               showPopupForUserFromScanCode(userName, me: getCurrentCachedUser(), sender: self)
               
               // Send view trigger (Code Scans) to Google Analytics
               let tracker = GAI.sharedInstance().defaultTracker
               let GApageName = "/user/" + userName + "/iOS/scan"
-              tracker.set(kGAIPage, value: GApageName)
+              tracker?.set(kGAIPage, value: GApageName)
               
               let builder = GAIDictionaryBuilder.createScreenView()
-              tracker.send(builder.build() as [NSObject : AnyObject])
+              tracker?.send(builder?.build() as! [AnyHashable: Any])
               
               print("scanCodeDisplay(): trigger Google Analytics for Code Scan: \(GApageName)")
             })
@@ -465,14 +465,14 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           
           // Show URL in browser
           let reusableWebViewStoryboard = UIStoryboard(name: "ReusableWebView", bundle: nil)
-          let webDisplayVC = reusableWebViewStoryboard.instantiateViewControllerWithIdentifier("reusableWebViewController") as! ReusableWebViewController
+          let webDisplayVC = reusableWebViewStoryboard.instantiateViewController(withIdentifier: "reusableWebViewController") as! ReusableWebViewController
           webDisplayVC.webTitle = url?.host
           webDisplayVC.webURL = url?.absoluteString
-          webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+          webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
           
           // Present only if not presented
           if self.presentingViewController?.presentedViewController == nil {
-            self.presentViewController(webDisplayVC, animated: true, completion: nil)
+            self.present(webDisplayVC, animated: true, completion: nil)
           }
         }
         

@@ -44,34 +44,34 @@ class PasswordResetViewController: ViewControllerPannable {
      =======================================================*/
     
     // Add and Remove NSNotifications!
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         registerForKeyboardNotifications()
         
         // Set up pan gesture recognizer for when the user wants to swipe left/right
         let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
-        edgePan.edges = .Left
+        edgePan.edges = .left
         view.addGestureRecognizer(edgePan)
         
     }
   
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
       awsMobileAnalyticsRecordPageVisitEventTrigger("PasswordResetViewController", forKey: "page_name")
     }
     
     
-    func screenEdgeSwiped(recognizer: UIScreenEdgePanGestureRecognizer)
+    func screenEdgeSwiped(_ recognizer: UIScreenEdgePanGestureRecognizer)
     {
-        if recognizer.state == .Ended
+        if recognizer.state == .ended
         {
             print("Screen swiped!")
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
         
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
         deregisterForKeyboardNotifications()
@@ -80,18 +80,18 @@ class PasswordResetViewController: ViewControllerPannable {
     // KEYBOARD shift-up buttons functionality
     func registerForKeyboardNotifications()
     {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PasswordResetViewController.keyboardWasShown(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PasswordResetViewController.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(PasswordResetViewController.keyboardWasShown(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(PasswordResetViewController.keyboardWillBeHidden(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
     }
     
     func deregisterForKeyboardNotifications()
     {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWasShown(notification: NSNotification!)
+    func keyboardWasShown(_ notification: Notification!)
     {
         // If keyboard shown already, no need to perform this method
         if isKeyboardShown
@@ -102,9 +102,9 @@ class PasswordResetViewController: ViewControllerPannable {
         self.isKeyboardShown = true
         
         let userInfo = notification.userInfo!
-        let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
+        let keyboardSize = ((userInfo[UIKeyboardFrameBeginUserInfoKey])! as AnyObject).cgRectValue.size
         
-        UIView.animateWithDuration(0.5) {
+        UIView.animate(withDuration: 0.5, animations: {
             
             print("KEYBOARD SHOWN")
             
@@ -121,10 +121,10 @@ class PasswordResetViewController: ViewControllerPannable {
                 self.scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
             }
             
-        }
+        }) 
     }
     
-    func keyboardWillBeHidden(notification: NSNotification!)
+    func keyboardWillBeHidden(_ notification: Notification!)
     {
         isKeyboardShown = false
         
@@ -139,17 +139,17 @@ class PasswordResetViewController: ViewControllerPannable {
     /*=======================================================
      * END : Keyboard/Button Animations
      =======================================================*/
-    @IBAction func onOldPasswordEditingDidEndOnExit(sender: AnyObject) {
+    @IBAction func onOldPasswordEditingDidEndOnExit(_ sender: AnyObject) {
         newPassword.becomeFirstResponder()
     }
 
     // When user clicks "Go" on keyboard
-    @IBAction func onNewPasswordEditingDidEndOnExit(sender: AnyObject) {
+    @IBAction func onNewPasswordEditingDidEndOnExit(_ sender: AnyObject) {
         self.onFinishButtonClicked(nextButton.self)
     }
 
     
-    @IBAction func onFinishButtonClicked(sender: UIButton) {
+    @IBAction func onFinishButtonClicked(_ sender: UIButton) {
         
         let oldPasswordString:String = oldPassword.text!
         let newPasswordString:String = newPassword.text!
@@ -189,22 +189,22 @@ class PasswordResetViewController: ViewControllerPannable {
         
         let currentUser = getCurrentCachedUser()
         
-        pool.getUser(currentUser).changePassword(oldPasswordString, proposedPassword: newPasswordString).continueWithBlock { (resultTask) -> AnyObject? in
-            if resultTask.error == nil && resultTask.exception == nil && resultTask.result != nil
+        pool.getUser(currentUser!).changePassword(oldPasswordString, proposedPassword: newPasswordString).continueWith { (resultTask) -> AnyObject? in
+            if resultTask.error == nil && resultTask.result != nil
             {
                 // Show the special checkmark animation
                 // Perform update on UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     
                     // Stop showing activity indicator (spinner)
-                    self.checkMarkFlipped.hidden = false
+                    self.checkMarkFlipped.isHidden = false
                     
-                    self.buttonToFlip.hidden = true
+                    self.buttonToFlip.isHidden = true
                     self.spinner.stopAnimating()
                     
-                    UIView.transitionWithView(self.checkMarkView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
+                    UIView.transition(with: self.checkMarkView, duration: 1, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: { () -> Void in
                         
-                        self.checkMarkFlipped.hidden = false
+                        self.checkMarkFlipped.isHidden = false
                         self.checkMarkFlipped.image = self.checkMark.image
                         
                         }, completion: nil)
@@ -213,7 +213,7 @@ class PasswordResetViewController: ViewControllerPannable {
                     delay(1.5)
                     {
                         
-                        self.dismissViewControllerAnimated(true, completion: nil)
+                        self.dismiss(animated: true, completion: nil)
                         
                     }
                     
@@ -227,7 +227,7 @@ class PasswordResetViewController: ViewControllerPannable {
             {
                 // Error with request
                 // Perform update on UI on main thread
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     
                     // Stop showing activity indicator (spinner)
                     self.spinner.stopAnimating()
@@ -246,12 +246,12 @@ class PasswordResetViewController: ViewControllerPannable {
         }
     }
     
-    private func resetAnimations()
+    fileprivate func resetAnimations()
     {
         // Set up animation
-        self.checkMark.hidden = true
-        self.checkMarkFlipped.hidden = true
-        self.buttonToFlip.hidden = false
+        self.checkMark.isHidden = true
+        self.checkMarkFlipped.isHidden = true
+        self.buttonToFlip.isHidden = false
         checkMarkFlippedCopy = UIImageView(image: checkMark.image)
         flipImageHorizontally(checkMarkFlippedCopy)
     }
