@@ -313,14 +313,21 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
 //      self.onCancelButtonClicked(self)
       self.cancelSectionButtonClicked(LINKED_PROFILES_TITLE)
     }
+    
+    awsMobileAnalyticsRecordButtonClickEventTrigger("MenuController - Add A Social Media Profile", forKey: "button_name")
+
   }
   
   @IBAction func goToFollowersPage(_ sender: AnyObject) {
     showFollowerListViewController("getFollowers")
+    awsMobileAnalyticsRecordButtonClickEventTrigger("MenuController - View Followers", forKey: "button_name")
+
   }
   
   @IBAction func goToFollowingPage(_ sender: AnyObject) {
     showFollowerListViewController("getFollowees")
+    awsMobileAnalyticsRecordButtonClickEventTrigger("MenuController - View Following", forKey: "button_name")
+
   }
   
   @IBAction func onChangeProfilePictureClicked(_ sender: UIButton) {
@@ -847,6 +854,8 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       {
         performSegue(withIdentifier: "toAddSocialContactsViewController", sender: self)
         //              getFacebookFriendsUsingApp()
+        awsMobileAnalyticsRecordButtonClickEventTrigger("MenuController - Find Facebook Friends", forKey: "button_name")
+
       }
       
     }

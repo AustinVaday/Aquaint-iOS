@@ -440,8 +440,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         shouldShowSearchResults = true
         resetCurrentSearchOffsets()
         searchTableView.reloadData()
+      
+        awsMobileAnalyticsRecordButtonClickEventTrigger("SearchViewController - Search Started", forKey: "button_name")
+
     }
-    
+  
     func didTapOnCancelButton() {
         shouldShowSearchResults = false
         
@@ -1103,21 +1106,10 @@ extension SearchViewController {
     
     
     showPopupForUser(String(metricLists[collectionView.tag]![indexPath.row].0), me: userName)
-
-    
-//    // Show the user's popup profile if a leaderboard user is clicked
-//    switch collectionView.tag {
-//    case leaderboardType.MOST_FOLLOWERS.rawValue:
-//      showPopupForUser(String(mostFollowersList[indexPath.row].0), me: userName)
-//      
-//    case leaderboardType.MOST_FOLLOWINGS.rawValue:
-//      showPopupForUser(String(mostFollowingList[indexPath.row].0), me: userName)
-//      
-//    default:
-//      return
-//    }
-    
     collectionView.deselectItem(at: indexPath, animated: true)
+    
+    awsMobileAnalyticsRecordButtonClickEventTrigger("Leaderboards - " + self.leaderboardDisplayNameMap[collectionView.tag]!, forKey: "button_name")
+
   }
   
   /*

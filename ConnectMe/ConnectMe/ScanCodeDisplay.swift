@@ -130,8 +130,6 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
    }
    */
   @IBAction func onExportButtonClicked(_ sender: AnyObject) {
-    
-    
     let textToShare = "Take a look at all my social profiles on Aquaint by scanning this code or going to: www.aquaint.us/user/" + currentUser
     let shareItems = [self.scanCodeImageView.image!, textToShare] as [Any]
     let activityVC = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
@@ -139,6 +137,9 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     DispatchQueue.main.async { 
       self.present(activityVC, animated: true, completion: nil)
     }
+    
+    awsMobileAnalyticsRecordButtonClickEventTrigger("ScanCodeDisplay - Share Profiles", forKey: "button_name")
+
   }
   
   func fetchUserScanCode()
@@ -199,6 +200,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
 
     })
 
+    awsMobileAnalyticsRecordButtonClickEventTrigger("ScanCodeDisplay - Scan QR Code", forKey: "button_name")
+    
   }
   
   @IBAction func onExitButtonClicked(_ sender: AnyObject) {
@@ -271,6 +274,9 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
     webDisplayVC.webURL = "http://www.aquaint.us/user/" + currentUser
     webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
     self.present(webDisplayVC, animated: true, completion: nil)
+    
+    awsMobileAnalyticsRecordButtonClickEventTrigger("ScanCodeDisplay - Scan Code Image", forKey: "button_name")
+
   }
   
   func setUpCameraDisplay() {
@@ -455,11 +461,14 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
               tracker?.send(builder?.build() as! [AnyHashable: Any])
               
               print("scanCodeDisplay(): trigger Google Analytics for Code Scan: \(GApageName)")
+              awsMobileAnalyticsRecordPageVisitEventTrigger("ScanCodeDisplay - Aquaint QR Scan", forKey: "page_name")
+
             })
           } else {
             print ("Error, could not verify proper username format")
           }
           
+
         }
         else {
           
@@ -473,6 +482,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           // Present only if not presented
           if self.presentingViewController?.presentedViewController == nil {
             self.present(webDisplayVC, animated: true, completion: nil)
+            awsMobileAnalyticsRecordPageVisitEventTrigger("ScanCodeDisplay - Generic QR Scan", forKey: "page_name")
           }
         }
         

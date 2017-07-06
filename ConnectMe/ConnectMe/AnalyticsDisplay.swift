@@ -158,11 +158,15 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   
   @IBAction func unlockMoreDataButtonClicked(_ sender: AnyObject) {
     self.present(paymentsDisplayVC, animated: true, completion: nil)
+    awsMobileAnalyticsRecordButtonClickEventTrigger("AnalyticsDisplay - Unlock More Data Banner", forKey: "button_name")
+
   }
   
   
   @IBAction func unlockButtonClicked(_ sender: AnyObject) {
     self.present(paymentsDisplayVC, animated: true, completion: nil)
+    awsMobileAnalyticsRecordButtonClickEventTrigger("AnalyticsDisplay - Unlock More Data Lock Icon", forKey: "button_name")
+
   }
   
   func didPayForProduct() {
