@@ -208,6 +208,7 @@ func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: 
     }
     else
     {
+      /*
       if (socialMediaTypeName == "snapchat")
       {
         DispatchQueue.main.async(execute: {
@@ -220,6 +221,7 @@ func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: 
           showAlert("Hold on!", message: "Feature coming soon...", buttonTitle: "Ok", sender: sender)
         })
       }
+      */
       return nil
     }
   }
