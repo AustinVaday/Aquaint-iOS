@@ -115,7 +115,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   override func viewDidLoad() {
     super.viewDidLoad()
     
-      showPopupWithProfileLinkCopy(message: "Share your Aquaint profile link with friends to see the analytics pile up! ")
+      showPopupWithProfileLinkCopy(message: "Share your Aquaint profile link to see the analytics pile up! ")
       // Set up refresh control for when user drags for a refresh.
       refreshControl = CustomRefreshControl()
       
