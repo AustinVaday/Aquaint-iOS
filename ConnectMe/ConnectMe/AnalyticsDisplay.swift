@@ -9,6 +9,7 @@
 import UIKit
 import AWSLambda
 import Graphs
+import SCLAlertView
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -114,6 +115,7 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
   override func viewDidLoad() {
     super.viewDidLoad()
     
+      showPopupWithProfileLinkCopy(message: "Share your Aquaint profile link with friends to see the analytics pile up! ")
       // Set up refresh control for when user drags for a refresh.
       refreshControl = CustomRefreshControl()
       
@@ -670,5 +672,64 @@ class AnalyticsDisplay: UIViewController, UITableViewDelegate, UITableViewDataSo
       return false
     }
   }
+  
+  fileprivate func showPopupWithProfileLinkCopy(message: String) {
+    var alertViewResponder: SCLAlertViewResponder!
+    let subview = UIView(frame: CGRect(x: 0,y: 0,width: 126,height: 80))
+//    let x = (subview.frame.width - 180) / 2
+    let colorDarkBlue = UIColor(
+      red:  0.06,
+      green: 0.48,
+      blue: 0.62,
+      alpha: 1.0
+    )
+    
+    let textLabel = UILabel(frame: CGRect(x: 0,y: 0,width: 220,height: 80))
+    textLabel.font          = UIFont(name: "Avenir Roman", size: 10.0)
+    textLabel.numberOfLines = 4
+    textLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
+    textLabel.textColor     = colorDarkBlue
+    textLabel.textAlignment = NSTextAlignment.center
+    textLabel.text = message
+    
+    subview.addSubview(textLabel)
+    let alertAppearance = SCLAlertView.SCLAppearance(
+      kCircleHeight: 55,
+      kCircleIconHeight: 35,
+      showCircularIcon: true,
+      shouldAutoDismiss: false,
+      hideWhenBackgroundViewIsTapped: true
+    )
+    
+    let alertView = SCLAlertView(appearance: alertAppearance)
+    
+    alertView.customSubview = subview
+    alertView.addButton(
+      "Copy Link",
+      action: {
+        if alertViewResponder == nil {
+          print("Something went wrong...")
+          return
+        }
+        
+        let webURL = "http://www.aquaint.us/user/" + self.currentUserName
+        UIPasteboard.general.string = webURL
+        showAlert("Link Copied to Clipboard!", message: "Have fun sharing and getting #Aquainted!", buttonTitle: "Ok", sender: self)
+        //showAlert("Done!", message: "You've copied " + webURL + " to your clipboard!", buttonTitle: "Ok", sender: self)
+        alertViewResponder.close()
+    })
+    
+    alertViewResponder = alertView.showTitle("Getting started!",
+                                             subTitle: "",
+                                             duration:0.0,
+                                             completeText: "Cancel",
+                                             style: .info,
+                                             colorStyle: 0x0F7A9D,
+                                             colorTextButton: 0xFFFFFF,
+                                             //circleIconImage: alertViewIcon,
+                                             animationStyle: .bottomToTop
+    )
+  }
+
 
 }
