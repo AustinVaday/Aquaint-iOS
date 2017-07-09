@@ -24,6 +24,7 @@ target 'Aquaint' do
   #pod 'Graphs', '~> 0.1.2'
   pod 'Graphs', :git => 'https://github.com/maxwyb/Graphs'
   pod 'RSKImageCropper'
+  pod 'p2.OAuth2', '~> 3.0'
 
   # AWS Pods
   # -------------

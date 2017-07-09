@@ -41,6 +41,7 @@ PODS:
   - GTMSessionFetcher/Full (1.1.10):
     - GTMSessionFetcher/Core (= 1.1.10)
   - KLCPopup (1.0)
+  - p2.OAuth2 (3.0.3)
   - ReachabilitySwift (3)
   - RSKImageCropper (1.6.2)
   - SCLAlertView (0.7.0)
@@ -60,6 +61,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - Graphs (from `https://github.com/maxwyb/Graphs`)
   - KLCPopup
+  - p2.OAuth2 (~> 3.0)
   - ReachabilitySwift (~> 3)
   - RSKImageCropper
   - SCLAlertView
@@ -91,10 +93,11 @@ SPEC CHECKSUMS:
   GTMOAuth2: 7fc9c10f5c745f4d9850419ea88889fe3baa6b7d
   GTMSessionFetcher: 30d874b96d0d76028f61fbd122801e3f030d47db
   KLCPopup: 76c5a19227977f1e53d85236f9ef42257c168d98
+  p2.OAuth2: 63d8d3e366ac2c43bfe8bfa13b42cfeb908c314e
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
   RSKImageCropper: 3e579d0000945a8be1c0efdad728fd9e25c2fd79
   SCLAlertView: 8a14ffc40590c619e183eed2298b854385f30be1
 
-PODFILE CHECKSUM: e28a532c898d172c86059c93b5305a6defb2f1d0
+PODFILE CHECKSUM: f378f8a743cf90fd01b5a11e4719884c40d6cab3
 
 COCOAPODS: 1.2.1

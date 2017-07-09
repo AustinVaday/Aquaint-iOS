@@ -10,6 +10,7 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 //import SimpleAuth
+import p2_OAuth2
 import AWSDynamoDB
 import SCLAlertView
 
@@ -226,7 +227,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         /*************************************************************************
         * LINKEDIN DATA FETCH
         **************************************************************************/
-        /*
+        /* [Swift 3 Migration] SimpleAuth authentication
         // Create alert to send to user
         let alert = UIAlertController(title: nil, message: "Are you a company?", preferredStyle: UIAlertControllerStyle.Alert)
         
@@ -276,7 +277,60 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
         
         break
         */
-        showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
+        
+        // [Swift 3 Migration] Temporary solution after removing SimpleAuth
+//        showAndProcessUsernameAlert(socialMediaType!, forCell: cell)
+        
+        // Configurations of LinkedIn OAuth2 authentication, to get user's profile ID
+        var loader: OAuth2DataLoader?
+        let oauth2 = OAuth2CodeGrantNoTokenType(settings: [
+          "client_id": "75533hjqfplgv3",
+          "client_secret": "YjzhxmwGJlK4meBA",
+          "authorize_uri": "https://www.linkedin.com/oauth/v2/authorization",
+          "token_uri": "https://www.linkedin.com/oauth/v2/accessToken",
+          "scope": "r_basicprofile",
+          //"redirect_uris": ["http://aquaint"],
+          "redirect_uris": ["http://localhost"],  // a workaround that LinkedIn does not support deeplinks as redirect_uri; the embedded webView can detect redirection to get authorization code in this way
+          "keychain": false,
+          "secret_in_body": true,  // otherwise access token cannot be retrieved due to missing client_id
+          //"verbose": true,
+          ] as OAuth2JSON)
+        
+//        oauth2.logger = OAuth2DebugLogger(.trace)
+        oauth2.authConfig.authorizeEmbedded = true
+        oauth2.authConfig.authorizeContext = self
+        oauth2.authConfig.ui.useSafariView = false
+        
+        loader = OAuth2DataLoader(oauth2: oauth2)
+        
+        // send HTTP request for user profile information
+        let userDataRequest = URLRequest(url: URL(string: "https://api.linkedin.com/v1/people/~?format=json")!)
+        
+        loader!.perform(request: userDataRequest) { response in
+          do {
+            let json = try response.responseJSON()
+            
+            // Apple's standard way of accessing a nested JSON dictionary
+            // https://developer.apple.com/swift/blog/?id=37
+            if let siteStandardProfileRequest = json["siteStandardProfileRequest"] as? [String: Any] {
+              if let profileUrl = siteStandardProfileRequest["url"] as? String {
+                
+                let urlArray = profileUrl.components(separatedBy: "id=")
+                
+                if urlArray.count == 2 {
+                  // This is not a username, but a special ID linkedin generated for us.
+                  let socialMediaName = urlArray[1]
+                  if self.delegate != nil {
+                    self.delegate?.userDidAddNewProfile(socialMediaType!, socialMediaName: socialMediaName)
+                    cell.showSuccessAnimation()
+                  }
+                }
+              }
+            }
+          } catch let error {
+            print("LinkedIn OAuth2 request error: \(error)")
+          }
+        }
         break
       
 
