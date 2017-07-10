@@ -182,7 +182,7 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
     let optionMenu = UIAlertController(title: nil, message: "Choose option", preferredStyle: .actionSheet)
     
     // Select an image from Photo Library to read a QR code
-    let rollAction = UIAlertAction(title: "Choose from Photo Library", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+    let rollAction = UIAlertAction(title: "Photo Library", style: .default, handler: { (alert: UIAlertAction!) -> Void in
 
       self.imagePicker.allowsEditing = false
       self.imagePicker.sourceType = .photoLibrary
@@ -223,8 +223,11 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
       })
     })
     
+    let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    
     optionMenu.addAction(rollAction)
     optionMenu.addAction(cameraAction)
+    optionMenu.addAction(cancelButton)
     self.present(optionMenu, animated: true, completion: {
       awsMobileAnalyticsRecordButtonClickEventTrigger("ScanCodeDisplay - Scan QR Code", forKey: "button_name")
     })
@@ -537,9 +540,14 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
       
       if let qrCodeLink = qrCodeLink {
         // Valid data read from QR code
+        print("QR Code data retrieved from Photo Library Image: \(qrCodeLink)")
         processQRCode(data: qrCodeLink)
       } else {
-        showAlert("Not Found", message: "No valid QR code found in this image; please try another one.", buttonTitle: "OK", sender: self)
+        print("No valid QR code found in this image.")
+        // Note: the UIAlertController should be presented in completion handler; otherwise it will not show up
+        dismiss(animated: true, completion: {
+          showAlert("Not Found", message: "No valid QR code found in this image; please try another one.", buttonTitle: "OK", sender: self)
+        })
       }
     }
     
