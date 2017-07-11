@@ -151,13 +151,12 @@ func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: 
     altString = "http://www.twitter.com/" + socialMediaUserName
     break;
   case "linkedin":
-    /*
     urlString = "linkedin://profile/view?id=" + socialMediaUserName //MAY NOT WORK? (added view?)
     // UPDATE: confirmed urlString does not work even if Linkedin app is installed. altString is automatically used instead
     altString = "https://www.linkedin.com/profile/view?id=" + socialMediaUserName
-    */
-    // temporary solution for user manually entering URL in popup
-    urlString = socialMediaUserName
+ 
+    // [Swift 3 Migration] temporary solution for user manually entering URL in popup
+//    urlString = socialMediaUserName
     break;
     
   case "youtube":

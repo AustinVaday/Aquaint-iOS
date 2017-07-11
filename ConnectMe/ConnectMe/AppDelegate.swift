@@ -11,6 +11,7 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 //import SimpleAuth
+import p2_OAuth2
 import AWSCore
 import AWSCognito
 import AWSCognitoIdentityProvider
@@ -155,7 +156,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AWSCognitoIdentityInterac
       "consumer_secret": "aOWaAIe92RsV0ddP3yEDQLCwgF307CXOlyngosvbE28DLGCYVm"
     ]
    */
-
+    
     // Connect to Amazon Core Services
     /* let credentialsProvider = AWSCognitoCredentialsProvider(
       regionType: AWSRegionType.USEast1,
