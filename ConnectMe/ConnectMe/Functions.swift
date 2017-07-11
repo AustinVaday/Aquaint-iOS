@@ -129,8 +129,10 @@ func getSocialMediaDisplayName(_ socialMediaType: String) -> String
 // Necessary for fetching username URLs
 func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: String!, sender: AnyObject) -> URL!
 {
-  var urlString = ""
-  var altString = ""
+//  var urlString = ""
+//  var altString = ""
+  var urlString: String?
+  var altString: String?
   
   switch (socialMediaTypeName)
   {
@@ -196,6 +198,20 @@ func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: 
     break;
   }
   
+  var socialMediaURL: URL?
+  
+  if let urlString = urlString, let deeplinkURL = URL(string: urlString) {
+    if (UIApplication.shared.canOpenURL(deeplinkURL)) {
+      socialMediaURL = deeplinkURL
+    }
+  } else {
+    if let altString = altString, let browserURL = URL(string: altString) {
+      socialMediaURL = browserURL
+    }
+  }
+  
+  // the following logic is refactored above using Swift optional chaining
+  /*
   var socialMediaURL = URL(string: urlString)
   
   // If user doesn't have social media app installed, open using default browser instead (use altString)
@@ -224,8 +240,9 @@ func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: 
       return nil
     }
   }
-  
   print("SOCIAL MEDIA URL IS: ", socialMediaURL)
+  */
+  
   return socialMediaURL
 }
 

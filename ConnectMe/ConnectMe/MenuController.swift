@@ -433,12 +433,11 @@ class MenuController: UIViewController, UITableViewDataSource, UITableViewDelega
       let socialMediaUserName = cell.socialMediaName
       let socialMediaType = cell.socialMediaType
       
-      let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self)
-      
       // Perform the request, go to external application and let the user do whatever they want!
-      if socialMediaURL != nil
-      {
-        UIApplication.shared.openURL(socialMediaURL!)
+      if let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self) {
+        UIApplication.shared.openURL(socialMediaURL)
+      } else {
+        showAlert("Unable to Open", message: "Unable to open the current social media profile; please contact the developers for more information.", buttonTitle: "OK", sender: self)
       }
     }
   }
