@@ -456,30 +456,32 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
     print("URL PATH COMPONENTS: ", url?.pathComponents)
     print("URL LAST PATH COMP:", url?.lastPathComponent)
     
-    // Check if host of QR code is ours, else we do not process
-    if url?.host == "www.aquaint.us" {
-      
-      // Check if scan code should be processed now #1: keep the PROCESSING_INTERVAL check to give the first user profile popup enough time to be fully shown
-      // Moving to check #2 after the isShowingUserProfilePopup flag is set
-      if let scanCodeProcessedTime = lastScanCodeProcessedTime {
-        let currentDate = Date.init()
-        if (currentDate.timeIntervalSince(scanCodeProcessedTime) <= SCAN_CODE_PROCESSING_INTERVAL) {
-          print("scanCodeDisplay(): PROCESSING_INTERVAL: scan code is already processed; ignore current request.")
-          return;
-        } else {
-          lastScanCodeProcessedTime = Date.init()
-        }
+    
+    // Check if scan code should be processed now #1: keep the PROCESSING_INTERVAL check to give the first user profile popup enough time to be fully shown
+    // Moving to check #2 after the isShowingUserProfilePopup flag is set
+    if let scanCodeProcessedTime = lastScanCodeProcessedTime {
+      let currentDate = Date.init()
+      if (currentDate.timeIntervalSince(scanCodeProcessedTime) <= SCAN_CODE_PROCESSING_INTERVAL) {
+        print("scanCodeDisplay(): PROCESSING_INTERVAL: scan code is already processed; ignore current request.")
+        return;
       } else {
         lastScanCodeProcessedTime = Date.init()
       }
-      
-      // Check if scan code should be processed now #2
-      if isShowingUserProfilePopup == true {
-        print ("scanCodeDisplay(): isShowingUserProfilePopup: scan code is already processed; ignore current request.")
-        return
-      } else {
-        print ("scanCodeDisplay(): processing current code scan...")
-      }
+    } else {
+      // this is the first time a QR code is scanned since app launch
+      lastScanCodeProcessedTime = Date.init()
+    }
+    
+    // Check if scan code should be processed now #2
+    if isShowingUserProfilePopup == true {
+      print ("scanCodeDisplay(): isShowingUserProfilePopup: scan code is already processed; ignore current request.")
+      return
+    } else {
+      print ("scanCodeDisplay(): processing current code scan...")
+    }
+
+    // Go ahead and process the current code scan
+    if url?.host == "www.aquaint.us" {
       
       userName = url?.lastPathComponent
       
@@ -518,8 +520,16 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
       // Present only if not presented
       if self.presentingViewController?.presentedViewController == nil {
         self.present(webDisplayVC, animated: true, completion: nil)
-        awsMobileAnalyticsRecordPageVisitEventTrigger("ScanCodeDisplay - Generic QR Scan", forKey: "page_name")
       }
+      /*
+      else if (self.presentingViewController?.presentedViewController is UIImagePickerController) {
+        dismiss(animated: true, completion: {
+          self.present(webDisplayVC, animated: true, completion: nil)
+        })
+      }
+      */
+      
+      awsMobileAnalyticsRecordPageVisitEventTrigger("ScanCodeDisplay - Generic QR Scan", forKey: "page_name")
     }
   }
   
@@ -541,7 +551,11 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
       if let qrCodeLink = qrCodeLink {
         // Valid data read from QR code
         print("QR Code data retrieved from Photo Library Image: \(qrCodeLink)")
-        processQRCode(data: qrCodeLink)
+        // In case a ReusableWebViewController is going to be shown, the function must be called after UIImagePickerController is dismissed,
+        // in order to properly construct view hierarchy
+        dismiss(animated: true, completion: {
+          self.processQRCode(data: qrCodeLink)
+        })
       } else {
         print("No valid QR code found in this image.")
         // Note: the UIAlertController should be presented in completion handler; otherwise it will not show up
