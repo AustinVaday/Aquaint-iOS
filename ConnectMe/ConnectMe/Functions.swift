@@ -137,46 +137,62 @@ func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: 
   switch (socialMediaTypeName)
   {
   case "facebook":
-    //        urlString = "fb://requests/" + socialMediaUserName
+//    urlString = "fb://requests/" + socialMediaUserName
+    urlString = "fb://profile/" + socialMediaUserName
     altString = "http://www.facebook.com/" + socialMediaUserName
     break;
+    
   case "snapchat":
     urlString = "snapchat://add/" + socialMediaUserName
     altString = "http://www.snapchat.com/add/" + socialMediaUserName
     break;
+    
   case "instagram":
     urlString = "instagram://user?username=" + socialMediaUserName
     altString = "http://www.instagram.com/" + socialMediaUserName
     break;
+    
   case "twitter":
     urlString = "twitter:///user?screen_name=" + socialMediaUserName
     altString = "http://www.twitter.com/" + socialMediaUserName
     break;
+    
   case "linkedin":
-    urlString = "linkedin://profile/view?id=" + socialMediaUserName //MAY NOT WORK? (added view?)
+//    urlString = "linkedin://profile/view?id=" + socialMediaUserName //MAY NOT WORK? (added view?)
     // UPDATE: confirmed urlString does not work even if Linkedin app is installed. altString is automatically used instead
+    urlString = "linkedin://profile?id=" + socialMediaUserName
     altString = "https://www.linkedin.com/profile/view?id=" + socialMediaUserName
- 
     // [Swift 3 Migration] temporary solution for user manually entering URL in popup
 //    urlString = socialMediaUserName
     break;
     
   case "youtube":
-    urlString = "youtube:www.youtube.com/user/" + socialMediaUserName
+//    urlString = "youtube:www.youtube.com/user/" + socialMediaUserName
+    urlString = "vnd.youtube://user/" + socialMediaUserName
     altString = "http://www.youtube.com/" + socialMediaUserName
     break;
+    
   case "soundcloud":
-    //        urlString = "soundcloud://users/" + socialMediaUserName
+//    urlString = "soundcloud://users/" + socialMediaUserName
     altString = "http://www.soundcloud.com/" + socialMediaUserName
+    break;
+    
   case "tumblr":
     urlString = "tumblr://x-callback-url/blog?blogName=" + socialMediaUserName
     altString = "http://" + socialMediaUserName + ".tumblr.com"
+    break;
+    
   case "ios":
     urlString  = socialMediaUserName
+    break;
+    
   case "android":
     urlString  = socialMediaUserName
+    break;
+    
   case "website":
     urlString  = socialMediaUserName
+    break;
     
     //                contact.familyName = "Vaday"
     //                contact.givenName  = "Austin"
