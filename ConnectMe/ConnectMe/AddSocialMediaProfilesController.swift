@@ -90,7 +90,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
           login.loginBehavior = FBSDKLoginBehavior.native
           
           // Request basic profile permissions just to get user ID. UPDATE: also get friends list for 'find friends via facebook' feature
-          login.logIn(withPublishPermissions: ["public_profile", "user_friends" /*, "manage_pages"*/], from: self) { (result, error) in
+          login.logIn(withReadPermissions: ["public_profile", "user_friends" /*, "manage_pages"*/], from: self) { (result, error) in
             // If no error, store facebook user ID
             if (error == nil && result != nil) {
               print("SUCCESS LOG IN!", result.debugDescription)

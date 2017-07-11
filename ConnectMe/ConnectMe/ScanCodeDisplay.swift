@@ -11,7 +11,7 @@ import AVFoundation
 import CoreGraphics
 import AWSLambda
 
-class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   
   @IBOutlet weak var profileViewsCountNumber: UILabel!
   @IBOutlet weak var profileViewsCountLabel: UILabel!
@@ -49,6 +49,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   let whiteSeparator = UIImage(named: "Line Separator")
   let reusableWebViewStoryboard = UIStoryboard(name: "ReusableWebView", bundle: nil)
 
+  let imagePicker = UIImagePickerController()  // choose QR code from Photo Library
+  
   let supportedCodeTypes = [AVMetadataObjectTypeUPCECode,
                             AVMetadataObjectTypeCode39Code,
                             AVMetadataObjectTypeCode39Mod43Code,
@@ -64,6 +66,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   let SCAN_CODE_PROCESSING_INTERVAL = 3.0  // this should be the maximum time taken to fully show the KLCPopup, so that we guarantee its completion handler is called
   var isShowingUserProfilePopup = false
 
+
+  
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     
@@ -75,6 +79,9 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    // Set up delegate of UIImagePickerController to handle processing of QR codes from Photo Library
+    imagePicker.delegate = self
     
     defaultCameraView = cameraView
     
@@ -171,9 +178,24 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
   }
   
   @IBAction func onCameraButtonClicked(_ sender: AnyObject) {
-    // Perform update on UI on main thread
-    DispatchQueue.main.async(execute: { () -> Void in
-      UIView.transition(with: self.scanCodeImageView, duration: 1, options: UIViewAnimationOptions.transitionCrossDissolve, animations: { () -> Void in
+    
+    let optionMenu = UIAlertController(title: nil, message: "Choose option", preferredStyle: .actionSheet)
+    
+    // Select an image from Photo Library to read a QR code
+    let rollAction = UIAlertAction(title: "Photo Library", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+
+      self.imagePicker.allowsEditing = false
+      self.imagePicker.sourceType = .photoLibrary
+      
+      self.present(self.imagePicker, animated: true, completion: nil)
+      
+    })
+    
+    // Open back camera to start capture QR codes
+    let cameraAction = UIAlertAction(title: "Camera", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+      // Perform update on UI on main thread
+      DispatchQueue.main.async(execute: { () -> Void in
+        UIView.transition(with: self.scanCodeImageView, duration: 1, options: UIViewAnimationOptions.transitionCrossDissolve, animations: { () -> Void in
           self.scanCodeImageView.isHidden = true
           self.maskView.isHidden = false
           self.exportButton.isHidden = true
@@ -189,18 +211,26 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
           self.cameraButton.isHidden = true
           self.exitButton.isHidden = false
           self.usernameLabel.isHidden = true
-        
+          
         }, completion: { (status) in
           // Show camera view
           DispatchQueue.main.async(execute: {
-              self.cameraView.isHidden = false
-              self.setUpCameraDisplay()
+            self.cameraView.isHidden = false
+            self.setUpCameraDisplay()
           })
         })
-
+        
+      })
     })
-
-    awsMobileAnalyticsRecordButtonClickEventTrigger("ScanCodeDisplay - Scan QR Code", forKey: "button_name")
+    
+    let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    
+    optionMenu.addAction(rollAction)
+    optionMenu.addAction(cameraAction)
+    optionMenu.addAction(cancelButton)
+    self.present(optionMenu, animated: true, completion: {
+      awsMobileAnalyticsRecordButtonClickEventTrigger("ScanCodeDisplay - Scan QR Code", forKey: "button_name")
+    })
     
   }
   
@@ -407,87 +437,125 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate 
       let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
       qrCodeFrameView?.frame = barCodeObject!.bounds
     
-      if metadataObj.stringValue != nil {
-        
-        //GOAL: PARSE www.aquaint.us/user/[DATA]
-        //NOTE: This has been tested and should work.
-        let scancodeString = metadataObj.stringValue
-        let url = URL(string: scancodeString!)
-        var userName: String!
-        
-        print("URL HOST: ", url?.host)
-        print("URL PATH: ", url?.path)
-        print("URL PATH COMPONENTS: ", url?.pathComponents)
-        print("URL LAST PATH COMP:", url?.lastPathComponent)
-        
-        // Check if host of QR code is ours, else we do not process
-        if url?.host == "www.aquaint.us" {
-          
-          // Check if scan code should be processed now #1: keep the PROCESSING_INTERVAL check to give the first user profile popup enough time to be fully shown
-          // Moving to check #2 after the isShowingUserProfilePopup flag is set
-          if let scanCodeProcessedTime = lastScanCodeProcessedTime {
-            let currentDate = Date.init()
-            if (currentDate.timeIntervalSince(scanCodeProcessedTime) <= SCAN_CODE_PROCESSING_INTERVAL) {
-                print("scanCodeDisplay(): PROCESSING_INTERVAL: scan code is already processed; ignore current request.")
-                return;
-              } else {
-                lastScanCodeProcessedTime = Date.init()
-              }
-          } else {
-            lastScanCodeProcessedTime = Date.init()
-          }
-          
-          // Check if scan code should be processed now #2
-          if isShowingUserProfilePopup == true {
-            print ("scanCodeDisplay(): isShowingUserProfilePopup: scan code is already processed; ignore current request.")
-            return
-          } else {
-            print ("scanCodeDisplay(): processing current code scan...")
-          }
-          
-          userName = url?.lastPathComponent
-          
-          // Check if extracted username is a valid aquaint username
-          if verifyUserNameFormat(userName) && verifyUserNameLength(userName) {
-            DispatchQueue.main.async(execute: { 
-              showPopupForUserFromScanCode(userName, me: getCurrentCachedUser(), sender: self)
-              
-              // Send view trigger (Code Scans) to Google Analytics
-              let tracker = GAI.sharedInstance().defaultTracker
-              let GApageName = "/user/" + userName + "/iOS/scan"
-              tracker?.set(kGAIPage, value: GApageName)
-              
-              let builder = GAIDictionaryBuilder.createScreenView()
-              tracker?.send(builder?.build() as! [AnyHashable: Any])
-              
-              print("scanCodeDisplay(): trigger Google Analytics for Code Scan: \(GApageName)")
-              awsMobileAnalyticsRecordPageVisitEventTrigger("ScanCodeDisplay - Aquaint QR Scan", forKey: "page_name")
-
-            })
-          } else {
-            print ("Error, could not verify proper username format")
-          }
-          
-
-        }
-        else {
-          
-          // Show URL in browser
-          let reusableWebViewStoryboard = UIStoryboard(name: "ReusableWebView", bundle: nil)
-          let webDisplayVC = reusableWebViewStoryboard.instantiateViewController(withIdentifier: "reusableWebViewController") as! ReusableWebViewController
-          webDisplayVC.webTitle = url?.host
-          webDisplayVC.webURL = url?.absoluteString
-          webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-          
-          // Present only if not presented
-          if self.presentingViewController?.presentedViewController == nil {
-            self.present(webDisplayVC, animated: true, completion: nil)
-            awsMobileAnalyticsRecordPageVisitEventTrigger("ScanCodeDisplay - Generic QR Scan", forKey: "page_name")
-          }
-        }
-        
+      if let codeString = metadataObj.stringValue {
+        // Data inside QR code is read; go ahead and pop up user profile
+        processQRCode(data: codeString)
       }
     }
   }
 
+  func processQRCode(data: String) {
+    //GOAL: PARSE www.aquaint.us/user/[DATA]
+    //NOTE: This has been tested and should work.
+    let scancodeString = data
+    let url = URL(string: scancodeString)
+    var userName: String!
+    
+    print("URL HOST: ", url?.host)
+    print("URL PATH: ", url?.path)
+    print("URL PATH COMPONENTS: ", url?.pathComponents)
+    print("URL LAST PATH COMP:", url?.lastPathComponent)
+    
+    // Check if host of QR code is ours, else we do not process
+    if url?.host == "www.aquaint.us" {
+      
+      // Check if scan code should be processed now #1: keep the PROCESSING_INTERVAL check to give the first user profile popup enough time to be fully shown
+      // Moving to check #2 after the isShowingUserProfilePopup flag is set
+      if let scanCodeProcessedTime = lastScanCodeProcessedTime {
+        let currentDate = Date.init()
+        if (currentDate.timeIntervalSince(scanCodeProcessedTime) <= SCAN_CODE_PROCESSING_INTERVAL) {
+          print("scanCodeDisplay(): PROCESSING_INTERVAL: scan code is already processed; ignore current request.")
+          return;
+        } else {
+          lastScanCodeProcessedTime = Date.init()
+        }
+      } else {
+        lastScanCodeProcessedTime = Date.init()
+      }
+      
+      // Check if scan code should be processed now #2
+      if isShowingUserProfilePopup == true {
+        print ("scanCodeDisplay(): isShowingUserProfilePopup: scan code is already processed; ignore current request.")
+        return
+      } else {
+        print ("scanCodeDisplay(): processing current code scan...")
+      }
+      
+      userName = url?.lastPathComponent
+      
+      // Check if extracted username is a valid aquaint username
+      if verifyUserNameFormat(userName) && verifyUserNameLength(userName) {
+        DispatchQueue.main.async(execute: {
+          showPopupForUserFromScanCode(userName, me: getCurrentCachedUser(), sender: self)
+          
+          // Send view trigger (Code Scans) to Google Analytics
+          let tracker = GAI.sharedInstance().defaultTracker
+          let GApageName = "/user/" + userName + "/iOS/scan"
+          tracker?.set(kGAIPage, value: GApageName)
+          
+          let builder = GAIDictionaryBuilder.createScreenView()
+          tracker?.send(builder?.build() as! [AnyHashable: Any])
+          
+          print("scanCodeDisplay(): trigger Google Analytics for Code Scan: \(GApageName)")
+          awsMobileAnalyticsRecordPageVisitEventTrigger("ScanCodeDisplay - Aquaint QR Scan", forKey: "page_name")
+          
+        })
+      } else {
+        print ("Error, could not verify proper username format")
+      }
+      
+      
+    }
+    else {
+      
+      // Show URL in browser
+      let reusableWebViewStoryboard = UIStoryboard(name: "ReusableWebView", bundle: nil)
+      let webDisplayVC = reusableWebViewStoryboard.instantiateViewController(withIdentifier: "reusableWebViewController") as! ReusableWebViewController
+      webDisplayVC.webTitle = url?.host
+      webDisplayVC.webURL = url?.absoluteString
+      webDisplayVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+      
+      // Present only if not presented
+      if self.presentingViewController?.presentedViewController == nil {
+        self.present(webDisplayVC, animated: true, completion: nil)
+        awsMobileAnalyticsRecordPageVisitEventTrigger("ScanCodeDisplay - Generic QR Scan", forKey: "page_name")
+      }
+    }
+  }
+  
+  // MARK: - UIImagePickerControllerDelegate
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+      // Read QR code from the selected image if there is any
+      var qrCodeLink: String?
+      
+      let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])
+      let ciImage = CIImage(image: pickedImage)!
+      
+      let imageFeatures = detector?.features(in: ciImage)
+      for feature in imageFeatures as! [CIQRCodeFeature] {
+        qrCodeLink = feature.messageString
+        break
+      }
+      
+      if let qrCodeLink = qrCodeLink {
+        // Valid data read from QR code
+        print("QR Code data retrieved from Photo Library Image: \(qrCodeLink)")
+        processQRCode(data: qrCodeLink)
+      } else {
+        print("No valid QR code found in this image.")
+        // Note: the UIAlertController should be presented in completion handler; otherwise it will not show up
+        dismiss(animated: true, completion: {
+          showAlert("Not Found", message: "No valid QR code found in this image; please try another one.", buttonTitle: "OK", sender: self)
+        })
+      }
+    }
+    
+    // According to Apple, our delegate’s implementation of this method should dismiss the picker view
+    dismiss(animated: true, completion: nil)
+  }
+  
+  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    dismiss(animated: true, completion: nil)
+  }
 }
