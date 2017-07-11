@@ -199,7 +199,7 @@ func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: 
   var socialMediaURL = URL(string: urlString)
   
   // If user doesn't have social media app installed, open using default browser instead (use altString)
-  if (!UIApplication.shared.canOpenURL(socialMediaURL!))
+  if (socialMediaURL == nil || !UIApplication.shared.canOpenURL(socialMediaURL!))
   {
     if (altString != "")
     {
