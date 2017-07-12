@@ -401,19 +401,19 @@ class ProfilePopupView: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         while ((topVC!.presentedViewController) != nil) {
           topVC = topVC!.presentedViewController
         }
-        let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: topVC!)
         
-        // Send trigger to Google Analytics
+        // Perform the request, go to external application and let the user do whatever they want!
+        if let socialMediaURL = getUserSocialMediaURL(socialMediaUserName, socialMediaTypeName: socialMediaType, sender: self) {
+          UIApplication.shared.openURL(socialMediaURL)
+        } else {
+          showAlert("Unable to Open", message: "Unable to open the current social media profile; please contact the developers for more information.", buttonTitle: "OK", sender: self)
+        }
+        
+        // Send trigger to Google Analytics and AWS Mobile Analytics
         let tracker = GAI.sharedInstance().defaultTracker
         tracker?.set(kGAIPage, value: GApageName)
         let builder = GAIDictionaryBuilder.createEvent(withCategory: "SocialClicksMobile", action: "click", label: cell.socialMediaType, value: nil)
         tracker?.send(builder?.build() as! [AnyHashable: Any])
-        
-        // Perform the request, go to external application and let the user do whatever they want!
-        if socialMediaURL != nil
-        {
-            UIApplication.shared.openURL(socialMediaURL!)
-        }
         
         awsMobileAnalyticsRecordButtonClickEventTrigger("ProfilePopupView - Profile Click", forKey: "button_name")
 

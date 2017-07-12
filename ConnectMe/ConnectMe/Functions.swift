@@ -129,52 +129,74 @@ func getSocialMediaDisplayName(_ socialMediaType: String) -> String
 // Necessary for fetching username URLs
 func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: String!, sender: AnyObject) -> URL!
 {
-  var urlString = ""
-  var altString = ""
+//  var urlString = ""
+//  var altString = ""
+  var urlString: String?
+  var altString: String?
   
   switch (socialMediaTypeName)
   {
   case "facebook":
-    //        urlString = "fb://requests/" + socialMediaUserName
+    // TODO: the user_id we got in Facebook iOS SDK is app_scoped_user_id, which only works for web broswer but not deep linking
+    // See: https://developers.facebook.com/bugs/1440071379594553/
+    // https://stackoverflow.com/questions/26437664/how-to-open-someones-profile-page-with-their-app-scope-id-in-native-ios-faceboo#
+//    urlString = "fb://profile/" + socialMediaUserName
+//    urlString = "fb://profile?app_scoped_user_id=" + socialMediaUserName  // this leads to the user's own Facebook profile, where Aquaint has been authorized
     altString = "http://www.facebook.com/" + socialMediaUserName
     break;
+    
   case "snapchat":
     urlString = "snapchat://add/" + socialMediaUserName
     altString = "http://www.snapchat.com/add/" + socialMediaUserName
     break;
+    
   case "instagram":
     urlString = "instagram://user?username=" + socialMediaUserName
     altString = "http://www.instagram.com/" + socialMediaUserName
     break;
+    
   case "twitter":
     urlString = "twitter:///user?screen_name=" + socialMediaUserName
     altString = "http://www.twitter.com/" + socialMediaUserName
     break;
+    
   case "linkedin":
-    urlString = "linkedin://profile/view?id=" + socialMediaUserName //MAY NOT WORK? (added view?)
-    // UPDATE: confirmed urlString does not work even if Linkedin app is installed. altString is automatically used instead
+    // TODO: deep linking does not work currently
+//    urlString = "linkedin://profile/view?id=" + socialMediaUserName //MAY NOT WORK? (added view?)
+//    urlString = "linkedin://profile?id=" + socialMediaUserName
+//    urlString = "linkedin://profile/" + socialMediaUserName
     altString = "https://www.linkedin.com/profile/view?id=" + socialMediaUserName
- 
     // [Swift 3 Migration] temporary solution for user manually entering URL in popup
 //    urlString = socialMediaUserName
     break;
     
   case "youtube":
-    urlString = "youtube:www.youtube.com/user/" + socialMediaUserName
+//    urlString = "youtube:www.youtube.com/user/" + socialMediaUserName
+    urlString = "vnd.youtube://user/" + socialMediaUserName
     altString = "http://www.youtube.com/" + socialMediaUserName
     break;
+    
   case "soundcloud":
-    //        urlString = "soundcloud://users/" + socialMediaUserName
+//    urlString = "soundcloud://users/" + socialMediaUserName
     altString = "http://www.soundcloud.com/" + socialMediaUserName
+    break;
+    
   case "tumblr":
     urlString = "tumblr://x-callback-url/blog?blogName=" + socialMediaUserName
     altString = "http://" + socialMediaUserName + ".tumblr.com"
+    break;
+    
   case "ios":
     urlString  = socialMediaUserName
+    break;
+    
   case "android":
     urlString  = socialMediaUserName
+    break;
+    
   case "website":
     urlString  = socialMediaUserName
+    break;
     
     //                contact.familyName = "Vaday"
     //                contact.givenName  = "Austin"
@@ -190,16 +212,27 @@ func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: 
     //
     
     //                return
-    
-    break;
+
   default:
     break;
   }
   
+  var socialMediaURL: URL?
+  
+  if let urlString = urlString, let deeplinkURL = URL(string: urlString), UIApplication.shared.canOpenURL(deeplinkURL) {
+      socialMediaURL = deeplinkURL
+  } else {
+    if let altString = altString, let browserURL = URL(string: altString) {
+      socialMediaURL = browserURL
+    }
+  }
+  
+  // the following logic is refactored above using Swift optional chaining
+  /*
   var socialMediaURL = URL(string: urlString)
   
   // If user doesn't have social media app installed, open using default browser instead (use altString)
-  if (!UIApplication.shared.canOpenURL(socialMediaURL!))
+  if (socialMediaURL == nil || !UIApplication.shared.canOpenURL(socialMediaURL!))
   {
     if (altString != "")
     {
@@ -224,8 +257,9 @@ func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: 
       return nil
     }
   }
-  
   print("SOCIAL MEDIA URL IS: ", socialMediaURL)
+  */
+  
   return socialMediaURL
 }
 
@@ -527,7 +561,11 @@ func showAlert(_ title: String, message: String, buttonTitle: String, sender: An
   // Add the action to the alert
   alert.addAction(alertAction)
   
-  sender.show(alert, sender: nil)
+  // Show the alert only when the parent view is an instance of UIViewController
+  // passing ProfilePopUpView as sender is a common mistake before, which causes many crashes
+  if (sender is UIViewController) {
+    sender.show(alert, sender: nil)
+  }
 }
 
 
