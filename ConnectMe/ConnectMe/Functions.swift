@@ -561,7 +561,11 @@ func showAlert(_ title: String, message: String, buttonTitle: String, sender: An
   // Add the action to the alert
   alert.addAction(alertAction)
   
-  sender.show(alert, sender: nil)
+  // Show the alert only when the parent view is an instance of UIViewController
+  // passing ProfilePopUpView as sender is a common mistake before, which causes many crashes
+  if (sender is UIViewController) {
+    sender.show(alert, sender: nil)
+  }
 }
 
 
