@@ -137,8 +137,11 @@ func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: 
   switch (socialMediaTypeName)
   {
   case "facebook":
-//    urlString = "fb://requests/" + socialMediaUserName
-    urlString = "fb://profile/" + socialMediaUserName
+    // TODO: the user_id we got in Facebook iOS SDK is app_scoped_user_id, which only works for web broswer but not deep linking
+    // See: https://developers.facebook.com/bugs/1440071379594553/
+    // https://stackoverflow.com/questions/26437664/how-to-open-someones-profile-page-with-their-app-scope-id-in-native-ios-faceboo#
+//    urlString = "fb://profile/" + socialMediaUserName
+//    urlString = "fb://profile?app_scoped_user_id=" + socialMediaUserName  // this leads to the user's own Facebook profile, where Aquaint has been authorized
     altString = "http://www.facebook.com/" + socialMediaUserName
     break;
     
@@ -158,9 +161,10 @@ func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: 
     break;
     
   case "linkedin":
+    // TODO: deep linking does not work currently
 //    urlString = "linkedin://profile/view?id=" + socialMediaUserName //MAY NOT WORK? (added view?)
-    // UPDATE: confirmed urlString does not work even if Linkedin app is installed. altString is automatically used instead
-    urlString = "linkedin://profile?id=" + socialMediaUserName
+//    urlString = "linkedin://profile?id=" + socialMediaUserName
+//    urlString = "linkedin://profile/" + socialMediaUserName
     altString = "https://www.linkedin.com/profile/view?id=" + socialMediaUserName
     // [Swift 3 Migration] temporary solution for user manually entering URL in popup
 //    urlString = socialMediaUserName
@@ -208,18 +212,15 @@ func getUserSocialMediaURL(_ socialMediaUserName: String!, socialMediaTypeName: 
     //
     
     //                return
-    
-    break;
+
   default:
     break;
   }
   
   var socialMediaURL: URL?
   
-  if let urlString = urlString, let deeplinkURL = URL(string: urlString) {
-    if (UIApplication.shared.canOpenURL(deeplinkURL)) {
+  if let urlString = urlString, let deeplinkURL = URL(string: urlString), UIApplication.shared.canOpenURL(deeplinkURL) {
       socialMediaURL = deeplinkURL
-    }
   } else {
     if let altString = altString, let browserURL = URL(string: altString) {
       socialMediaURL = browserURL
