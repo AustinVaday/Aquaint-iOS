@@ -794,6 +794,7 @@ class AddSocialMediaProfilesController: ViewControllerPannable, UITableViewDeleg
     textField.textAlignment = NSTextAlignment.center
     textField.autocorrectionType = .no
     textField.autocapitalizationType = .none
+    textField.becomeFirstResponder()
     
     if socialMediaType == "website" {
       textField.placeholder   = "Enter Website URL"
