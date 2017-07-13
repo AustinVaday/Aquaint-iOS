@@ -15,25 +15,13 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
   
   @IBOutlet weak var profileViewsCountNumber: UILabel!
   @IBOutlet weak var profileViewsCountLabel: UILabel!
-  
   @IBOutlet weak var engagementCountNumber: UILabel!
   @IBOutlet weak var engagementCountLabel: UILabel!
-  
-  @IBOutlet weak var codeScansCountNumber: UILabel!
-  @IBOutlet weak var codeScansCountLabel: UILabel!
-  
   @IBOutlet weak var maskView: CutTransparentHoleInView!
   @IBOutlet weak var cameraView: UIView!
-//  @IBOutlet weak var userNameLabel: UILabel!
   @IBOutlet weak var scanCodeImageView: UIImageView!
-  
-  @IBOutlet weak var firstLineSeparator: UIImageView!
-  @IBOutlet weak var secondLineSeparator: UIImageView!
   @IBOutlet weak var thirdLineSeparator: UIImageView!
-  
-  @IBOutlet weak var cameraButton: UIButton!
   @IBOutlet weak var exitButton: UIButton!
-  @IBOutlet weak var exportButton: UIButton!
   @IBOutlet weak var animationView: UIView!
   @IBOutlet weak var usernameLabel: UILabel!
   
@@ -198,17 +186,11 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
         UIView.transition(with: self.scanCodeImageView, duration: 1, options: UIViewAnimationOptions.transitionCrossDissolve, animations: { () -> Void in
           self.scanCodeImageView.isHidden = true
           self.maskView.isHidden = false
-          self.exportButton.isHidden = true
           self.profileViewsCountLabel.textColor = UIColor.white
           self.profileViewsCountNumber.textColor = UIColor.white
           self.engagementCountLabel.textColor = UIColor.white
           self.engagementCountNumber.textColor = UIColor.white
-          self.codeScansCountLabel.textColor = UIColor.white
-          self.codeScansCountNumber.textColor = UIColor.white
-          self.firstLineSeparator.image = self.whiteSeparator
-          self.secondLineSeparator.image = self.whiteSeparator
           self.thirdLineSeparator.image = self.whiteSeparator
-          self.cameraButton.isHidden = true
           self.exitButton.isHidden = false
           self.usernameLabel.isHidden = true
           
@@ -237,17 +219,11 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
   @IBAction func onExitButtonClicked(_ sender: AnyObject) {
     self.scanCodeImageView.isHidden = false
     self.maskView.isHidden = true
-    self.exportButton.isHidden = false
     self.profileViewsCountNumber.textColor = self.aquaBlue
     self.profileViewsCountLabel.textColor = self.aquaBlue
-    self.codeScansCountNumber.textColor = self.aquaBlue
-    self.codeScansCountLabel.textColor = self.aquaBlue
     self.engagementCountNumber.textColor = self.aquaBlue
     self.engagementCountLabel.textColor = self.aquaBlue
-    self.firstLineSeparator.image = self.blackSeparator
-    self.secondLineSeparator.image = self.blackSeparator
     self.thirdLineSeparator.image = self.blackSeparator
-    self.cameraButton.isHidden = false
     self.exitButton.isHidden = true
     self.usernameLabel.isHidden = false
     
@@ -387,20 +363,20 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
       return nil
     }
     
-    parameters = ["action":"getUserCodeScans", "target": username]
-    
-    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
-      if resultTask.error == nil && resultTask.result != nil
-      {
-        print("Result task for getUserCodeScans is: ", resultTask.result!)
-        DispatchQueue.main.async(execute: {
-          let number = resultTask.result as? Int
-          self.codeScansCountNumber.text  = String(number!)
-        })
-      }
-      
-      return nil
-    }
+//    parameters = ["action":"getUserCodeScans", "target": username]
+//    
+//    lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
+//      if resultTask.error == nil && resultTask.result != nil
+//      {
+//        print("Result task for getUserCodeScans is: ", resultTask.result!)
+//        DispatchQueue.main.async(execute: {
+//          let number = resultTask.result as? Int
+//          self.codeScansCountNumber.text  = String(number!)
+//        })
+//      }
+//      
+//      return nil
+//    }
     
     parameters = ["action":"getUserTotalEngagements", "target": username]
     lambdaInvoker.invokeFunction("mock_api", jsonObject: parameters).continueWith { (resultTask) -> AnyObject? in
