@@ -315,7 +315,6 @@ class LogInController: ViewControllerPannable, AWSCognitoIdentityPasswordAuthent
                     
                     delay(1.5)
                     {
-                        
                         self.performSegue(withIdentifier: self.segueDestination, sender: nil)
                         // Enable the log-in button again
                         self.logInButton.isEnabled = true

@@ -61,8 +61,6 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
     
     // Generate data right when object is generated
     updateAnalyticsDisplayValues()
-
-    
   }
   
   override func viewDidLoad() {
@@ -70,11 +68,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
     
     // Set up delegate of UIImagePickerController to handle processing of QR codes from Photo Library
     imagePicker.delegate = self
-    
     defaultCameraView = cameraView
     
-//    updateAnalyticsDisplayValues()
-
     maskView.transparentHoleView = self.scanCodeImageView
     maskView.draw(maskView.frame)
     
@@ -83,8 +78,6 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
     if currentUser != nil {
       usernameLabel.text = currentUser
     }
-    
-//    fetchUserScanCode()
     
     // TEMP FIX: When user initially logs in (and doesn't have a scan code), some race conditions may occur where the code is not ready to fetch before we display. Add a delay to fix this if it does happen
     delay(2.0) {
@@ -95,12 +88,8 @@ class ScanCodeDisplay: UIViewController, AVCaptureMetadataOutputObjectsDelegate,
   
   override func viewDidAppear(_ animated: Bool) {
     setUpSocialMediaAnimations(self, subView: self.animationView, animatedObjects: &animatedObjects, animationLocation: AnimationLocation.bottom, theme: AnimationAquaintEmblemTheme.darkTheme)
-//    updateAnalyticsDisplayValues()
-    
     fetchUserScanCode()
-    
     updateAnalyticsDisplayValues()
-
     awsMobileAnalyticsRecordPageVisitEventTrigger("ScanCodeDisplay", forKey: "page_name")
     
   }

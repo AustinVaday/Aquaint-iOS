@@ -13,7 +13,6 @@ class ScanCodeDisplayStoryboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
       
-      DispatchQueue.main.async { 
         // Get our special popup design from the XIB
         let storyboard = UIStoryboard(name: "ScanCodeDisplay", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "ScanCodeDisplayViewController") as! ScanCodeDisplay
@@ -25,8 +24,6 @@ class ScanCodeDisplayStoryboardViewController: UIViewController {
 
         self.addChildViewController(viewController)
         viewController.didMove(toParentViewController: self)
-
-      }
     }
 
     override func didReceiveMemoryWarning() {
